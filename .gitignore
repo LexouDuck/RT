@@ -1,3 +1,14 @@
+# Project subjects, corrections and other stuff
+correc.*
+*.pdf
+*.zip
+*.tar
+*.gif
+
+# Macintosh files
+*.DS_Store
+*._*
+
 # Prerequisites
 *.d
 
@@ -29,8 +40,10 @@
 *.dylib
 
 # Executables
-*.exe
 *.out
+*.exe
+*.exe.stackdump
+*.dSYM
 *.app
 *.i*86
 *.x86_64

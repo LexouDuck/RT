@@ -1,29 +1,32 @@
 # RT
 A 3d raytracing program (42 team project)
 
+Below are the projected features:
+
 # Features:
--Temps-réel
--OpenCL (et peut-etre scale2x ou hq2x si besoin)
--Camera controllable a la fois fleches et les 3 clicks
--Reflection (mirroir)
--Refraction (transparence)
--Skybox
+- Realtime
+- OpenCL, to lessen lag (and maybe scale2x or hq2x if needed)
+- Fully controllable cam, with all 3 clicks and/or arrow keys
+- Selecting objects on click, and moving/rot/scaling them with keys
+- Reflection (mirror)
+- Refraction (transparence)
+- Skybox
 
 # Light Features:
--impact de reflets et refracts sur les ombres portées
--Reflet fresnel (speculaire sur les surfaces vitrées)
--Point light
--Amibent light
--Directional light
--Black hole (ray curving)
+- reflections and refractions on shadows
+- fresnel reflections (glassy surface highlighting)
+- Point light
+- Ambient light
+- Directional light
+- Black holes (ray curving)
 
 # Primitives & Shapes:
--Cube
--Sphere
--Cylinder (finite)
--Cone (finite)
--Triangle
--Mobius twist
--Torus knot
--3D Epitrochoid/Hypocycloid
--Fractals
+- Cube
+- Sphere
+- Cylinder (finite)
+- Cone (finite)
+- Triangle
+- Mobius twist
+- Torus knot
+- 3D Epitrochoid/Hypocycloid
+- Fractals

@@ -381,9 +381,9 @@ GREEN	:=	"\033[0;32m"
 #$^ is a call to the string of the current dependencies
 #$< is a call to the string of the first dependency in case of multiple deps
 
-$(NAME):$(OBJDIRS) $(addprefix $(OBJDIR)$,$(OBJS)) $(addprefix $(HDRDIR),$(HDRS))
+$(NAME):$(OBJDIRS) $(addprefix $(OBJDIR),$(OBJS)) $(addprefix $(HDRDIR),$(HDRS))
 	@echo "Compiling library: "$@" -> \c"$(RED)
-	@ar -rc $@ $(addprefix $(OBJDIR)$,$(OBJS))
+	@ar -rc $@ $(addprefix $(OBJDIR),$(OBJS))
 	@ranlib $@
 	@echo $(GREEN)"OK!"$(RESET)
 

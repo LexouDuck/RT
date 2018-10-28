@@ -9,11 +9,9 @@ correc.*
 *.DS_Store
 *._*
 
-# Prerequisites
-*.d
-
-# Object files
+# Object files & Dependency files
 *.o
+*.d
 *.ko
 *.obj
 *.elf
@@ -27,12 +25,11 @@ correc.*
 *.gch
 *.pch
 
-# Libraries
+# Compiled libraries
 *.lib
 *.a
 *.la
 *.lo
-
 # Shared objects (inc. Windows DLLs)
 *.dll
 *.so

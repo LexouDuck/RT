@@ -1,7 +1,7 @@
 NAME	=	rtv1
 
 CC		=	gcc
-CFLAGS	=	-Wall -Wextra -O3 -MMD
+CFLAGS	=	-Wall -Wextra -Werror -O3 -MMD
 
 RESET	=	"\033[0m"
 RED		=	"\033[0;31m"

@@ -17,7 +17,7 @@ LIBMATH		=	-lm
 LIBFT		=	-L$(LFTDIR) -lft
 LIBSDL		=	-L$(SDL) -lSDL2
 SDL			=	_
-SDL_WIN		=	./SDL2/SDL2-win/
+SDL_WIN		=	./SDL2/SDL2-win/ -lSDL2main
 SDL_MAC		=	./SDL2/SDL2-mac/
 SDL_LIN		=	./SDL2/SDL2-lin/
 

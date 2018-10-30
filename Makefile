@@ -12,12 +12,13 @@ LIBS	=	$(LIBFT) $(LIBMATH) $(LIBSDL)
 SRCDIR	=	./src/
 OBJDIR	=	./obj/
 LFTDIR	=	./libft/
+
 OPENCL		=	-lopencl
 LIBMATH		=	-lm
 LIBFT		=	-L$(LFTDIR) -lft
 LIBSDL		=	-L$(SDL) -lSDL2
 SDL			=	_
-SDL_WIN		=	./SDL2/SDL2-win/ -lSDL2main
+SDL_WIN		=	./SDL2/SDL2-win/
 SDL_MAC		=	./SDL2/SDL2-mac/
 SDL_LIN		=	./SDL2/SDL2-lin/
 
@@ -47,7 +48,7 @@ $(NAME): $(OBJS) $(HDRS)
 	@$(CC) $(OBJS) $(CFLAGS) -o $@ $(LIBS)
 	@printf $(GREEN)"OK!"$(RESET)"\n"
 
-$(OBJDIR)%.o : $(SRCDIR)%.c
+$(OBJDIR)%.o : $(SRCDIR)%.c $(HDRS)
 	@mkdir -p $(OBJDIR)
 	@printf "Compiling file: "$@" -> "
 	@$(CC) $(CFLAGS) -c $< -o $@ -MF $(OBJDIR)$*.d
@@ -61,6 +62,11 @@ clean:
 	@make -C $(LFTDIR) clean
 	@printf "Deleting object files...\n"
 	@rm -f $(OBJS)
+
+rclean:
+	@make -C $(LFTDIR) rclean
+	@printf "Deleting obj folder...\n"
+	@rm -rf $(OBJDIR)
 
 fclean: clean
 	@make -C $(LFTDIR) fclean

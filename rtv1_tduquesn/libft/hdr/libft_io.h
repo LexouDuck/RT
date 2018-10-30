@@ -17,8 +17,6 @@
 # include "get_next_line.h"
 # include "ft_printf.h"
 
-# define HEXCOLS	6
-
 /*
 ** ============ Readers ============
 */
@@ -41,8 +39,7 @@ void					ft_putchar(char c);
 void					ft_putstr(char const *str);
 
 /*
-** Writes the given string 'str' to the standard output, with a newline at the
-** end.
+** Writes the given string 'str' to the standard output, with a '\n' at the end
 */
 void					ft_putendl(char const *str);
 
@@ -99,5 +96,7 @@ void					ft_putmem_fd(char const *str, int fd);
 ** stdout.
 */
 void					ft_putmem(char const *str);
+
+# define HEXCOLS	6
 
 #endif

@@ -29,13 +29,13 @@ SRC_MATH	:=
 SRCDIR	=	./src/
 OBJDIR	=	./obj/
 
-HDRS	=	libft.h			\
-			libft_memory.h	\
+HDRS	=	libft_memory.h	\
 			libft_string.h	\
 			libft_io.h		\
 			libft_list.h	\
 			libft_convert.h	\
-			libft_math.h	
+			libft_math.h	\
+			libft.h			
 SRCS	=	$(addprefix $(DIR_MEMORY),	$(SRC_MEMORY)	)	\
 			$(addprefix $(DIR_STRING),	$(SRC_STRING)	)	\
 			$(addprefix $(DIR_IO),		$(SRC_IO)		)	\

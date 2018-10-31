@@ -43,6 +43,8 @@ DEPENDS	=	${OBJS:.o=.d}
 
 all: libraries $(NAME)
 
+$(OBJS): | objdir
+
 $(NAME): $(OBJS) $(HDRS)
 	@printf "Compiling program: "$@" -> "
 	@$(CC) $(OBJS) $(CFLAGS) -o $@ $(LIBS)
@@ -53,6 +55,9 @@ $(OBJDIR)%.o : $(SRCDIR)%.c $(HDRS)
 	@printf "Compiling file: "$@" -> "
 	@$(CC) $(CFLAGS) -c $< -o $@ -MF $(OBJDIR)$*.d
 	@printf $(GREEN)"OK!"$(RESET)"\n"
+
+objdir:
+	@mkdir -p $(OBJDIR)
 
 libraries:
 	@make -C $(LFTDIR) all

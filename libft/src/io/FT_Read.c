@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft_math.h                                       :+:      :+:    :+:   */
+/*   FT_Read.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,15 +10,32 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFT_MATH_H
-# define LIBFT_MATH_H
+#include "../../libft_io.h"
+#include "../../libft_string.h"
 
-# include "libft.h"
+char			*read_file(int const fd)
+{
+	int		result;
+	char	buffer[BUFF_SIZE + 1];
+	char	*file;
+	char	*temp;
 
-/* ************************************************************************** */
-/*                                  Macros                                    */
-/* ************************************************************************** */
-
-
-
-#endif
+	file = ft_strnew(1);
+	buffer[BUFF_SIZE] = '\0';
+	while ((result = read(fd, buffer, BUFF_SIZE)) > 0)
+	{
+		temp = file;
+		if (result < BUFF_SIZE)
+			buffer[result] = '\0';
+		if (!(file = ft_strjoin(temp, buffer)))
+			return (NULL);
+		free(temp);
+	}
+	if (result < 0)
+	{
+		if (file)
+			free(file);
+		return (NULL);
+	}
+	return (file);
+}

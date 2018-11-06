@@ -47,7 +47,7 @@ void		FT_WriteStringArray(const char **strls, int fd)
 	}
 }
 
-void		FT_WriteMemory(char const *str, t_u8 cols, int fd)
+void		FT_WriteMemory(const char *str, t_u8 cols, int fd)
 {
 	/*
 	char	*tmp;

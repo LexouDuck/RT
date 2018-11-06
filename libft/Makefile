@@ -13,6 +13,10 @@ SRC_MEMORY	:=
 DIR_STRING	:=	string/
 SRC_STRING	:=	FT_StringLength.c	
 
+DIR_CHAR	:=	char/
+SRC_CHAR	:=	FT_Is.c		\
+				FT_To.c
+
 DIR_IO		:=	io/
 SRC_IO		:=	FT_Write.c		\
 				FT_Output.c
@@ -31,6 +35,7 @@ OBJDIR	=	./obj/
 
 HDRS	=	libft_memory.h	\
 			libft_string.h	\
+			libft_char.h	\
 			libft_io.h		\
 			libft_list.h	\
 			libft_convert.h	\
@@ -38,6 +43,7 @@ HDRS	=	libft_memory.h	\
 			libft.h			
 SRCS	=	$(addprefix $(DIR_MEMORY),	$(SRC_MEMORY)	)	\
 			$(addprefix $(DIR_STRING),	$(SRC_STRING)	)	\
+			$(addprefix $(DIR_CHAR),	$(SRC_CHAR)		)	\
 			$(addprefix $(DIR_IO),		$(SRC_IO)		)	\
 			$(addprefix $(DIR_LIST),	$(SRC_LIST)		)	\
 			$(addprefix $(DIR_CONVERT),	$(SRC_CONVERT)	)	\
@@ -64,6 +70,7 @@ objdir:
 	@mkdir -p $(OBJDIR)
 	@mkdir -p $(OBJDIR)$(DIR_MEMORY)
 	@mkdir -p $(OBJDIR)$(DIR_STRING)
+	@mkdir -p $(OBJDIR)$(DIR_CHAR)
 	@mkdir -p $(OBJDIR)$(DIR_IO)
 	@mkdir -p $(OBJDIR)$(DIR_LIST)
 	@mkdir -p $(OBJDIR)$(DIR_CONVERT)

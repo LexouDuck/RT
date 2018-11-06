@@ -22,7 +22,7 @@
 /* ************************************************************************** */
 
 /*
-**	Define the common useful macro for writing some pseudo-boolean syntax.
+**	Define the common useful macros for writing some pseudo-boolean syntax.
 */
 # define FALSE	0
 # define TRUE	1

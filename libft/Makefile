@@ -18,8 +18,10 @@ SRC_CHAR	:=	FT_Is.c		\
 				FT_To.c
 
 DIR_IO		:=	io/
-SRC_IO		:=	FT_Write.c		\
-				FT_Output.c
+SRC_IO		:=	FT_Output.c		\
+				FT_Write.c		\
+				FT_Read.c		\
+				FT_GetNextLine.c
 
 DIR_LIST	:=	list/
 SRC_LIST	:=	

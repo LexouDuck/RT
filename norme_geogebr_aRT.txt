@@ -7,6 +7,9 @@ Bonjour, j'ai plusieurs questions concernant la possibilité de choisir notre pr
 
 
 
+Proposition de norme
+
+
 I) Style général et contrôle qualité
 
  - Qualité "lint free" assurée avec AdLint + compilation avec les flags usuels (-Wall -Werror -Wextra) et -O2/O3 selon le meilleur rendu final (ça peut être platform-dependent).
@@ -113,13 +116,15 @@ A) Généralités
 
  - Stdheader obligatoire.
 
- - Prototypes de fonction interdits dans un .c.
+ - Prototypes de fonction interdits dans un fichier .c.
 
  - Toute fonction qui n'est pas appelée autre part dans le code (que dans le fichier dans lequel elle se trouve) sera déclarée "static".
 
+ - Toute fonction qui ne déclare pas de variable locale et n'affecte pas un argument passé par pointeur sera déclarée 'inline'.
+
  - Inclusion uniquement du .h desquels dépendent les fonctions du fichier. Ce .h sera unique.
 
- - Vous ne pouvez pas déclarer un/une structure/union/enum/typedef dans un fichier .c.
+ - Interdiction de déclarer un/une structure/union/enum/typedef/macro dans un fichier .c.
 
  - Une fonction qui ne prend pas d’argument doit explicitement être prototypée avec le mot 'void' comme argument.
 
@@ -138,6 +143,8 @@ B) Lignes et espacements
 
  - Une seule déclaration de variable par ligne (aucun “int a, b, c;” et surtout aucun “int *a, b, *c;”).
 
+ - L'emploi des accolades '{...}' alignées verticalement est obligatoire après un 'if', même pour une instruction sur une seule ligne. Une exception peut être acceptée pour un 'if' suivi d'une instruction simple (limite des 80 caractères), avec une ou plusieurs tabulations entre le 'if(...)' et l'instruction qui le suit, plutôt qu'un retour à la ligne. Cela n'est en général justifiable que s'il y a une série de 'if' sans 'else' suivant une certaine symétrie, mais qu'il ne s'agit pas d'un cas ou l'emploi d'un switch est approprié.
+
 
 C) Outils du langage C autorisés
 
@@ -151,7 +158,7 @@ C) Outils du langage C autorisés
 
  - Les ‘do … while’ seront autorisé UNIQUEMENT dans le cas où l’algorithme DOIT être lu au moins une seule fois et que la condition de la boucle ne peut pas encore être vérifiée pour un cas zéro. Ces boucles ne sont à utiliser qu’en cas d’extrême recours, et seront justifiée par un commentaire au-dessus de la fonction.
 
- - Un ‘switch’ ne sera utilisé que dans une situation où chaque 'case' est “symétrique” avec les autres (quasiment la même série d’opérations à quelques valeurs ou détails près). Des if/else en série seront utilisés dans le cas contraire. Dans les ‘switch’, il faudra aligner plusieurs instructions sur une seule ligne si elles sont courtes et que cela permet de mieux voir la symétrie des différents cas (cas du [x - 1]  [  x  ]  [x + 1] à aligner verticalement par exemple). Pensez à créer une sous-fonction ‘inline’ si jamais vous ne rentrez pas dans les 80 caractères par ligne.
+ - Un ‘switch’ ne sera utilisé que dans une situation où chaque 'case' est “symétrique” avec les autres (quasiment la même série d’opérations à quelques valeurs ou détails près). Des if/else en série seront utilisés dans le cas contraire. Dans les ‘switch’, il faudra aligner plusieurs instructions sur une seule ligne si elles sont courtes et que cela permet de mieux voir la symétrie des différents cas (cas du [x - 1]  [  x  ]  [x + 1] à aligner verticalement par exemple). Pensez à créer une sous-fonction ‘static inline’ si jamais vous ne rentrez pas dans les 80 caractères par ligne.
 
  - Une seule instruction par ligne, version hard (jamais un ++ dans une ligne plus complexe, jamais de double assignation sur une seule ligne, etc), sauf éventuellement dans le cas d’un switch.
 
@@ -172,7 +179,9 @@ C) Outils du langage C autorisés
 
 
 
-PS: suivre autant que possible la norme et l'esprit 42 pour le reste: même style de présentation/tabulations des struct/enum/union/typedef dans le .h; déclarations en début de fonction (éventuellement avec des sauts de lignes pour organiser les variables locales en sous-groupes); commentaires selon le même standard (commentaires multilignes formatés similairement, pas de C++ comment, mais droit au pseudocommentaire “/* titre de paragraphe */” en une ligne mentionnés ci-dessus); même règles de Makefile.
+Pour le reste, suivre autant que possible la norme et l'esprit 42: même style de présentation/tabulations des struct/enum/union/typedef dans le .h; accolades verticalement alignées; déclarations en début de fonction (éventuellement avec des sauts de lignes pour organiser les variables locales en sous-groupes); commentaires selon le même standard (commentaires multilignes formatés similairement, pas de C++ comment, mais droit au pseudocommentaire “/* titre de paragraphe */” en une ligne mentionnés ci-dessus); même règles de Makefile.
 
 
 On souhaite avoir du code plus espacé et lisible, plus montrable en portfolio, ainsi qu’éviter de devoir ôter des accolades juste pour gagner des lignes ou gaver des lignes déjà complexes de ++ à tout va. Ca nous apprendrait des problématiques de C plus poussées niveau machine, notamment liées aux systèmes embarqués et aux OS, en faisant un entre-deux adapté et sérieux entre le code lisible et codable par des élèves de 42 et du code plus proche de ce qu’on trouve dans des normes professionnelles. Montrer qu’on est capable de coder dans 2 normes, et pas juste une seule, ça renforce la crédibilité d’être adaptable aussi.
+
+PS: "norminator", vous en pensez quoi comme nom ?

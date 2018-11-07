@@ -6,7 +6,7 @@
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
-/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
+/*   Updated: 2018/11/07 01:56:36 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@
 **	Reads the contents of the file descriptor 'fd', and puts it into 'buffer'.
 **	Returns 0 if the stream was read successfully, 1 if there was an error.
 */
-int		FT_ReadFile(int const fd, char *str);
+int		FT_ReadFile(int const fd, char * buffer);
 
 /*	@	stdio.h > fgets()
 **	Reads the contents of the file descriptor 'fd' line per line.
@@ -72,7 +72,7 @@ int		FT_ReadFile(int const fd, char *str);
 **		1 if a line of characters was successfully read
 **		0 if the end of the file was reached
 */
-int		FT_GetNextLine(int const fd, char **line);
+int		FT_GetNextLine(int const fd, char ** line);
 
 /*	TODO actually code this
 **	Reads the contents of the file descriptor 'fd', and puts that into
@@ -80,7 +80,7 @@ int		FT_GetNextLine(int const fd, char **line);
 **	The '\n' characters are replaced by '\0' string terminators.
 **	Returns 0 if the stream was read successfully, 1 if there was an error.
 */
-int		FT_ReadAllLines(int const fd, char **strls);
+int		FT_ReadAllLines(int const fd, char ** strls);
 
 
 
@@ -96,24 +96,24 @@ void	FT_WriteChar(char c, int fd);
 /*	@	stdio.h > fputs()
 **	Writes the given string 'str' to the given file descriptor 'fd'.
 */
-void	FT_WriteString(const char *str, int fd);
+void	FT_WriteString(char const * str, int fd);
 
 /*
 **	Writes the given string 'str' to the given file descriptor 'fd',
 **	with a newline '\n' character at the end.
 */
-void	FT_WriteLine(const char *str, int fd);
+void	FT_WriteLine(char const * str, int fd);
 
 /*
 **	Writes the given string array 'strls' to the given file descriptor 'fd'.
 */
-void	FT_WriteStringArray(const char **strls, int fd);
+void	FT_WriteStringArray(char const ** strls, int fd);
 
 /*
 **	Writes hexadecimal memory in the null-terminated string 'str',
 **	writing lines of 'cols' columns of 4-byte chunks to 'fd'.
 */
-void	FT_WriteMemory(const char *str, t_u8 cols, int fd);
+void	FT_WriteMemory(char const * str, t_u8 cols, int fd);
 
 
 
@@ -129,23 +129,23 @@ void	FT_OutputChar(char c);
 /*
 **	Writes the given string 'str' to the standard output.
 */
-void	FT_OutputString(const char *str);
+void	FT_OutputString(char const * str);
 
 /*	@	stdio.h > puts()
 **	Writes the given string 'str' to the standard output,
 **	with a newline '\n' character at the end.
 */
-void	FT_OutputLine(const char *str);
+void	FT_OutputLine(char const * str);
 
 /*
 **	Writes the given string array 'strls' to the standard output.
 */
-void	FT_OutputStringArray(const char **strls);
+void	FT_OutputStringArray(char const ** strls);
 
 /*
 **	Outputs hexadecimal memory in the null-terminated string 'str',
 **	writing lines of 'cols' columns of 4-byte chunks.
 */
-void	FT_OutputMemory(const char *str, t_u8 cols);
+void	FT_OutputMemory(char const * str, t_u8 cols);
 
 #endif

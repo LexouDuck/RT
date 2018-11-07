@@ -6,12 +6,12 @@
 /*   By: duquesn <marvin@42.com>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2006/06/06 06:06:06 by aduquesn          #+#    #+#             */
-/*   Updated: 2018/09/15 19:45:11 by aduquesn         ###   ########.fr       */
+/*   Updated: 2018/11/06 16:53:30 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef __RT_H
-# define __RT_H
+#ifndef RT_H
+# define RT_H
 
 # include <stdlib.h>
 # include <stdio.h>

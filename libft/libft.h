@@ -6,7 +6,7 @@
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
-/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
+/*   Updated: 2018/11/06 20:27:10 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@
 # endif
 
 /*
-**	TODO tristan explain this
+** The following macro sets the t_float type.
 */
 # define _FLOAT_64_
 
@@ -70,9 +70,17 @@ typedef float			t_f32;
 typedef double			t_f64;
 
 /*
-**	TODO tristan explain this
+** So long as only the t_float type is used throughout the code, changing the
+** following typedef allows to switch immediately from float32 to float64 and
+** vice-versa, which is useful for portability and/or optimization depending
+** on the use case.
 */
+# ifdef _FLOAT_32_
+typedef t_f32			t_float;
+# endif
+# ifdef _FLOAT_64_
 typedef t_f64			t_float;
+# endif
 
 /*
 **	Define a boolean pseudo-type that is potentially faster than just 'int'.
@@ -84,14 +92,14 @@ typedef t_f64			t_float;
 typedef uint_fast8_t	t_bool;
 
 
-
 /* ************************************************************************** */
 /*                       Variable-size primitive types                        */
 /* ************************************************************************** */
 
 /*
-**	These unions are used for certain difficult casting conditions.
-**	TODO tristan explain exactly where its used and how
+** These unions are used for certain difficult casting conditions.
+** They are used in particular when casting an <stdarg.h> var_arg to the
+** appropriate type in ft_printf.
 */
 typedef union			u_varint
 {

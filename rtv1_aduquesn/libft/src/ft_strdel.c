@@ -22,5 +22,5 @@ void	ft_strdel(char **ptr)
 }
 /*
 **	if (ptr == NULL)
-**		return (NULL);
+**		return ;
 */

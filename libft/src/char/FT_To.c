@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   FT_To.h                                            :+:      :+:    :+:   */
+/*   char/ft_to.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,14 +12,14 @@
 
 # include "../../libft_char.h"
 
-inline int		FT_ToUppercase(int c)
-{
-	return (('a' <= c && c <= 'z') ?
-		(c - 'a' + 'A') : c);
-}
-
-inline int		FT_ToLowercase(int c)
+inline int		ft_tolower(int c)
 {
 	return (('A' <= c && c <= 'Z') ?
 		(c - 'A' + 'a') : c);
+}
+
+inline int		ft_toupper(int c)
+{
+	return (('a' <= c && c <= 'z') ?
+		(c - 'a' + 'A') : c);
 }

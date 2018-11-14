@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   FT_GetNextLine.c                                   :+:      :+:    :+:   */
+/*   io/ft_getnextline.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,9 +11,10 @@
 /* ************************************************************************** */
 
 #include "../../libft_io.h"
+#include "../../libft_list.h"
 #include "../../libft_string.h"
 
-static	void	GNL_DeleteListItem(t_list **store, int fd, char **line)
+static	void	gnl_deletelistitem(t_list **store, int fd, char **line)
 {
 	t_list	*lst;
 	t_list	*result;
@@ -39,12 +40,13 @@ static	void	GNL_DeleteListItem(t_list **store, int fd, char **line)
 	}
 }
 
-static	int		GNL_ReadFile(t_list *elem)
+static	int		gnl_read(t_list *elem)
 {
 	int		result;
 	char	buffer[BUFF_SIZE + 1];
 	char	*temp;
 
+	result = 0;
 	buffer[BUFF_SIZE] = '\0';
 	while (!ft_strchr(elem->content, '\n') &&
 		(result = read((int)elem->content_size, buffer, BUFF_SIZE)) > 0)
@@ -59,7 +61,7 @@ static	int		GNL_ReadFile(t_list *elem)
 	return (result);
 }
 
-static	int		GNL_MakeLine(t_list *elem, char **line)
+static	int		gnl_makeline(t_list *elem, char **line)
 {
 	size_t	length;
 	size_t	space;
@@ -85,7 +87,7 @@ static	int		GNL_MakeLine(t_list *elem, char **line)
 	return (GNL_LINE);
 }
 
-int				FT_GetNextLine(int const fd, char **line)
+int				ft_getnextline(int const fd, char **line)
 {
 	static t_list	*store = NULL;
 	t_list			*elem;
@@ -101,14 +103,14 @@ int				FT_GetNextLine(int const fd, char **line)
 		ft_lstadd(&store, (elem = ft_lstnew(NULL, fd)));
 	if (!elem->content && !(elem->content = ft_strnew(2)))
 		return (GNL_ERROR);
-	if (GNL_ReadFile(elem) < 0)
+	if (gnl_read(elem) < 0)
 		return (GNL_ERROR);
 	if (*(char *)elem->content == '\0')
 	{
-		GNL_DeleteListItem(&store, fd, line);
+		gnl_deletelistitem(&store, fd, line);
 		return (GNL_END);
 	}
-	if (GNL_MakeLine(elem, line) < 0)
+	if (gnl_makeline(elem, line) < 0)
 		return (GNL_ERROR);
 	return (GNL_LINE);
 }

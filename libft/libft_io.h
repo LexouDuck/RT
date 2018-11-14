@@ -6,7 +6,7 @@
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
-/*   Updated: 2018/11/07 01:56:36 by fulguritu        ###   ########.fr       */
+/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,13 @@
 # include "libft.h"
 # include "libft_string.h"
 
-/* ************************************************************************** */
-/*                                  Macros                                    */
-/* ************************************************************************** */
+# include <unistd.h>
+
+/*
+** ************************************************************************** *|
+**                                  Macros                                    *|
+** ************************************************************************** *|
+*/
 
 /*
 **	Define the 3 standard (std) streams of data - these numbers are special
@@ -29,13 +33,7 @@
 # define STDERR	2
 
 /*
-**	Define the return values for the reading functions.
-*/
-# define OK		0
-# define ERROR	1
-
-/*
-**	Define the return values for FT_GetNextLine().
+**	Define the return values for ft_GetNextLine().
 */
 # define GNL_ERROR -1
 # define GNL_LINE	1
@@ -51,19 +49,19 @@
 */
 # define BUFF_SIZE 2048
 
+/*
+** ************************************************************************** *|
+**                              Reading Functions                             *|
+** ************************************************************************** *|
+*/
 
-
-/* ************************************************************************** */
-/*                              Reading Functions                             */
-/* ************************************************************************** */
-
-/*	@	stdio.h > fread()
-**	Reads the contents of the file descriptor 'fd', and puts it into 'buffer'.
+/*
+**	Reads the contents of the file descriptor 'fd', and puts it into 'file'.
 **	Returns 0 if the stream was read successfully, 1 if there was an error.
 */
-int		FT_ReadFile(int const fd, char * buffer);
+int		ft_readfile(int const fd, char **file);
 
-/*	@	stdio.h > fgets()
+/*
 **	Reads the contents of the file descriptor 'fd' line per line.
 **	This means that it will allocate and fill a buffer until reading '\n',
 **	at which point this buffer is returned via the 'line' char pointer arg.
@@ -72,7 +70,7 @@ int		FT_ReadFile(int const fd, char * buffer);
 **		1 if a line of characters was successfully read
 **		0 if the end of the file was reached
 */
-int		FT_GetNextLine(int const fd, char ** line);
+int		ft_getnextline(int const fd, char **line);
 
 /*	TODO actually code this
 **	Reads the contents of the file descriptor 'fd', and puts that into
@@ -80,72 +78,72 @@ int		FT_GetNextLine(int const fd, char ** line);
 **	The '\n' characters are replaced by '\0' string terminators.
 **	Returns 0 if the stream was read successfully, 1 if there was an error.
 */
-int		FT_ReadAllLines(int const fd, char ** strls);
+int		ft_readlines(int const fd, char ***strls);
 
+/*
+** ************************************************************************** *|
+**                              Writing Functions                             *|
+** ************************************************************************** *|
+*/
 
-
-/* ************************************************************************** */
-/*                              Writing Functions                             */
-/* ************************************************************************** */
-
-/*	@	stdio.h > putc() & fputc()
+/*
 **	Writes the given character 'c' to the given file descriptor 'fd'.
 */
-void	FT_WriteChar(char c, int fd);
+void	ft_write_char(char c, int fd);
 
-/*	@	stdio.h > fputs()
+/*
 **	Writes the given string 'str' to the given file descriptor 'fd'.
 */
-void	FT_WriteString(char const * str, int fd);
+void	ft_write_str(char const *str, int fd);
 
 /*
 **	Writes the given string 'str' to the given file descriptor 'fd',
 **	with a newline '\n' character at the end.
 */
-void	FT_WriteLine(char const * str, int fd);
+void	ft_write_line(char const *str, int fd);
 
 /*
 **	Writes the given string array 'strls' to the given file descriptor 'fd'.
 */
-void	FT_WriteStringArray(char const ** strls, int fd);
+void	ft_write_strls(char const **strls, int fd);
 
 /*
 **	Writes hexadecimal memory in the null-terminated string 'str',
 **	writing lines of 'cols' columns of 4-byte chunks to 'fd'.
 */
-void	FT_WriteMemory(char const * str, t_u8 cols, int fd);
+void	ft_write_memory(char const *str, t_u8 cols, int fd);
 
+/*
+** ************************************************************************** *|
+**                             Commandline Output                             *|
+** ************************************************************************** *|
+*/
 
-
-/* ************************************************************************** */
-/*                             Commandline Output                             */
-/* ************************************************************************** */
-
-/*	@	stdio.h > putchar()
+/*
 **	Writes the given char 'c' to the standard output.
 */
-void	FT_OutputChar(char c);
+void	ft_output_char(char c);
 
 /*
 **	Writes the given string 'str' to the standard output.
 */
-void	FT_OutputString(char const * str);
+void	ft_output_str(char const *str);
 
-/*	@	stdio.h > puts()
+/*
 **	Writes the given string 'str' to the standard output,
 **	with a newline '\n' character at the end.
 */
-void	FT_OutputLine(char const * str);
+void	ft_output_line(char const *str);
 
 /*
 **	Writes the given string array 'strls' to the standard output.
 */
-void	FT_OutputStringArray(char const ** strls);
+void	ft_output_strls(char const **strls);
 
 /*
 **	Outputs hexadecimal memory in the null-terminated string 'str',
 **	writing lines of 'cols' columns of 4-byte chunks.
 */
-void	FT_OutputMemory(char const * str, t_u8 cols);
+void	ft_output_memory(char const *str, t_u8 cols);
 
 #endif

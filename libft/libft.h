@@ -6,20 +6,27 @@
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
-/*   Updated: 2018/11/06 20:27:10 by fulguritu        ###   ########.fr       */
+/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
+/*
+** ************************************************************************** *|
+**                                 Includes                                   *|
+** ************************************************************************** *|
+*/
+
 # include <stdlib.h>
-# include <unistd.h>
 # include <inttypes.h>
 
-/* ************************************************************************** */
-/*                                  Macros                                    */
-/* ************************************************************************** */
+/*
+** ************************************************************************** *|
+**                                  Macros                                    *|
+** ************************************************************************** *|
+*/
 
 /*
 **	Define the common useful macros for writing some pseudo-boolean syntax.
@@ -28,8 +35,14 @@
 # define TRUE	1
 
 /*
+**	Define the common macros for return values used by several functions.
+*/
+# define OK		0
+# define ERROR	1
+
+/*
 **	Define some useful string literals for some common number bases.
-**	Should be used with FT_ConvertToNumber_Base() & FT_ConvertToString_Base()
+**	Should be used with ft_itoa_base() and ft_atoi_base()
 */
 # ifndef __BASES__
 #  define __BASES__
@@ -41,15 +54,30 @@
 # endif
 
 /*
+**	Define some useful string literals for commandline output colors.
+**	May be used with any of the 'ft_output' and 'ft_write' functions.
+*/
+# ifndef __COLORS__
+#  define __COLORS__
+#  define C_RED     "\x1b[31m"
+#  define C_GREEN   "\x1b[32m"
+#  define C_YELLOW  "\x1b[33m"
+#  define C_BLUE    "\x1b[34m"
+#  define C_MAGENTA "\x1b[35m"
+#  define C_CYAN    "\x1b[36m"
+#  define RESET     "\x1b[0m"
+# endif
+
+/*
 ** The following macro sets the t_float type.
 */
 # define _FLOAT_64_
 
-
-
-/* ************************************************************************** */
-/*                      Shorthands for primitive types                        */
-/* ************************************************************************** */
+/*
+** ************************************************************************** *|
+**                      Shorthands for primitive types                        *|
+** ************************************************************************** *|
+*/
 
 /*
 **	Define pseudo-types for all the primitive number types in a clear naming
@@ -91,10 +119,11 @@ typedef t_f64			t_float;
 */
 typedef uint_fast8_t	t_bool;
 
-
-/* ************************************************************************** */
-/*                       Variable-size primitive types                        */
-/* ************************************************************************** */
+/*
+** ************************************************************************** *|
+**                       Variable-size primitive types                        *|
+** ************************************************************************** *|
+*/
 
 /*
 ** These unions are used for certain difficult casting conditions.

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   FT_Read.c                                          :+:      :+:    :+:   */
+/*   io/ft_read.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -13,29 +13,37 @@
 #include "../../libft_io.h"
 #include "../../libft_string.h"
 
-char			*read_file(int const fd)
+int		ft_readfile(int const fd, char **file)
 {
 	int		result;
 	char	buffer[BUFF_SIZE + 1];
-	char	*file;
 	char	*temp;
 
-	file = ft_strnew(1);
+	if (!(*file = ft_strnew(1)))
+		return (ERROR);
 	buffer[BUFF_SIZE] = '\0';
 	while ((result = read(fd, buffer, BUFF_SIZE)) > 0)
 	{
-		temp = file;
+		temp = *file;
 		if (result < BUFF_SIZE)
 			buffer[result] = '\0';
-		if (!(file = ft_strjoin(temp, buffer)))
-			return (NULL);
+		if (!(*file = ft_strjoin(temp, buffer)))
+			return (ERROR);
 		free(temp);
 	}
 	if (result < 0)
 	{
-		if (file)
-			free(file);
-		return (NULL);
+		if (*file)
+			free(*file);
+		return (ERROR);
 	}
-	return (file);
+	return (OK);
+}
+
+/*
+** TODO actually code this
+*/
+int		ft_readlines(int const fd, char ***strls)
+{
+	return (fd || strls);
 }

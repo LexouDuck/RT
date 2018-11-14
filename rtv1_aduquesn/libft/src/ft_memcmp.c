@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aduquesn <AlexisDuquesne@outlook.com>      +#+  +:+       +#+        */
+/*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/15 02:08:10 by aduquesn          #+#    #+#             */
-/*   Updated: 2017/12/22 00:10:52 by aduquesn         ###   ########.fr       */
+/*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
+/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,16 @@
 int	ft_memcmp(void const *ptr1, void const *ptr2, size_t n)
 {
 	size_t	i;
+	char	*p1;
+	char	*p2;
 
+	p1 = (char *)ptr1;
+	p2 = (char *)ptr2;
 	i = 0;
 	while (i < n)
 	{
-		if (((t_u8 *)ptr1)[i] != ((t_u8 *)ptr2)[i])
-			return (((t_u8 *)ptr1)[i] - ((t_u8 *)ptr2)[i]);
+		if (p1[i] != p2[i])
+			return (p1[i] - p2[i]);
 		++i;
 	}
 	return (0);

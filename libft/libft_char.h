@@ -15,93 +15,95 @@
 
 # include "libft.h"
 
-/* ************************************************************************** */
-/*                                  Macros                                    */
-/* ************************************************************************** */
+/*
+** ************************************************************************** *|
+**                                  Macros                                    *|
+** ************************************************************************** *|
+*/
 
+/*
+** ************************************************************************** *|
+**                              Character Checks                              *|
+** ************************************************************************** *|
+*/
 
-
-/* ************************************************************************** */
-/*                              Character Checks                              */
-/* ************************************************************************** */
-
-/*	@	ctype.h > isalpha()
+/*
 **	Returns 1 if the given char 'c' is a letter (lowercase or uppercase),
 **	and returns 0 otherwise.
 */
-int		FT_IsLetter(int c);
+int		ft_isalpha(int c);
 
-/*	@	ctype.h > isupper()
+/*
 **	Returns 1 if the given char 'c' is a uppercase letter character,
 **	and returns 0 otherwise.
 */
-int		FT_IsUppercase(int c);
+int		ft_isupper(int c);
 
-/*	@	ctype.h > islower()
+/*
 **	Returns 1 if the given char 'c' is an lowercase letter character,
 **	and returns 0 otherwise.
 */
-int		FT_IsLowercase(int c);
+int		ft_islower(int c);
 
-/*	@	ctype.h > isalnum()
+/*
 **	Returns 1 if the given char 'c' is alphanumeric (number or letter),
 **	and returns 0 otherwise.
 */
-int		FT_IsAlphanumeric(int c);
+int		ft_isalnum(int c);
 
-/*	@	ctype.h > isspace()
+/*
+**	Returns 1 if the given char 'c' is a numerical digit,
+**	and returns 0 otherwise.
+*/
+int		ft_isdigit(int c);
+
+/*
+**	Returns 1 if the given char 'c' is a hexadecimal character
+**	(either 0-9 or  A-F lowercase or uppercase), and returns 0 otherwise.
+*/
+int		ft_ishexdigit(int c);
+
+/*
 **	Returns 1 if the given char 'c' is whitespace character: \r,\n,\f,\v,\t,' '
 **	(carriage return, newline, form feed, vertical tab, tab, or space),
 **	and returns 0 otherwise.
 */
-int		FT_IsSpace(int c);
+int		ft_isspace(int c);
 
-/*	@	ctype.h > isdigit()
-**	Returns 1 if the given char 'c' is a numerical digit,
-**	and returns 0 otherwise.
-*/
-int		FT_IsDigit(int c);
-
-/*	@	ctype.h > isprint()
-**	Returns 1 if the given char 'c' is a hexadecimal character
-**	(either 0-9 or  A-F lowercase or uppercase), and returns 0 otherwise.
-*/
-int		FT_IsHexDigit(int c);
-
-/*	@	ctype.h > ispunct()
+/*
 **	Returns 1 if the given char 'c' is a printable ASCII character,
 **	and returns 0 otherwise.
 */
-int		FT_IsPunctuation(int c);
+int		ft_ispunct(int c);
 
-/*	@	ctype.h > isprint()
+/*
 **	Returns 1 if the given char 'c' is a printable ASCII character,
 **	and returns 0 otherwise.
 */
-int		FT_IsPrintable(int c);
+int		ft_isprint(int c);
 
-/*	@	ctype.h > isascii()
+/*
 **	Returns 1 if the given char 'c' has a value between 0 and 127,
 **	and returns 0 otherwise.
 */
-int		FT_IsASCII(int c);
+int		ft_isascii(int c);
 
+/*
+** ************************************************************************** *|
+**                           Character Substitutions                          *|
+** ************************************************************************** *|
+*/
 
-
-/* ************************************************************************** */
-/*                           Character Substitutions                          */
-/* ************************************************************************** */
-
-/*	@	ctype.h > toupper()
+/*
 **	Returns the uppercase equivalent of the given character 'c'
 **	(nothing is done if 'c' is not a letter character).
 */
-int		FT_ToUppercase(int c);
+int		ft_toupper(int c);
 
-/*	@	ctype.h > tolower()
+/*
 **	Returns the lowercase equivalent of the given character 'c'
 **	(nothing is done if 'c' is not a letter character).
 */
-int		FT_ToLowercase(int c);
+int		ft_tolower(int c);
 
 #endif

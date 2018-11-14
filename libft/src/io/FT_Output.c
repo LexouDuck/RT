@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   io/FT_Output.c                                     :+:      :+:    :+:   */
+/*   io/ft_output.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,34 +12,34 @@
 
 #include "../../libft_io.h"
 
-inline void	FT_OutputChar(char c)
+inline void	ft_output_char(char c)
 {
 	write(STDOUT, &c, 1);
 }
 
-inline void	FT_OutputString(const char *str)
+inline void	ft_output_str(const char *str)
 {
 	if (str)
-		write(STDOUT, str, FT_StringLength(str));
+		write(STDOUT, str, ft_strlen(str));
 }
 
-inline void	FT_OutputLine(const char *str)
+inline void	ft_output_line(const char *str)
 {
 	if (str)
 	{
-		write(STDOUT, str, FT_StringLength(str));
+		write(STDOUT, str, ft_strlen(str));
 		write(STDOUT, "\n", 1);
 	}
 }
 
-inline void	FT_OutputStringArray(const char **strls)
+inline void	ft_output_strls(const char **strls)
 {
 	if (strls)
-		FT_WriteStringArray(strls, STDOUT);
+		ft_write_strls(strls, STDOUT);
 }
 
-inline void	FT_OutputMemory(const char *str, t_u8 cols)
+inline void	ft_output_memory(const char *str, t_u8 cols)
 {
 	if (str)
-		FT_WriteMemory(str, cols, STDOUT);
+		ft_write_memory(str, cols, STDOUT);
 }

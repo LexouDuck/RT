@@ -2,10 +2,10 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <setjmp.h>
-#include <signal.h>
 #include <ctype.h>
 #include <stdio.h>
+#include <setjmp.h>
+#include <signal.h>
 
 #include "libft.h"
 

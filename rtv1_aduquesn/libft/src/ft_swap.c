@@ -48,7 +48,7 @@ static void	ft_swap_64b(t_u64 *ptr1, t_u64 *ptr2)
 	*ptr2 = tmp;
 }
 
-void		ft_swap(void *ptr1, void *ptr2, size_t size)
+int			ft_swap(void *ptr1, void *ptr2, size_t size)
 {
 	if (ptr1 && ptr2)
 	{
@@ -60,5 +60,9 @@ void		ft_swap(void *ptr1, void *ptr2, size_t size)
 			ft_swap_32b((t_u32 *)ptr1, (t_u32 *)ptr2);
 		else if (size <= 8)
 			ft_swap_64b((t_u64 *)ptr1, (t_u64 *)ptr2);
+		else
+			return (ERROR);
+		return (OK);
 	}
+	return (ERROR);
 }

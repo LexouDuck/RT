@@ -19,6 +19,12 @@ SRC_MEMORY	:=	ft_memalloc.c	\
 				ft_swap.c		\
 				ft_getbits.c	
 
+DIR_CHAR	:=	char/
+SRC_CHAR	:=	ft_isalpha.c	\
+				ft_isdigit.c	\
+				ft_isprint.c	\
+				ft_to.c			
+
 DIR_STRING	:=	string/
 SRC_STRING	:=	ft_strnew.c		\
 				ft_strset.c		\
@@ -27,16 +33,27 @@ SRC_STRING	:=	ft_strnew.c		\
 				ft_strdup.c		\
 				ft_strcpy.c		\
 				ft_strcat.c		\
-				ft_strlen.c		
+				ft_strlen.c		\
+				ft_strcmp.c		\
+				ft_strequ.c		\
+				ft_strchr.c		\
+				ft_strstr.c		\
+				ft_strcount.c	\
+				ft_strhas.c		\
+				ft_strtrim.c	\
+				ft_strpad.c		\
+				ft_strrev.c		\
+				ft_strsub.c		\
+				ft_strjoin.c	\
+				ft_striter.c	\
+				ft_strmap.c		\
 
-DIR_CHAR	:=	char/
-SRC_CHAR	:=	ft_isalpha.c	\
-				ft_isdigit.c	\
-				ft_isprint.c	\
-				ft_to.c	
+
+DIR_STRINGARRAY	:=	stringarray/
+SRC_STRINGARRAY	:=	ft_strsplit.c	\
 
 DIR_CONVERT	:=	convert/
-SRC_CONVERT	:=	
+SRC_CONVERT	:=	ft_s_to_str.c		\
 
 DIR_MATH	:=	math/
 SRC_MATH	:=	
@@ -61,13 +78,14 @@ HDRS	=	libft_memory.h	\
 			libft_list.h	\
 			libft_io.h		\
 			libft.h			
-SRCS	=	$(addprefix $(DIR_MEMORY),	$(SRC_MEMORY)	)	\
-			$(addprefix $(DIR_STRING),	$(SRC_STRING)	)	\
-			$(addprefix $(DIR_CHAR),	$(SRC_CHAR)		)	\
-			$(addprefix $(DIR_CONVERT),	$(SRC_CONVERT)	)	\
-			$(addprefix $(DIR_MATH),	$(SRC_MATH)		)	\
-			$(addprefix $(DIR_LIST),	$(SRC_LIST)		)	\
-			$(addprefix $(DIR_IO),		$(SRC_IO)		)
+SRCS	=	$(addprefix $(DIR_MEMORY),		$(SRC_MEMORY)		)	\
+			$(addprefix $(DIR_CHAR),		$(SRC_CHAR)			)	\
+			$(addprefix $(DIR_STRING),		$(SRC_STRING)		)	\
+			$(addprefix $(DIR_STRINGARRAY),	$(SRC_STRINGARRAY)	)	\
+			$(addprefix $(DIR_CONVERT),		$(SRC_CONVERT)		)	\
+			$(addprefix $(DIR_MATH),		$(SRC_MATH)			)	\
+			$(addprefix $(DIR_LIST),		$(SRC_LIST)			)	\
+			$(addprefix $(DIR_IO),			$(SRC_IO)			)
 
 OBJS	=	${SRCS:%.c=$(OBJDIR)%.o}
 
@@ -89,8 +107,9 @@ $(OBJDIR)%.o : $(SRCDIR)%.c $(HDRS)
 objdir:
 	@mkdir -p $(OBJDIR)
 	@mkdir -p $(OBJDIR)$(DIR_MEMORY)
-	@mkdir -p $(OBJDIR)$(DIR_STRING)
 	@mkdir -p $(OBJDIR)$(DIR_CHAR)
+	@mkdir -p $(OBJDIR)$(DIR_STRING)
+	@mkdir -p $(OBJDIR)$(DIR_STRINGARRAY)
 	@mkdir -p $(OBJDIR)$(DIR_CONVERT)
 	@mkdir -p $(OBJDIR)$(DIR_MATH)
 	@mkdir -p $(OBJDIR)$(DIR_LIST)
@@ -123,14 +142,15 @@ rename:
 	@sed -i -e "s|\<$(old)\>|$(new)|g" $(addprefix $(SRCDIR), $(SRCS))
 	@printf "Renamed all words matching \'"$(old)"\' as \'"$(new)"\'.\n"
 
-TESTS :=	test_memory.c	\
-			test_string.c	\
-			test_char.c		\
-			test_convert.c	\
-			test_math.c		\
-			test_list.c		\
-			test_io.c		\
-			test.c			\
+TESTS :=	test_memory.c		\
+			test_char.c			\
+			test_string.c		\
+			test_stringarray.c	\
+			test_convert.c		\
+			test_math.c			\
+			test_list.c			\
+			test_io.c			\
+			test.c				\
 			util_test.c
 
 testprogram: all
@@ -142,11 +162,14 @@ test: testprogram
 test_memory: testprogram
 	@./test -memory
 
+test_char: testprogram
+	@./test -char
+
 test_string: testprogram
 	@./test -string
 
-test_char: testprogram
-	@./test -char
+test_stringarray: testprogram
+	@./test -stringarray
 
 test_convert: testprogram
 	@./test -convert

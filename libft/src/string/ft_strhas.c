@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcmp.c                                        :+:      :+:    :+:   */
+/*   ft_strhas.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,28 +10,59 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../libft_memory.h"
+#include "../../libft_string.h"
 
-int	ft_memcmp(void const *ptr1, void const *ptr2, size_t n)
+t_bool		ft_strhas(char const *str, char const *charset)
 {
-	t_u8	*p1;
-	t_u8	*p2;
 	size_t	i;
+	size_t	c;
 
-	p1 = (t_u8 *)ptr1;
-	p2 = (t_u8 *)ptr2;
 	i = 0;
-	while (i < n)
+	while (str[i])
 	{
-		if (p1[i] != p2[i])
-			return (p1[i] - p2[i]);
+		c = 0;
+		while (charset[c])
+		{
+			if (str[i] == charset[c])
+				return (TRUE);
+			++c;
+		}
 		++i;
 	}
-	return (0);
+	return (FALSE);
 }
 /*
-**	if (ptr1 == ptr2)
-**		return (0);
-**	return (ptr1 == NULL ? 0 : ptr1[0]) -
-**		   (ptr2 == NULL ? 0 : ptr2[0]);
+**	if (str == NULL || charset == NULL)
+**		return (FALSE);
+*/
+
+t_bool		ft_strhasonly(char const *str, char const *charset)
+{
+	size_t	i;
+	size_t	c;
+	t_bool	match;
+
+	i = 0;
+	while (str[i])
+	{
+		match = FALSE;
+		c = 0;
+		while (charset[c])
+		{
+			if (str[i] == charset[c])
+			{
+				match = TRUE;
+				break ;
+			}
+			++c;
+		}
+		if (match == FALSE)
+			return (FALSE);
+		++i;
+	}
+	return (TRUE);
+}
+/*
+**	if (str == NULL || charset == NULL)
+**		return (FALSE);
 */

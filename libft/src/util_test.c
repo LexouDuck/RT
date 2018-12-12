@@ -152,6 +152,7 @@ inline void	timer_clock(t_time* result)
 		exit(EXIT_FAILURE);
 	}
 }
+
 /*	Define a 10e9 macro we use for nanosecond modulo */
 #define BILLION 1000000000L
 inline t_time timer_getdiff(t_time start, t_time end)
@@ -181,6 +182,7 @@ inline int timer_compare(t_time a, t_time b)
         return (a.tv_sec - b.tv_sec);
 }
 
+/* prints the result of a timer (and potentially a comparison with the secondary timer) */
 void		print_timer_result(t_timer* t, int compare)
 {
 	t->time1 = timer_getdiff(t->end1, t->start1);
@@ -213,14 +215,28 @@ void	print_test_int(
 		t_u32 expect,
 		int can_segfault)
 {
+	int error;
+	int result_segfault = can_segfault & (1 << 1);
+	int expect_segfault = can_segfault & (1 << 2);
 	if (test_name)
 	{
-		if (can_segfault)
+		if (can_segfault & 1)
 			 printf("\n%s - "C_YELLOW"can segfault"RESET, test_name);
 		else printf("\n%s", test_name);
 		printf(" -> ");
 	}
 	else printf(", ");
+	
+	if (result_segfault)
+	{
+		if (expect_segfault)
+			 error = FALSE;
+		else error = TRUE;
+	}
+	else if (expect_segfault)
+		 error = TRUE;
+	else error = (result == expect);
+
 	if (result == expect)
 	{
 		printf(C_GREEN"OK!"RESET);
@@ -231,52 +247,14 @@ void	print_test_int(
 		if (function[0] == '_')
 		{
 			char *expected = str_padleft("Expected", ' ', strlen(function) + 2);
-			printf("ft%s: %d\n%s: %d"RESET, function,
-				result,
-				expect);
+			printf(">ft%s: %s\n>%s: %s"RESET,
+				function, (result_segfault) ? segstr : int_to_string(result),
+				expected, (expect_segfault) ? segstr : int_to_string(expect));
 			free(expected);
 		}
-		else printf("ft_%s: %d\n   %s: %d"RESET,
-				function, result,
-				function, expect);
-	}
-}
-
-void	print_test_str(
-		char const *test_name,
-		char const *function,
-		char const *result,
-		char const *expect,
-		int can_segfault)
-{
-	if (test_name)
-	{
-		if (can_segfault)
-			 printf("\n%s - "C_YELLOW"can segfault"RESET, test_name);
-		else printf("\n%s", test_name);
-		printf(" -> ");
-	}
-	else printf(", ");
-	if (str_equals(result, expect))
-	{
-		printf(C_GREEN"OK!"RESET);
-	}
-	else
-	{
-		if (str_equals(expect, "(n/a)"))
-			 printf(C_RED"TEST COULD NOT BE PERFORMED\n"RESET);
-		else printf(C_RED"ERROR\n");
-		if (function[0] == '_')
-		{
-			char *expected = str_padleft("Expected", ' ', strlen(function) + 2);
-			printf("ft%s: {%s}\n%s: {%s}"RESET, function,
-				result,
-				expect);
-			free(expected);
-		}
-		else printf("ft_%s: {%s}\n   %s: {%s}"RESET,
-				function, result,
-				function, expect);
+		else printf(">ft_%s: %s\n>   %s: %s"RESET,
+				function, (result_segfault) ? segstr : int_to_string(result),
+				function, (expect_segfault) ? segstr : int_to_string(expect));
 	}
 }
 
@@ -310,14 +288,52 @@ void	print_test_mem(
 		if (function[0] == '_')
 		{
 			char *expected = str_padleft("Expected", ' ', strlen(function) + 2);
-			printf("ft%s: {%s}\n%s: {%s}"RESET,
+			printf(">ft%s: {%s}\n>%s: {%s}"RESET,
 				function, print_memory(result, length),
 				expected, print_memory(expect, length));
 			free(expected);
 		}
-		else printf("ft_%s: {%s}\n   %s: {%s}"RESET,
+		else printf(">ft_%s: {%s}\n>   %s: {%s}"RESET,
 				function, print_memory(result, length),
 				function, print_memory(expect, length));
+	}
+}
+
+void	print_test_str(
+		char const *test_name,
+		char const *function,
+		char const *result,
+		char const *expect,
+		int can_segfault)
+{
+	if (test_name)
+	{
+		if (can_segfault)
+			 printf("\n%s - "C_YELLOW"can segfault"RESET, test_name);
+		else printf("\n%s", test_name);
+		printf(" -> ");
+	}
+	else printf(", ");
+	if (str_equals(result, expect))
+	{
+		printf(C_GREEN"OK!"RESET);
+	}
+	else
+	{
+		if (str_equals(expect, "(n/a)"))
+			 printf(C_RED"TEST COULD NOT BE PERFORMED\n"RESET);
+		else printf(C_RED"ERROR\n");
+		if (function[0] == '_')
+		{
+			char *expected = str_padleft("Expected", ' ', strlen(function) + 2);
+			printf(">ft%s: {%s}\n>%s: {%s}"RESET,
+				function, result,
+				expected, expect);
+			free(expected);
+		}
+		else printf(">ft_%s: {%s}\n>   %s: {%s}"RESET,
+				function, result,
+				function, expect);
 	}
 }
 
@@ -345,20 +361,18 @@ void	print_test_strls(
 			break;
 		}
 	}
-	if (!error)
+	if (error)
 	{
-		printf(C_GREEN"OK!"RESET);
-	}
-	else
-	{
+		char *expected = str_padleft("Expected", ' ', strlen(function) + 2);
 		printf(C_RED"ERROR\n");
-		printf("\nft_%s: [", function);
+		printf("\n>ft_%s: [", function);
 		for (int i = 0; result[i]; ++i)
 			printf("%s%s", result[i], result[i + 1] ? ", " : "]");
-		printf("\n   Expected: [");
+		printf("\n>%s: [");
 		for (int i = 0; expect[i]; ++i)
 			printf("%s%s", expect[i], expect[i + 1] ? ", " : "]");
 	}
+	else printf(C_GREEN"OK!"RESET);
 }
 
 void	print_test_lst(
@@ -386,24 +400,20 @@ void	print_test_lst(
 		lst = lst->next;
 		++i;
 	}
-	if (lst || expect[i]) error = TRUE;
-	if (!error)
-	{
-		printf(C_GREEN"OK!"RESET);
-	}
-	else
+	if (lst || expect[i])
+		error = TRUE;
+	if (error)
 	{
 		printf(C_RED"ERROR\n");
 		lst = (t_list *)result;
-		printf(    "ft_%s: [", function);
+		printf(">ft_%s: [", function);
 		while (lst)
 		{
 			printf("%s{%s}", (lst == result ? "" : ", "), lst->content);
 			lst = lst->next;
 		}
-		printf("]\n");
 		i = 0;
-		printf(" Expected: [", function);
+		printf("]\n> Expected: [");
 		while (expect[i])
 		{
 			printf("%s{%s}", (i == 0 ? "" : ", "), expect[i]);
@@ -411,4 +421,5 @@ void	print_test_lst(
 		}
 		printf("]\n"RESET);
 	}
+	else printf(C_GREEN"OK!"RESET);
 }

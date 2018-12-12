@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcmp.c                                        :+:      :+:    :+:   */
+/*   ft_strrev.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,28 +10,31 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../libft_memory.h"
+#include "../../libft_string.h"
 
-int	ft_memcmp(void const *ptr1, void const *ptr2, size_t n)
+char	*ft_strrev(char const *str)
 {
-	t_u8	*p1;
-	t_u8	*p2;
+	char	*result;
+	size_t	length;
 	size_t	i;
+	size_t	j;
 
-	p1 = (t_u8 *)ptr1;
-	p2 = (t_u8 *)ptr2;
+	length = 0;
+	while (str[length])
+		++length;
+	result = (char *)malloc(length + 1);
 	i = 0;
-	while (i < n)
+	j = length - 1;
+	while (i < length)
 	{
-		if (p1[i] != p2[i])
-			return (p1[i] - p2[i]);
+		result[i] = str[j];
 		++i;
+		--j;
 	}
-	return (0);
+	result[i] = '\0';
+	return (result);
 }
 /*
-**	if (ptr1 == ptr2)
-**		return (0);
-**	return (ptr1 == NULL ? 0 : ptr1[0]) -
-**		   (ptr2 == NULL ? 0 : ptr2[0]);
+**	if (str == NULL)
+**		return (NULL);
 */

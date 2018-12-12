@@ -51,7 +51,6 @@ $(NAME): $(OBJS) $(HDRS)
 	@printf $(GREEN)"OK!"$(RESET)"\n"
 
 $(OBJDIR)%.o : $(SRCDIR)%.c $(HDRS)
-	@mkdir -p $(OBJDIR)
 	@printf "Compiling file: "$@" -> "
 	@$(CC) $(CFLAGS) -c $< -o $@ -MF $(OBJDIR)$*.d
 	@printf $(GREEN)"OK!"$(RESET)"\n"

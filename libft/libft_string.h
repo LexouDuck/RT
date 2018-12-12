@@ -94,25 +94,6 @@ char	*ft_strncat(char *dest, char const *src, size_t n);
 size_t	ft_strlcat(char *dest, char const *src, size_t size);
 
 /*
-**	Returns a new null-terminated string which is the concatenation
-**	of the strings pointed to by 'a_str1' and 'a_str2',
-**	freeing the two string buffers 'str1' and 'str2' when finished.
-*/
-char	*ft_strmerge(char **a_str1, char **a_str2);
-
-/*
-**	Returns 'dest', result of the concatenation of 'dest' with 'src'.
-**	The previous string buffer 'dest' is freed in the process.
-*/
-char	*ft_strappend(char **dest, char const *src);
-
-/*
-**	Returns 'dest', result of the concatenation of 'src' with 'dest'.
-**	The previous string buffer 'dest' is freed in the process.
-*/
-char	*ft_strprepend(char const *src, char **dest);
-
-/*
 ** ************************************************************************** *|
 **                                String Checks                               *|
 ** ************************************************************************** *|
@@ -139,30 +120,30 @@ int		ft_strncmp(char const *str1, char const *str2, size_t n);
 /*
 **	Returns 1 if the two given strings match, and 0 otherwise.
 */
-int		ft_strequ(char const *str1, char const *str2);
+t_bool	ft_strequ(char const *str1, char const *str2);
 
 /*
 **	Returns 1 if the first 'n' chars of the two given strings match,
 **	and returns 0 if this is not the case.
 */
-int		ft_strnequ(char const *str1, char const *str2, size_t n);
+t_bool	ft_strnequ(char const *str1, char const *str2, size_t n);
 
 /*
 **	Returns 1 if the given string 'str' contains at least one occurence
 **	of any character found inside 'charset', returns 0 otherwise.
 */
-t_bool	ft_strcontains(char const *str, char const *charset);
+t_bool	ft_strhas(char const *str, char const *charset);
 
 /*
 **	Returns 1 if all the characters inside the given string 'str'
 **	are contained within the string 'charset', returns 0 otherwise.
 */
-t_bool	ft_strcontainsonly(char const *str, char const *charset);
+t_bool	ft_strhasonly(char const *str, char const *charset);
 
 /*
 **	Returns the amount of occurences of char 'c' in the given string 'str'.
 */
-size_t	ft_strcount_char(char const *str, int c);
+size_t	ft_strcount_char(char const *str, char c);
 
 /*
 **	Returns the amount of occurences of 'query' in the given string 'str'.
@@ -179,7 +160,7 @@ size_t	ft_strcount_str(char const *str, char const *query);
 **	Returns a pointer to the first occurence of the given character 'c'
 **	in the given string 'str' (or NULL if nothing matched).
 */
-char	*ft_strchr(char const *str, int c);
+char	*ft_strchr(char const *str, char c);
 
 /*
 **	Returns the first occurence of the string 'query' inside
@@ -191,7 +172,7 @@ char	*ft_strstr(char const *str, char const *query);
 **	Returns a pointer to the last occurence of the given character 'c'
 **	in the given string 'str' (or NULL if nothing matched).
 */
-char	*ft_strrchr(char const *str, int c);
+char	*ft_strrchr(char const *str, char c);
 
 /*
 **	Returns the last occurence of the string 'query' inside
@@ -204,7 +185,7 @@ char	*ft_strrstr(char const *str, char const *query);
 **	in the given string 'str' (or NULL if nothing matched),
 **	searching only the first 'n' characters of 'str'.
 */
-char	*ft_strnchr(char const *str, int c, size_t n);
+char	*ft_strnchr(char const *str, char c, size_t n);
 
 /*
 **	Returns the first occurence of the string 'query' inside
@@ -214,30 +195,17 @@ char	*ft_strnchr(char const *str, int c, size_t n);
 char	*ft_strnstr(char const *str, char const *query, size_t n);
 
 /*
-**	Returns a new null-terminated string which is a copy of 'str', in which
-**	all non-printable characters found in 'str' are made into printable
-**	ANSI-C '\xHH' escape sequences (where "H"s are lowercase hex digits).
-*/
-char	*ft_strtoescape(char const *str);
-
-/*
-**	Returns a reallocated version of the given string 'dest', in which
-**	the string 'str' has been inserted at offset 'index'.
-**	The previous string buffer 'dest' is freed in the process.
-*/
-char	*ft_strinsert(char **dest, char const *src, size_t index);
-
-/*
 **	Returns a new null-terminated string which is a copy of 'str',
 **	in which all occurences of the string 'query' have been removed.
 */
 char	*ft_strremove(char const *str, char const *query);
 
 /*
-**	Returns a new null-terminated string which is a copy of 'str',
-**	in which 'length' characters starting at 'index' have been removed.
+**	Returns a new null-terminated string which is a copy of 'str', in which
+**	all non-printable characters found in 'str' are made into printable
+**	ANSI-C '\xHH' escape sequences (where "H"s are uppercase hex digits).
 */
-char	*ft_strremovesub(char const *str, size_t index, size_t length);
+char	*ft_strtoescape(char const *str);
 
 /*
 **	Returns a new null-terminated string which is a copy of 'str',
@@ -272,9 +240,9 @@ char	*ft_strrep_string(char const *str,
 
 /*
 **	Returns a new string from 'str' in which all leading and trailing
-**	whitespace characters (' ', '\n', '\t') have been removed.
+**	whitespace characters (' ', \n, \t,  \r, \v and \f) have been removed.
 */
-char	*ft_strtrim(char const *str);
+char	*ft_strtrim(char const *str, char const *charset);
 
 /*
 **	Returns a new string from 'str' in which all leading
@@ -322,16 +290,23 @@ char	*ft_strpad_r(char const *str, char c, size_t length);
 char	*ft_strrev(char const *str);
 
 /*
-**	Returns a new null-terminated string which is a subsection of 'str',
-**	starting at char index 'start' and copying 'length' characters.
-*/
-char	*ft_strsub(char const *str, size_t start, size_t length);
-
-/*
 **	Returns a new null-terminated string which is the result of
 **	the concatenation of the two given strings 'str1' and 'str2'.
 */
 char	*ft_strjoin(char const *str1, char const *str2);
+
+/*
+**	Returns a reallocated version of the given string 'dest', in which
+**	the string 'str' has been inserted at the index 'offset'.
+**	The previous string buffer 'dest' is freed in the process.
+*/
+char	*ft_strinsert(char **dest, char const *src, size_t offset);
+
+/*
+**	Returns a new null-terminated string which is a subsection of 'str',
+**	starting at char index 'offset' and copying 'n' characters.
+*/
+char	*ft_strsub(char const *str, size_t offset, size_t n);
 
 /*
 **	Returns a string array made up of substrings of 'str', where each element
@@ -349,7 +324,7 @@ void	ft_striter(char *str, void (*f)(char *));
 **	Iterates upon each character of the given string 'str',
 **	applying the function 'f' to each of its chars (with index information).
 */
-void	ft_striteri(char *str, void (*f)(unsigned int, char *));
+void	ft_striteri(char *str, void (*f)(size_t, char *));
 
 /*
 **	Creates a new null-terminated string by iterating upon the string 'str',
@@ -361,6 +336,6 @@ char	*ft_strmap(char const *str, char (*f)(char));
 **	Creates a new null-terminated string by iterating upon the string 'str',
 **	applying the function 'f' to each of its chars (with index information).
 */
-char	*ft_strmapi(char const *str, char (*f)(unsigned int, char));
+char	*ft_strmapi(char const *str, char (*f)(size_t, char));
 
 #endif

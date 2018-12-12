@@ -14,15 +14,15 @@
 
 void	*ft_memdup(const void *ptr, size_t n)
 {
-	char	*result;
-	char	*source;
+	t_u8	*result;
+	t_u8	*source;
 	size_t	i;
 
 	if (ptr == NULL)
 		return (NULL);
-	if (!(result = (char *)malloc(n)))
+	if (!(result = (t_u8 *)malloc(n)))
 		return (NULL);
-	source = (char *)ptr;
+	source = (t_u8 *)ptr;
 	i = 0;
 	while (i < n)
 	{

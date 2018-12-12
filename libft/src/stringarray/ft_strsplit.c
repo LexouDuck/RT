@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_strsplit.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,24 +11,63 @@
 /* ************************************************************************** */
 
 #include "../../libft_string.h"
+#include "../../libft_stringarray.h"
 
-char	*ft_strdup(char const *str)
+static int	ft_strsplit_get_count(char const *str, char c)
 {
-	char	*result;
+	int		result;
+	t_bool	separator;
 	size_t	i;
 
-	i = 0;
-	while (str[i])
-		++i;
-	if (!(result = (char *)malloc(i + 1)))
-		return (NULL);
+	separator = 1;
+	result = 0;
 	i = 0;
 	while (str[i])
 	{
-		result[i] = str[i];
+		while (str[i] && str[i] == c)
+		{
+			separator = TRUE;
+			++i;
+		}
+		if (str[i])
+		{
+			if (separator)
+				++result;
+		}
+		else
+			break ;
+		separator = FALSE;
 		++i;
 	}
-	result[i] = '\0';
+	return (result);
+}
+
+char		**ft_strsplit(char const *str, char c)
+{
+	char	**result;
+	size_t	offset;
+	size_t	length;
+	int		count;
+	int		i;
+
+	count = ft_strsplit_get_count(str, c);
+	if (!(result = (char **)malloc((count + 1) * sizeof(char *))))
+		return (NULL);
+	offset = 0;
+	length = 0;
+	i = 0;
+	while (i < count)
+	{
+		offset += length;
+		while (str[offset] && str[offset] == c)
+			++offset;
+		length = 0;
+		while (str[offset + length] && str[offset + length] != c)
+			++length;
+		if (length > 0)
+			result[i++] = ft_strsub(str, offset, length);
+	}
+	result[count] = NULL;
 	return (result);
 }
 /*

@@ -14,12 +14,12 @@
 
 void	*ft_memcpy(void *dest, void const *src, size_t n)
 {
-	char	*result;
-	char	*source;
+	t_u8	*result;
+	t_u8	*source;
 	size_t	i;
 
-	result = (char *)dest;
-	source = (char *)src;
+	result = (t_u8 *)dest;
+	source = (t_u8 *)src;
 	i = 0;
 	while (i < n)
 	{
@@ -35,21 +35,20 @@ void	*ft_memcpy(void *dest, void const *src, size_t n)
 **		return (dest);
 */
 
-void	*ft_memccpy(void *dest, void const *src, int byte, size_t n)
+void	*ft_memccpy(void *dest, void const *src, t_u8 byte, size_t n)
 {
-	char	*result;
-	char	*source;
-	char	c;
+	t_u8	*result;
+	t_u8	*source;
 	size_t	i;
 
-	result = (char *)dest;
-	source = (char *)src;
-	c = (char)byte;
+	byte &= 0xFF;
+	result = (t_u8 *)dest;
+	source = (t_u8 *)src;
 	i = 0;
 	while (i < n)
 	{
 		result[i] = source[i];
-		if (result[i] == c)
+		if (result[i] == byte)
 			return (result + i + 1);
 		++i;
 	}

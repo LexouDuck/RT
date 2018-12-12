@@ -34,10 +34,10 @@
 void	*ft_memalloc(size_t size);
 
 /*
-**	Sets 'n' bytes of memory with 'byte' (taking only the first 8 bits
-**	of the 'byte' int argument), starting at 'ptr'.
+**	Sets 'n' bytes of memory with the given 8-bit value 'byte' (taking only the
+**	first 8 bits of this value and writing it byte-per-byte), starting at 'ptr'.
 */
-void	ft_memset(void *ptr, int byte, size_t n);
+void	ft_memset(void *ptr, t_u8 byte, size_t n);
 
 /*
 **	Sets 'n' bytes of memory to 0, starting at 'ptr'. (same as bzero)
@@ -59,7 +59,7 @@ void	*ft_memcpy(void *dest, void const *src, size_t n);
 **	stopping after the first occurence of a byte equal to 'byte',
 **	and returns a pointer to ('byte' + 1) in 'dest', or NULL.
 */
-void	*ft_memccpy(void *dest, void const *src, int byte, size_t n);
+void	*ft_memccpy(void *dest, void const *src, t_u8 byte, size_t n);
 
 /*
 **	Reads 'n' bytes of memory from 'src', and then writes
@@ -86,7 +86,7 @@ void	*ft_memdup(void const *ptr, size_t n);
 **	(or NULL if no byte was a match), starting the search at 'ptr'
 **	and searching 'n' bytes of memory.
 */
-void	*ft_memchr(void const *ptr, int byte, size_t n);
+void	*ft_memchr(void const *ptr, t_u8 byte, size_t n);
 
 /*
 **	Compares 'n' bytes of memory at 'ptr1' and 'ptr2',
@@ -107,7 +107,7 @@ int		ft_swap(void *ptr1, void *ptr2, size_t size);
 **	from 'value' at the given bit index 'bit', and bitshifting the resulting
 **	bits to the right by 'bit' bits (so as to center the value back to 0).
 */
-t_u64	ft_getbits(t_u64 value, int bit, int length);
+t_u64	ft_getbits(t_u64 value, t_u8 bit, t_u8 length);
 
 
 #endif

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcmp.c                                        :+:      :+:    :+:   */
+/*   ft_strequ.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,28 +10,46 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../libft_memory.h"
+#include "../../libft_string.h"
 
-int	ft_memcmp(void const *ptr1, void const *ptr2, size_t n)
+t_bool	ft_strequ(char const *str1, char const *str2)
 {
-	t_u8	*p1;
-	t_u8	*p2;
-	size_t	i;
+	size_t i;
 
-	p1 = (t_u8 *)ptr1;
-	p2 = (t_u8 *)ptr2;
-	i = 0;
-	while (i < n)
+	if (str1 == str2)
+		return (TRUE);
+	if (str1 && str2)
 	{
-		if (p1[i] != p2[i])
-			return (p1[i] - p2[i]);
-		++i;
+		i = 0;
+		while (str1[i] && str2[i])
+		{
+			if (str1[i] != str2[i])
+				return (FALSE);
+			++i;
+		}
+		return (str1[i] == str2[i]);
 	}
-	return (0);
+	return (FALSE);
 }
-/*
-**	if (ptr1 == ptr2)
-**		return (0);
-**	return (ptr1 == NULL ? 0 : ptr1[0]) -
-**		   (ptr2 == NULL ? 0 : ptr2[0]);
-*/
+
+t_bool	ft_strnequ(char const *str1, char const *str2, size_t n)
+{
+	size_t i;
+
+	if (str1 == str2 || n == 0)
+		return (TRUE);
+	if (str1 && str2)
+	{
+		i = 0;
+		while (str1[i] && str2[i])
+		{
+			if (str1[i] != str2[i])
+				return (FALSE);
+			++i;
+			if (i == n)
+				return (TRUE);
+		}
+		return (str1[i] == str2[i]);
+	}
+	return (FALSE);
+}

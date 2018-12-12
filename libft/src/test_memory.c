@@ -345,7 +345,7 @@ void	print_test_swap(void)
 void	test_swap(void)
 {
 printf("\n");
-//	| TEST FUNCTION  | TEST NAME          |CAN SEGV| EXPECTING | TEST ARGS
+/*	| TEST FUNCTION  | TEST NAME          |CAN SEGV| EXPECTING | TEST ARGS */
 //	TODO
 }
 
@@ -363,7 +363,7 @@ void	print_test_getbits(void)
 void	test_getbits(void)
 {
 printf("\n");
-//	| TEST FUNCTION  | TEST NAME          |CAN SEGV| EXPECTING | TEST ARGS
+/*	| TEST FUNCTION  | TEST NAME          |CAN SEGV| EXPECTING | TEST ARGS */
 //	TODO
 }
 
@@ -387,10 +387,8 @@ int		test_memory(void)
 	printf("---==={   LIBFT TEST: libft_memory   }===---\n");
 	printf("       '----------------------------'       \n");
 
-	test_memalloc();
 	test_memset();
-	test_memclr();
-	test_memdel();
+	test_memclr(); // = bzero
 	test_memcpy();
 	test_memccpy();
 	test_memmove();
@@ -399,6 +397,8 @@ int		test_memory(void)
 
 	print_nonstd();
 
+	test_memalloc();
+	test_memdel();
 	test_memdup();
 	test_swap();
 	test_getbits();

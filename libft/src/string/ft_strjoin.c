@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcmp.c                                        :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,28 +10,31 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../libft_memory.h"
+#include "../../libft_string.h"
 
-int	ft_memcmp(void const *ptr1, void const *ptr2, size_t n)
+char	*ft_strjoin(char const *str1, char const *str2)
 {
-	t_u8	*p1;
-	t_u8	*p2;
+	char	*result;
+	size_t	length1;
+	size_t	length2;
 	size_t	i;
 
-	p1 = (t_u8 *)ptr1;
-	p2 = (t_u8 *)ptr2;
+	length1 = ft_strlen(str1);
+	length2 = ft_strlen(str2);
+	if (!(result = (char *)malloc(length1 + length2 + 1)))
+		return (NULL);
 	i = 0;
-	while (i < n)
+	while (i < length1)
 	{
-		if (p1[i] != p2[i])
-			return (p1[i] - p2[i]);
+		result[i] = str1[i];
 		++i;
 	}
-	return (0);
+	i = 0;
+	while (i < length2)
+	{
+		result[length1 + i] = str2[i];
+		++i;
+	}
+	result[length1 + length2] = '\0';
+	return (result);
 }
-/*
-**	if (ptr1 == ptr2)
-**		return (0);
-**	return (ptr1 == NULL ? 0 : ptr1[0]) -
-**		   (ptr2 == NULL ? 0 : ptr2[0]);
-*/

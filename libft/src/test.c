@@ -46,8 +46,9 @@ int		main(int argc, char **argv)
 		printf("\n"C_YELLOW"All the tests with written in yellow 'can segfault' are NULL pointer tests."RESET"\n");
 
 		test_memory();
-		test_string();
 		test_char();
+		test_string();
+		test_stringarray();
 		test_convert();
 		test_math();
 		test_list();
@@ -60,20 +61,22 @@ int		main(int argc, char **argv)
 		{
 			if (argv[i][0] == '-')
 			{
-				if (str_equals(argv[i] + 1, "memory"))	test_memory();
-				if (str_equals(argv[i] + 1, "string"))	test_string();
-				if (str_equals(argv[i] + 1, "char"))	test_char();
-				if (str_equals(argv[i] + 1, "convert"))	test_convert();
-				if (str_equals(argv[i] + 1, "math"))	test_math();
-				if (str_equals(argv[i] + 1, "list"))	test_list();
-				if (str_equals(argv[i] + 1, "io"))		test_io();
+				if (str_equals(argv[i] + 1, "memory"))		test_memory();
+				if (str_equals(argv[i] + 1, "char"))		test_char();
+				if (str_equals(argv[i] + 1, "string"))		test_string();
+				if (str_equals(argv[i] + 1, "stringarray"))	test_stringarray();
+				if (str_equals(argv[i] + 1, "convert"))		test_convert();
+				if (str_equals(argv[i] + 1, "math"))		test_math();
+				if (str_equals(argv[i] + 1, "list"))		test_list();
+				if (str_equals(argv[i] + 1, "io"))			test_io();
 			}
 			else
 			{
 				printf("libft test: Invalid argument(s), use one of the following:\n");
 				printf("\t-memory\n");
-				printf("\t-string\n");
 				printf("\t-char\n");
+				printf("\t-string\n");
+				printf("\t-stringarray\n");
 				printf("\t-convert\n");
 				printf("\t-math\n");
 				printf("\t-list\n");

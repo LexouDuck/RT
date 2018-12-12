@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcmp.c                                        :+:      :+:    :+:   */
+/*   ft_strcount.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,28 +10,54 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../libft_memory.h"
+#include "../../libft_string.h"
 
-int	ft_memcmp(void const *ptr1, void const *ptr2, size_t n)
+size_t	ft_strcount_char(char const *str, char c)
 {
-	t_u8	*p1;
-	t_u8	*p2;
+	size_t	result;
 	size_t	i;
 
-	p1 = (t_u8 *)ptr1;
-	p2 = (t_u8 *)ptr2;
+	result = 0;
 	i = 0;
-	while (i < n)
+	while (str[i])
 	{
-		if (p1[i] != p2[i])
-			return (p1[i] - p2[i]);
+		if (str[i] == c)
+			++result;
 		++i;
 	}
-	return (0);
+	return (result);
 }
 /*
-**	if (ptr1 == ptr2)
+**	if (str == NULL)
 **		return (0);
-**	return (ptr1 == NULL ? 0 : ptr1[0]) -
-**		   (ptr2 == NULL ? 0 : ptr2[0]);
+*/
+
+size_t	ft_strcount_str(char const *str, char const *query)
+{
+	size_t	result;
+	size_t	length;
+	size_t	i;
+	size_t	j;
+
+	result = 0;
+	length = 0;
+	while (query[length])
+		++length;
+	if (length == 0)
+		return (0);
+	i = 0;
+	while (str[i])
+	{
+		j = 0;
+		while (str[i + j] == query[j])
+			++j;
+		if (j == length)
+			++result;
+		++i;
+	}
+	return (result);
+}
+/*
+**	if (str == NULL || query == NULL)
+**		return (0);
 */

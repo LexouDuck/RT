@@ -1,0 +1,99 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strpad.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
+/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../libft_string.h"
+
+char		*ft_strpad(char const *str, char c, size_t n)
+{
+	char	*result;
+	size_t	offset;
+	size_t	length;
+	size_t	i;
+
+	if (!(result = (char *)malloc(n + 1)))
+		return (NULL);
+	i = 0;
+	while (i < n)
+	{
+		result[i] = c;
+		++i;
+	}
+	length = 0;
+	while (str[length])
+		++length;
+	offset = (n - length) / 2;
+	i = 0;
+	while (str[i])
+	{
+		result[offset + i] = str[i];
+		++i;
+	}
+	return (result);
+}
+
+char	*ft_strpad_l(char const *str, char c, size_t n)
+{
+	char	*result;
+	size_t	offset;
+	size_t	length;
+	size_t	i;
+
+	if (!(result = (char *)malloc(n + 1)))
+		return (NULL);
+	length = 0;
+	while (str[length])
+		++length;
+	offset = n - length;
+	i = 0;
+	while (i < (size_t)offset)
+	{
+		result[i] = c;
+		++i;
+	}
+	while (i < n)
+	{
+		result[i] = str[i - offset];
+		++i;
+	}
+	result[n] = '\0';
+	return (result);
+}
+/*
+**	if (str == NULL)
+**		return (NULL);
+*/
+
+char	*ft_strpad_r(char const *str, char c, size_t n)
+{
+	char	*result;
+	size_t	i;
+
+	if (!(result = (char *)malloc(n + 1)))
+		return (NULL);
+	i = 0;
+	while (str[i] && i < n)
+	{
+		result[i] = str[i];
+		++i;
+	}
+	while (i < n)
+	{
+		result[i] = c;
+		++i;
+	}
+	result[n] = '\0';
+	return (result);
+}
+/*
+**	if (str == NULL)
+**		return (NULL);
+*/

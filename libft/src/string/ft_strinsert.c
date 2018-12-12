@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcmp.c                                        :+:      :+:    :+:   */
+/*   ft_strinsert.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,28 +10,34 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../libft_memory.h"
+#include "../../libft_string.h"
 
-int	ft_memcmp(void const *ptr1, void const *ptr2, size_t n)
+char	*ft_strinsert(char **dest, char const *src, size_t offset)
 {
-	t_u8	*p1;
-	t_u8	*p2;
+	char	*result;
+	size_t	len_dst;
+	size_t	len_src;
 	size_t	i;
 
-	p1 = (t_u8 *)ptr1;
-	p2 = (t_u8 *)ptr2;
-	i = 0;
-	while (i < n)
-	{
-		if (p1[i] != p2[i])
-			return (p1[i] - p2[i]);
-		++i;
-	}
-	return (0);
+	len_dst = ft_strlen(dest);
+	len_src = ft_strlen(src);
+	if (!(result = (char *)malloc(len_dst + len_src + 1)))
+		return (NULL);
+	i = -1;
+	while (++i < offset)
+		result[i] = dest[i];
+	--i;
+	while (++i < len_src)
+		result[i] = src[i - offset];
+	--i;
+	while (++i < len_dst)
+		result[i] = dest[i - src_len];
+	result[i] = '\0';
+	free(*dest);
+	*dest = NULL;
+	return (result);
 }
 /*
-**	if (ptr1 == ptr2)
-**		return (0);
-**	return (ptr1 == NULL ? 0 : ptr1[0]) -
-**		   (ptr2 == NULL ? 0 : ptr2[0]);
+**	if (dest == NULL || src == NULL)
+**		return (NULL);
 */

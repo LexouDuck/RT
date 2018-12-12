@@ -12,15 +12,18 @@
 
 #include "../../libft_memory.h"
 
-void	*ft_memchr(void const *ptr, int byte, size_t n)
+void	*ft_memchr(void const *ptr, t_u8 byte, size_t n)
 {
+	t_u8	*result;
 	size_t	i;
 
+	byte &= 0xFF;
+	result = (t_u8 *)ptr;
 	i = 0;
 	while (i < n)
 	{
-		if (((t_u8 *)ptr)[i] == (t_u8)byte)
-			return ((t_u8 *)ptr + i);
+		if (result[i] == byte)
+			return (result + i);
 		++i;
 	}
 	return (NULL);

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcmp.c                                        :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,28 +10,67 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../libft_memory.h"
+#include "../../libft_string.h"
 
-int	ft_memcmp(void const *ptr1, void const *ptr2, size_t n)
+char	*ft_strchr(char const *str, char c)
 {
-	t_u8	*p1;
-	t_u8	*p2;
 	size_t	i;
 
-	p1 = (t_u8 *)ptr1;
-	p2 = (t_u8 *)ptr2;
+	i = 0;
+	while (1)
+	{
+		if (str[i] == c)
+			return ((char *)str + i);
+		if (str[i] == '\0')
+			break ;
+		++i;
+	}
+	return (NULL);
+}
+/*
+**	if (str == NULL)
+**		return (NULL);
+*/
+
+char	*ft_strrchr(char const *str, char c)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i])
+		++i;
+	if (c == '\0')
+		return ((char *)(str + i));
+	else if (i == 0)
+		return (NULL);
+	while (i--)
+	{
+		if (str[i] == c)
+			return ((char *)str + i);
+	}
+	return (NULL);
+}
+/*
+**	if (str == NULL)
+**		return (NULL);
+*/
+
+char	*ft_strnchr(char const *str, char c, size_t n)
+{
+	size_t	i;
+
 	i = 0;
 	while (i < n)
 	{
-		if (p1[i] != p2[i])
-			return (p1[i] - p2[i]);
+		if (str[i] == c)
+			return ((char *)str + i);
+		if (str[i] == '\0')
+			break ;
 		++i;
 	}
-	return (0);
+	return (NULL);
 }
 /*
-**	if (ptr1 == ptr2)
-**		return (0);
-**	return (ptr1 == NULL ? 0 : ptr1[0]) -
-**		   (ptr2 == NULL ? 0 : ptr2[0]);
+**	if (str == NULL)
+**		return (NULL);
 */

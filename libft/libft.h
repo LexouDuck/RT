@@ -84,15 +84,15 @@
 **	convention, to better reflect the amount of bits used by each type.
 **	(and also to avoid having to type 'unsigned' all the time)
 */
-typedef unsigned char	t_u8;
-typedef unsigned short	t_u16;
-typedef unsigned int	t_u32;
-typedef	unsigned long	t_u64;
+typedef uint_fast8_t	t_u8;
+typedef uint_fast16_t	t_u16;
+typedef uint_fast32_t	t_u32;
+typedef	uint_fast64_t	t_u64;
 
-typedef char			t_s8;
-typedef short			t_s16;
-typedef int				t_s32;
-typedef	long			t_s64;
+typedef int_fast8_t		t_s8;
+typedef int_fast16_t	t_s16;
+typedef int_fast32_t	t_s32;
+typedef	int_fast64_t	t_s64;
 
 typedef float			t_f32;
 typedef double			t_f64;

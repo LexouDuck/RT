@@ -12,12 +12,13 @@
 
 #include "../../libft_memory.h"
 
-void	ft_memset(void *ptr, int byte, size_t n)
+void	ft_memset(void *ptr, t_u8 byte, size_t n)
 {
-	char	*result;
+	t_u8	*result;
 	size_t	i;
 
-	result = (char *)ptr;
+	byte &= 0xFF;
+	result = (t_u8 *)ptr;
 	i = 0;
 	while (i < n)
 	{
@@ -32,10 +33,10 @@ void	ft_memset(void *ptr, int byte, size_t n)
 
 void	ft_memclr(void *ptr, size_t n)
 {
-	char	*result;
+	t_u8	*result;
 	size_t	i;
 
-	result = (char *)ptr;
+	result = (t_u8 *)ptr;
 	i = 0;
 	while (i < n)
 	{

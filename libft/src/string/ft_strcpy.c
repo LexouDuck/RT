@@ -34,7 +34,7 @@ char	*ft_strcpy(char *dest, char const *src)
 
 char	*ft_strncpy(char *dest, char const *src, size_t n)
 {
-	char *str;
+	char	*str;
 
 	str = dest;
 	while (n > 0 && *src)
@@ -58,7 +58,7 @@ char	*ft_strncpy(char *dest, char const *src, size_t n)
 
 size_t	ft_strlcpy(char *dest, char const *src, size_t size)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (i < size - 1 && src[i])

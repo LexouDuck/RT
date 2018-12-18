@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/04 09:10:13 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/04 09:10:26 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/12/18 16:07:30 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,10 @@ void				r_rt_f_setup_light(t_control *ctrl, int fd)
 
 void				r_rt_f_set_obj(t_control *ctrl, int fd, t_objtype type)
 {
+	t_material	material;
+	char		*line;
+	t_s8		status;
+
 	r_rt_f_read_vec3_line(ctrl->objlst[ctrl->objlst_len].pos, fd);
 	r_rt_f_read_vec3_line(ctrl->objlst[ctrl->objlst_len].scl, fd);
 	r_rt_f_read_vec3_line(ctrl->objlst[ctrl->objlst_len].rot, fd);
@@ -73,7 +77,13 @@ void				r_rt_f_set_obj(t_control *ctrl, int fd, t_objtype type)
 	|| !ft_float_in_interval(ctrl->objlst[ctrl->objlst_len].albedo[1], 0., 1.)
 	|| !ft_float_in_interval(ctrl->objlst[ctrl->objlst_len].albedo[2], 0., 1.))
 		exit_error("r_rt_f_set_obj: obj albedo should be in [0., 1.] ^ 3", 0);
-	build_obj(&(ctrl->objlst[ctrl->objlst_len]), type);
+	if ((status = get_next_line(fd, &line)) == ERR_RD)
+		exit_error("r_rt_f_set_obj: gnl: error reading line", errno);
+	else if (status == EOF_RD)
+		exit_error("r_rt_f_set_obj: EOF reached prematurely", 0);
+	material = ft_atoi(line);
+	ft_strdel(&line);
+	build_obj(&(ctrl->objlst[ctrl->objlst_len]), type, material);
 	++(ctrl->objlst_len);
 	if (ctrl->objlst_len > MAX_OBJ_NB)
 		exit_error("r_rt_f_set_obj: MAX_OBJ_NB exceeded", 0);

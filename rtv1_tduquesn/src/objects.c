@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 03:50:29 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/06 14:22:32 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/12/18 16:04:50 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,14 @@ static t_hnn_func		get_hnn_func(t_objtype const type)
 	return (res);
 }
 
-void					build_obj(t_object *obj, t_objtype type)
+void					build_obj(t_object *obj, t_objtype type,
+								t_material material)
 {
 	t_mat_3b3	rot;
 	t_mat_3b3	tmp;
 
 	obj->type = type;
+	obj->material = material;
 	obj->intersect = get_inter_func(type);
 	obj->get_hnn = get_hnn_func(type);
 	mat33_rot(rot, obj->rot[0], 0);

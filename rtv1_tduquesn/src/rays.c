@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/16 23:00:36 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/06 16:25:33 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/12/18 15:16:26 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_ray			ray_x_to_y(t_mat_4b4 const x_to_y,
 	mat44_app_vec3(result.pos, x_to_y, ray.pos);
 	mat33_app_vec(result.dir, linear_x_to_y, ray.dir);
 	result.t = ray.t;
+	result.depth = ray.depth;
 	return (result);
 }
 
@@ -63,6 +64,37 @@ t_bool			trace_ray_to_objs(t_control *ctrl, t_ray ray,
 	return (has_inter);
 }
 
+t_color			color_or_secondary_ray(t_control *ctrl,
+									t_ray const incident,
+									t_object *hit_obj)
+{
+	t_vec_3d	normal;
+	t_ray		reflect;
+	t_ray		res_objray;
+
+	if (hit_obj->material == mirror &&
+		(reflect.depth = incident.depth + 1) < MAX_RAY_DEPTH)
+	{
+//			return (get_color_from_fixed_objray(ctrl, *hit_obj, incident));
+//			return (MIRROR_DBG_COLOR);
+//			return (BLACK);
+		hit_obj->get_hnn(reflect.pos, normal, incident);
+		get_reflect(reflect.dir, incident.dir, normal);
+		vec3_scale(normal, APPROX, normal);
+		vec3_add(reflect.pos, reflect.pos, normal);
+		reflect.t = ctrl->render_dist;
+		reflect = ray_x_to_y(hit_obj->o_to_w, hit_obj->linear_o_to_w, reflect);
+	/*	if (*/trace_ray_to_objs(ctrl, reflect, hit_obj, &res_objray)/*)*/;
+			return (color_or_secondary_ray(ctrl, res_objray, hit_obj));
+	//	else
+	//		return (MIRROR_DBG_COLOR);
+	}
+//	if (hit_obj.material == transparent)
+
+	else
+		return (get_color_from_fixed_objray(ctrl, *hit_obj, incident));
+}
+
 /*
 ** Rays are defined in Cam Space then sent to World Space.
 **
@@ -89,12 +121,13 @@ void			cast_rays(t_control *ctrl)
 		{
 			vec3_cpy(ray.pos, ctrl->cam.world_pos);
 			ray.t = ctrl->render_dist;
+			ray.depth = 0;
 			vec3_set(ray.dir, j - REN_W / 2, i - REN_H / 2, fov_val);
 			mat44_app_vec3(ray.dir, ctrl->cam.c_to_w, ray.dir);
 			vec3_eucl_nrmlz(ray.dir, ray.dir);
 			if (trace_ray_to_objs(ctrl, ray, &hit_obj, &ray))
-				((t_u32 *)ctrl->img_data)[i * REN_W + j] =
-					get_color_from_fixed_objray(ctrl, hit_obj, ray);
+				((t_u32 *)ctrl->img_data)[i * REN_W + j] = 
+					color_or_secondary_ray(ctrl, ray, &hit_obj);
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 17:34:32 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/06 16:27:20 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/12/18 16:05:20 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 # define BLUE			0x0000FF
 # define WHITE			0xFFFFFF
 # define DBG_COLOR		0x5500BB
+# define MIRROR_DBG_COLOR 0x11BB33
 # define BG_COLOR		0x00BB88
 # define NO_INTER		0xFF000000
 
@@ -47,6 +48,7 @@
 # define MAX_LGT_NB		16
 # define MAX_OBJ_NB		32
 # define MAX_FILE_LN_NB	1000
+# define MAX_RAY_DEPTH	10
 
 typedef struct	s_point
 {
@@ -97,6 +99,7 @@ typedef struct	s_ray
 	t_vec_3d	pos;
 	t_vec_3d	dir;
 	t_float		t;
+	t_u8		depth;
 }				t_ray;
 
 /*
@@ -181,9 +184,17 @@ typedef enum	e_objtype
 typedef t_bool	(*t_inter_func)(t_ray *objray);
 typedef void	(*t_hnn_func)(t_vec_3d hp, t_vec_3d nml, t_ray const objr);
 
+typedef enum	e_material
+{
+	opaque,
+	mirror,
+	glass
+}				t_material;
+
 typedef struct	s_object
 {
 	t_objtype		type;
+	t_material		material;
 	t_vec_3d		pos;
 	t_vec_3d		scl;
 	t_vec_3d		rot;
@@ -287,7 +298,7 @@ void			cast_rays(t_control *ctrl);
 /*
 ** objects.c
 */
-void			build_obj(t_object *obj, t_objtype type);
+void			build_obj(t_object *obj, t_objtype type, t_material material);
 
 /*
 ** shader.c

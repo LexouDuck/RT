@@ -3,7 +3,7 @@ Je compte envoyer cela à la pédago:
 Bonjour, j'ai plusieurs questions concernant la possibilité de choisir notre propre norme:
 
 1) A partir de quand cela sera-t-il mis en place ?
-2) On se chauffe pour un RT assez dément (cross-platform Win/Lin/Mac, UX pédago, espaces non-eucliden formalisés en géométrie algébrique plutôt qu'algèbre linéaire, motion design, module pour générer des fractales de dimension n, OpenCL) qu'on puisse utiliser hors 42. On a besoin d'un peu plus de libertés du coup, mais on veut un truc sérieux et très propre. On a réfléchit et on s'est renseigné, on se demandait si la norme suivante convient: 
+2) On se chauffe pour un RT assez dément (cross-platform Win/Lin/Mac, SDL2 avec OpenCL, espaces non-eucliden formalisés en géométrie algébrique plutôt qu'algèbre linéaire, outils de key-framing d'interpolation pour faire du motion design, module pour générer des fractales de dimension n, UX pédagogique pour gérer ces options) qu'on puisse utiliser hors 42. On a besoin d'un peu plus de libertés du coup, mais on veut un truc sérieux et très propre. On a réfléchit et on s'est renseigné, on se demandait si la norme suivante convient: 
 
 
 

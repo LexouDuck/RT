@@ -35,16 +35,20 @@ char	*ft_strcpy(char *dest, char const *src)
 char	*ft_strncpy(char *dest, char const *src, size_t n)
 {
 	char	*str;
+	size_t	i;
 
 	str = dest;
-	while (n > 0 && *src)
+	i = 0;
+	while (n > 0 && src[i])
 	{
-		*str++ = *src++;
+		str[i] = src[i];
+		++i;
 		--n;
 	}
 	while (n > 0)
 	{
-		*str++ = '\0';
+		str[i] = '\0';
+		++i;
 		--n;
 	}
 	return (dest);

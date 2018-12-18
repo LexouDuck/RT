@@ -80,7 +80,7 @@ printf("\n");
 
 	print_nonstd();
 
-	test_strsplit(segstrls);
+//	test_strsplit(segstrls);
 
 printf("\n");
 

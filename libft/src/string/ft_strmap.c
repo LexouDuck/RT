@@ -36,7 +36,7 @@ char	*ft_strmap(char const *str, char (*f)(char))
 **	if (str == NULL || f == NULL)
 **		return (NULL);
 */
-
+#include <unistd.h>
 char	*ft_strmapi(char const *str, char (*f)(size_t, char))
 {
 	char	*result;

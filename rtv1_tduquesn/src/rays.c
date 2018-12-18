@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/16 23:00:36 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/12/18 15:16:26 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/12/18 18:09:35 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,41 @@ t_bool			trace_ray_to_objs(t_control *ctrl, t_ray ray,
 	return (has_inter);
 }
 
+/*
+** Formula for transparency transmitted ray T:
+**
+** T = Tn + Tt
+**	 = [n1/n2 * (I - dot(I, N) N)] + [-N * sqrt(1 - (n1/n2)^2 * (1 - quadnorm(I, Ni)))]
+**
+** with n1 the refractive index for the incidence medium, n2 for refrac_ind of
+**		the transmission medium, N the hitpos normal, I the hitpos incidence
+**		vector.
+*/
+
+t_bool			get_transmit(t_vec_3d result, t_vec_3d const incident,
+								t_vec_3d normal, t_float const refrac)
+{
+	t_float		dot_i_n;
+	t_bool		incid_inside_obj;
+	t_float		refrac_ratio;
+	t_float		tmp;
+	t_vec_3d	transmit_n;
+
+	dot_i_n = vec3_dot(incident, normal);
+	incid_inside_obj = dot_i_n >= 0.;
+	if (incid_inside_obj)
+		vec3_scale(normal, -1., normal);
+	refrac_ratio = incid_inside_obj ? refrac : 1. / refrac;
+	if ((tmp = 1 - refrac_ratio * refrac_ratio * (1 - dot_i_n * dot_i_n)) < 0.)
+		return (FALSE);
+	vec3_scale(result, -dot_i_n, normal);
+	vec3_add(result, result, incident);
+	vec3_scale(result, refrac_ratio, result);
+	vec3_scale(transmit_n, -sqrt(tmp), normal);
+	vec3_add(result, result, transmit_n);
+	return (TRUE);
+}
+
 t_color			color_or_secondary_ray(t_control *ctrl,
 									t_ray const incident,
 									t_object *hit_obj)
@@ -89,10 +124,20 @@ t_color			color_or_secondary_ray(t_control *ctrl,
 	//	else
 	//		return (MIRROR_DBG_COLOR);
 	}
-//	if (hit_obj.material == transparent)
-
-	else
-		return (get_color_from_fixed_objray(ctrl, *hit_obj, incident));
+	if (hit_obj->material == glassy &&
+		(reflect.depth = incident.depth + 1) < MAX_RAY_DEPTH)
+	{//for now we calll "reflect" the "transmitted" ray
+		hit_obj->get_hnn(reflect.pos, normal, incident);
+		if (get_transmit(reflect.dir, incident.dir, normal, hit_obj->refrac)) //normal should be altered to the right direction here
+		{
+			vec3_scale(normal, -APPROX, normal);
+			vec3_add(reflect.pos, reflect.pos, normal);
+			reflect.t = ctrl->render_dist;
+			trace_ray_to_objs(ctrl, reflect, hit_obj, &res_objray);
+			return (color_or_secondary_ray(ctrl, res_objray, hit_obj));
+		}
+	}
+	return (get_color_from_fixed_objray(ctrl, *hit_obj, incident));
 }
 
 /*

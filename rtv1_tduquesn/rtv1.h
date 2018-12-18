@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 17:34:32 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/12/18 16:05:20 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/12/18 17:11:39 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +188,7 @@ typedef enum	e_material
 {
 	opaque,
 	mirror,
-	glass
+	glassy
 }				t_material;
 
 typedef struct	s_object
@@ -200,6 +200,7 @@ typedef struct	s_object
 	t_vec_3d		rot;
 	t_vec_3d		albedo;
 	t_vec_3d		specul;
+	t_float			refrac;
 	t_mat_4b4		o_to_w;
 	t_mat_4b4		w_to_o;
 	t_mat_3b3		linear_o_to_w;

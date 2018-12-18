@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   convert/ft_s_to_str.c                              :+:      :+:    :+:   */
+/*   convert/ft_u_to_str.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,85 +12,82 @@
 
 #include "../../libft_convert.h"
 
-char	*ft_s8_to_str(t_s8 number)
+char	*ft_u8_to_str(t_u8 number)
 {
 	char	*result;
 	t_u8	digits[MAXDIGIT_8b];
 	t_u8	i;
-	t_s16	n;
+	t_u16	n;
 
 	n = number;
-	if (number < 0)
-		n = -n;
 	i = 0;
 	while (n > 0)
 	{
 		digits[i++] = n % 10;
 		n /= 10;
 	}
-	if (!(result = (char *)malloc(i + 2)))
+	if (i == 0)
+		digits[i++] = 0;
+	if (!(result = (char *)malloc(i + 1)))
 		return (NULL);
-	result[0] = (number == 0) ? '0' : '-';
-	n = 1;
+	n = 0;
 	while (i--)
 		result[n++] = '0' + digits[i];
 	result[n] = '\0';
-	return (number <= 0 ? result : result + 1);
+	return (result);
 }
 
-char	*ft_s16_to_str(t_s16 number)
+char	*ft_u16_to_str(t_u16 number)
 {
 	char	*result;
 	t_u8	digits[MAXDIGIT_16b];
 	t_u8	i;
-	t_s32	n;
+	t_u32	n;
 
 	n = number;
-	if (number < 0)
-		n = -n;
 	i = 0;
 	while (n > 0)
 	{
 		digits[i++] = n % 10;
 		n /= 10;
 	}
-	if (!(result = (char *)malloc(i + 2)))
+	if (i == 0)
+		digits[i++] = 0;
+	if (!(result = (char *)malloc(i + 1)))
 		return (NULL);
-	result[0] = (number == 0) ? '0' : '-';
-	n = 1;
+	n = 0;
 	while (i--)
 		result[n++] = '0' + digits[i];
 	result[n] = '\0';
-	return (number <= 0 ? result : result + 1);
+	return (result);
 }
 
-char	*ft_s32_to_str(t_s32 number)
+char	*ft_u32_to_str(t_u32 number)
 {
 	char	*result;
 	t_u8	digits[MAXDIGIT_32b];
 	t_u8	i;
-	t_s64	n;
+	t_u64	n;
 
 	n = number;
-	if (number < 0)
-		n = -n;
 	i = 0;
 	while (n > 0)
 	{
 		digits[i++] = n % 10;
 		n /= 10;
 	}
-	if (!(result = (char *)malloc(i + 2)))
+	if (i == 0)
+		digits[i++] = 0;
+	if (!(result = (char *)malloc(i + 1)))
 		return (NULL);
-	result[0] = (number == 0) ? '0' : '-';
-	n = 1;
+	n = 0;
 	while (i--)
 		result[n++] = '0' + digits[i];
 	result[n] = '\0';
-	return (number <= 0 ? result : result + 1);
+	return (result);
 }
 
-char	*ft_s64_to_str(t_s64 number)
+char	*ft_u64_to_str(t_u64 number)
 {
 	char	*result;
 	t_u8	digits[MAXDIGIT_64b];
@@ -98,20 +95,19 @@ char	*ft_s64_to_str(t_s64 number)
 	t_u64	n;
 
 	n = number;
-	if (number < 0)
-		n = -n;
 	i = 0;
 	while (n > 0)
 	{
 		digits[i++] = n % 10;
 		n /= 10;
 	}
-	if (!(result = (char *)malloc(i + 2)))
+	if (i == 0)
+		digits[i++] = 0;
+	if (!(result = (char *)malloc(i + 1)))
 		return (NULL);
-	result[0] = (number == 0) ? '0' : '-';
-	n = 1;
+	n = 0;
 	while (i--)
 		result[n++] = '0' + digits[i];
 	result[n] = '\0';
-	return (number <= 0 ? result : result + 1);
+	return (result);
 }

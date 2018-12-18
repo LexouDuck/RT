@@ -62,51 +62,6 @@ char *print_memory(void const *ptr, size_t length)
 	return (result);
 }
 
-char		*int_to_string(int number)
-{
-	char	*result;
-	char	digits[12];
-	size_t	length = 0;
-	size_t	i;
-	size_t	j;
-	long	n;
-
-	if (number == 0)
-	{
-		if (!(result = (char *)malloc(2)))
-			return (NULL);
-		result[0] = '0';
-		result[1] = '\0';
-	}
-	else
-	{
-		i = 0;
-		n = (number < 0) ? (long)number * -1 : (long)number;
-		while (n > 0)
-		{
-			digits[i++] = (n % 10) + '0';
-			n /= 10;
-		}
-		if (number < 0)
-			digits[i++] = '-';
-		digits[i] = '\0';
-		while (digits[length])
-			++length;
-		if (!(result = (char *)malloc(length + 1)))
-			return (NULL);
-		i = 0;
-		j = length - 1;
-		while (i < length)
-		{
-			result[i] = digits[j];
-			++i;
-			j--;
-		}
-		result[i] = '\0';
-	}
-	return (result);
-}
-
 char	*str_padleft(char const *str, char c, size_t length)
 {
 	char	*result;
@@ -128,6 +83,49 @@ char	*str_padleft(char const *str, char c, size_t length)
 		++i;
 	}
 	result[length] = '\0';
+	return (result);
+}
+
+char*	str_to_escape(char const* str)
+{
+	unsigned char HI_nibble;
+	unsigned char LO_nibble;
+	char*	result;
+	size_t	index = 0;
+	size_t	i = 0;
+
+	if (!str || !(result = (char *)malloc(strlen(str) * 4)))
+		return (NULL);
+	while (str[index])
+	{
+		if (!isprint(str[index]))
+		{
+			result[i++] = '\\';
+			switch (str[index])
+			{
+				case 0x07: result[i++] =  'a'; break; // Alert (Beep, Bell) (added in C89)[1]
+				case 0x08: result[i++] =  'b'; break; // Backspace
+				case 0x0C: result[i++] =  'f'; break; // Formfeed
+				case 0x0A: result[i++] =  'n'; break; // Newline (Line Feed); see notes below
+				case 0x0D: result[i++] =  'r'; break; // Carriage Return
+				case 0x09: result[i++] =  't'; break; // Horizontal Tab
+				case 0x0B: result[i++] =  'v'; break; // Vertical Tab
+				case 0x5C: result[i++] = '\\'; break; // Backslash
+				case 0x27: result[i++] = '\''; break; // Single quotation mark
+				case 0x22: result[i++] = '\"'; break; // Double quotation mark
+				case 0x3F: result[i++] =  '?'; break; // Question mark (used to avoid trigraphs)
+				default: result[i++] = 'x'; // Hexadecimal char notation: \xFF
+					HI_nibble = (str[index] & 0xF0) >> 4;
+					LO_nibble = (str[index] & 0x0F);
+					result[i++] = (HI_nibble < 10) ? (HI_nibble + '0') : (HI_nibble - 10 + 'A');
+					result[i++] = (LO_nibble < 10) ? (LO_nibble + '0') : (LO_nibble - 10 + 'A');
+				break;
+			}
+		}
+		else result[i++] = str[index];
+		++index;
+	}
+	result[i] = '\0';
 	return (result);
 }
 
@@ -202,22 +200,71 @@ void		print_timer_result(t_timer* t, int compare)
 	else printf(" [libft:%lld.%.09ld]", (long long)t->time1.tv_sec, t->time1.tv_nsec);
 }
 
+char	*s_to_str(t_s64 number)
+{
+	char	*result;
+	t_u8	digits[MAXDIGIT_64b];
+	t_u8	i;
+	t_u64	n;
+
+	n = number;
+	if (number < 0)
+		n = -n;
+	i = 0;
+	while (n > 0)
+	{
+		digits[i++] = n % 10;
+		n /= 10;
+	}
+	if (!(result = (char *)malloc(i + 2)))
+		return (NULL);
+	result[0] = (number == 0) ? '0' : '-';
+	n = 1;
+	while (i--)
+		result[n++] = '0' + digits[i];
+	result[n] = '\0';
+	return (number <= 0 ? result : result + 1);
+}
+
+char	*u_to_str(t_u64 number)
+{
+	char	*result;
+	t_u8	digits[MAXDIGIT_64b];
+	t_u8	i;
+	t_u64	n;
+
+	n = number;
+	i = 0;
+	while (n > 0)
+	{
+		digits[i++] = n % 10;
+		n /= 10;
+	}
+	if (i == 0)
+		digits[i++] = 0;
+	if (!(result = (char *)malloc(i + 1)))
+		return (NULL);
+	n = 0;
+	while (i--)
+		result[n++] = '0' + digits[i];
+	result[n] = '\0';
+	return (result);
+}
+
 /*
 ** ************************************************************************** *|
 **                              Testing Functions                             *|
 ** ************************************************************************** *|
 */
 
-void	print_test_int(
+void	print_test(
 		char const *test_name,
 		char const *function,
-		t_u32 result,
-		t_u32 expect,
-		int can_segfault)
+		char const *result,
+		char const *expect,
+		int can_segfault,
+		int error)
 {
-	int error;
-	int result_segfault = can_segfault & (1 << 1);
-	int expect_segfault = can_segfault & (1 << 2);
 	if (test_name)
 	{
 		if (can_segfault & 1)
@@ -226,99 +273,7 @@ void	print_test_int(
 		printf(" -> ");
 	}
 	else printf(", ");
-	
-	if (result_segfault)
-	{
-		if (expect_segfault)
-			 error = FALSE;
-		else error = TRUE;
-	}
-	else if (expect_segfault)
-		 error = TRUE;
-	else error = (result == expect);
-
-	if (result == expect)
-	{
-		printf(C_GREEN"OK!"RESET);
-	}
-	else
-	{
-		printf(C_RED"ERROR\n");
-		if (function[0] == '_')
-		{
-			char *expected = str_padleft("Expected", ' ', strlen(function) + 2);
-			printf(">ft%s: %s\n>%s: %s"RESET,
-				function, (result_segfault) ? segstr : int_to_string(result),
-				expected, (expect_segfault) ? segstr : int_to_string(expect));
-			free(expected);
-		}
-		else printf(">ft_%s: %s\n>   %s: %s"RESET,
-				function, (result_segfault) ? segstr : int_to_string(result),
-				function, (expect_segfault) ? segstr : int_to_string(expect));
-	}
-}
-
-void	print_test_mem(
-		char const *test_name,
-		char const *function,
-		void const *result,
-		void const *expect,
-		size_t length,
-		int can_segfault)
-{
-	int error;
-	if (test_name)
-	{
-		if (can_segfault)
-			 printf("\n%s - "C_YELLOW"can segfault"RESET, test_name);
-		else printf("\n%s", test_name);
-		printf(" -> ");
-	}
-	else printf(", ");
-	error = (result && expect) ?
-		(memcmp(result, expect, length) != 0) :
-		(result != expect);
-	if (!error)
-	{
-		printf(C_GREEN"OK!"RESET);
-	}
-	else
-	{
-		printf(C_RED"ERROR\n");
-		if (function[0] == '_')
-		{
-			char *expected = str_padleft("Expected", ' ', strlen(function) + 2);
-			printf(">ft%s: {%s}\n>%s: {%s}"RESET,
-				function, print_memory(result, length),
-				expected, print_memory(expect, length));
-			free(expected);
-		}
-		else printf(">ft_%s: {%s}\n>   %s: {%s}"RESET,
-				function, print_memory(result, length),
-				function, print_memory(expect, length));
-	}
-}
-
-void	print_test_str(
-		char const *test_name,
-		char const *function,
-		char const *result,
-		char const *expect,
-		int can_segfault)
-{
-	if (test_name)
-	{
-		if (can_segfault)
-			 printf("\n%s - "C_YELLOW"can segfault"RESET, test_name);
-		else printf("\n%s", test_name);
-		printf(" -> ");
-	}
-	else printf(", ");
-	if (str_equals(result, expect))
-	{
-		printf(C_GREEN"OK!"RESET);
-	}
-	else
+	if (error)
 	{
 		if (str_equals(expect, "(n/a)"))
 			 printf(C_RED"TEST COULD NOT BE PERFORMED\n"RESET);
@@ -335,7 +290,297 @@ void	print_test_str(
 				function, result,
 				function, expect);
 	}
+	else printf(C_GREEN"OK!"RESET);
 }
+
+
+
+void	print_test_s8(
+		char const *test_name,
+		char const *function,
+		t_s8 result,
+		t_s8 expect,
+		int can_segfault)
+{
+	int error;
+	int result_segfault = can_segfault & (1 << 1);
+	int expect_segfault = can_segfault & (1 << 2);
+	
+	if (result_segfault)
+		error = (expect_segfault ? FALSE : TRUE);
+	else if (expect_segfault)
+		 error = TRUE;
+	else error = (result != expect);
+
+	print_test(test_name, function,
+		(result_segfault ? segstr : s_to_str(result)),
+		(expect_segfault ? segstr : s_to_str(expect)),
+		can_segfault,
+		error);
+}
+
+void	print_test_s16(
+		char const *test_name,
+		char const *function,
+		t_s16 result,
+		t_s16 expect,
+		int can_segfault)
+{
+	int error;
+	int result_segfault = can_segfault & (1 << 1);
+	int expect_segfault = can_segfault & (1 << 2);
+	
+	if (result_segfault)
+		error = (expect_segfault ? FALSE : TRUE);
+	else if (expect_segfault)
+		 error = TRUE;
+	else error = (result != expect);
+
+	print_test(test_name, function,
+		(result_segfault ? segstr : s_to_str(result)),
+		(expect_segfault ? segstr : s_to_str(expect)),
+		can_segfault,
+		error);
+}
+
+void	print_test_s32(
+		char const *test_name,
+		char const *function,
+		t_s32 result,
+		t_s32 expect,
+		int can_segfault)
+{
+	int error;
+	int result_segfault = can_segfault & (1 << 1);
+	int expect_segfault = can_segfault & (1 << 2);
+	
+	if (result_segfault)
+		error = (expect_segfault ? FALSE : TRUE);
+	else if (expect_segfault)
+		 error = TRUE;
+	else error = (result != expect);
+
+	print_test(test_name, function,
+		(result_segfault ? segstr : s_to_str(result)),
+		(expect_segfault ? segstr : s_to_str(expect)),
+		can_segfault,
+		error);
+}
+
+void	print_test_s64(
+		char const *test_name,
+		char const *function,
+		t_s64 result,
+		t_s64 expect,
+		int can_segfault)
+{
+	int error;
+	int result_segfault = can_segfault & (1 << 1);
+	int expect_segfault = can_segfault & (1 << 2);
+	
+	if (result_segfault)
+		error = (expect_segfault ? FALSE : TRUE);
+	else if (expect_segfault)
+		 error = TRUE;
+	else error = (result != expect);
+
+	print_test(test_name, function,
+		(result_segfault ? segstr : s_to_str(result)),
+		(expect_segfault ? segstr : s_to_str(expect)),
+		can_segfault,
+		error);
+}
+
+
+
+void	print_test_u8(
+		char const *test_name,
+		char const *function,
+		t_u8 result,
+		t_u8 expect,
+		int can_segfault)
+{
+	int error;
+	int result_segfault = can_segfault & (1 << 1);
+	int expect_segfault = can_segfault & (1 << 2);
+	
+	if (result_segfault)
+		error = (expect_segfault ? FALSE : TRUE);
+	else if (expect_segfault)
+		 error = TRUE;
+	else error = (result != expect);
+
+	print_test(test_name, function,
+		(result_segfault ? segstr : u_to_str(result)),
+		(expect_segfault ? segstr : u_to_str(expect)),
+		can_segfault,
+		error);
+}
+
+void	print_test_u16(
+		char const *test_name,
+		char const *function,
+		t_u16 result,
+		t_u16 expect,
+		int can_segfault)
+{
+	int error;
+	int result_segfault = can_segfault & (1 << 1);
+	int expect_segfault = can_segfault & (1 << 2);
+	
+	if (result_segfault)
+		error = (expect_segfault ? FALSE : TRUE);
+	else if (expect_segfault)
+		 error = TRUE;
+	else error = (result != expect);
+
+	print_test(test_name, function,
+		(result_segfault ? segstr : u_to_str(result)),
+		(expect_segfault ? segstr : u_to_str(expect)),
+		can_segfault,
+		error);
+}
+
+void	print_test_u32(
+		char const *test_name,
+		char const *function,
+		t_u32 result,
+		t_u32 expect,
+		int can_segfault)
+{
+	int error;
+	int result_segfault = can_segfault & (1 << 1);
+	int expect_segfault = can_segfault & (1 << 2);
+	
+	if (result_segfault)
+		error = (expect_segfault ? FALSE : TRUE);
+	else if (expect_segfault)
+		 error = TRUE;
+	else error = (result != expect);
+
+	print_test(test_name, function,
+		(result_segfault ? segstr : u_to_str(result)),
+		(expect_segfault ? segstr : u_to_str(expect)),
+		can_segfault,
+		error);
+}
+
+void	print_test_u64(
+		char const *test_name,
+		char const *function,
+		t_u64 result,
+		t_u64 expect,
+		int can_segfault)
+{
+	int error;
+	int result_segfault = can_segfault & (1 << 1);
+	int expect_segfault = can_segfault & (1 << 2);
+	
+	if (result_segfault)
+		error = (expect_segfault ? FALSE : TRUE);
+	else if (expect_segfault)
+		 error = TRUE;
+	else error = (result != expect);
+
+	print_test(test_name, function,
+		(result_segfault ? segstr : u_to_str(result)),
+		(expect_segfault ? segstr : u_to_str(expect)),
+		can_segfault,
+		error);
+}
+
+
+
+void	print_test_size(
+		char const *test_name,
+		char const *function,
+		size_t result,
+		size_t expect,
+		int can_segfault)
+{
+	int error;
+	int result_segfault = can_segfault & (1 << 1);
+	int expect_segfault = can_segfault & (1 << 2);
+	
+	if (result_segfault)
+		error = (expect_segfault ? FALSE : TRUE);
+	else if (expect_segfault)
+		 error = TRUE;
+	else error = (result != expect);
+
+	print_test(test_name, function,
+		(result_segfault ? segstr : u_to_str(result)),
+		(expect_segfault ? segstr : u_to_str(expect)),
+		can_segfault,
+		error);
+}
+
+
+
+void	print_test_bool(
+		char const *test_name,
+		char const *function,
+		t_bool result,
+		t_bool expect,
+		int can_segfault)
+{
+	int error;
+	int result_segfault = can_segfault & (1 << 1);
+	int expect_segfault = can_segfault & (1 << 2);
+	
+	if (result_segfault)
+		error = (expect_segfault ? FALSE : TRUE);
+	else if (expect_segfault)
+		 error = TRUE;
+	else error = (result != expect);
+
+	print_test(test_name, function,
+		(result_segfault ? segstr : u_to_str(result)),
+		(expect_segfault ? segstr : u_to_str(expect)),
+		can_segfault,
+		error);
+}
+
+
+
+void	print_test_mem(
+		char const *test_name,
+		char const *function,
+		void const *result,
+		void const *expect,
+		size_t length,
+		int can_segfault)
+{
+	int error;
+
+	error = (result && expect) ?
+		(memcmp(result, expect, length) != 0) :
+		(result != expect);
+
+	print_test(test_name, function,
+		print_memory(result, length),
+		print_memory(expect, length),
+		can_segfault,
+		error);
+}
+
+
+
+void	print_test_str(
+		char const *test_name,
+		char const *function,
+		char const *result,
+		char const *expect,
+		int can_segfault)
+{
+	print_test(test_name, function,
+		result,
+		expect,
+		can_segfault,
+		!str_equals(result, expect));
+}
+
+
 
 void	print_test_strls(
 		char const *test_name,
@@ -344,15 +589,12 @@ void	print_test_strls(
 		char const **expect,
 		int can_segfault)
 {
-	if (test_name)
-	{
-		if (can_segfault)
-			 printf("\n%s - "C_YELLOW"can segfault"RESET, test_name);
-		else printf("\n%s", test_name);
-		printf(" -> ");
-	}
-	else printf(", ");
 	int error = FALSE;
+	int length;
+	size_t i;
+	char *str_result;
+	char *str_expect;
+
 	for (int i = 0; result[i] && expect[i]; ++i)
 	{
 		if (!str_equals(result[i], expect[i]))
@@ -361,18 +603,43 @@ void	print_test_strls(
 			break;
 		}
 	}
-	if (error)
+
+	for (i = 0; result[i]; ++i) length += strlen(result[i]);
+	if (!(str_result = (char*)malloc(length + (i - 1) * 2))) return ;
+	length = 0;
+	for (i = 0; result[i]; ++i)
 	{
-		char *expected = str_padleft("Expected", ' ', strlen(function) + 2);
-		printf(C_RED"ERROR\n");
-		printf("\n>ft_%s: [", function);
-		for (int i = 0; result[i]; ++i)
-			printf("%s%s", result[i], result[i + 1] ? ", " : "]");
-		printf("\n>%s: [");
-		for (int i = 0; expect[i]; ++i)
-			printf("%s%s", expect[i], expect[i + 1] ? ", " : "]");
+		if (i != 0)
+		{
+			str_result[length++] = ',';
+			str_result[length++] = ' ';
+		}
+		strcpy(str_result + length, result[i]);
+		length += strlen(result[i]);
 	}
-	else printf(C_GREEN"OK!"RESET);
+
+	for (i = 0; expect[i]; ++i) length += strlen(expect[i]);
+	if (!(str_expect = (char*)malloc(length + (i - 1) * 2))) return ;
+	length = 0;
+	for (i = 0; expect[i]; ++i)
+	{
+		if (i != 0)
+		{
+			str_expect[length++] = ',';
+			str_expect[length++] = ' ';
+		}
+		strcpy(str_expect + length, expect[i]);
+		length += strlen(expect[i]);
+	}
+
+	print_test(test_name, function,
+		str_result,
+		str_expect,
+		can_segfault,
+		error);
+
+	if (str_result) free(str_result);
+	if (str_expect) free(str_expect);
 }
 
 void	print_test_lst(

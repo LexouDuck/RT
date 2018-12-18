@@ -270,20 +270,11 @@ void	print_test_memcmp(char const* test_name, int can_segfault,
 {
 	t_timer t = {0};
 	const int has_segfault = 0x7FFFFFFF;
-	int		return_libft = 0;
-	int		return_libc  = 0;
-	char*	result_libft = NULL;
-	char*	result_libc  = NULL;
-	segfault = setjmp(restore); if (!segfault) { timer_clock(&t.start1); return_libft = ft_memcmp(test1, test2, n); timer_clock(&t.end1); } else return_libft = has_segfault;
-	segfault = setjmp(restore); if (!segfault) { timer_clock(&t.start2); return_libc  =    memcmp(test1, test2, n); timer_clock(&t.end2); } else return_libc  = has_segfault;
-	result_libft = (return_libft == has_segfault) ? NULL : int_to_string(return_libft);
-	result_libc  = (return_libc  == has_segfault) ? NULL : int_to_string(return_libc);
-	print_test_str(test_name, "memcmp return",
-		(result_libft) ? segstr : result_libft,
-		(result_libc)  ? segstr : result_libc,
-		can_segfault);
-	if (result_libft) free(result_libft);
-	if (result_libc)  free(result_libc);
+	int result_libft;
+	int result_libc;
+	segfault = setjmp(restore); if (!segfault) { timer_clock(&t.start1); result_libft = ft_memcmp(test1, test2, n); timer_clock(&t.end1); } else can_segfault |= (1 << 1);
+	segfault = setjmp(restore); if (!segfault) { timer_clock(&t.start2); result_libc  =    memcmp(test1, test2, n); timer_clock(&t.end2); } else can_segfault |= (1 << 2);
+	print_test_s32(test_name, "memcmp return", result_libft, result_libc, can_segfault);
 	print_timer_result(&t, TRUE);
 }
 void	test_memcmp(void)
@@ -293,9 +284,10 @@ printf("\n");
 	print_test_memcmp("memcmp (str)  ",    	FALSE,		test2, test3, test3_len);
 	print_test_memcmp("memcmp (n = 0)",    	FALSE,		test2, test3, 0);
 //	print_test_memcmp("memcmp (uint) ",    	FALSE,		&na,   &nb,   4);
-	print_test_memcmp("memcmp (null str1)",	TRUE,		NULL,  test3, test3_len);
-	print_test_memcmp("memcmp (null str2)",	TRUE, 		test2, NULL,  test3_len);
-	print_test_memcmp("memcmp (both null)",	TRUE, 		NULL,  NULL,  test3_len);
+	t_bool segv = TRUE | (1 << 2); // this makes the 'int' test expect a segfault
+	print_test_memcmp("memcmp (null str1)",	segv,		NULL,  test3, test3_len);
+	print_test_memcmp("memcmp (null str2)",	segv, 		test2, NULL,  test3_len);
+	print_test_memcmp("memcmp (both null)",	segv, 		NULL,  NULL,  test3_len);
 	// note that some implementations of memcmp can know the type of argument in input,
 	// so they actually return *(int*)nra - *(int*)nrb -> not just considering memory as
 	// one continous sequence of bytes, like is implied in the man pages for memcmp().

@@ -30,6 +30,16 @@
 
 /*
 ** ************************************************************************** *|
+**                                   Defines                                  *|
+** ************************************************************************** *|
+*/
+
+/* This define makes the program perform overflowing number tests on the libft_convert functions
+#define __TEST_OVERFLOW
+*/
+
+/*
+** ************************************************************************** *|
 **                              Segfault handling                             *|
 ** ************************************************************************** *|
 */
@@ -93,50 +103,34 @@ int		test_io(void);
 
 int		bool_equals(int a, int b);
 
-int		str_equals(char const *str1, char const *str2);
+int		str_equals(char const* str1, char const* str2);
 
-char	*print_memory(void const *ptr, size_t length);
+char	*print_memory(void const* ptr, size_t length);
 
-char	*int_to_string(int number);
+char	*str_padleft(char const* str, char c, size_t length);
 
-char	*str_padleft(char const *str, char c, size_t length);
+char*	str_to_escape(char const* str);
 
 
 
-void	print_test_int(
-		char const *test_name,
-		char const *function,
-		t_u32 result,
-		t_u32 expect,
-		int can_segfault);
+void	print_test_s8(char const *test_name, char const *function, t_s8 result, t_s8 expect, int can_segfault);
+void	print_test_s16(char const *test_name, char const *function, t_s16 result, t_s16 expect, int can_segfault);
+void	print_test_s32(char const *test_name, char const *function, t_s32 result, t_s32 expect, int can_segfault);
+void	print_test_s64(char const *test_name, char const *function, t_s64 result, t_s64 expect, int can_segfault);
 
-void	print_test_str(
-		char const *test_name,
-		char const *function,
-		char const *result,
-		char const *expect,
-		int can_segfault);
+void	print_test_u8(char const *test_name, char const *function, t_u8 result, t_u8 expect, int can_segfault);
+void	print_test_u16(char const *test_name, char const *function, t_u16 result, t_u16 expect, int can_segfault);
+void	print_test_u32(char const *test_name, char const *function, t_u32 result, t_u32 expect, int can_segfault);
+void	print_test_u64(char const *test_name, char const *function, t_u64 result, t_u64 expect, int can_segfault);
 
-void	print_test_mem(
-		char const *test_name,
-		char const *function,
-		void const *result,
-		void const *expect,
-		size_t length,
-		int can_segfault);
+void	print_test_size(char const *test_name, char const *function, size_t result, size_t expect, int can_segfault);
+void	print_test_bool(char const *test_name, char const *function, t_bool result, t_bool expect, int can_segfault);
 
-void	print_test_strls(
-		char const *test_name,
-		char const *function,
-		char const **result,
-		char const **expect,
-		int can_segfault);
+void	print_test_str(char const *test_name, char const *function, char const *result, char const *expect, int can_segfault);
+void	print_test_mem(char const *test_name, char const *function, void const *result, void const *expect, size_t length, int can_segfault);
 
-void	print_test_lst(
-		char const *test_name,
-		char const *function,
-		t_list const *result,
-		char const *expect[],
-		int can_segfault);
+void	print_test_strls(char const *test_name, char const *function, char const **result, char const **expect, int can_segfault);
+
+void	print_test_lst(char const *test_name, char const *function, t_list const *result, char const *expect[], int can_segfault);
 
 #endif

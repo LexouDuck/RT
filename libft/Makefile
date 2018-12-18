@@ -54,6 +54,10 @@ SRC_STRINGARRAY	:=	ft_strsplit.c	\
 
 DIR_CONVERT	:=	convert/
 SRC_CONVERT	:=	ft_s_to_str.c		\
+				ft_u_to_str.c		\
+				ft_f_to_str.c		\
+				ft_str_to_s.c		\
+				ft_str_to_u.c		\
 
 DIR_MATH	:=	math/
 SRC_MATH	:=	

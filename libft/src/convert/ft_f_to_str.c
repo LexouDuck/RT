@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   convert/ft_s_to_str.c                              :+:      :+:    :+:   */
+/*   convert/ft_f_to_str.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,106 +12,68 @@
 
 #include "../../libft_convert.h"
 
-char	*ft_s8_to_str(t_s8 number)
+char		*ft_f32_to_str(t_f32 number, t_u8 precision)
 {
 	char	*result;
-	t_u8	digits[MAXDIGIT_8b];
-	t_u8	i;
-	t_s16	n;
-
-	n = number;
-	if (number < 0)
-		n = -n;
-	i = 0;
-	while (n > 0)
-	{
-		digits[i++] = n % 10;
-		n /= 10;
-	}
-	if (!(result = (char *)malloc(i + 2)))
-		return (NULL);
-	result[0] = (number == 0) ? '0' : '-';
-	n = 1;
-	while (i--)
-		result[n++] = '0' + digits[i];
-	result[n] = '\0';
-	return (number <= 0 ? result : result + 1);
-}
-
-char	*ft_s16_to_str(t_s16 number)
-{
-	char	*result;
-	t_u8	digits[MAXDIGIT_16b];
-	t_u8	i;
-	t_s32	n;
-
-	n = number;
-	if (number < 0)
-		n = -n;
-	i = 0;
-	while (n > 0)
-	{
-		digits[i++] = n % 10;
-		n /= 10;
-	}
-	if (!(result = (char *)malloc(i + 2)))
-		return (NULL);
-	result[0] = (number == 0) ? '0' : '-';
-	n = 1;
-	while (i--)
-		result[n++] = '0' + digits[i];
-	result[n] = '\0';
-	return (number <= 0 ? result : result + 1);
-}
-
-char	*ft_s32_to_str(t_s32 number)
-{
-	char	*result;
-	t_u8	digits[MAXDIGIT_32b];
-	t_u8	i;
-	t_s64	n;
-
-	n = number;
-	if (number < 0)
-		n = -n;
-	i = 0;
-	while (n > 0)
-	{
-		digits[i++] = n % 10;
-		n /= 10;
-	}
-	if (!(result = (char *)malloc(i + 2)))
-		return (NULL);
-	result[0] = (number == 0) ? '0' : '-';
-	n = 1;
-	while (i--)
-		result[n++] = '0' + digits[i];
-	result[n] = '\0';
-	return (number <= 0 ? result : result + 1);
-}
-
-char	*ft_s64_to_str(t_s64 number)
-{
-	char	*result;
-	t_u8	digits[MAXDIGIT_64b];
-	t_u8	i;
+	char	digits[32];
 	t_u64	n;
+	t_u8	i;
 
-	n = number;
-	if (number < 0)
-		n = -n;
 	i = 0;
-	while (n > 0)
+	while (++i <= precision)
+		number *= 10;
+	n = (number < 0) ? -(t_u64)number : (t_u64)number;
+	i = 0;
+	while (n > 0 || i < precision)
 	{
-		digits[i++] = n % 10;
+		digits[i++] = (n % 10) + '0';
 		n /= 10;
+		if (i == precision)
+		{
+			digits[i++] = '.';
+			if (n == 0 && number != 0)
+				digits[i++] = '0';
+		}
 	}
 	if (!(result = (char *)malloc(i + 2)))
 		return (NULL);
 	result[0] = (number == 0) ? '0' : '-';
 	n = 1;
 	while (i--)
-		result[n++] = '0' + digits[i];
+		result[n++] = digits[i];
+	result[n] = '\0';
+	return (number <= 0 ? result : result + 1);
+}
+
+char		*ft_f64_to_str(t_f64 number, t_u8 precision)
+{
+	char	*result;
+	char	digits[64];
+	t_u64	n;
+	t_u8	i;
+
+	i = 0;
+	while (++i <= precision)
+		number *= 10;
+	n = (number < 0) ? -(t_u64)number : (t_u64)number;
+	i = 0;
+	while (n > 0 || i < precision)
+	{
+		digits[i++] = (n % 10) + '0';
+		n /= 10;
+		if (i == precision)
+		{
+			digits[i++] = '.';
+			if (n == 0 && number != 0)
+				digits[i++] = '0';
+		}
+	}
+	if (!(result = (char *)malloc(i + 2)))
+		return (NULL);
+	result[0] = (number == 0) ? '0' : '-';
+	n = 1;
+	while (i--)
+		result[n++] = digits[i];
 	result[n] = '\0';
 	return (number <= 0 ? result : result + 1);
 }

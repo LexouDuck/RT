@@ -40,10 +40,10 @@ int		ft_readfile(int const fd, char **file)
 	return (OK);
 }
 
+int		ft_readlines(int const fd, char ***strls)
+{
 /*
 ** TODO actually code this
 */
-int		ft_readlines(int const fd, char ***strls)
-{
 	return (fd || strls);
 }

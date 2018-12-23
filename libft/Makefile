@@ -53,17 +53,27 @@ DIR_STRINGARRAY	:=	stringarray/
 SRC_STRINGARRAY	:=	ft_strsplit.c	\
 
 DIR_CONVERT	:=	convert/
-SRC_CONVERT	:=	ft_s_to_str.c		\
-				ft_u_to_str.c		\
-				ft_f_to_str.c		\
-				ft_str_to_s.c		\
-				ft_str_to_u.c		\
+SRC_CONVERT	:=	ft_int_s_to_str.c		\
+				ft_int_u_to_str.c		\
+				ft_float_to_str.c		\
+				ft_other_to_str.c		\
+				ft_int_u_to_hex.c		\
+				ft_int_s_to_strbase.c	\
+				ft_int_u_to_strbase.c	\
+				ft_str_to_int_s.c		\
+				ft_str_to_int_u.c		\
+				ft_str_to_float.c		\
+				ft_str_to_other.c		\
+				ft_hex_to_int_u.c		\
+
+DIR_LIST	:=	list/
+SRC_LIST	:=	ft_lstnew.c		\
 
 DIR_MATH	:=	math/
 SRC_MATH	:=	
 
-DIR_LIST	:=	list/
-SRC_LIST	:=	
+DIR_VLQ		:=	vlq/
+SRC_VLQ		:=	
 
 DIR_IO		:=	io/
 SRC_IO		:=	ft_output.c		\
@@ -87,8 +97,9 @@ SRCS	=	$(addprefix $(DIR_MEMORY),		$(SRC_MEMORY)		)	\
 			$(addprefix $(DIR_STRING),		$(SRC_STRING)		)	\
 			$(addprefix $(DIR_STRINGARRAY),	$(SRC_STRINGARRAY)	)	\
 			$(addprefix $(DIR_CONVERT),		$(SRC_CONVERT)		)	\
-			$(addprefix $(DIR_MATH),		$(SRC_MATH)			)	\
 			$(addprefix $(DIR_LIST),		$(SRC_LIST)			)	\
+			$(addprefix $(DIR_MATH),		$(SRC_MATH)			)	\
+			$(addprefix $(DIR_VLQ),			$(SRC_VLQ)			)	\
 			$(addprefix $(DIR_IO),			$(SRC_IO)			)
 
 OBJS	=	${SRCS:%.c=$(OBJDIR)%.o}
@@ -115,8 +126,9 @@ objdir:
 	@mkdir -p $(OBJDIR)$(DIR_STRING)
 	@mkdir -p $(OBJDIR)$(DIR_STRINGARRAY)
 	@mkdir -p $(OBJDIR)$(DIR_CONVERT)
-	@mkdir -p $(OBJDIR)$(DIR_MATH)
 	@mkdir -p $(OBJDIR)$(DIR_LIST)
+	@mkdir -p $(OBJDIR)$(DIR_MATH)
+	@mkdir -p $(OBJDIR)$(DIR_VLQ)
 	@mkdir -p $(OBJDIR)$(DIR_IO)
 
 clean:
@@ -138,21 +150,32 @@ tclean:
 
 re: fclean all
 
+PREPROCESSED	=	${SRCS:%.c=$(OBJDIR)%.c}
+
+preprocessed: all $(PREPROCESSED)
+	@printf "Outputting preprocessed code...\n"
+
+$(OBJDIR)%.c : $(SRCDIR)%.c $(HDRS)
+	@printf "Preprocessing file: "$@" -> "
+	@$(CC) $(CFLAGS) -E $< -o $@
+	@printf $(GREEN)"OK!"$(RESET)"\n"
+
 replace:
 	@sed -i -e "s|$(old)|$(new)|g" $(addprefix $(SRCDIR), $(SRCS))
 	@printf "Replaced all instances of \'"$(old)"\' with \'"$(new)"\'.\n"
 
 rename:
 	@sed -i -e "s|\<$(old)\>|$(new)|g" $(addprefix $(SRCDIR), $(SRCS))
-	@printf "Renamed all words matching \'"$(old)"\' as \'"$(new)"\'.\n"
+	@printf "Renamed all words matching \'"$(old)"\' with \'"$(new)"\'.\n"
 
 TESTS :=	test_memory.c		\
 			test_char.c			\
 			test_string.c		\
 			test_stringarray.c	\
 			test_convert.c		\
-			test_math.c			\
 			test_list.c			\
+			test_math.c			\
+			test_vlq.c			\
 			test_io.c			\
 			test.c				\
 			util_test.c
@@ -178,11 +201,14 @@ test_stringarray: testprogram
 test_convert: testprogram
 	@./test -convert
 
+test_list: testprogram
+	@./test -list
+
 test_math: testprogram
 	@./test -math
 
-test_list: testprogram
-	@./test -list
+test_vlq: testprogram
+	@./test -vlq
 
 test_io: testprogram
 	@./test -io

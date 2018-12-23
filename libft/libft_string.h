@@ -21,6 +21,68 @@
 ** ************************************************************************** *|
 */
 
+#define	FT_StringNew(n)							ft_strnew(n)
+#define	FT_StringSet(str, c)					ft_strset(str, c)
+#define	FT_StringClear(str)						ft_strclr(str)
+#define	FT_StringDelete(str)					ft_strdel(str)
+#define FT_StringDuplicate(str) 				ft_strdup(str)
+#define FT_StringCopy(dest, src)				ft_strcpy(dest, src)
+#define FT_StringCopy_N(dest, src, n)			ft_strncpy(dest, src, n)
+#define FT_StringCopy_L(dest, src, size)		ft_strlcpy(dest, src, size)
+#define FT_StringConcat(dest, src)				ft_strcat(dest, src)
+#define FT_StringConcat_N(dest, src, n)			ft_strncat(dest, src, n)
+#define FT_StringConcat_L(dest, src, size)		ft_strlcat(dest, src, size)
+
+#define	FT_StringLength(str)					ft_strlen(str)
+#define	FT_StringCompare(str1, str2)			ft_strcmp(str1, str2)
+#define	FT_StringCompare_N(str1, str2, n)		ft_strcmp(str1, str2, n)
+#define	FT_StringEquals(str1, str2)				ft_strcmp(str1, str2)
+#define	FT_StringEquals_N(str1, str2, n)		ft_strcmp(str1, str2, n)
+#define	FT_StringCompare(str1, str2)			ft_strcmp(str1, str2)
+#define	FT_StringHas(str, charset)				ft_strhas(str, charset)
+#define	FT_StringHasOnly(str, charset)			ft_strhasonly(str, charset)
+#define	FT_StringCount_Char(str, c)				ft_strcount_char(str, c)
+#define	FT_StringCount_Charset(str, charset)	ft_strcount_charset(str, charset)
+#define	FT_StringCount_String(str, query)		ft_strcount_str(str, query)
+
+#define	FT_StringFind_Char(str, c)				ft_strchr(str, c)
+#define	FT_StringFind_String(str, query)		ft_strstr(str, query)
+#define	FT_StringFind_R_Char(str, c)			ft_strrchr(str, c)
+#define	FT_StringFind_R_String(str, query)		ft_strrstr(str, query)
+#define	FT_StringFind_N_Char(str, c, n)			ft_strnchr(str, c, n)
+#define	FT_StringFind_N_String(str, query, n)	ft_strnstr(str, query, n)
+#define	FT_StringToEscape(str)					ft_strtoescape(str)
+#define	FT_StringReplace_Char(str, old, new)	ft_strrep_char(str, old, new)
+#define	FT_StringReplace_Charset(str, old, new)	ft_strrep_charset(str, old, new)
+#define	FT_StringReplace_String(str, old, new)	ft_strrep_str(str, old, new)
+
+#define	FT_StringTrim(str, charset)				ft_strtrim(str, charset)
+#define	FT_StringTrim_L(str, charset)			ft_strtrim_l(str, charset)
+#define	FT_StringTrim_R(str, charset)			ft_strtrim_r(str, charset)
+#define	FT_StringPad(str, c, size)				ft_strpad(str, c, size)
+#define	FT_StringPad_L(str, c, size)			ft_strpad_l(str, c, size)
+#define	FT_StringPad_R(str, c, size)			ft_strpad_r(str, c, size)
+
+#define	FT_StringReverse(str)					ft_strrev(str)
+#define	FT_StringJoin(str1, str2)				ft_strjoin(str1, str2)
+#define	FT_StringInsert(dest, src, index)		ft_strinsert(dest, src, index)
+#define	FT_StringSub(str, index, n)				ft_strsub(str, index, n)
+#define FT_StringIterate(str, f)				ft_striter(str, f)
+#define FT_StringIterate_I(str, f)				ft_striteri(str, f)
+#define FT_StringMap(str, f)					ft_strmap(str, f)
+#define FT_StringMap_I(str, f)					ft_strmapi(str, f)
+
+/*
+** ************************************************************************** *|
+**                                 Definitions                                *|
+** ************************************************************************** *|
+*/
+
+typedef void (*f_string_iterate)(char *);
+typedef void (*f_string_iterate_i)(unsigned int, char *);
+typedef char (*f_string_map)(char);
+typedef char (*f_string_map_i)(unsigned int, char);
+
 /*
 ** ************************************************************************** *|
 **                          Basic String Operations                           *|
@@ -304,15 +366,9 @@ char	*ft_strinsert(char **dest, char const *src, size_t offset);
 
 /*
 **	Returns a new null-terminated string which is a subsection of 'str',
-**	starting at char index 'offset' and copying 'n' characters.
+**	starting at char index 'index' and copying 'n' characters.
 */
-char	*ft_strsub(char const *str, size_t offset, size_t n);
-
-/*
-**	Returns a string array made up of substrings of 'str', where each element
-**	is a section delimited by 'c' separators, or the edges of the string.
-*/
-char	**ft_strsplit(char const *str, char c);
+char	*ft_strsub(char const *str, size_t index, size_t n);
 
 /*
 **	Iterates upon each character of the given string 'str',

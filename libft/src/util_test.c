@@ -662,7 +662,7 @@ void	print_test_lst(
 	t_u32 i = 0;
 	while (lst && expect[i])
 	{
-		if (!str_equals(lst->content, expect[i]))
+		if (!str_equals(lst->item, expect[i]))
 			error = TRUE;
 		lst = lst->next;
 		++i;
@@ -676,7 +676,7 @@ void	print_test_lst(
 		printf(">ft_%s: [", function);
 		while (lst)
 		{
-			printf("%s{%s}", (lst == result ? "" : ", "), lst->content);
+			printf("%s{%s}", (lst == result ? "" : ", "), lst->item);
 			lst = lst->next;
 		}
 		i = 0;

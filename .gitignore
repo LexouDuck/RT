@@ -10,6 +10,7 @@ correc.*
 *._*
 
 # Object files & Dependency files
+obj/*
 *.o
 *.d
 *.ko

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   convert/ft_str_to_u.c                              :+:      :+:    :+:   */
+/*   convert/ft_str_to_other.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -13,78 +13,31 @@
 #include "../../libft_char.h"
 #include "../../libft_convert.h"
 
-t_u8	ft_str_to_u8(char const *str)
+t_bool	ft_str_to_bool(char const *str)
 {
-	t_u8	result;
 	size_t	i;
 
 	i = 0;
-	while (!(ft_isdigit(str[i]) || str[i] == '+'))
+	while (!(ft_isalpha(str[i])))
 	{
 		if (!str[i] || !ft_isspace(str[i]))
-			return (0);
+			return (FALSE);
 		++i;
 	}
-	if (str[i] == '+')
-		++i;
-	result = 0;
-	while (str[i] && ft_isdigit(str[i]))
-	{
-		result = result * 10 + str[i] - '0';
-		++i;
-	}
-	return (result);
+	if (!str[i])
+		return (FALSE);
+	if ((str[i + 0] == 'T' || str[i + 0] == 't') ||
+		(str[i + 1] == 'R' || str[i + 1] == 'r') ||
+		(str[i + 2] == 'U' || str[i + 2] == 'u') ||
+		(str[i + 3] == 'E' || str[i + 3] == 'e'))
+		return (TRUE);
+	else
+		return (FALSE);
 }
 
-t_u16	ft_str_to_u16(char const *str)
+size_t	ft_str_to_size(char const *str)
 {
-	t_u16	result;
-	size_t	i;
-
-	i = 0;
-	while (!(ft_isdigit(str[i]) || str[i] == '+'))
-	{
-		if (!str[i] || !ft_isspace(str[i]))
-			return (0);
-		++i;
-	}
-	if (str[i] == '+')
-		++i;
-	result = 0;
-	while (str[i] && ft_isdigit(str[i]))
-	{
-		result = result * 10 + str[i] - '0';
-		++i;
-	}
-	return (result);
-}
-
-t_u32	ft_str_to_u32(char const *str)
-{
-	t_u32	result;
-	size_t	i;
-
-	i = 0;
-	while (!(ft_isdigit(str[i]) || str[i] == '+'))
-	{
-		if (!str[i] || !ft_isspace(str[i]))
-			return (0);
-		++i;
-	}
-	if (str[i] == '+')
-		++i;
-	result = 0;
-	while (str[i] && ft_isdigit(str[i]))
-	{
-		result = result * 10 + str[i] - '0';
-		++i;
-	}
-	return (result);
-}
-
-t_u64	ft_str_to_u64(char const *str)
-{
-	t_u64	result;
+	size_t	result;
 	size_t	i;
 
 	i = 0;

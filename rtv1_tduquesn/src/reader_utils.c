@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/04 09:10:13 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/12/18 17:15:53 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/12/19 16:08:56 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void				r_rt_f_set_obj(t_control *ctrl, int fd, t_objtype type)
 	material = ft_atoi(line);
 	ft_strdel(&line);
 	build_obj(&(ctrl->objlst[ctrl->objlst_len]), type, material);
-refrac_ind = material == glassy ? 1.3 : 1.;
+refrac_ind = material == glassy ? 1.9 : 1.;
 ctrl->objlst[ctrl->objlst_len].refrac = refrac_ind;
 	++(ctrl->objlst_len);
 	if (ctrl->objlst_len > MAX_OBJ_NB)

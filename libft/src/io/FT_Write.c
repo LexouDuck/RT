@@ -10,14 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../libft_convert.h"
 #include "../../libft_io.h"
 
-inline void	ft_write_char(char c, int fd)
+inline void	ft_write_char(int fd, char c)
 {
 	write(fd, &c, 1);
 }
 
-inline void	ft_write_str(const char *str, int fd)
+inline void	ft_write_str(int fd, const char *str)
 {
 	if (str)
 	{
@@ -25,7 +26,7 @@ inline void	ft_write_str(const char *str, int fd)
 	}
 }
 
-inline void	ft_write_line(const char *str, int fd)
+inline void	ft_write_line(int fd, const char *str)
 {
 	if (str)
 	{
@@ -34,7 +35,7 @@ inline void	ft_write_line(const char *str, int fd)
 	}
 }
 
-void		ft_write_strls(const char **strls, int fd)
+void		ft_write_strls(int fd, const char **strls)
 {
 	int i;
 
@@ -49,31 +50,23 @@ void		ft_write_strls(const char **strls, int fd)
 	}
 }
 
-void		ft_write_memory(const char *str, t_u8 cols, int fd)
+void		ft_write_memory(int fd, t_u8 const *ptr, size_t n, t_u8 cols)
 {
-	/* TODO
-	char	*tmp;
-	char	**tmp_strls;
-	t_u8	wordlen;
-	*/
-	if (!str || cols == 0 || fd < 0)
+	t_u8	nibble;
+	size_t	i;
+
+	if (!ptr || n == 0 || cols == 0)
 		return ;
-	/*
-	tmp = ft_strhex(str);
-	wordlen = 4;
-	tmp_strls = ft_strdivide(tmp, 2);
-	ft_strdel(&tmp);
-	tmp = ft_strlsjoin((char const **)tmp_strls, " ");
-	ft_strlsdel(&tmp_strls);
-	tmp_strls = ft_strdivide(tmp, 3 * wordlen);
-	ft_strdel(&tmp);
-	tmp = ft_strlsjoin((char const **)tmp_strls, " ");
-	ft_strlsdel(&tmp_strls);
-	tmp_strls = ft_strdivide(tmp, (3 * wordlen + 1) * cols);
-	ft_strdel(&tmp);
-	tmp = ft_strlsjoin((char const **)tmp_strls, "\n");
-	ft_putendl(tmp);
-	ft_strdel(&tmp);
-	ft_strlsdel(&tmp_strls);
-	*/
+	i = 0;
+	while (i < n)
+	{
+		nibble = (ptr[i] & 0xF0) >> 4;
+		nibble += (nibble < 10 ? '0' : 'A' - 10);
+		write(fd, &nibble, 1);
+		nibble = (ptr[i] & 0x0F);
+		nibble += (nibble < 10 ? '0' : 'A' - 10);
+		write(fd, &nibble, 1);
+		++i;
+		write(fd, (i % cols == 0 ? "\n" : " "), 1);
+	}
 }

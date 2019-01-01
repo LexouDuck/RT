@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   convert/ft_u_to_str.c                              :+:      :+:    :+:   */
+/*   convert/ft_int_u_to_str.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -17,7 +17,7 @@ char	*ft_u8_to_str(t_u8 number)
 	char	*result;
 	t_u8	digits[MAXDIGIT_8b];
 	t_u8	i;
-	t_u16	n;
+	t_u8	n;
 
 	n = number;
 	i = 0;
@@ -42,7 +42,7 @@ char	*ft_u16_to_str(t_u16 number)
 	char	*result;
 	t_u8	digits[MAXDIGIT_16b];
 	t_u8	i;
-	t_u32	n;
+	t_u16	n;
 
 	n = number;
 	i = 0;
@@ -67,7 +67,7 @@ char	*ft_u32_to_str(t_u32 number)
 	char	*result;
 	t_u8	digits[MAXDIGIT_32b];
 	t_u8	i;
-	t_u64	n;
+	t_u32	n;
 
 	n = number;
 	i = 0;

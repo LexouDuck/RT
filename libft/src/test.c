@@ -50,8 +50,9 @@ int		main(int argc, char **argv)
 		test_string();
 		test_stringarray();
 		test_convert();
-		test_math();
 		test_list();
+		test_math();
+		test_vlq();
 		test_io();
 	}
 	else
@@ -66,8 +67,9 @@ int		main(int argc, char **argv)
 				if (str_equals(argv[i] + 1, "string"))		test_string();
 				if (str_equals(argv[i] + 1, "stringarray"))	test_stringarray();
 				if (str_equals(argv[i] + 1, "convert"))		test_convert();
-				if (str_equals(argv[i] + 1, "math"))		test_math();
 				if (str_equals(argv[i] + 1, "list"))		test_list();
+				if (str_equals(argv[i] + 1, "math"))		test_math();
+				if (str_equals(argv[i] + 1, "vlq"))			test_vlq();
 				if (str_equals(argv[i] + 1, "io"))			test_io();
 			}
 			else
@@ -78,8 +80,9 @@ int		main(int argc, char **argv)
 				printf("\t-string\n");
 				printf("\t-stringarray\n");
 				printf("\t-convert\n");
-				printf("\t-math\n");
 				printf("\t-list\n");
+				printf("\t-math\n");
+				printf("\t-vlq\n");
 				printf("\t-io\n");
 			}
 		}

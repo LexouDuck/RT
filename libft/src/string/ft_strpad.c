@@ -12,17 +12,17 @@
 
 #include "../../libft_string.h"
 
-char		*ft_strpad(char const *str, char c, size_t n)
+char		*ft_strpad(char const *str, char c, size_t size)
 {
 	char	*result;
 	size_t	offset;
 	size_t	length;
 	size_t	i;
 
-	if (!(result = (char *)malloc(n + 1)))
+	if (!(result = (char *)malloc(size + 1)))
 		return (NULL);
 	i = 0;
-	while (i < n)
+	while (i < size)
 	{
 		result[i] = c;
 		++i;
@@ -30,7 +30,7 @@ char		*ft_strpad(char const *str, char c, size_t n)
 	length = 0;
 	while (str[length])
 		++length;
-	offset = (n - length) / 2;
+	offset = (size - length) / 2;
 	i = 0;
 	while (str[i])
 	{
@@ -40,31 +40,31 @@ char		*ft_strpad(char const *str, char c, size_t n)
 	return (result);
 }
 
-char	*ft_strpad_l(char const *str, char c, size_t n)
+char	*ft_strpad_l(char const *str, char c, size_t size)
 {
 	char	*result;
 	size_t	offset;
 	size_t	length;
 	size_t	i;
 
-	if (!(result = (char *)malloc(n + 1)))
+	if (!(result = (char *)malloc(size + 1)))
 		return (NULL);
 	length = 0;
 	while (str[length])
 		++length;
-	offset = n - length;
+	offset = size - length;
 	i = 0;
 	while (i < (size_t)offset)
 	{
 		result[i] = c;
 		++i;
 	}
-	while (i < n)
+	while (i < size)
 	{
 		result[i] = str[i - offset];
 		++i;
 	}
-	result[n] = '\0';
+	result[size] = '\0';
 	return (result);
 }
 /*
@@ -72,25 +72,25 @@ char	*ft_strpad_l(char const *str, char c, size_t n)
 **		return (NULL);
 */
 
-char	*ft_strpad_r(char const *str, char c, size_t n)
+char	*ft_strpad_r(char const *str, char c, size_t size)
 {
 	char	*result;
 	size_t	i;
 
-	if (!(result = (char *)malloc(n + 1)))
+	if (!(result = (char *)malloc(size + 1)))
 		return (NULL);
 	i = 0;
-	while (str[i] && i < n)
+	while (str[i] && i < size)
 	{
 		result[i] = str[i];
 		++i;
 	}
-	while (i < n)
+	while (i < size)
 	{
 		result[i] = c;
 		++i;
 	}
-	result[n] = '\0';
+	result[size] = '\0';
 	return (result);
 }
 /*

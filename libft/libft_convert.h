@@ -21,6 +21,62 @@
 ** ************************************************************************** *|
 */
 
+#define FT_S8_To_String(n)				ft_s8_to_str(n)
+#define FT_S16_To_String(n)				ft_s16_to_str(n)
+#define FT_S32_To_String(n)				ft_s32_to_str(n)
+#define FT_S64_To_String(n)				ft_s64_to_str(n)
+#define FT_U8_To_String(n)				ft_u8_to_str(n)
+#define FT_U16_To_String(n)				ft_u16_to_str(n)
+#define FT_U32_To_String(n)				ft_u32_to_str(n)
+#define FT_U64_To_String(n)				ft_u64_to_str(n)
+#define FT_F32_To_String(n, precision)	ft_f32_to_str(n, precision)
+#define FT_F64_To_String(n, precision)	ft_f64_to_str(n, precision)
+#define FT_Bool_To_String(value)		ft_bool_to_str(value)
+#define FT_Size_To_String(value)		ft_size_to_str(value)
+#define FT_U8_To_HexString(n)			ft_u8_to_hex(n)
+#define FT_U16_To_HexString(n)			ft_u16_to_hex(n)
+#define FT_U32_To_HexString(n)			ft_u32_to_hex(n)
+#define FT_U64_To_HexString(n)			ft_u64_to_hex(n)
+#define FT_S8_To_BaseString(n, base)	ft_s8_to_strbase(n, base)
+#define FT_S16_To_BaseString(n, base)	ft_s16_to_strbase(n, base)
+#define FT_S32_To_BaseString(n, base)	ft_s32_to_strbase(n, base)
+#define FT_S64_To_BaseString(n, base)	ft_s64_to_strbase(n, base)
+#define FT_U8_To_BaseString(n, base)	ft_u8_to_strbase(n, base)
+#define FT_U16_To_BaseString(n, base)	ft_u16_to_strbase(n, base)
+#define FT_U32_To_BaseString(n, base)	ft_u32_to_strbase(n, base)
+#define FT_U64_To_BaseString(n, base)	ft_u64_to_strbase(n, base)
+
+#define FT_String_To_S8(str)			ft_str_to_s8(str)
+#define FT_String_To_S16(str)			ft_str_to_s16(str)
+#define FT_String_To_S32(str)			ft_str_to_s32(str)
+#define FT_String_To_S64(str)			ft_str_to_s64(str)
+#define FT_String_To_U8(str)			ft_str_to_u8(str)
+#define FT_String_To_U16(str)			ft_str_to_u16(str)
+#define FT_String_To_U32(str)			ft_str_to_u32(str)
+#define FT_String_To_U64(str)			ft_str_to_u64(str)
+#define FT_String_To_F32(str)			ft_str_to_f32(str)
+#define FT_String_To_F64(str)			ft_str_to_f64(str)
+#define FT_String_To_Bool(str)			ft_str_to_bool(str)
+#define FT_String_To_Size(str)			ft_str_to_size(str)
+#define FT_HexString_To_U8(str)			ft_hex_to_u8(str)
+#define FT_HexString_To_U16(str)		ft_hex_to_u16(str)
+#define FT_HexString_To_U32(str)		ft_hex_to_u32(str)
+#define FT_HexString_To_U64(str)		ft_hex_to_u64(str)
+#define FT_BaseString_To_S8(str, base)	ft_strbase_to_s8(str, base)
+#define FT_BaseString_To_S16(str, base)	ft_strbase_to_s16(str, base)
+#define FT_BaseString_To_S32(str, base)	ft_strbase_to_s32(str, base)
+#define FT_BaseString_To_S64(str, base)	ft_strbase_to_s64(str, base)
+#define FT_BaseString_To_U8(str, base)	ft_strbase_to_u8(str, base)
+#define FT_BaseString_To_U16(str, base)	ft_strbase_to_u16(str, base)
+#define FT_BaseString_To_U32(str, base)	ft_strbase_to_u32(str, base)
+#define FT_BaseString_To_U64(str, base)	ft_strbase_to_u64(str, base)
+
+/*
+** ************************************************************************** *|
+**                                 Definitions                                *|
+** ************************************************************************** *|
+*/
+
 #define	MAXDIGIT_8b		3
 #define	MAXDIGIT_16b	5
 #define	MAXDIGIT_32b	10
@@ -32,18 +88,18 @@
 ** ************************************************************************** *|
 */
 
-char*	ft_s8_to_str(t_s8 n);
-char*	ft_s16_to_str(t_s16 n);
-char*	ft_s32_to_str(t_s32 n);
-char*	ft_s64_to_str(t_s64 n);
+char	*ft_s8_to_str(t_s8 n);
+char	*ft_s16_to_str(t_s16 n);
+char	*ft_s32_to_str(t_s32 n);
+char	*ft_s64_to_str(t_s64 n);
 
-char*	ft_u8_to_str(t_u8 n);
-char*	ft_u16_to_str(t_u16 n);
-char*	ft_u32_to_str(t_u32 n);
-char*	ft_u64_to_str(t_u64 n);
+char	*ft_u8_to_str(t_u8 n);
+char	*ft_u16_to_str(t_u16 n);
+char	*ft_u32_to_str(t_u32 n);
+char	*ft_u64_to_str(t_u64 n);
 
-char*	ft_f32_to_str(t_f32 n, t_u8 precision);
-char*	ft_f64_to_str(t_f64 n, t_u8 precision);
+char	*ft_f32_to_str(t_f32 n, t_u8 precision);
+char	*ft_f64_to_str(t_f64 n, t_u8 precision);
 
 t_s8	ft_str_to_s8(char const *str);
 t_s16	ft_str_to_s16(char const *str);
@@ -64,8 +120,8 @@ t_f64	ft_str_to_f64(char const *str);
 ** ************************************************************************** *|
 */
 
-char*	ft_bool_to_str(t_bool value);
-char*	ft_size_to_str(size_t value);
+char	*ft_bool_to_str(t_bool value);
+char	*ft_size_to_str(size_t value);
 
 t_bool	ft_str_to_bool(char const *str);
 size_t	ft_str_to_size(char const *str);
@@ -76,10 +132,10 @@ size_t	ft_str_to_size(char const *str);
 ** ************************************************************************** *|
 */
 
-char*	ft_u8_to_hex(t_u8 n);
-char*	ft_u16_to_hex(t_u16 n);
-char*	ft_u32_to_hex(t_u32 n);
-char*	ft_u64_to_hex(t_u64 n);
+char	*ft_u8_to_hex(t_u8 n);
+char	*ft_u16_to_hex(t_u16 n);
+char	*ft_u32_to_hex(t_u32 n);
+char	*ft_u64_to_hex(t_u64 n);
 
 t_u8	ft_hex_to_u8(char const *str);
 t_u16	ft_hex_to_u16(char const *str);
@@ -92,15 +148,15 @@ t_u64	ft_hex_to_u64(char const *str);
 ** ************************************************************************** *|
 */
 
-char*	ft_s8_to_strbase(t_s8 n, char const *base);
-char*	ft_s16_to_strbase(t_s16 n, char const *base);
-char*	ft_s32_to_strbase(t_s32 n, char const *base);
-char*	ft_s64_to_strbase(t_s64 n, char const *base);
+char	*ft_s8_to_strbase(t_s8 n, char const *base);
+char	*ft_s16_to_strbase(t_s16 n, char const *base);
+char	*ft_s32_to_strbase(t_s32 n, char const *base);
+char	*ft_s64_to_strbase(t_s64 n, char const *base);
 
-char*	ft_u8_to_strbase(t_u8 n, char const *base);
-char*	ft_u16_to_strbase(t_u16 n, char const *base);
-char*	ft_u32_to_strbase(t_u32 n, char const *base);
-char*	ft_u64_to_strbase(t_u64 n, char const *base);
+char	*ft_u8_to_strbase(t_u8 n, char const *base);
+char	*ft_u16_to_strbase(t_u16 n, char const *base);
+char	*ft_u32_to_strbase(t_u32 n, char const *base);
+char	*ft_u64_to_strbase(t_u64 n, char const *base);
 
 t_s8	ft_strbase_to_s8(char const *str, char const *base);
 t_s16	ft_strbase_to_s16(char const *str, char const *base);

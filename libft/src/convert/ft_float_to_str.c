@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   convert/ft_f_to_str.c                              :+:      :+:    :+:   */
+/*   convert/ft_float_to_str.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -16,8 +16,8 @@ char		*ft_f32_to_str(t_f32 number, t_u8 precision)
 {
 	char	*result;
 	char	digits[32];
-	t_u64	n;
 	t_u8	i;
+	t_u64	n;
 
 	i = 0;
 	while (++i <= precision)
@@ -28,19 +28,15 @@ char		*ft_f32_to_str(t_f32 number, t_u8 precision)
 	{
 		digits[i++] = (n % 10) + '0';
 		n /= 10;
-		if (i == precision)
-		{
-			digits[i++] = '.';
+		if (i == precision && (digits[i++] = '.'))
 			if (n == 0 && number != 0)
 				digits[i++] = '0';
-		}
 	}
-	if (!(result = (char *)malloc(i + 2)))
+	if (!(result = (char *)malloc(i + 2)) || (n = 0))
 		return (NULL);
 	result[0] = (number == 0) ? '0' : '-';
-	n = 1;
 	while (i--)
-		result[n++] = digits[i];
+		result[++n] = digits[i];
 	result[n] = '\0';
 	return (number <= 0 ? result : result + 1);
 }
@@ -49,8 +45,8 @@ char		*ft_f64_to_str(t_f64 number, t_u8 precision)
 {
 	char	*result;
 	char	digits[64];
-	t_u64	n;
 	t_u8	i;
+	t_u64	n;
 
 	i = 0;
 	while (++i <= precision)
@@ -61,19 +57,15 @@ char		*ft_f64_to_str(t_f64 number, t_u8 precision)
 	{
 		digits[i++] = (n % 10) + '0';
 		n /= 10;
-		if (i == precision)
-		{
-			digits[i++] = '.';
+		if (i == precision && (digits[i++] = '.'))
 			if (n == 0 && number != 0)
 				digits[i++] = '0';
-		}
 	}
-	if (!(result = (char *)malloc(i + 2)))
+	if (!(result = (char *)malloc(i + 2)) || (n = 0))
 		return (NULL);
 	result[0] = (number == 0) ? '0' : '-';
-	n = 1;
 	while (i--)
-		result[n++] = digits[i];
+		result[++n] = digits[i];
 	result[n] = '\0';
 	return (number <= 0 ? result : result + 1);
 }

@@ -8,24 +8,23 @@
 ** ************************************************************************** *|
 */
 
-// for the standard functions, to compare
 # include <stdlib.h>
 # include <string.h>
 # include <ctype.h>
 # include <stdio.h>
-// for segfault handling
 # include <setjmp.h>
 # include <signal.h>
-// for speed testing
 # include <time.h>
 
 # include "../libft.h"
 # include "../libft_memory.h"
-# include "../libft_string.h"
 # include "../libft_char.h"
+# include "../libft_string.h"
+# include "../libft_stringarray.h"
 # include "../libft_convert.h"
-# include "../libft_math.h"
 # include "../libft_list.h"
+# include "../libft_math.h"
+# include "../libft_vlq.h"
 # include "../libft_io.h"
 
 /*
@@ -34,9 +33,16 @@
 ** ************************************************************************** *|
 */
 
-/* This define makes the program perform overflowing number tests on the libft_convert functions
+/*
+** This define makes the program perform overflowing number tests on the libft_convert functions
 #define __TEST_OVERFLOW
 */
+
+/*
+**	This define is used as the 'can_segfault' arg for certain 'int' tests,
+**	so as to have those tests expect a "(segfault)" result.
+*/
+#define SEGV	(TRUE | (1 << 2))
 
 /*
 ** ************************************************************************** *|
@@ -91,8 +97,9 @@ int		test_char(void);
 int		test_string(void);
 int		test_stringarray(void);
 int		test_convert(void);
-int		test_math(void);
 int		test_list(void);
+int		test_math(void);
+int		test_vlq(void);
 int		test_io(void);
 
 /*

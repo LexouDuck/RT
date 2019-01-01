@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   char/ft_isdigit.h                                  :+:      :+:    :+:   */
+/*   convert/ft_str_to_float.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,23 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../libft_char.h"
+#include "../../libft_convert.h"
 
-inline int		ft_isdigit(int c)
+t_f32	ft_str_to_f32(char const *str)
 {
-	return ('0' <= c && c <= '9');
+	return (str ? 1 : 0);
 }
 
-inline int		ft_ishexdigit(int c)
+t_f64	ft_str_to_f64(char const *str)
 {
-	return (('0' <= c && c <= '9') ||
-			('A' <= c && c <= 'F') ||
-			('a' <= c && c <= 'f'));
-}
-
-inline int		ft_isalnum(int c)
-{
-	return (('A' <= c && c <= 'Z') ||
-			('a' <= c && c <= 'z') ||
-			('0' <= c && c <= '9'));
+	return (str ? 1 : 0);
 }

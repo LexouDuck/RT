@@ -24,6 +24,28 @@
 ** ************************************************************************** *|
 */
 
+#define FT_Read_File(fd, file)			ft_readfile(fd, file)
+#define FT_Read_NextLine(fd, line)		ft_getnextline(fd, line)
+#define FT_Read_Lines(fd, strls)		ft_readlines(fd, strls)
+
+#define FT_Write_Char(fd, c)			ft_write_char(fd, c)
+#define FT_Write_String(fd, str)		ft_write_str(fd, str)
+#define FT_Write_Line(fd, str)			ft_write_line(fd, str)
+#define FT_Write_Lines(fd, strls)		ft_write_strls(fd, strls)
+#define FT_Write_Memory(fd, ptr, cols)	ft_write_memory(fd, ptr, cols)
+
+#define FT_Output_Char(c)				ft_output_char(c)
+#define FT_Output_String(str)			ft_output_str(str)
+#define FT_Output_Line(str)				ft_output_line(str)
+#define FT_Output_Lines(strls)			ft_output_strls(strls)
+#define FT_Output_Memory(ptr, cols)		ft_output_memory(ptr, cols)
+
+/*
+** ************************************************************************** *|
+**                                 Definitions                                *|
+** ************************************************************************** *|
+*/
+
 /*
 **	Define the 3 standard (std) streams of data - these numbers are special
 **	file descriptors used to read from and write to the terminal commandline.
@@ -89,29 +111,29 @@ int		ft_readlines(int const fd, char ***strls);
 /*
 **	Writes the given character 'c' to the given file descriptor 'fd'.
 */
-void	ft_write_char(char c, int fd);
+void	ft_write_char(int fd, char c);
 
 /*
 **	Writes the given string 'str' to the given file descriptor 'fd'.
 */
-void	ft_write_str(char const *str, int fd);
+void	ft_write_str(int fd, char const *str);
 
 /*
 **	Writes the given string 'str' to the given file descriptor 'fd',
 **	with a newline '\n' character at the end.
 */
-void	ft_write_line(char const *str, int fd);
+void	ft_write_line(int fd, char const *str);
 
 /*
 **	Writes the given string array 'strls' to the given file descriptor 'fd'.
 */
-void	ft_write_strls(char const **strls, int fd);
+void	ft_write_strls(int fd, char const **strls);
 
 /*
 **	Writes hexadecimal memory in the null-terminated string 'str',
 **	writing lines of 'cols' columns of 4-byte chunks to 'fd'.
 */
-void	ft_write_memory(char const *str, t_u8 cols, int fd);
+void	ft_write_memory(int fd, t_u8 const *ptr, size_t n, t_u8 cols);
 
 /*
 ** ************************************************************************** *|
@@ -144,6 +166,6 @@ void	ft_output_strls(char const **strls);
 **	Outputs hexadecimal memory in the null-terminated string 'str',
 **	writing lines of 'cols' columns of 4-byte chunks.
 */
-void	ft_output_memory(char const *str, t_u8 cols);
+void	ft_output_memory(t_u8 const *ptr, size_t n, t_u8 cols);
 
 #endif

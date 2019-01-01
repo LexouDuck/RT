@@ -1,6 +1,58 @@
 
 #include "test.h"
 
+
+
+/*
+**	t_list	*ft_lstnew(void const *item, size_t item_size);
+*/
+void	print_test_lstnew(char const* test_name, int can_segfault,
+		char const* expecting,
+		void const* item,
+		size_t item_size)
+{
+	t_timer t = {0};
+	size_t expect_size = expecting ? strlen(expecting) + 1 : 0;
+	t_list* result;
+	segfault = setjmp(restore); if (!segfault) result = ft_lstnew(item, item_size); else can_segfault |= (1 << 1);
+	print_test_size(test_name, "_lstnew->item_size", result->item_size, expect_size, can_segfault);
+	print_test_str(NULL,       "_lstnew->item",      result->item,      expecting,   can_segfault);
+	print_timer_result(&t, FALSE);
+	if (result) free(result);
+}
+void	test_lstnew(void)
+{
+printf("\n");
+/*	| TEST FUNCTION  | TEST NAME         |CAN SEGV| EXPECTING   | TEST ARGS */
+	print_test_lstnew("lstnew            ",	FALSE,  "Omae",       "Omae",        5);
+	print_test_lstnew("lstnew            ",	FALSE,  " wa ",       " wa ",        5);
+	print_test_lstnew("lstnew            ",	FALSE,  "mou ",       "mou ",        5);
+	print_test_lstnew("lstnew            ",	FALSE,  "shindeiru.", "shindeiru.", 11);
+	print_test_lstnew("lstnew (empty str)",	FALSE,  "",           "",            1);
+	print_test_lstnew("lstnew (null  ptr)",	TRUE,   NULL,         NULL,          5);
+}
+
+
+
+/*
+**	char	*ft_lst_(char const* str);
+*/
+void	print_test_lst_(char const* test_name, int can_segfault,
+		char const* expecting)
+{
+	t_timer t = {0};
+//	TODO
+	print_timer_result(&t, FALSE);
+}
+void	test_lst_(void)
+{
+printf("\n");
+/*	| TEST FUNCTION  | TEST NAME          |CAN SEGV| EXPECTING | TEST ARGS */
+//	TODO
+}
+
+
+
 int		test_list(void)
 {
 	t_list **a_lst;
@@ -21,24 +73,10 @@ printf("\n");
 
 	print_nonstd();
 
+	test_lstnew();
+
 printf("\n");
 /*
-//	t_list	*ft_lstnew(void const *content, size_t content_size);
-	lst_0 = ft_lstnew("Omae", 5);
-	lst_1 = ft_lstnew(" wa ", 5);
-	lst_2 = ft_lstnew("mou ", 5);
-	lst_3 = ft_lstnew("shindeiru.", 11);
-	print_test_int("lstnew", "_lstnew->content_size", lst_0->content_size,    5, FALSE);
-	print_test_str(NULL,     "_lstnew->content",      lst_0->content, expect[0], FALSE);
-	print_test_int(NULL,     "_lstnew->content_size", lst_1->content_size,    5, FALSE);
-	print_test_str(NULL,     "_lstnew->content",      lst_1->content, expect[1], FALSE);
-	print_test_int(NULL,     "_lstnew->content_size", lst_2->content_size,    5, FALSE);
-	print_test_str(NULL,     "_lstnew->content",      lst_2->content, expect[2], FALSE);
-	print_test_int(NULL,     "_lstnew->content_size", lst_3->content_size,   11, FALSE);
-	print_test_str(NULL,     "_lstnew->content",      lst_3->content, expect[3], FALSE);
-
-	segfault = setjmp(restore); if (!segfault) lst_4 = ft_lstnew(NULL, 5); else lst_4->content = segstr;
-	print_test_str("lstnew (null ptr)", "_lstnew->content", lst_4->content, segstr, TRUE);
 
 printf("\n");
 
@@ -93,7 +131,7 @@ printf("\n");
 		ft_lstiter(*mixed_list, ft_puthex_llstelem);
 		ft_putstr("\nExpected:\n4F 6D 61 65 00\n20 77 61 20 00\n6D 6F 75 20 00\n73 68 69 6E 64 65 69 72 75 2E 00\n00 00 00 00\n9A 02 00 00\n09 03 00 00\n2D 00 00 00\n");
 
-		if (*a_ilst) // || *a_ilst || (*a_ilst)->content)
+		if (*a_ilst) // || *a_ilst || (*a_ilst)->item)
 		{
 			ft_putstr_fd("Error deleting with ft_lstdel\n", 2);
 		}
@@ -106,7 +144,7 @@ printf("\n");
 		ft_putstr("\nft_lstdel :\n");	
 		ft_lstdel(mixed_list, ft_delete);
 
-		if (*mixed_list) // || *mixed_list || (*mixed_list)->content)
+		if (*mixed_list) // || *mixed_list || (*mixed_list)->item)
 		{
 			ft_putstr_fd("Error deleting with ft_lstdel\n", 2);
 		}
@@ -123,7 +161,7 @@ printf("\n");
 		ft_lstdelone(a_ilst, ft_delete);
 		ft_lstiter(tmp, ft_puthex_llstelem);
 		ft_putstr("\nExpected:\n00 00 00 00\n9A 02 00 00\n09 03 00 00\n2D 00 00 00\n");
-		if (*a_ilst) // || *a_ilst || (*a_ilst)->content)
+		if (*a_ilst) // || *a_ilst || (*a_ilst)->item)
 		{
 			ft_putstr_fd("Error deleting with ft_lstdel\n", 2);
 		}
@@ -136,7 +174,7 @@ printf("\n");
 		ft_putstr("\nft_lstdel :\n");	
 		ft_lstdel(&tmp, ft_delete);
 		ft_lstdel(a_slst, ft_delete);
-		if (*a_slst || tmp) // || *a_slst || (*a_ilst)->content || tmp->content)
+		if (*a_slst || tmp) // || *a_slst || (*a_ilst)->item || tmp->item)
 		{
 			ft_putstr_fd("Error deleting with ft_lstdel\n", 2);
 		}

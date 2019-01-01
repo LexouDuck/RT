@@ -1,38 +1,40 @@
 NAME	=	RT
 
 CC		=	gcc
-CFLAGS	=	-Wall -Wextra -O3 -MMD
+CFLAGS	=	-Wall -Wextra -Werror -O3 -MMD
 
 RESET	=	"\033[0m"
 RED		=	"\033[0;31m"
 GREEN	=	"\033[0;32m"
 
-LIBS	=	$(LIBFT) $(LIBMATH) $(LIBSDL)
-
-SRCDIR	=	./src/
-OBJDIR	=	./obj/
-LFTDIR	=	./libft/
+LIBS	=	$(LIBMATH) $(LIBFT) $(LIBSDL)
 
 OPENCL		=	-lopencl
 LIBMATH		=	-lm
 LIBFT		=	-L$(LFTDIR) -lft
-LIBSDL		=	-L$(SDL) -lSDL2
-SDL			=	_
-SDL_WIN		=	./SDL2/SDL2-win/
-SDL_MAC		=	./SDL2/SDL2-mac/
-SDL_LIN		=	./SDL2/SDL2-lin/
+LIBSDL		=	-L$(SDLDIR) -lSDL2
+SDLDIR		=	./SDL2-2.0.9/
 
-ifeq ($(OS),Windows_NT)
-	SDL := $(SDL_WIN)
-else
-	UNAME_S := $(shell uname -s)
-	ifeq ($(UNAME_S),Linux)
-		SDL := $(SDL_LIN)
-	endif
-	ifeq ($(UNAME_S),Darwin)
-		SDL := $(SDL_MAC)
-	endif
-endif
+#SDL			=	_
+#SDL_WIN		=	./SDL2/SDL2-win/
+#SDL_MAC		=	./SDL2/SDL2-mac/
+#SDL_LIN		=	./SDL2/SDL2-lin/
+#
+#ifeq ($(OS),Windows_NT)
+#	SDL := $(SDL_WIN)
+#else
+#	UNAME_S := $(shell uname -s)
+#	ifeq ($(UNAME_S),Linux)
+#		SDL := $(SDL_LIN)
+#	endif
+#	ifeq ($(UNAME_S),Darwin)
+#		SDL := $(SDL_MAC)
+#	endif
+#endif
+
+SRCDIR	=	./src/
+OBJDIR	=	./obj/
+LFTDIR	=	./libft/
 
 HDRS	=	rt.h				\
 			$(LFTDIR)libft.h
@@ -60,7 +62,7 @@ objdir:
 
 libraries:
 	@make -C $(LFTDIR) all
-	@make -C $(SDL) native
+#	@make -C $(SDL) native
 
 clean:
 	@make -C $(LFTDIR) clean

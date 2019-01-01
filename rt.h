@@ -17,7 +17,7 @@
 # include <stdio.h>
 # include <math.h>
 
-# include <SDL2/SDL.h>
+# include "SDL2-2.0.9/include/SDL.h"
 # include "libft/libft.h"
 
 # define WINDOW_W	640

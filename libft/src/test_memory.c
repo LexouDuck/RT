@@ -284,10 +284,9 @@ printf("\n");
 	print_test_memcmp("memcmp (str)  ",    	FALSE,		test2, test3, test3_len);
 	print_test_memcmp("memcmp (n = 0)",    	FALSE,		test2, test3, 0);
 //	print_test_memcmp("memcmp (uint) ",    	FALSE,		&na,   &nb,   4);
-	t_bool segv = TRUE | (1 << 2); // this makes the 'int' test expect a segfault
-	print_test_memcmp("memcmp (null str1)",	segv,		NULL,  test3, test3_len);
-	print_test_memcmp("memcmp (null str2)",	segv, 		test2, NULL,  test3_len);
-	print_test_memcmp("memcmp (both null)",	segv, 		NULL,  NULL,  test3_len);
+	print_test_memcmp("memcmp (null str1)",	SEGV,		NULL,  test3, test3_len);
+	print_test_memcmp("memcmp (null str2)",	SEGV, 		test2, NULL,  test3_len);
+	print_test_memcmp("memcmp (both null)",	SEGV, 		NULL,  NULL,  test3_len);
 	// note that some implementations of memcmp can know the type of argument in input,
 	// so they actually return *(int*)nra - *(int*)nrb -> not just considering memory as
 	// one continous sequence of bytes, like is implied in the man pages for memcmp().

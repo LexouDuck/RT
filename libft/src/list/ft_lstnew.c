@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   char/ft_isdigit.h                                  :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,23 +10,27 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../libft_char.h"
+#include "../../libft_memory.h"
+#include "../../libft_list.h"
 
-inline int		ft_isdigit(int c)
+t_list	*ft_lstnew(void const *item, size_t item_size)
 {
-	return ('0' <= c && c <= '9');
-}
+	t_list *result;
 
-inline int		ft_ishexdigit(int c)
-{
-	return (('0' <= c && c <= '9') ||
-			('A' <= c && c <= 'F') ||
-			('a' <= c && c <= 'f'));
-}
-
-inline int		ft_isalnum(int c)
-{
-	return (('A' <= c && c <= 'Z') ||
-			('a' <= c && c <= 'z') ||
-			('0' <= c && c <= '9'));
+	if (!(result = (t_list *)malloc(sizeof(t_list))))
+		return (NULL);
+	if (item)
+	{
+		if (!(result->item = (void *)malloc(item_size)))
+			return (NULL);
+		result->item_size = item_size;
+		ft_memmove(result->item, item, item_size);
+	}
+	else
+	{
+		result->item = NULL;
+		result->item_size = 0;
+	}
+	result->next = NULL;
+	return (result);
 }

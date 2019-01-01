@@ -479,10 +479,9 @@ printf("\n");
 	print_test_strequ("strequ            ", 	FALSE,	(strcmp(test1, test2) == 0), test1, test2);
 	print_test_strequ("strequ            ", 	FALSE,	(strcmp(test1, test1) == 0), test1, test1);
 	print_test_strequ("strequ (empty str)", 	FALSE,	(strcmp(test1, "")    == 0), test1, "");
-	int segv = TRUE | (1 << 2); // this makes the 'int' test expect a segfault
-	print_test_strequ("strequ (null str1)", 	segv,	 0,                          NULL,  test2);
-	print_test_strequ("strequ (null str2)", 	segv,	 0,                          test1, NULL);
-	print_test_strequ("strequ (both null)", 	segv,	 1,                          NULL,  NULL);
+	print_test_strequ("strequ (null str1)", 	SEGV,	 0,                          NULL,  test2);
+	print_test_strequ("strequ (null str2)", 	SEGV,	 0,                          test1, NULL);
+	print_test_strequ("strequ (both null)", 	SEGV,	 1,                          NULL,  NULL);
 }
 
 
@@ -513,10 +512,9 @@ printf("\n");
 	print_test_strnequ("strnequ (empty str)",	FALSE,	(strncmp(test1, "",     5) == 0), test1, "",    5);
 	print_test_strnequ("strnequ (n = 0)    ",	FALSE,	(strncmp(test1, test1,  0) == 0), test1, test1, 0);
 	print_test_strnequ("strnequ (n > len)  ",	FALSE,	(strncmp(test1, test1, 30) == 0), test1, test1, 30);
-	int segv = TRUE | (1 << 2); // this makes the 'int' test expect a segfault
-	print_test_strnequ("strnequ (null str1)",	segv,	0,                                NULL,  test2, 7);
-	print_test_strnequ("strnequ (null str2)",	segv,	0,                                test1, NULL,  7);
-	print_test_strnequ("strnequ (both null)",	segv,	1,                                NULL,  NULL,  7);
+	print_test_strnequ("strnequ (null str1)",	SEGV,	0,                                NULL,  test2, 7);
+	print_test_strnequ("strnequ (null str2)",	SEGV,	0,                                test1, NULL,  7);
+	print_test_strnequ("strnequ (both null)",	SEGV,	1,                                NULL,  NULL,  7);
 }
 
 
@@ -542,10 +540,9 @@ printf("\n");
 	print_test_strhas("strhas               ",	FALSE,  TRUE,     "sweg my nigga", "mz");
 	print_test_strhas("strhas               ",	FALSE,  TRUE,     "sweg my nigga", "aze");
 	print_test_strhas("strhas               ",	FALSE,  FALSE,    "sweg my nigga", "z_u");
-	t_bool segv = TRUE | (1 << 2); // this makes the 'int' test expect a segfault
-	print_test_strhas("strhas (null str)    ",	segv,   FALSE,     NULL, "mz");
-	print_test_strhas("strhas (null charset)",	segv,   FALSE,     "sw", NULL);
-	print_test_strhas("strhas (both null)   ",	segv,   FALSE,     NULL, NULL);
+	print_test_strhas("strhas (null str)    ",	SEGV,   FALSE,     NULL, "mz");
+	print_test_strhas("strhas (null charset)",	SEGV,   FALSE,     "sw", NULL);
+	print_test_strhas("strhas (both null)   ",	SEGV,   FALSE,     NULL, NULL);
 }
 
 
@@ -572,10 +569,9 @@ printf("\n");
 	print_test_strhasonly("strhasonly                ",	FALSE,  FALSE,   "sweg my nigga", "aiey gsw");
 	print_test_strhasonly("strhasonly (empty str)    ",	FALSE,  TRUE,   "",     "z_u");
 	print_test_strhasonly("strhasonly (empty charset)",	FALSE,  FALSE,   "sweg", "");
-	t_bool segv = TRUE | (1 << 2); // this makes the 'int' test expect a segfault
-	print_test_strhasonly("strhasonly (null str)     ",	segv,   FALSE,   NULL, "mz");
-	print_test_strhasonly("strhasonly (null charset) ",	segv,   FALSE,   "sw", NULL);
-	print_test_strhasonly("strhasonly (both null)    ",	segv,   FALSE,   NULL, NULL);
+	print_test_strhasonly("strhasonly (null str)     ",	SEGV,   FALSE,   NULL, "mz");
+	print_test_strhasonly("strhasonly (null charset) ",	SEGV,   FALSE,   "sw", NULL);
+	print_test_strhasonly("strhasonly (both null)    ",	SEGV,   FALSE,   NULL, NULL);
 }
 
 
@@ -602,8 +598,7 @@ printf("\n");
 	print_test_strcount_char("strcount_char            ",	FALSE,  0,       "sweg my nigga", 'z');
 	print_test_strcount_char("strcount_char (empty str)",	FALSE,  0,       "",              'a');
 	print_test_strcount_char("strcount_char ('\\0 char')",	FALSE,  0,       "sweg",          '\0');
-	t_bool segv = TRUE | (1 << 2); // this makes the 'int' test expect a segfault
-	print_test_strcount_char("strcount_char (null str) ",	segv,   0,       NULL,            'a');
+	print_test_strcount_char("strcount_char (null str) ",	SEGV,   0,       NULL,            'a');
 }
 
 
@@ -632,10 +627,9 @@ printf("\n");
 	print_test_strcount_str("strcount_str              ",	FALSE,  1,         "sweg my nigga", "gg");
 	print_test_strcount_str("strcount_str (empty str)  ",	FALSE,  0,         "",              "g");
 	print_test_strcount_str("strcount_str (empty query)",	FALSE,  0,         test1, "");
-	t_bool segv = TRUE | (1 << 2); // this makes the 'int' test expect a segfault
-	print_test_strcount_str("strcount_str (null str)   ",	segv,   0,         NULL, "mz");
-	print_test_strcount_str("strcount_str (null query) ",	segv,   0,         "sw", NULL);
-	print_test_strcount_str("strcount_str (both null)  ",	segv,   0,         NULL, NULL);
+	print_test_strcount_str("strcount_str (null str)   ",	SEGV,   0,         NULL, "mz");
+	print_test_strcount_str("strcount_str (null query) ",	SEGV,   0,         "sw", NULL);
+	print_test_strcount_str("strcount_str (both null)  ",	SEGV,   0,         NULL, NULL);
 }
 
 

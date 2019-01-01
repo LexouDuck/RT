@@ -8,4 +8,8 @@ typedef int				t_bool;
 typedef float 			t_float;
 typedef t_float			t_vec_3d[3];
 
+
+
+typedef int		t_int; //TODO add to shorthands
+
 #endif

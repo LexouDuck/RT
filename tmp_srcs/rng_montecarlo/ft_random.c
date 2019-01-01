@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/23 04:12:35 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/12/29 19:56:09 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/01 21:43:06 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ inline t_u32		ft_rand_0_to_n(t_u32 n)
 	return (ft_rand() % n);
 }
 
-inline t_s32		ft_rand_a_to_b(t_s32 a, t_s32 b)
+inline t_int		ft_rand_a_to_b(t_int a, t_int b)
 {
-	return (ft_rand_0_to_n(ft_abs(a - b)) - a);
+	return (ft_rand_0_to_n(ft_abs(b - a)) + a);
 }
 
 inline t_float		ft_frand_0_to_1(void)

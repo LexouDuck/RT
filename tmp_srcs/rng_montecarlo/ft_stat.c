@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 00:43:31 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/12/30 18:48:22 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/01 21:47:04 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,48 +19,42 @@
 
 #include "ft_stat.h"
 
+t_int_list 	ft_stat_merge_ilst(t_int_list *start,
+								t_int_list *append)
+{
+	t_int_list			res;
+	t_u32				i;
+	t_u32				j;
+
+	if (start->len == 0 && append->len == 0)
+		return (ft_stat_new_ilst(0));
+	else if (start->len == 0)
+		return (*append);
+	else if (append->len == 0)
+		return (*start);
+	res = ft_stat_new_ilst(start->len + append->len);
+	if (!(res.data))
+		return (res);
+	i = 0;
+	while (i < start->len)
+	{
+		res.data[i] = start->data[i];
+		++i;
+	}
+	j = 0;
+	while (i < res.len)
+		res.data[i++] = append->data[j++];
+	ft_stat_free_ilst(start);
+	ft_stat_free_ilst(append);
+	return (res);
+}
 
 /*
-** Maybe add an "if lst.len = 0" condition ?
-*/
-//TODO fix
-t_stat_sample_i 	ft_stat_merge_samples_i(t_stat_sample_i const start,
-										t_stat_sample_i const append)
-{
-	t_stat_sample_i		res;
-	t_u32				i;
-	t_u32				j;
-
-	if (start.len > MAX_STAT_SAMPLE_SIZE - append.len)
-	{
-		write(2, "MAX_SAMPLE_SIZE exceeded: some values thrown\n", 45);
-//printf("\t--> startlen: %u, appendlen: %u, sum : %u, MAX_SAMPLE_SIZE: %u\n", start.len, append.len, start.len + append.len, MAX_STAT_SAMPLE_SIZE);
-		res.len = MAX_STAT_SAMPLE_SIZE; 
-	}
-	else
-		res.len = start.len + append.len;
-	i = 0;
-	while (i < start.len)
-	{
-		res.data[i] = start.data[i];
-		++i;
-	}
-	j = 0;
-	while (i < res.len)
-	{
-		res.data[i] = append.data[j];
-		++i;
-		++j;
-	}
-	return (res);
-}
-
-
 //TODO FIX
-t_stat_sample_f 	ft_stat_merge_samples_f(t_stat_sample_f const start,
-										t_stat_sample_f const append)
+t_float_list 	ft_stat_merge_flst(t_float_list const start,
+										t_float_list const append)
 {
-	t_stat_sample_f		res;
+	t_float_list		res;
 	t_u32				i;
 	t_u32				j;
 
@@ -74,56 +68,55 @@ t_stat_sample_f 	ft_stat_merge_samples_f(t_stat_sample_f const start,
 	i = 0;
 	while (i < start.len)
 	{
-		res.data[i] = start.data[i];
+		res->data[i] = start->data[i];
 		++i;
 	}
 	j = 0;
 	while (i < res.len)
 	{
-		res.data[i] = append.data[j];
+		res->data[i] = append->data[j];
 		++i;
 		++j;
 	}
 	return (res);
 }
-//TODO fix
-t_stat_sample_i 	ft_stat_quicksort_i(t_stat_sample_i const i_lst)
-{
-	t_u64				pivot;
-	t_u32				i;
-	t_stat_sample_i		sub_lst;
-	t_stat_sample_i		sup_lst;
+*/
 
-printf("lstlen: %d\n", i_lst.len);
+t_int_list 	ft_stat_quicksort_i(t_int_list const i_lst)
+{
+	t_int				pivot;
+	t_u32				i;
+	t_int_list			sub_lst;
+	t_int_list			sup_lst;
+
 	if (i_lst.len <= 1)
 		return (i_lst);
+	sub_lst = ft_stat_new_ilst(i_lst.len);
+	sup_lst = ft_stat_new_ilst(i_lst.len);
+	if (!sub_lst.data || !sup_lst.data)
+		return (ft_stat_new_ilst(0));
 	sub_lst.len = 0;
 	sup_lst.len = 0;
 	pivot = i_lst.data[0];
-	i = 1;
-	while (i < i_lst.len)
-	{
+	i = 0;
+	while (++i < i_lst.len)
 		if (i_lst.data[i] < pivot)
 			sub_lst.data[(sub_lst.len)++] = i_lst.data[i];
 		else
 			sup_lst.data[(sup_lst.len)++] = i_lst.data[i];
-		++i;
-	}
-//	if (sub_lst.len == 0 || sup_lst.len == 0)
-//		return (sub_lst.len == 0 ? sup_lst : sub_lst);
 	sub_lst = ft_stat_quicksort_i(sub_lst);
 	sup_lst = ft_stat_quicksort_i(sup_lst);
 	sub_lst.data[(sub_lst.len)++] = pivot;
-	return (ft_stat_merge_samples_i(sub_lst, sup_lst));
+	return (ft_stat_merge_ilst(&sub_lst, &sup_lst));
 }
-
+/*
 //TODO fix
-t_stat_sample_f 	ft_stat_quicksort_f(t_stat_sample_f const f_lst)
+t_float_list 	ft_stat_quicksort_f(t_float_list const f_lst)
 {
-	t_u64				pivot;
+	t_float				pivot;
 	t_u32				i;
-	t_stat_sample_f		sub_lst;
-	t_stat_sample_f		sup_lst;
+	t_float_list		sub_lst;
+	t_float_list		sup_lst;
 
 
 //printf("lstlen: %d\n", f_lst.len);
@@ -131,37 +124,38 @@ t_stat_sample_f 	ft_stat_quicksort_f(t_stat_sample_f const f_lst)
 		return (f_lst);
 	sub_lst.len = 0;
 	sup_lst.len = 0;
-	pivot = f_lst.data[0];
+	pivot = f_lst->data[0];
 	i = 1;
 	while (i < f_lst.len)
 	{
-		if (f_lst.data[i] < pivot)
-			sub_lst.data[(sub_lst.len)++] = f_lst.data[i];
+		if (f_lst->data[i] < pivot)
+			sub_lst->data[(sub_lst.len)++] = f_lst->data[i];
 		else
-			sup_lst.data[(sup_lst.len)++] = f_lst.data[i];
+			sup_lst->data[(sup_lst.len)++] = f_lst->data[i];
 		++i;
 	}
 	sub_lst = ft_stat_quicksort_f(sub_lst);
 	sup_lst = ft_stat_quicksort_f(sup_lst);
-	sub_lst.data[(sub_lst.len)++] = pivot;
+	sub_lst->data[(sub_lst.len)++] = pivot;
 	return (ft_stat_merge_samples_f(sub_lst, sup_lst));
 }
+*/
 
-inline t_float		ft_stat_median_i(t_stat_sample_i const i_lst)
+inline t_float		ft_stat_median_i(t_int_list const i_lst)
 {
 	return (i_lst.len % 2 ?
 			i_lst.data[i_lst.len / 2] :
 			(i_lst.data[i_lst.len / 2] + i_lst.data[i_lst.len / 2 + 1]) / 2);
 }
 
-inline t_float		ft_stat_median_f(t_stat_sample_f const f_lst)
+inline t_float		ft_stat_median_f(t_float_list const f_lst)
 {
 	return (f_lst.len % 2 ?
 			f_lst.data[f_lst.len / 2] :
 			(f_lst.data[f_lst.len / 2] + f_lst.data[f_lst.len / 2 + 1]) / 2);
 }
 
-t_float		ft_stat_average_i(t_stat_sample_i const i_lst)
+t_float		ft_stat_average_i(t_int_list const i_lst)
 {
 	t_float		sum;
 	t_u32		i;
@@ -177,7 +171,7 @@ t_float		ft_stat_average_i(t_stat_sample_i const i_lst)
 
 }
 
-t_float		ft_stat_average_f(t_stat_sample_f const f_lst)
+t_float		ft_stat_average_f(t_float_list const f_lst)
 {
 	t_float		sum;
 	t_u32		i;
@@ -197,7 +191,7 @@ t_float		ft_stat_average_f(t_stat_sample_f const f_lst)
 **	operations (n subtractions).
 */
 
-t_float		ft_stat_variance_i(t_stat_sample_i const i_lst)
+t_float		ft_stat_variance_i(t_int_list const i_lst)
 {
 	t_float		sum;
 	t_u32		i;
@@ -217,7 +211,7 @@ t_float		ft_stat_variance_i(t_stat_sample_i const i_lst)
 
 }
 
-t_float		ft_stat_variance_f(t_stat_sample_f const f_lst)
+t_float		ft_stat_variance_f(t_float_list const f_lst)
 {
 	t_float		sum;
 	t_u32		i;

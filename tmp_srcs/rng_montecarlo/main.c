@@ -93,16 +93,17 @@ int			main(void)
 											xi, xf, yi, yf, zi, zf, mc_integrate(&test_func, domain));
 	*/
 
-	printf("Stat test of rng, sample size: %d\n", MAX_STAT_SAMPLE_SIZE);
+	t_u32				sample_nb = 20000;
+	printf("Stat test of rng, sample size: %d\n", sample_nb);
 
-	t_stat_sample_i		i_lst;
+	t_int_list			i_lst;
 	t_u64				intmax = (t_u32)-1;
 	t_float				tmp;
-	t_float				decile_inc = MAX_STAT_SAMPLE_SIZE / 10.;
+	t_float				decile_inc = sample_nb / 10.;
 
-	i_lst.len = MAX_STAT_SAMPLE_SIZE;
-	for (int i = 0; i < MAX_STAT_SAMPLE_SIZE; ++i)
-		i_lst.data[i] = ft_rand_a_to_b(-20, 20);//ft_rand();
+	i_lst = ft_stat_new_ilst(sample_nb);
+	for (int i = 0; i < i_lst.len; ++i)
+		i_lst.data[i] = ft_rand_a_to_b(-20, 21);//ft_rand();
 
 	printf("Quicksorting...\n");
 	i_lst = ft_stat_quicksort_i(i_lst);
@@ -111,20 +112,8 @@ int			main(void)
 	printf("\tAverage:  %12f | intmax/2 :%lu\n", ft_stat_average_i(i_lst), intmax / 2);
 	tmp = ft_stat_variance_i(i_lst);
 	printf("\tVariance: %12f | StdDev: %12f\n", tmp, sqrt(tmp));
-	printf("\tDeciles:\n\t\t0 : %12lu\n\t\t1 : %12lu\n\t\t2 : %12lu\n\t\t3 : %12lu\n\t\t4 : %12lu\n\t\t5 : %12lu\n\t\t6 : %12lu\n\t\t7 : %12lu\n\t\t8 : %12lu\n\t\t9 : %12lu\n\t\t10: %12lu\n\n",
-		i_lst.data[0],
-		i_lst.data[(t_u32)decile_inc],
-		i_lst.data[(t_u32)(decile_inc * 2)],
-		i_lst.data[(t_u32)(decile_inc * 3)],
-		i_lst.data[(t_u32)(decile_inc * 4)],
-		i_lst.data[(t_u32)(decile_inc * 5)],
-		i_lst.data[(t_u32)(decile_inc * 6)],
-		i_lst.data[(t_u32)(decile_inc * 7)],
-		i_lst.data[(t_u32)(decile_inc * 8)],
-		i_lst.data[(t_u32)(decile_inc * 9)],
-		i_lst.data[MAX_STAT_SAMPLE_SIZE - 1]);
 
-	printf("\tDeciles:\n\t\t0 : %#12lx\n\t\t1 : %#12lx\n\t\t2 : %#12lx\n\t\t3 : %#12lx\n\t\t4 : %#12lx\n\t\t5 : %#12lx\n\t\t6 : %#12lx\n\t\t7 : %#12lx\n\t\t8 : %#12lx\n\t\t9 : %#12lx\n\t\t10: %#12lx\n\n",
+	printf("\tDeciles int:\n\t\t0 : %12d\n\t\t1 : %12d\n\t\t2 : %12d\n\t\t3 : %12d\n\t\t4 : %12d\n\t\t5 : %12d\n\t\t6 : %12d\n\t\t7 : %12d\n\t\t8 : %12d\n\t\t9 : %12d\n\t\t10: %12d\n\n",
 		i_lst.data[0],
 		i_lst.data[(t_u32)decile_inc],
 		i_lst.data[(t_u32)(decile_inc * 2)],
@@ -135,7 +124,33 @@ int			main(void)
 		i_lst.data[(t_u32)(decile_inc * 7)],
 		i_lst.data[(t_u32)(decile_inc * 8)],
 		i_lst.data[(t_u32)(decile_inc * 9)],
-		i_lst.data[MAX_STAT_SAMPLE_SIZE - 1]);
+		i_lst.data[sample_nb - 1]);
+
+	printf("\tDeciles uint:\n\t\t0 : %12lu\n\t\t1 : %12lu\n\t\t2 : %12lu\n\t\t3 : %12lu\n\t\t4 : %12lu\n\t\t5 : %12lu\n\t\t6 : %12lu\n\t\t7 : %12lu\n\t\t8 : %12lu\n\t\t9 : %12lu\n\t\t10: %12lu\n\n",
+		i_lst.data[0],
+		i_lst.data[(t_u32)decile_inc],
+		i_lst.data[(t_u32)(decile_inc * 2)],
+		i_lst.data[(t_u32)(decile_inc * 3)],
+		i_lst.data[(t_u32)(decile_inc * 4)],
+		i_lst.data[(t_u32)(decile_inc * 5)],
+		i_lst.data[(t_u32)(decile_inc * 6)],
+		i_lst.data[(t_u32)(decile_inc * 7)],
+		i_lst.data[(t_u32)(decile_inc * 8)],
+		i_lst.data[(t_u32)(decile_inc * 9)],
+		i_lst.data[sample_nb - 1]);
+
+	printf("\tDeciles hex:\n\t\t0 : %#12lx\n\t\t1 : %#12lx\n\t\t2 : %#12lx\n\t\t3 : %#12lx\n\t\t4 : %#12lx\n\t\t5 : %#12lx\n\t\t6 : %#12lx\n\t\t7 : %#12lx\n\t\t8 : %#12lx\n\t\t9 : %#12lx\n\t\t10: %#12lx\n\n",
+		i_lst.data[0],
+		i_lst.data[(t_u32)decile_inc],
+		i_lst.data[(t_u32)(decile_inc * 2)],
+		i_lst.data[(t_u32)(decile_inc * 3)],
+		i_lst.data[(t_u32)(decile_inc * 4)],
+		i_lst.data[(t_u32)(decile_inc * 5)],
+		i_lst.data[(t_u32)(decile_inc * 6)],
+		i_lst.data[(t_u32)(decile_inc * 7)],
+		i_lst.data[(t_u32)(decile_inc * 8)],
+		i_lst.data[(t_u32)(decile_inc * 9)],
+		i_lst.data[sample_nb - 1]);
 
 	return (0);
 }

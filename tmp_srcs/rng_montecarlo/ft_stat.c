@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 00:43:31 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/01 21:47:04 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/01 23:47:05 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@
 
 
 #include "ft_stat.h"
-
+/*
+** An extra t_int is always allocated to leve room for the pivot in QckSrt
+*/
 t_int_list 	ft_stat_merge_ilst(t_int_list *start,
 								t_int_list *append)
 {
@@ -28,11 +30,12 @@ t_int_list 	ft_stat_merge_ilst(t_int_list *start,
 
 	if (start->len == 0 && append->len == 0)
 		return (ft_stat_new_ilst(0));
-	else if (start->len == 0)
+	else if (!start->data || start->len == 0)
 		return (*append);
-	else if (append->len == 0)
+	else if (!append->data || append->len == 0)
 		return (*start);
-	res = ft_stat_new_ilst(start->len + append->len);
+	res = ft_stat_new_ilst(start->len + append->len + 1);
+	--res.len;
 	if (!(res.data))
 		return (res);
 	i = 0;

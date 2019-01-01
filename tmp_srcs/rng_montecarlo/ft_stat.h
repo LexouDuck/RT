@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 00:04:39 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/01 21:30:02 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/01 23:05:39 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,21 @@ typedef struct	s_float_list
 	t_float		*data;
 	t_u32		len;
 }				t_float_list;
+
+/*
+** Use only to signify a list with no repeating values.
+*/
+/*
+typedef t_int_list		t_int_set;
+typedef t_float_list	t_float_set;
+*/
+/*
+** Use only to signify a list that has been ordered.
+*/
+/*
+typedef t_int_list		t_int_sortedlst;
+typedef t_float_list	t_float_sortedlst;
+*/
 
 /*
 ** Remember:
@@ -80,17 +95,20 @@ typedef struct	s_float_list
 */
 
 /*
-typedef struct	s_prob_disc_randvar
+** A struct for the probability mass function describing a discrete random var.
+*/
+typedef struct	s_prob_mass
 {
 	t_float				*value;
 	t_float				*prob;
 	t_u32				len;
-}				t_prob_disc_randvar;
+}				t_prob_mass;
 
-typedef struct	s_prob_cont_randvar
+/*
+typedef struct	s_prob_dens
 {
 	t_float		(*distrib)(); //? cumul distib ?
-}				t_cont_randvar;
+}				t_prob_dens;
 */
 
 t_int_list			ft_stat_merge_ilst(t_int_list *start,
@@ -131,6 +149,10 @@ t_bool				ft_prob_is_valid_i(t_prob_sample_i const i_problst);
 t_bool				ft_prob_is_valid_f(t_prob_sample_f const f_problst);
 */
 
-
+t_prob_mass			ft_stat_new_pmf(t_u32 len);
+void				ft_stat_free_pmf(t_prob_mass *drv);
+t_int_list			ft_stat_ilst_to_iset(t_int_list const ilst);
+t_u32				ft_stat_ilst_count(t_int_list ilst, t_int elem);
+t_prob_mass			ft_stat_ilst_to_pmf(t_int_list const ilst);
 
 #endif

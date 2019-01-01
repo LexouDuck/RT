@@ -103,10 +103,11 @@ int			main(void)
 
 	i_lst = ft_stat_new_ilst(sample_nb);
 	for (int i = 0; i < i_lst.len; ++i)
-		i_lst.data[i] = ft_rand_a_to_b(-20, 21);//ft_rand();
+		i_lst.data[i] = ft_rand_a_to_b(-500, 501);//ft_rand();
 
 	printf("Quicksorting...\n");
 	i_lst = ft_stat_quicksort_i(i_lst);
+	printf("Done !\n");
 
 	printf("\tMedian:   %12f | intmax   :%lu\n", ft_stat_median_i(i_lst), intmax);
 	printf("\tAverage:  %12f | intmax/2 :%lu\n", ft_stat_average_i(i_lst), intmax / 2);
@@ -151,6 +152,22 @@ int			main(void)
 		i_lst.data[(t_u32)(decile_inc * 8)],
 		i_lst.data[(t_u32)(decile_inc * 9)],
 		i_lst.data[sample_nb - 1]);
+
+
+	t_prob_mass		pmf;
+
+	pmf = ft_stat_ilst_to_pmf(i_lst);
+	
+	printf("Probability mass function for the RNG\n");
+	for (int i = 0; i < pmf.len; ++i)
+		printf("\t%5d: val %12f; prob %.4f\n", i, pmf.value[i], pmf.prob[i]);
+
+	tmp = 0.;
+	for (int i = 0; i < pmf.len; ++i)
+		tmp += pmf.prob[i];
+
+	printf("Sum of probs: %.12f\n", tmp);
+
 
 	return (0);
 }

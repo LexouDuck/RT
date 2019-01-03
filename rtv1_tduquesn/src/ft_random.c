@@ -6,19 +6,11 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/23 04:12:35 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/01 21:59:58 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/03 19:33:34 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_random.h"
-
-
-
-
-t_u32 ft_abs(int a) { return a < 0 ? -a : a;}
-
-
-
 
 inline static t_u32	ft_rand_bit_shuffle(t_u32 n)
 {

@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/29 07:05:34 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/18 18:04:58 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/03 19:36:23 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,23 +55,26 @@ static void			shader_get_diff_n_spec(t_vec_3d reslum, t_control *ctrl,
 	tmp = vec3_eucl_quadnorm(shdr.dirlight.dir);
 	shdr.dirlight.t = sqrt(tmp);
 	vec3_scale(shdr.dirlight.dir, 1. / shdr.dirlight.t, shdr.dirlight.dir);
-	if (trace_ray_to_objs(ctrl, shdr.dirlight, NULL, NULL))
-		return ;
+
 	if (ctrl->show_diffuse)
 	{
+		if (trace_ray_to_objs(ctrl, shdr.dirlight, NULL, NULL))
+			return ;
 		vec3_scale(reslum, INV_PI * spot.intensity * ft_fmax(0.,
 			vec3_dot(shdr.normal, shdr.dirlight.dir)) / tmp, shdr.obj_albedo);
 		vec3_schur(reslum, reslum, spot.rgb);
 	}
-	if (!(ctrl->show_specular))
-		return ;
-	vec3_scale(ref, -1., shdr.dirlight.dir);
-	get_reflect(ref, ref, shdr.normal);
-	tmp = ft_fmax(0., -vec3_dot(ref, shdr.objray_dir));
-	vec3_set(spec, powf(tmp, shdr.obj_specul[0]),
-		powf(tmp, shdr.obj_specul[1]), powf(tmp, shdr.obj_specul[2]));
-	vec3_schur(spec, spec, spot.rgb);
-	vec3_add(reslum, reslum, spec);
+
+	if (ctrl->show_specular)
+	{
+		vec3_scale(ref, -1., shdr.dirlight.dir);
+		get_reflect(ref, ref, shdr.normal);
+		tmp = ft_fmax(0., -vec3_dot(ref, shdr.objray_dir));
+		vec3_set(spec, powf(tmp, shdr.obj_specul[0]),
+			powf(tmp, shdr.obj_specul[1]), powf(tmp, shdr.obj_specul[2]));
+		vec3_schur(spec, spec, spot.rgb);
+	}
+	//vec3_add(reslum, reslum, spec);
 }
 
 /*

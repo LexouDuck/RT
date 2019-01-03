@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/23 04:00:36 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/03 03:46:31 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/03 19:33:04 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,7 @@
 **		new_nb = (CEIL_SQRT_MOD  * old_nb + OFFSET) % MODULUS
 */
 
-
-
-#include "../libft/hdr/libft.h" //replace by libft.h
-
+#include "../libft/hdr/libft.h"
 
 # define DEFAULT_SEED	0x93E21FD5 //make a global and build an ft_srand ?
 

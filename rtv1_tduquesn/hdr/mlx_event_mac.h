@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/29 01:19:28 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/05 07:52:43 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/03 15:33:51 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # define KEY_HELP		0x72
 # define KEY_DELETE		0x75
 
+# define KEY_A			0x00
 # define KEY_S			0x01
 # define KEY_D			0x02
 # define KEY_I			0x22

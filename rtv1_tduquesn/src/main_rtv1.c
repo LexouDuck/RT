@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 20:27:46 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/03 04:30:31 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/03 15:56:25 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ void			exit_error(char *e_msg, int e_no)
 	else
 		perror(e_msg);
 	exit(e_no);
+}
+
+static int		exit_x(void)
+{
+	exit(1);
 }
 
 /*
@@ -70,6 +75,7 @@ int				main(int argc, char **argv)
 	read_rt_file(&ctrl, argv[1]);
 	render(&ctrl);
 	mlx_key_hook(ctrl.win_ptr, handle_key, &ctrl);
+	mlx_hook(ctrl.win_ptr, EVENT_DESTROYNOTIFY, MASK_STRUCTURENOTIFY, exit_x, 0);
 	mlx_expose_hook(ctrl.win_ptr, handle_redraw, &ctrl);
 	mlx_loop(ctrl.mlx_ptr);
 	return (0);

@@ -6,12 +6,21 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 17:34:32 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/03 04:37:22 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/03 19:32:29 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RTV1_H
 # define RTV1_H
+
+/*
+ TODO:
+
+ -Fix object / light dichotomy so that objects may act as secondary light
+ sources and light source can be other things than punctual (long)
+ -Break up shader.c in order to return color vectors rather than t_color
+ -Fill the different color vector layers then write a merge function
+*/
 
 /*
 ** NB : convention used is +x for right axis, +y for up axis, +z for back axis
@@ -22,6 +31,7 @@
 # include "../libft/hdr/ft_printf.h"
 # include "../libft/hdr/get_next_line.h"
 # include "mlx_event_mac.h"
+# include "ft_random.h"
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/stat.h>
@@ -49,6 +59,7 @@
 # define MAX_OBJ_NB		32
 # define MAX_FILE_LN_NB	1000
 # define MAX_RAY_DEPTH	10
+# define AMBIENT_RAY_NB	8
 
 typedef struct	s_point
 {

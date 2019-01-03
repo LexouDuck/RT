@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 00:54:52 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/04/20 00:54:57 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/03 03:46:03 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef int				t_s32;
 typedef	long			t_s64;
 typedef float			t_f32;
 typedef double			t_f64;
+typedef t_s64			t_int;
 typedef t_f64			t_float;
 
 typedef uint_fast8_t	t_bool;

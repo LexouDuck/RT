@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/14 20:49:10 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/05 07:58:46 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/03 04:29:40 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ t_bool		handle_key_helper(t_control *ctrl, int key)
 	else if (key == KEY_D)
 		ctrl->show_diffuse = !(ctrl->show_diffuse);
 	else if (key == KEY_S)
-		ctrl->show_specular = !(ctrl->show_specular);
+		ctrl->show_specular = !(ctrl->show_specular);	
+	else if (key == KEY_A)
+		ctrl->show_ambient = !(ctrl->show_ambient);
 	else
 		return (FALSE);
 	return (TRUE);

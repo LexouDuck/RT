@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 20:27:46 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/06 16:30:12 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/03 04:30:31 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int				main(int argc, char **argv)
 	ctrl.objlst_len = 0;
 	ctrl.show_diffuse = TRUE;
 	ctrl.show_specular = TRUE;
+	ctrl.show_ambient = FALSE;
 	ctrl.cam.hrz_fov = INIT_FOV;
 	ctrl.render_dist = 1.e+6;
 	read_rt_file(&ctrl, argv[1]);

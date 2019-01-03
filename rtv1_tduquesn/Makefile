@@ -6,7 +6,7 @@
 #    By: tduquesn <tduquesn@42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/17 21:33:56 by tduquesn          #+#    #+#              #
-#    Updated: 2018/10/05 07:59:56 by fulguritu        ###   ########.fr        #
+#    Updated: 2019/01/03 03:48:25 by fulguritu        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,12 +35,13 @@ LIBS	=	-L$(LOC_LMLX) -lmlx -framework OpenGL -framework AppKit -L$(LFTDIR) -lft
 endif
 
 
-HDRDIR	:=	./
+HDRDIR	:=	./hdr/
 LFTDIR	:=	./libft/
 TSTDIR	:=	./tests/
 SRCDIR	:=	./src/
 
-HDRS	:=	$(NAME).h
+HDRS	:=	$(NAME).h			\
+			ft_integral.h ft_stat.h ft_random.h
 SRCS	:=	camera.c			\
 			coordinates.c		\
 			event_key.c			\
@@ -57,7 +58,8 @@ SRCS	:=	camera.c			\
 			cube.c				\
 			paraboloid.c		\
 			shader.c			\
-			render.c
+			render.c			\
+			ft_stat.c ft_random.c ft_integral.c ft_stat_nblst_utils.c ft_prob.c
 			
 
 OBJS	:=	$(SRCS:.c=.o)
@@ -73,12 +75,12 @@ RESET	:=	"\033[0m"
 RED		:=	"\033[0;31m"
 GREEN	:=	"\033[0;32m"
 
-$(NAME): $(LFTDIR)$(LFT) $(OBJS) $(OBJ_MAIN) $(HDRS)
+$(NAME): $(LFTDIR)$(LFT) $(OBJS) $(OBJ_MAIN) #$(HDRS)
 	@echo "Compiling software: "$@" -> \c"$(RED)
 	@$(CC) $(CFLAGS) $(DBFLAGS) $(OBJS) $(OBJ_MAIN) $(LIBS) -o $@
 	@echo $(GREEN)"OK!"$(RESET)
 
-%.o: $(SRCDIR)%.c $(HDRS)
+%.o: $(SRCDIR)%.c #$(HDRS)
 	@$(CC) $(CFLAGS) -c $< -I$(HDRDIR)
 
 #dependencies are taken care of in libft's makefile.

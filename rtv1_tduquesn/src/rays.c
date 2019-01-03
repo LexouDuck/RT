@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/16 23:00:36 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/12/18 18:09:35 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/03 05:16:08 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,26 +107,24 @@ t_color			color_or_secondary_ray(t_control *ctrl,
 	t_ray		reflect;
 	t_ray		res_objray;
 
+
 	if (hit_obj->material == mirror &&
 		(reflect.depth = incident.depth + 1) < MAX_RAY_DEPTH)
 	{
-//			return (get_color_from_fixed_objray(ctrl, *hit_obj, incident));
-//			return (MIRROR_DBG_COLOR);
-//			return (BLACK);
 		hit_obj->get_hnn(reflect.pos, normal, incident);
 		get_reflect(reflect.dir, incident.dir, normal);
 		vec3_scale(normal, APPROX, normal);
 		vec3_add(reflect.pos, reflect.pos, normal);
 		reflect.t = ctrl->render_dist;
 		reflect = ray_x_to_y(hit_obj->o_to_w, hit_obj->linear_o_to_w, reflect);
-	/*	if (*/trace_ray_to_objs(ctrl, reflect, hit_obj, &res_objray)/*)*/;
-			return (color_or_secondary_ray(ctrl, res_objray, hit_obj));
-	//	else
-	//		return (MIRROR_DBG_COLOR);
+		trace_ray_to_objs(ctrl, reflect, hit_obj, &res_objray);
+		return (color_or_secondary_ray(ctrl, res_objray, hit_obj));
 	}
+
+
 	if (hit_obj->material == glassy &&
 		(reflect.depth = incident.depth + 1) < MAX_RAY_DEPTH)
-	{//for now we calll "reflect" the "transmitted" ray
+	{//for now we call "reflect" the "transmitted" ray
 		hit_obj->get_hnn(reflect.pos, normal, incident);
 		if (get_transmit(reflect.dir, incident.dir, normal, hit_obj->refrac)) //normal should be altered to the right direction here
 		{
@@ -137,6 +135,39 @@ t_color			color_or_secondary_ray(t_control *ctrl,
 			return (color_or_secondary_ray(ctrl, res_objray, hit_obj));
 		}
 	}
+
+	//rand dir is first defined in local space
+	if (hit_obj->material == diffuse && ctrl->show_ambient &&
+		(reflect.depth = incident.depth + 1) < MAX_RAY_DEPTH)
+	{
+		t_float		t1 = ft_frand_0_to_1();
+		t_float		t2 = ft_frand_0_to_1();
+		t_float		tmp;
+		t_vec_3d	randdir;
+		t_vec_3d	randv;
+		t_vec_3d	vtan1;
+		t_vec_3d	vtan2;
+
+
+		hit_obj->get_hnn(reflect.pos, normal, incident);
+		tmp = sqrt(1. - t2);
+		t1 = TAU * t1;
+		vec3_set(randdir, cos(t1) * tmp, sin(t1) * tmp, sqrt(t2));
+		vec3_set(randv, ft_frand_0_to_1(), ft_frand_0_to_1(), ft_frand_0_to_1());
+		vec3_cross(vtan1, normal, randv);
+		vec3_normalize(vtan1, vtan1);
+		vec3_cross(vtan2, vtan1, normal);
+		vec3_set(randdir,
+		randdir[0] * vtan1[0] + randdir[1] * vtan2[0] + randdir[2] * normal[0], 
+		randdir[0] * vtan1[1] + randdir[1] * vtan2[1] + randdir[2] * normal[1],
+		randdir[0] * vtan1[2] + randdir[1] * vtan2[2] + randdir[2] * normal[2]);		
+		vec3_scale(normal, APPROX, normal);
+		vec3_add(reflect.pos, reflect.pos, normal);
+		reflect.dir = randdir;
+		reflect.t = ctrl->render_dist;
+		//int"nzite pixel??
+	}
+
 	return (get_color_from_fixed_objray(ctrl, *hit_obj, incident));
 }
 

@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 17:34:32 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/12/18 17:11:39 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/03 04:37:22 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 ** NB : convention used is +x for right axis, +y for up axis, +z for back axis
 */
 
-# include "libft/hdr/libft.h"
-# include "libft/hdr/libft_algebra.h"
-# include "libft/hdr/ft_printf.h"
-# include "libft/hdr/get_next_line.h"
+# include "../libft/hdr/libft.h"
+# include "../libft/hdr/libft_algebra.h"
+# include "../libft/hdr/ft_printf.h"
+# include "../libft/hdr/get_next_line.h"
 # include "mlx_event_mac.h"
 # include <fcntl.h>
 # include <sys/types.h>
@@ -57,6 +57,11 @@ typedef struct	s_point
 }				t_point;
 
 typedef t_u32	t_color;
+
+typedef struct	s_image_buffer
+{
+	t_color		img[REN_H][REN_W];
+}				t_image_buffer;
 
 /*
 ** CAMERA
@@ -186,9 +191,10 @@ typedef void	(*t_hnn_func)(t_vec_3d hp, t_vec_3d nml, t_ray const objr);
 
 typedef enum	e_material
 {
-	opaque,
+	diffuse,
 	mirror,
-	glassy
+	glassy,
+	glossy
 }				t_material;
 
 typedef struct	s_object
@@ -224,11 +230,13 @@ typedef struct	s_control
 	int				img_pixel_nb;
 	int				endian;
 	char			*img_data;
+	t_image_buffer	layers[3]; //direct diffuse, specular, indirect diffuse (path-tracing, ambient)
 	t_camera		cam;
 	t_float			render_dist;
 	t_bool			debug;
 	t_bool			show_diffuse;
 	t_bool			show_specular;
+	t_bool			show_ambient;
 	t_point			mouse;
 	t_object		objlst[MAX_OBJ_NB];
 	int				objlst_len;

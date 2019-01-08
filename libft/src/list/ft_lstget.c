@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   ft_lstget.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,14 +12,31 @@
 
 #include "../../libft_list.h"
 
-t_list	*ft_lstnew(void *item, size_t item_size)
+t_list	*ft_lstget(t_list *lst, t_u32 index)
 {
-	t_list *result;
+	t_u32	i;
 
-	if (!(result = (t_list *)malloc(sizeof(t_list))))
+	if (lst == NULL)
 		return (NULL);
-	result->item = item;
-	result->item_size = (item ? item_size : 0);
-	result->next = NULL;
-	return (result);
+	i = 0;
+	while (i < index)
+	{
+		if (lst->next == NULL)
+			return (NULL);
+		else
+			lst = lst->next;
+		++i;
+	}
+	return (lst);
+}
+
+t_list	*ft_lstfind(t_list *lst, void const* query)
+{
+	while (lst)
+	{
+		if (lst->item == query)
+			return (lst);
+		lst = lst->next;
+	}
+	return (NULL);
 }

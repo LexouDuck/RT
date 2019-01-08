@@ -97,6 +97,7 @@ int		test_char(void);
 int		test_string(void);
 int		test_stringarray(void);
 int		test_convert(void);
+int		test_color(void);
 int		test_list(void);
 int		test_math(void);
 int		test_vlq(void);

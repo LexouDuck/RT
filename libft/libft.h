@@ -35,14 +35,13 @@
 # define TRUE	1
 
 /*
-**	Define the common macros for return values used by several functions.
+**	Define the common macros for return values used by several C functions.
 */
 # define OK		0
 # define ERROR	1
 
 /*
-**	Define some useful string literals for some common number bases.
-**	Should be used with ft_itoa_base() and ft_atoi_base()
+**	Define some useful string literals for some of the common number bases.
 */
 # ifndef __BASES__
 #  define __BASES__
@@ -69,7 +68,9 @@
 # endif
 
 /*
-** The following macro sets the t_float type.
+**	The following macro sets what the t_float type should be.
+**	_FLOAT_32_ means a 32-bit IEE 754 standard precision float
+**	_FLOAT_64_ means a 64-bit "double" precision float
 */
 # define _FLOAT_64_
 
@@ -84,15 +85,15 @@
 **	convention, to better reflect the amount of bits used by each type.
 **	(and also to avoid having to type 'unsigned' all the time)
 */
-typedef uint_fast8_t	t_u8;
-typedef uint_fast16_t	t_u16;
-typedef uint_fast32_t	t_u32;
-typedef	uint_fast64_t	t_u64;
+typedef uint8_t		t_u8;
+typedef uint16_t	t_u16;
+typedef uint32_t	t_u32;
+typedef	uint64_t	t_u64;
 
-typedef int_fast8_t		t_s8;
-typedef int_fast16_t	t_s16;
-typedef int_fast32_t	t_s32;
-typedef	int_fast64_t	t_s64;
+typedef int8_t		t_s8;
+typedef int16_t		t_s16;
+typedef int32_t		t_s32;
+typedef	int64_t		t_s64;
 
 typedef float			t_f32;
 typedef double			t_f64;

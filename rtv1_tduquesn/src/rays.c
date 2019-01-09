@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/16 23:00:36 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/09 14:51:30 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/09 23:55:11 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,7 +279,6 @@ void			cast_rays(t_control *ctrl)
 	t_float		fov_val;
 //	t_vcolor	reslum;
 
-
 	fov_val = -REN_W / (2 * tan(ctrl->cam.hrz_fov));
 	i = -1;
 	while (++i < REN_H)
@@ -295,6 +294,6 @@ void			cast_rays(t_control *ctrl)
 			vec3_eucl_nrmlz(ray.dir, ray.dir);
 			ctrl->img_data[i * REN_W + j] = color_app_lum(trace_ray_to_scene(ctrl, ray));
 		}
-printf("%.2f / 100.00\n", (100. * (i + 1.)) / PIXEL_NB);
+printf("%.2f / 100.00\n", 100. * (i + 1.) / REN_H);
 	}
 }

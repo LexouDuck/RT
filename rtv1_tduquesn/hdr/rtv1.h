@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 17:34:32 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/09 14:53:40 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/09 23:42:56 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ typedef struct	s_point
 }				t_point;
 
 typedef t_u32		t_color;
+
 typedef struct		s_rgb
 {	
 	t_float		r;
@@ -289,10 +290,9 @@ typedef struct	s_control
 	int				img_bpp;
 	int				img_bpl;
 	int				img_bytelen;
-	int				img_pixel_nb;
 	int				endian;
 	char			*img_data;
-	t_image_buffer	layers[4]; //direct diffuse, specular, indirect diffuse (path-tracing, ambient), sum
+//	t_image_buffer	*layers; //direct diffuse, specular, indirect diffuse (path-tracing, ambient), sum
 	t_camera		cam;
 	t_float			render_dist;
 	t_bool			debug;

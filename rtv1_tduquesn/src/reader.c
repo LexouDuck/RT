@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/01 06:00:02 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/06 12:58:48 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/09 07:05:09 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ static t_bool		read_rt_file_context_line2(t_control *ctrl,
 static void			read_rt_file_context_line(t_control *ctrl,
 												char const *str, int fd)
 {
-	if (ft_strnequ(str, "LIGHT", 5))
-		r_rt_f_setup_light(ctrl, fd);
-	else if (ft_strnequ(str, "PLANE", 5))
+//	if (ft_strnequ(str, "LIGHT", 5))
+//		r_rt_f_setup_light(ctrl, fd);
+	if (ft_strnequ(str, "PLANE", 5))
 		r_rt_f_set_obj(ctrl, fd, plane);
 	else if (ft_strnequ(str, "SPHERE", 6))
 		r_rt_f_set_obj(ctrl, fd, sphere);
@@ -76,8 +76,8 @@ static t_bool		read_rt_entity_block(t_control *ctrl, int const fd)
 	if ((status = get_next_line(fd, &str)) == EOF_RD)
 		return (TRUE);
 	if (status == ERR_RD || !ft_strequ(str, ""))
-		exit_error("r_rt_f_setup_light: missing newline after object, camera,"
-					" or light block", errno);
+		exit_error("r_rt_f_setup_light: missing newline after object or "
+					"camera block", errno);
 	ft_strdel(&str);
 	return (FALSE);
 }

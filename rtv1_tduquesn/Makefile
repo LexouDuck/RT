@@ -6,7 +6,7 @@
 #    By: tduquesn <tduquesn@42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/17 21:33:56 by tduquesn          #+#    #+#              #
-#    Updated: 2019/01/03 03:48:25 by fulguritu        ###   ########.fr        #
+#    Updated: 2019/01/09 07:19:46 by fulguritu        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,6 +59,8 @@ SRCS	:=	camera.c			\
 			paraboloid.c		\
 			shader.c			\
 			render.c			\
+			tracers.c			\
+			samplers.c			\
 			ft_stat.c ft_random.c ft_integral.c ft_stat_nblst_utils.c ft_prob.c
 			
 

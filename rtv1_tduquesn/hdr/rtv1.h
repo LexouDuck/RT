@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 17:34:32 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/09 23:42:56 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/10 01:08:35 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,9 @@
 # define MAX_LGT_NB				16
 # define MAX_OBJ_NB				32
 
-# define MAX_RAY_DEPTH			4
-# define RAY_SAMPLE_NB			8
-# define INV_RAY_SAMPLE_NB		0.125
+# define MAX_RAY_DEPTH			4 //4
+# define RAY_SAMPLE_NB			32 //8
+# define INV_RAY_SAMPLE_NB		0.003125//0.125
 
 typedef struct	s_point
 {

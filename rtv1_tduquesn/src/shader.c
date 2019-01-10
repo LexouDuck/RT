@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/29 07:05:34 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/09 14:47:20 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/10 00:38:35 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_vcolor			get_lum_from_lightsrc(t_control *ctrl,
 	t_float		quaddist;
 	t_float		costh;
 
-	reslum.val = (t_rgb){0., 0., 0.};
+	reslum.val = (t_rgb){200000., 0., 0.};
 	if (trace_ray_to_objs(ctrl, lgtshdr.in_ray, NULL, NULL))
 		return (reslum);
 	else

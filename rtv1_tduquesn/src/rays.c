@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/16 23:00:36 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/09 23:55:11 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/10 01:17:22 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,10 @@ t_vcolor					resolve_intersection(t_control *ctrl,
 	t_vcolor		res;
 	t_material		mater;
 
-	if ((shdr.out_ray.depth = incident.depth + 1) < MAX_RAY_DEPTH)
+printf("inc %d | mater %d", incident.depth, hit_obj->material);
+	if ((shdr.out_ray.depth = incident.depth + 1) >= MAX_RAY_DEPTH)
 	{
-		res.val = (t_rgb){0., 0., 0.};
+		res.val = (t_rgb){0., 2550., 0.};
 		return (res);
 	}
 	shdr.in_ray = incident;
@@ -113,13 +114,15 @@ t_vcolor					resolve_intersection(t_control *ctrl,
 
 	if (mater == lightsrc)
 	{//make it exit_error shouldn't happen here because of lst logic?
+printf("light");
 		res = get_lum_from_lightsrc(ctrl, shdr);
 	}
 
 
 
 	else if (mater == mirror)
-	{	
+	{
+printf("mirror  ");
 		vec3_displace(shdr.out_ray.pos, APPROX, shdr.normal);//change if inside mirror...
 		get_reflect(&shdr);
 		shdr.out_ray = ray_x_to_y(shdr.hit_obj->o_to_w,
@@ -277,7 +280,7 @@ void			cast_rays(t_control *ctrl)
 	t_s32		j;
 	t_ray		ray;
 	t_float		fov_val;
-//	t_vcolor	reslum;
+	t_vcolor	reslum;
 
 	fov_val = -REN_W / (2 * tan(ctrl->cam.hrz_fov));
 	i = -1;
@@ -292,8 +295,12 @@ void			cast_rays(t_control *ctrl)
 			vec3_set(ray.dir, j - REN_W / 2, i - REN_H / 2, fov_val);
 			mat44_app_vec3(ray.dir, ctrl->cam.c_to_w, ray.dir);
 			vec3_eucl_nrmlz(ray.dir, ray.dir);
-			ctrl->img_data[i * REN_W + j] = color_app_lum(trace_ray_to_scene(ctrl, ray));
+			reslum = trace_ray_to_scene(ctrl, ray);
+//t_color color = color_app_lum(reslum);
+
+//printf("reslum %10f, %10f, %10f | color %#06x\n", reslum.val.r, reslum.val.g, reslum.val.b, color);
+			((t_u32*)ctrl->img_data)[i * REN_W + j] = color_app_lum(reslum);
 		}
-printf("%.2f / 100.00\n", 100. * (i + 1.) / REN_H);
+//printf("%.2f / 100.00\n", 100. * (i + 1.) / REN_H);
 	}
 }

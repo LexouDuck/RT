@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/09 02:52:55 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/09 14:54:19 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/10 01:18:27 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ t_bool			trace_ray_to_spots(t_control *ctrl, t_ray ray,
 	return (has_inter);
 }
 
-t_vcolor		trace_ray_to_scene(t_control *ctrl, t_ray const ray)
+t_vcolor		trace_ray_to_scene(t_control *ctrl, t_ray ray)
 {
 	t_bool		has_inter;
 	t_vcolor	reslum;
@@ -81,11 +81,12 @@ t_vcolor		trace_ray_to_scene(t_control *ctrl, t_ray const ray)
 	t_ray		objray;
 
 	has_inter = trace_ray_to_objs(ctrl, ray, &hit_obj, &objray);
+	ray.t = objray.t;
 	has_inter = (trace_ray_to_spots(ctrl, ray, &hit_obj, &objray)
 								|| has_inter);
 	if (has_inter)
 		reslum = resolve_intersection(ctrl, objray, &hit_obj);
 	else
-		vec3_cpy(reslum.vec, (t_vec_3d){0., 0., 0.});
+		vec3_cpy(reslum.vec, (t_vec_3d){0., 0., 2550.});
 	return (reslum);
 }

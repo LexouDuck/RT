@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/29 07:05:34 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/10 00:38:35 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/11 02:04:37 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,26 +41,37 @@ t_color				color_app_lum(t_vcolor const lum)
 	return (red << 16 | grn << 8 | blu);
 }
 
-t_vcolor			get_lum_from_lightsrc(t_control *ctrl,
+t_vcolor			get_lum_from_lightsrc(//t_control *ctrl,
+								t_shader const objshdr,
 								t_shader const lgtshdr/*, t_float *costheta*/)
 {
 	t_vcolor	reslum;
 	t_float		quaddist;
 	t_float		costh;
 
-	reslum.val = (t_rgb){200000., 0., 0.};
-	if (trace_ray_to_objs(ctrl, lgtshdr.in_ray, NULL, NULL))
-		return (reslum);
+//printf("lgtshdr.in_ray.t %f", lgtshdr.in_ray.t);
+//	reslum.val = (t_rgb){2550., 0., 0.};
+//	if (trace_ray_to_objs(ctrl, lgtshdr.in_ray, NULL, NULL))
+//		return (reslum);
+//	else
+//	{
+
+
+	if (lgtshdr.in_ray.depth == 0)
+	{
+		vec3_scale(reslum.vec, lgtshdr.hit_obj->intensity, lgtshdr.hit_obj->rgb.vec);
+//		return (reslum);
+	}
 	else
 	{
-		if (ctrl->show_diffuse)
-		{
-			quaddist = lgtshdr.in_ray.t * lgtshdr.in_ray.t;
-			costh = vec3_dot(lgtshdr.normal, lgtshdr.in_ray.dir);
-			vec3_scale(reslum.vec,
-				INV_PI * lgtshdr.hit_obj->intensity * ft_fmax(0., costh) / quaddist,
-				lgtshdr.hit_obj->rgb.vec);
-		}
+//printf("p");
+		quaddist = lgtshdr.in_ray.t * lgtshdr.in_ray.t;
+		costh = vec3_dot(objshdr.normal_os, objshdr.out_ray_os.dir);
+		vec3_scale(reslum.vec,
+			INV_PI * lgtshdr.hit_obj->intensity * ft_fmax(0., costh) / quaddist,
+			objshdr.hit_obj->rgb.vec);
+		vec3_schur(reslum.vec, reslum.vec, lgtshdr.hit_obj->rgb.vec);
+	}
 /*		if (ctrl->show_specular)
 		{
 			vec3_scale(ref, -1., lgtshdr.in_ray.dir);
@@ -70,7 +81,9 @@ t_vcolor			get_lum_from_lightsrc(t_control *ctrl,
 				powf(tmp, shdr.obj_specul[1]), powf(tmp, shdr.obj_specul[2]));
 			vec3_schur(spec, spec, lgtshdr.hit_obj.rgb);
 		}
-*/	}
+*///	}
+//if (reslum.val.g != 0. || reslum.val.b != 0.)
+//printf("%f %f %f\n", reslum.val.r, reslum.val.g, reslum.val.b);
 	return (reslum);
 }
 

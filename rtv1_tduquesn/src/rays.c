@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/16 23:00:36 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/10 01:17:22 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/11 01:01:34 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ t_ray			ray_x_to_y(t_mat_4b4 const x_to_y,
 
 inline void		get_reflect(t_shader *shdr)
 {
-	vec3_scale(shdr->out_ray.dir,
-		-2 * vec3_dot(shdr->in_ray.dir, shdr->normal), shdr->normal);
-	vec3_add(shdr->out_ray.dir, shdr->out_ray.dir, shdr->in_ray.dir);
+	vec3_scale(shdr->out_ray_os.dir,
+		-2 * vec3_dot(shdr->in_ray.dir, shdr->normal_os), shdr->normal_os);
+	vec3_add(shdr->out_ray_os.dir, shdr->out_ray_os.dir, shdr->in_ray.dir);
 }
 
 /*
@@ -69,27 +69,28 @@ t_bool			get_transmit(t_shader *shdr/*, t_float const refrac*/)
 	t_float		refrac_ratio;
 	t_float		tmp;
 
-	dot_i_n = vec3_dot(shdr->in_ray.dir, shdr->normal);
+	dot_i_n = vec3_dot(shdr->in_ray.dir, shdr->normal_os);
 	incid_inside_obj = dot_i_n >= 0.;
 	if (incid_inside_obj)
-		vec3_scale(shdr->normal, -1., shdr->normal);
+		vec3_scale(shdr->normal_os, -1., shdr->normal_os);
 	refrac_ratio = incid_inside_obj ? shdr->hit_obj->refrac : 1. / shdr->hit_obj->refrac;
 	if ((tmp = 1 - refrac_ratio * refrac_ratio * (1 - dot_i_n * dot_i_n)) < 0.)
 		return (FALSE);
 //	Tn
-	vec3_displace(shdr->in_ray.dir, -dot_i_n, shdr->normal);
-	vec3_scale(shdr->out_ray.dir, refrac_ratio, shdr->in_ray.dir);
+	vec3_displace(shdr->in_ray.dir, -dot_i_n, shdr->normal_os);
+	vec3_scale(shdr->out_ray_os.dir, refrac_ratio, shdr->in_ray.dir);
 //	+ Tt
-	vec3_displace(shdr->out_ray.dir, -sqrt(tmp), shdr->normal);
+	vec3_displace(shdr->out_ray_os.dir, -sqrt(tmp), shdr->normal_os);
 //	Position correction for transmission
-	vec3_displace(shdr->out_ray.pos, -APPROX, shdr->normal);
+	vec3_displace(shdr->out_ray_os.pos, -APPROX, shdr->normal_os);
 	return (TRUE);
 }
 
 
 t_vcolor					resolve_intersection(t_control *ctrl,
-									t_ray const incident,
-									t_object *hit_obj)
+									t_shader oldshdr,
+									t_object *hit_obj,
+									t_ray const incident)
 {
 	//!!before calling any trace, put rays back into world space and their direction normalized
 	
@@ -97,38 +98,38 @@ t_vcolor					resolve_intersection(t_control *ctrl,
 	t_vcolor		res;
 	t_material		mater;
 
-printf("inc %d | mater %d", incident.depth, hit_obj->material);
-	if ((shdr.out_ray.depth = incident.depth + 1) >= MAX_RAY_DEPTH)
+//printf("inc %d | mater %d", incident.depth, hit_obj->material);
+	if ((shdr.out_ray_os.depth = incident.depth + 1) >= MAX_RAY_DEPTH)
 	{
-		res.val = (t_rgb){0., 2550., 0.};
+		res.val = (t_rgb){0., 0., 0.};
 		return (res);
 	}
+
 	shdr.in_ray = incident;
 	shdr.hit_obj = hit_obj;
+	hit_obj->get_hnn(shdr.out_ray_os.pos, shdr.normal_os, shdr.in_ray);
+	shdr.out_ray_os.t = ctrl->render_dist;
+
 	mater = hit_obj->material;
-	hit_obj->get_hnn(shdr.out_ray.pos, shdr.normal, shdr.in_ray);
-	shdr.out_ray.t = ctrl->render_dist;
-//	shdr.out_ray.pixel = shdr.in_ray.pixel;
 
 
 
 	if (mater == lightsrc)
-	{//make it exit_error shouldn't happen here because of lst logic?
-printf("light");
-		res = get_lum_from_lightsrc(ctrl, shdr);
+	{
+//printf("light");
+		res = get_lum_from_lightsrc(/*ctrl,*/ oldshdr, shdr);
 	}
 
 
 
 	else if (mater == mirror)
 	{
-printf("mirror  ");
-		vec3_displace(shdr.out_ray.pos, APPROX, shdr.normal);//change if inside mirror...
+//printf("mirror  ");
+		vec3_displace(shdr.out_ray_os.pos, APPROX, shdr.normal_os);//change if inside mirror...
 		get_reflect(&shdr);
-		shdr.out_ray = ray_x_to_y(shdr.hit_obj->o_to_w,
-						shdr.hit_obj->linear_o_to_w, shdr.out_ray);
-		vec3_eucl_nrmlz(shdr.out_ray.dir, shdr.out_ray.dir);
-		res = trace_ray_to_scene(ctrl, shdr.out_ray);
+		shdr.out_ray_ws = ray_x_to_y(shdr.hit_obj->o_to_w,
+						shdr.hit_obj->linear_o_to_w, shdr.out_ray_os);
+		res = trace_ray_to_scene(ctrl, shdr);
 	}
 
 
@@ -138,8 +139,8 @@ printf("mirror  ");
 	{
 		if (get_transmit(&shdr)) //normal should be altered to the right direction here
 		{
-			shdr.out_ray = ray_x_to_y(hit_obj->o_to_w, hit_obj->linear_o_to_w, shdr.out_ray);
-			res = trace_ray_to_scene(ctrl, shdr.out_ray);
+			shdr.out_ray_ws = ray_x_to_y(shdr.hit_obj->o_to_w, shdr.hit_obj->linear_o_to_w, shdr.out_ray_os);
+			res = trace_ray_to_scene(ctrl, shdr);
 		}
 		else
 			res.val = (t_rgb){0., 0., 0.};
@@ -151,16 +152,17 @@ printf("mirror  ");
 	else if (hit_obj->material == glossy)
 	{
 		get_reflect(&shdr);
-		vec3_displace(shdr.out_ray.pos, APPROX, shdr.normal);
-		shdr.out_ray = ray_x_to_y(hit_obj->o_to_w, hit_obj->linear_o_to_w, shdr.out_ray);
+		vec3_displace(shdr.out_ray_os.pos, APPROX, shdr.normal_os);
+		shdr.out_ray_ws = ray_x_to_y(hit_obj->o_to_w, hit_obj->linear_o_to_w, shdr.out_ray_os);
 
 		t_ray_sample	rsamp;
 
-		rsamp = ray_sample_init_w_fixed_origin(shdr.out_ray, shdr.out_ray.dir, 5);
-		vec3_cpy(res.vec, (t_vec_3d){0., 0., 0.});
+		rsamp = ray_sample_init_w_fixed_origin(shdr.out_ray_ws, shdr.out_ray_ws.dir, 5);
+		res.val = (t_rgb){0., 0., 0.};
 		for (int i = 0; i < RAY_SAMPLE_NB; ++i)
 		{
-			rsamp.lum[i] = trace_ray_to_scene(ctrl, rsamp.rays[i]);
+			shdr.out_ray_ws = rsamp.rays[i];
+			rsamp.lum[i] = trace_ray_to_scene(ctrl, shdr);
 			vec3_displace(res.vec, 1. / rsamp.probs[i], rsamp.lum[i].vec);
 		}
 		vec3_scale(res.vec, INV_RAY_SAMPLE_NB, res.vec);
@@ -173,18 +175,19 @@ printf("mirror  ");
 
 	else if (hit_obj->material == diffuse)
 	{	
-		vec3_displace(shdr.out_ray.pos, APPROX, shdr.normal);
-		mat44_app_vec3(shdr.out_ray.pos, shdr.hit_obj->o_to_w, shdr.out_ray.pos);
-		mat33_app_vec(shdr.normal, shdr.hit_obj->n_to_w, shdr.normal);
+		vec3_displace(shdr.out_ray_os.pos, APPROX, shdr.normal_os);
+		mat44_app_vec3(shdr.out_ray_ws.pos, shdr.hit_obj->o_to_w, shdr.out_ray_os.pos);
+		mat33_app_vec(shdr.normal_ws, shdr.hit_obj->n_to_w, shdr.normal_os);
 		
 		t_ray_sample	rsamp;
 //		t_shader		lgtshdr;//necessary for specular ?
 
-		rsamp = ray_sample_init_w_fixed_origin(shdr.out_ray, shdr.normal, 1);
-		vec3_cpy(res.vec, (t_vec_3d){0., 0., 0.});
+		rsamp = ray_sample_init_w_fixed_origin(shdr.out_ray_ws, shdr.normal_ws, 1);
+		res.val = (t_rgb){0., 0., 0.};
 		for (int i = 0; i < RAY_SAMPLE_NB; ++i)
 		{
-			rsamp.lum[i] = trace_ray_to_scene(ctrl, rsamp.rays[i]);
+			shdr.out_ray_ws = rsamp.rays[i];
+			rsamp.lum[i] = trace_ray_to_scene(ctrl, shdr);
 			vec3_displace(res.vec, 1. / rsamp.probs[i], rsamp.lum[i].vec);
 		}
 		vec3_scale(res.vec, INV_RAY_SAMPLE_NB, res.vec);
@@ -278,7 +281,7 @@ void			cast_rays(t_control *ctrl)
 {
 	t_s32		i;
 	t_s32		j;
-	t_ray		ray;
+	t_shader	shdr;
 	t_float		fov_val;
 	t_vcolor	reslum;
 
@@ -289,18 +292,18 @@ void			cast_rays(t_control *ctrl)
 		j = -1;
 		while (++j < REN_W)
 		{
-			vec3_cpy(ray.pos, ctrl->cam.world_pos);
-			ray.t = ctrl->render_dist;
-			ray.depth = 0;
-			vec3_set(ray.dir, j - REN_W / 2, i - REN_H / 2, fov_val);
-			mat44_app_vec3(ray.dir, ctrl->cam.c_to_w, ray.dir);
-			vec3_eucl_nrmlz(ray.dir, ray.dir);
-			reslum = trace_ray_to_scene(ctrl, ray);
+			vec3_cpy(shdr.out_ray_ws.pos, ctrl->cam.world_pos);
+			shdr.out_ray_ws.t = ctrl->render_dist;
+			shdr.out_ray_ws.depth = 0;
+			vec3_set(shdr.out_ray_ws.dir, j - REN_W / 2, i - REN_H / 2, fov_val);
+			mat44_app_vec3(shdr.out_ray_ws.dir, ctrl->cam.c_to_w, shdr.out_ray_ws.dir);
+			vec3_eucl_nrmlz(shdr.out_ray_ws.dir, shdr.out_ray_ws.dir);
+			reslum = trace_ray_to_scene(ctrl, shdr);
 //t_color color = color_app_lum(reslum);
 
 //printf("reslum %10f, %10f, %10f | color %#06x\n", reslum.val.r, reslum.val.g, reslum.val.b, color);
 			((t_u32*)ctrl->img_data)[i * REN_W + j] = color_app_lum(reslum);
 		}
-//printf("%.2f / 100.00\n", 100. * (i + 1.) / REN_H);
+printf("%.2f / 100.00\n", 100. * (i + 1.) / REN_H);
 	}
 }

@@ -6,7 +6,7 @@
 #    By: tduquesn <tduquesn@42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/17 21:33:56 by tduquesn          #+#    #+#              #
-#    Updated: 2019/01/09 07:19:46 by fulguritu        ###   ########.fr        #
+#    Updated: 2019/01/10 04:12:17 by fulguritu        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,10 +39,11 @@ HDRDIR	:=	./hdr/
 LFTDIR	:=	./libft/
 TSTDIR	:=	./tests/
 SRCDIR	:=	./src/
+OBJDIR  :=	./obj/
 
-HDRS	:=	$(NAME).h			\
+HDRS_	:=	$(NAME).h			\
 			ft_integral.h ft_stat.h ft_random.h
-SRCS	:=	camera.c			\
+SRCS_	:=	camera.c			\
 			coordinates.c		\
 			event_key.c			\
 			image_utils.c		\
@@ -61,13 +62,16 @@ SRCS	:=	camera.c			\
 			render.c			\
 			tracers.c			\
 			samplers.c			\
-			ft_stat.c ft_random.c ft_integral.c ft_stat_nblst_utils.c ft_prob.c
-			
-
-OBJS	:=	$(SRCS:.c=.o)
+			ft_stat.c ft_random.c ft_integral.c ft_stat_nblst_utils.c ft_prob.c\
 
 MAIN	:=	main_$(NAME).c
-OBJ_MAIN:=	$(MAIN:.c=.o)
+MAINO	:=	$(MAIN:.c=.o)
+
+OBJS_	:=	$(SRCS_:.c=.o)
+
+SRCS	:=	$(addprefix $(SRCDIR),$(SRCS_))
+HDRS	:=	$(addprefix $(HDRDIR),$(HDRS_))
+OBJS	:=	$(addprefix $(OBJDIR),$(OBJS_))
 
 #TST_DIR		:=	unit_tests
 #TST_MAIN	:=	$(TST_DIR)/unit_tests.c
@@ -77,13 +81,17 @@ RESET	:=	"\033[0m"
 RED		:=	"\033[0;31m"
 GREEN	:=	"\033[0;32m"
 
-$(NAME): $(LFTDIR)$(LFT) $(OBJS) $(OBJ_MAIN) #$(HDRS)
+$(NAME):$(LFTDIR)$(LFT) $(OBJS) $(OBJDIR)$(MAINO) $(HDRS)
 	@echo "Compiling software: "$@" -> \c"$(RED)
-	@$(CC) $(CFLAGS) $(DBFLAGS) $(OBJS) $(OBJ_MAIN) $(LIBS) -o $@
+	@$(CC) $(CFLAGS) $(DBFLAGS) $(OBJS) $(OBJDIR)$(MAINO) $(LIBS) -I$(HDRDIR) -o $@
 	@echo $(GREEN)"OK!"$(RESET)
 
-%.o: $(SRCDIR)%.c #$(HDRS)
-	@$(CC) $(CFLAGS) -c $< -I$(HDRDIR)
+$(OBJS):
+
+$(OBJDIR)%.o:$(SRCDIR)%.c $(HDRS)
+	@echo $@"-> \c"
+	@$(CC) $(CFLAGS) -c $< -I$(HDRDIR) -o $@
+	@echo $(GREEN)"OK!"$(RESET)
 
 #dependencies are taken care of in libft's makefile.
 $(LFTDIR)$(LFT):
@@ -93,7 +101,7 @@ $(LFTDIR)$(LFT):
 all: $(NAME)
 
 clean:
-	@rm -f $(OBJS) $(OBJ_MAIN)
+	@rm -f $(OBJS)
 
 fclean:clean
 	$(MAKE) -C $(LFTDIR) fclean

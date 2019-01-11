@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/09 02:52:55 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/10 01:18:27 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/11 01:15:00 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,20 +73,24 @@ t_bool			trace_ray_to_spots(t_control *ctrl, t_ray ray,
 	return (has_inter);
 }
 
-t_vcolor		trace_ray_to_scene(t_control *ctrl, t_ray ray)
+t_vcolor		trace_ray_to_scene(t_control *ctrl, t_shader shdr)
 {
 	t_bool		has_inter;
 	t_vcolor	reslum;
 	t_object 	hit_obj;
 	t_ray		objray;
 
-	has_inter = trace_ray_to_objs(ctrl, ray, &hit_obj, &objray);
-	ray.t = objray.t;
-	has_inter = (trace_ray_to_spots(ctrl, ray, &hit_obj, &objray)
+	has_inter = trace_ray_to_objs(ctrl, shdr.out_ray_ws, &hit_obj, &objray);
+	if (has_inter)
+		shdr.out_ray_ws.t = objray.t;
+	has_inter = (trace_ray_to_spots(ctrl, shdr.out_ray_ws, &hit_obj, &objray)
 								|| has_inter);
 	if (has_inter)
-		reslum = resolve_intersection(ctrl, objray, &hit_obj);
+	{
+		shdr.out_ray_ws.t = objray.t;
+		reslum = resolve_intersection(ctrl, shdr, &hit_obj, objray);
+	}
 	else
-		vec3_cpy(reslum.vec, (t_vec_3d){0., 0., 2550.});
+		reslum.val = (t_rgb){0., 0., 0.};
 	return (reslum);
 }

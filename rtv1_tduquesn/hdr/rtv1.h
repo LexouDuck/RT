@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 17:34:32 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/10 01:08:35 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/11 03:01:49 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,13 @@
 # define MAX_OBJ_NB				32
 
 # define MAX_RAY_DEPTH			4 //4
-# define RAY_SAMPLE_NB			32 //8
-# define INV_RAY_SAMPLE_NB		0.003125//0.125
+# define RAY_SAMPLE_NB			16//32 //8
+# define INV_RAY_SAMPLE_NB		0.0625//0.003125//0.125
 
 typedef struct	s_point
 {
-	int		x;
-	int		y;
+	t_s32		x;
+	t_s32		y;
 }				t_point;
 
 typedef t_u32		t_color;
@@ -269,11 +269,13 @@ typedef struct	s_object
 */
 typedef struct	s_shader
 {
-	t_ray		in_ray;	//incident ray in object space coordinates
-	t_ray		out_ray;
+	t_ray		in_ray;//incident ray in object space coordinates
+	t_ray		out_ray_os;
+	t_ray		out_ray_ws;
 	//towards light objects (direct lighting); we choose the point on the surface randomly with a bias towards the nearest point on the object
 	//towards normal (non spotlst) objects (indirect lighting), it is created with a cos hemisphere sampling for diffuse and phong lobe sampling for glossy surfaces
-	t_vec_3d	normal; //the normal of the incident ray to the object.
+	t_vec_3d	normal_os; //the normal of the incident ray to the object.
+	t_vec_3d	normal_ws;
 	t_object	*hit_obj;
 	//TODO previous object, or better, previous shader, kept for specular ?
 }				t_shader;
@@ -366,8 +368,9 @@ t_ray			ray_x_to_y(t_mat_4b4 const x_to_y,
 							t_mat_3b3 const linear_x_to_y,
 							t_ray const ray);
 t_vcolor		resolve_intersection(t_control *ctrl,
-							t_ray const incident,
-							t_object *hit_obj);
+							t_shader oldshdr,
+							t_object *hit_obj,
+							t_ray const incident);
 void			cast_rays(t_control *ctrl);
 
 /*
@@ -377,7 +380,7 @@ t_bool			trace_ray_to_objs(t_control *ctrl, t_ray ray,
 									t_object *hit_obj, t_ray *res_objray);
 t_bool			trace_ray_to_spots(t_control *ctrl, t_ray ray,
 									t_object *hit_spot, t_ray *res_lgtray);
-t_vcolor		trace_ray_to_scene(t_control *ctrl, t_ray const ray);
+t_vcolor		trace_ray_to_scene(t_control *ctrl, t_shader shdr);
 
 
 /*
@@ -390,7 +393,8 @@ void			build_obj(t_object *obj, t_objtype type, t_material material);
 */
 //t_color			get_color_from_fixed_objray(t_control *ctrl,
 //							t_object const obj, t_ray const objray);
-t_vcolor			get_lum_from_lightsrc(t_control *ctrl,
+t_vcolor			get_lum_from_lightsrc(//t_control *ctrl,
+								t_shader const objshdr,
 								t_shader const lgtshdr);
 t_color				color_app_lum(t_vcolor const lum);
 

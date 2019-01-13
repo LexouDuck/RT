@@ -26,6 +26,9 @@ obj/*
 *.gch
 *.pch
 
+# Vim swp
+*.swp
+
 # Compiled libraries
 *.lib
 *.a

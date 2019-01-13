@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/04 09:10:13 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/12/19 16:08:56 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/09 07:14:18 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ static void			r_rt_f_read_vec3_line(t_vec_3d res, int fd)
 	if (res[0] != res[0] || res[1] != res[1] || res[2] != res[2])
 		exit_error("r_rt_f_read_vec3_line: param in vec3 line is NaN", 0);
 }
-
-void				r_rt_f_setup_light(t_control *ctrl, int fd)
+/*
+void				r_rt_f_setup_lightobj(t_control *ctrl, int fd)
 {
 	char	*line;
 	t_float	tmp;
@@ -61,35 +61,55 @@ void				r_rt_f_setup_light(t_control *ctrl, int fd)
 	if (ctrl->spotlst_len > MAX_LGT_NB)
 		exit_error("r_rt_f_setup_light: MAX_LGT_NB exceeded", 0);
 }
-
+*/
 void				r_rt_f_set_obj(t_control *ctrl, int fd, t_objtype type)
 {
 	t_material	material;
-	t_float		refrac_ind;
 	char		*line;
 	t_s8		status;
+	int			*len;
+	t_object	*cur_obj;
+	t_float		tmp;
 
-	r_rt_f_read_vec3_line(ctrl->objlst[ctrl->objlst_len].pos, fd);
-	r_rt_f_read_vec3_line(ctrl->objlst[ctrl->objlst_len].scl, fd);
-	r_rt_f_read_vec3_line(ctrl->objlst[ctrl->objlst_len].rot, fd);
-	r_rt_f_read_vec3_line(ctrl->objlst[ctrl->objlst_len].albedo, fd);
-	r_rt_f_read_vec3_line(ctrl->objlst[ctrl->objlst_len].specul, fd);
-	if (!ft_float_in_interval(ctrl->objlst[ctrl->objlst_len].albedo[0], 0., 1.)
-	|| !ft_float_in_interval(ctrl->objlst[ctrl->objlst_len].albedo[1], 0., 1.)
-	|| !ft_float_in_interval(ctrl->objlst[ctrl->objlst_len].albedo[2], 0., 1.))
-		exit_error("r_rt_f_set_obj: obj albedo should be in [0., 1.] ^ 3", 0);
+	line = NULL;
 	if ((status = get_next_line(fd, &line)) == ERR_RD)
 		exit_error("r_rt_f_set_obj: gnl: error reading line", errno);
 	else if (status == EOF_RD)
 		exit_error("r_rt_f_set_obj: EOF reached prematurely", 0);
 	material = ft_atoi(line);
 	ft_strdel(&line);
-	build_obj(&(ctrl->objlst[ctrl->objlst_len]), type, material);
-refrac_ind = material == glassy ? 1.9 : 1.;
-ctrl->objlst[ctrl->objlst_len].refrac = refrac_ind;
-	++(ctrl->objlst_len);
-	if (ctrl->objlst_len > MAX_OBJ_NB)
-		exit_error("r_rt_f_set_obj: MAX_OBJ_NB exceeded", 0);
+	len = material == lightsrc ? &(ctrl->spotlst_len) : &(ctrl->objlst_len);
+	cur_obj = material == lightsrc ? &(ctrl->spotlst[*len]) :
+									&(ctrl->objlst[*len]); 
+	r_rt_f_read_vec3_line(cur_obj->pos, fd);
+	r_rt_f_read_vec3_line(cur_obj->scl, fd);
+	r_rt_f_read_vec3_line(cur_obj->rot, fd);
+	r_rt_f_read_vec3_line(cur_obj->rgb.vec, fd);
+	r_rt_f_read_vec3_line(cur_obj->specul, fd);
+	if (!ft_float_in_interval(cur_obj->rgb.val.r, 0., 1.)
+	|| !ft_float_in_interval(cur_obj->rgb.val.g, 0., 1.)
+	|| !ft_float_in_interval(cur_obj->rgb.val.b, 0., 1.))
+		exit_error("r_rt_f_set_obj: obj rgb should be in [0., 1.] ^ 3", 0);
+
+
+	if ((status = get_next_line(fd, &line)) == ERR_RD)
+		exit_error("r_rt_f_set_obj: gnl: error reading line", errno);
+	else if (status == EOF_RD)
+		exit_error("r_rt_f_set_obj: EOF reached prematurely", 0);
+	tmp = ft_atolf(line);
+	if (tmp != tmp)
+		exit_error("r_rt_f_set_obj: light intensity is NaN", 0);
+	ft_strdel(&line);
+	ctrl->spotlst[ctrl->spotlst_len].intensity = tmp;
+
+
+cur_obj->refrac = material == glassy ? 1.5 : 1.;
+//cur_obj->intensity = 1.;//default intensity for non-light sources, or maybe add a reflectivity variable ?
+
+	build_obj(cur_obj, type, material);
+	++(*len);
+	if (*len >= (material == lightsrc ? MAX_LGT_NB : MAX_OBJ_NB))
+		exit_error("r_rt_f_set_obj: MAX_OBJ/LGT_NB exceeded", 0);
 }
 
 void				r_rt_f_set_cam(t_control *ctrl, int fd)

@@ -6,12 +6,17 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 17:34:32 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/03 19:32:29 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/11 03:01:49 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RTV1_H
 # define RTV1_H
+
+
+//TODO add to math.h
+#define INV_TAU		0x1.45f306dc9c88p-3
+
 
 /*
  TODO:
@@ -39,39 +44,56 @@
 # include <mlx.h>
 # include <errno.h>
 
-# define REN_W		480
-# define REN_H		360
+# define REN_W		360
+# define REN_H		270
+# define PIXEL_NB	REN_W * REN_H
 
-# define BLACK			0x000000
-# define RED			0xFF0000
-# define GREEN			0x00FF00
-# define BLUE			0x0000FF
-# define WHITE			0xFFFFFF
-# define DBG_COLOR		0x5500BB
-# define MIRROR_DBG_COLOR 0x11BB33
-# define BG_COLOR		0x00BB88
-# define NO_INTER		0xFF000000
+# define BLACK					0x000000
+# define RED					0xFF0000
+# define GREEN					0x00FF00
+# define BLUE					0x0000FF
+# define WHITE					0xFFFFFF
+# define DBG_COLOR				0x5500BB
+# define MIRROR_DBG_COLOR		0x11BB33
+# define BG_COLOR				0x00BB88
+//# define NO_INTER				0xFF000000
 
-# define APPROX			0.000001
-# define INIT_FOV		0.8
+# define APPROX					0.000001
 
-# define MAX_LGT_NB		16
-# define MAX_OBJ_NB		32
-# define MAX_FILE_LN_NB	1000
-# define MAX_RAY_DEPTH	10
-# define AMBIENT_RAY_NB	8
+# define INIT_FOV				0.8
+
+# define MAX_FILE_LN_NB			1024
+# define MAX_LGT_NB				16
+# define MAX_OBJ_NB				32
+
+# define MAX_RAY_DEPTH			4 //4
+# define RAY_SAMPLE_NB			16//32 //8
+# define INV_RAY_SAMPLE_NB		0.0625//0.003125//0.125
 
 typedef struct	s_point
 {
-	int		x;
-	int		y;
+	t_s32		x;
+	t_s32		y;
 }				t_point;
 
-typedef t_u32	t_color;
+typedef t_u32		t_color;
+
+typedef struct		s_rgb
+{	
+	t_float		r;
+	t_float		g;
+	t_float		b;
+}					t_rgb;
+
+typedef union		u_vcolor
+{
+	t_rgb		val;
+	t_vec_3d	vec;
+}					t_vcolor;
 
 typedef struct	s_image_buffer
 {
-	t_color		img[REN_H][REN_W];
+	t_vcolor	img[PIXEL_NB];
 }				t_image_buffer;
 
 /*
@@ -105,10 +127,12 @@ typedef struct	s_camera
 }				t_camera;
 
 /*
-** RAYS AND SHADING
+** RAYS
 **
-** Rays can be interpreted in any space.
-** pos + scale(t, dir) = end of the current ray; t is init at +inf.
+** Rays can be interpreted in any space, so beware.
+** 			- "pos + scale(t, dir)" = "end of the current ray";
+**			- t is init at MAX_RENDER_DIST.
+**			- depth is the recursion depth of the ray being cast;
 */
 typedef struct	s_ray
 {
@@ -119,24 +143,19 @@ typedef struct	s_ray
 }				t_ray;
 
 /*
-** Respective intensity for light source's rgb is vec3_scale(intensity, rgb),
-**	where rgb contains values between 0. and 1.
+** Monte Carlo sample over which each pixel's color is averaged over
+** a set number of rays.
 */
-typedef struct	s_light
+typedef struct	s_ray_sample
 {
-	t_vec_3d	pos;
-	t_float		intensity;
-	t_vec_3d	rgb;
-}				t_light;
-
-typedef struct	s_shader
-{
-	t_ray		dirlight;
-	t_vec_3d	normal;
-	t_vec_3d	obj_albedo;
-	t_vec_3d	obj_specul;
-	t_vec_3d	objray_dir;
-}				t_shader;
+	t_ray		rays[RAY_SAMPLE_NB];
+	t_float		probs[RAY_SAMPLE_NB];
+	t_vcolor	lum[RAY_SAMPLE_NB];
+//	t_vcolor	diff;
+//	t_vcolor	spec;
+//	t_vcolor	glob;
+//	t_u32		pixel;//index in img buf
+}				t_ray_sample;
 
 /*
 ** PRIMITIVES
@@ -147,7 +166,6 @@ typedef struct	s_shader
 typedef enum	e_objtype
 {
 	null_obj,
-	light,
 	sphere,
 	plane,
 	disk,
@@ -163,6 +181,21 @@ typedef enum	e_objtype
 }				t_objtype;
 
 /*
+** Categories for the optical properties of materials for each geometric
+** primtive (ie, how they interact with or produce light). Normals play
+** a major role here.
+*/
+typedef enum	e_material
+{
+	lightsrc,
+	diffuse,
+	mirror,
+	glassy,
+	glossy/*,
+	skybox ?*/
+}				t_material;
+
+/*
 ** This struct is used to translate, rotate and scale our object into position
 **	in the world space.
 **
@@ -176,9 +209,11 @@ typedef enum	e_objtype
 ** scl			: (x, y, z) scaling factors as a vector (tmp diagonal matrix)
 ** rot			: model angles of rotation (in radians) around (resp.)
 **					the x-, y-, and z-axes
-** albedo		: a vector of float from 0. to 1. representing how much each
+** rgb			: a vector of float from 0. to 1. representing how much each
 **					object reflects each primary color of light,
-**					respectively (r, g, b);
+**					respectively (r, g, b); albedo for a diffuse surface;
+**					light emitted for a lightsrc; albedo and filter for
+**					glassy, glossy and mirror surfaces.
 ** unit_w_to_o	: takes a unit vector from world space (that shouldn't be
 **					translated) to a non-unit vector in object space
 ** unit_o_to_w	: takes a non-unit vector from object space (that shouldn't be
@@ -196,17 +231,12 @@ typedef enum	e_objtype
 **					parameter should already be set before this function is
 **					called
 */
-
+/*
+** Respective intensity for light source's rgb is vec3_scale(intensity, rgb),
+**	where rgb contains values between 0. and 1.
+*/
 typedef t_bool	(*t_inter_func)(t_ray *objray);
 typedef void	(*t_hnn_func)(t_vec_3d hp, t_vec_3d nml, t_ray const objr);
-
-typedef enum	e_material
-{
-	diffuse,
-	mirror,
-	glassy,
-	glossy
-}				t_material;
 
 typedef struct	s_object
 {
@@ -215,9 +245,10 @@ typedef struct	s_object
 	t_vec_3d		pos;
 	t_vec_3d		scl;
 	t_vec_3d		rot;
-	t_vec_3d		albedo;
+	t_vcolor		rgb;
 	t_vec_3d		specul;
-	t_float			refrac;
+	t_float			refrac;//refraction index for snell-descartes
+	t_float			intensity;//intensity for lightsrc objects, 1. for other objects //or reflectivity ??
 	t_mat_4b4		o_to_w;
 	t_mat_4b4		w_to_o;
 	t_mat_3b3		linear_o_to_w;
@@ -226,6 +257,29 @@ typedef struct	s_object
 	t_inter_func	intersect;
 	t_hnn_func		get_hnn;
 }				t_object;
+
+/*
+** SHADERS
+**
+** The shader struct contains the absolute information concerning the
+** reflection/refraction/diffusion problem at the intersection point.
+**
+** When building a shader, remember to pass the outgoing ray into
+** world space before handing it to the next tracer.
+*/
+typedef struct	s_shader
+{
+	t_ray		in_ray;//incident ray in object space coordinates
+	t_ray		out_ray_os;
+	t_ray		out_ray_ws;
+	//towards light objects (direct lighting); we choose the point on the surface randomly with a bias towards the nearest point on the object
+	//towards normal (non spotlst) objects (indirect lighting), it is created with a cos hemisphere sampling for diffuse and phong lobe sampling for glossy surfaces
+	t_vec_3d	normal_os; //the normal of the incident ray to the object.
+	t_vec_3d	normal_ws;
+	t_object	*hit_obj;
+	//TODO previous object, or better, previous shader, kept for specular ?
+}				t_shader;
+
 
 /*
 ** SOFTWARE CONTROL TABLE
@@ -238,10 +292,9 @@ typedef struct	s_control
 	int				img_bpp;
 	int				img_bpl;
 	int				img_bytelen;
-	int				img_pixel_nb;
 	int				endian;
 	char			*img_data;
-	t_image_buffer	layers[3]; //direct diffuse, specular, indirect diffuse (path-tracing, ambient)
+//	t_image_buffer	*layers; //direct diffuse, specular, indirect diffuse (path-tracing, ambient), sum
 	t_camera		cam;
 	t_float			render_dist;
 	t_bool			debug;
@@ -251,7 +304,7 @@ typedef struct	s_control
 	t_point			mouse;
 	t_object		objlst[MAX_OBJ_NB];
 	int				objlst_len;
-	t_light			spotlst[MAX_LGT_NB];
+	t_object		spotlst[MAX_LGT_NB];
 	int				spotlst_len;
 }				t_control;
 
@@ -307,13 +360,28 @@ int				handle_key(int key, void *param);
 /*
 ** rays.c
 */
-
 void			mat44_app_vec3(t_vec_3d result,
 								t_mat_4b4 const mat,
 								t_vec_3d const v);
+
+t_ray			ray_x_to_y(t_mat_4b4 const x_to_y,
+							t_mat_3b3 const linear_x_to_y,
+							t_ray const ray);
+t_vcolor		resolve_intersection(t_control *ctrl,
+							t_shader oldshdr,
+							t_object *hit_obj,
+							t_ray const incident);
+void			cast_rays(t_control *ctrl);
+
+/*
+** tracers.c
+*/
 t_bool			trace_ray_to_objs(t_control *ctrl, t_ray ray,
 									t_object *hit_obj, t_ray *res_objray);
-void			cast_rays(t_control *ctrl);
+t_bool			trace_ray_to_spots(t_control *ctrl, t_ray ray,
+									t_object *hit_spot, t_ray *res_lgtray);
+t_vcolor		trace_ray_to_scene(t_control *ctrl, t_shader shdr);
+
 
 /*
 ** objects.c
@@ -323,8 +391,26 @@ void			build_obj(t_object *obj, t_objtype type, t_material material);
 /*
 ** shader.c
 */
-t_color			get_color_from_fixed_objray(t_control *ctrl,
-							t_object const obj, t_ray const objray);
+//t_color			get_color_from_fixed_objray(t_control *ctrl,
+//							t_object const obj, t_ray const objray);
+t_vcolor			get_lum_from_lightsrc(//t_control *ctrl,
+								t_shader const objshdr,
+								t_shader const lgtshdr);
+t_color				color_app_lum(t_vcolor const lum);
+
+
+void				vec3_displace(t_vec_3d edit, t_float const coef,
+									t_vec_3d const dir);
+void				vec3_schur(t_vec_3d res,
+								t_vec_3d const v1, t_vec_3d const v2);
+
+/*
+** samplers.c
+*/
+t_ray_sample		ray_sample_init_w_fixed_origin(
+							t_ray const fxd_pos,
+							t_vec_3d const axis,
+							t_u32 const phong);
 
 /*
 ** primitive_utils.c
@@ -332,8 +418,10 @@ t_color			get_color_from_fixed_objray(t_control *ctrl,
 t_bool			get_realroots_quadpoly(t_float *root1, t_float *root2,
 									t_vec_3d const quadpoly);
 void			get_ray_hitpos(t_vec_3d hitpos, t_ray const objray);
-void			get_reflect(t_vec_3d res,
-							t_vec_3d const incident, t_vec_3d const normal);
+//void			get_reflect(t_vec_3d res,
+//							t_vec_3d const incident, t_vec_3d const normal);
+void			get_reflect(t_shader *shdr);
+t_bool			get_transmit(t_shader *shdr);
 void			print_object(t_object const obj);
 
 /*

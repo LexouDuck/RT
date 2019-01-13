@@ -6,7 +6,7 @@
 #    By: tduquesn <tduquesn@42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/17 21:33:56 by tduquesn          #+#    #+#              #
-#    Updated: 2018/10/01 10:14:55 by fulguritu        ###   ########.fr        #
+#    Updated: 2019/01/10 04:10:07 by fulguritu        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -381,7 +381,7 @@ GREEN	:=	"\033[0;32m"
 #$^ is a call to the string of the current dependencies
 #$< is a call to the string of the first dependency in case of multiple deps
 
-$(NAME):$(OBJDIRS) $(addprefix $(OBJDIR)$,$(OBJS)) $(addprefix $(HDRDIR),$(HDRS))
+$(NAME):$(OBJDIRS) $(addprefix $(OBJDIR),$(OBJS)) $(addprefix $(HDRDIR),$(HDRS))
 	@echo "Compiling library: "$@" -> \c"$(RED)
 	@ar -rc $@ $(addprefix $(OBJDIR)$,$(OBJS))
 	@ranlib $@

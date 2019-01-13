@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 20:27:46 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/03 15:56:25 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/09 23:51:59 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,7 @@ static void		init_mlx(t_control *ctrl)
 										&(ctrl->img_bpl), &(ctrl->endian))))
 		exit_error("could not retrieve img data ptr and other info", 0);
 	ctrl->img_bpp = ctrl->img_bpp / 8;
-	ctrl->img_pixel_nb = REN_W * REN_H;
-	ctrl->img_bytelen = ctrl->img_bpp * ctrl->img_pixel_nb;
+	ctrl->img_bytelen = ctrl->img_bpp * PIXEL_NB;
 	ctrl->debug = 1;
 }
 

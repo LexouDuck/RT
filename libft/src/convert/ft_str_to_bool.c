@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list/ft_lstsub.c                                   :+:      :+:    :+:   */
+/*   convert/ft_str_to_bool.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,27 +10,27 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../libft_list.h"
+#include "../../libft_char.h"
+#include "../../libft_convert.h"
 
-t_list	*ft_lstsub(t_list *lst, t_u32 index, t_u32 n)
+t_bool	ft_str_to_bool(char const *str)
 {
-	t_list	*result;
-	t_list	*result_lst;
-	t_list	*tmp;
+	size_t	i;
 
-	while (lst && index--)
-		lst = lst->next;
-	if (lst == NULL || n == 0)
-		return (NULL);
-	result = ft_lstnew(lst->item, lst->item_size);
-	result_lst = result;
-	lst = lst->next;
-	while (lst && n--)
+	i = 0;
+	while (!(ft_isalpha(str[i])))
 	{
-		tmp = ft_lstnew(lst->item, lst->item_size);
-		result_lst->next = tmp;
-		result_lst = result_lst->next;
-		lst = lst->next;
+		if (!str[i] || !ft_isspace(str[i]))
+			return (FALSE);
+		++i;
 	}
-	return (result);
+	if (!str[i])
+		return (FALSE);
+	if ((str[i + 0] == 'T' || str[i + 0] == 't') ||
+		(str[i + 1] == 'R' || str[i + 1] == 'r') ||
+		(str[i + 2] == 'U' || str[i + 2] == 'u') ||
+		(str[i + 3] == 'E' || str[i + 3] == 'e'))
+		return (TRUE);
+	else
+		return (FALSE);
 }

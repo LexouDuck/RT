@@ -1,11 +1,30 @@
 NAME	=	libft.a
 
-CC		=	gcc
-CFLAGS	=	-Wall -Wextra -Werror -O2 -MMD
+CC		= _
+CC_WIN	= x86_64-w64-mingw32-gcc
+CC_LIN	= gcc
+CC_MAC	= gcc
 
-RESET	=	"\033[0m"
-RED		=	"\033[0;31m"
-GREEN	=	"\033[0;32m"
+CFLAGS	=	-Wall -Wextra -Werror $(CFLAGS_PLATFORM) -O2 -MMD
+CFLAGS_PLATFORM = _
+CFLAGS_WIN	= -mwindows
+CFLAGS_LIN	= 
+CFLAGS_MAC	= 
+
+ifeq ($(OS),Windows_NT)
+	CC := $(CC_WIN)
+	CFLAGS_PLATFORM := $(CFLAGS_WIN)
+else
+	UNAME_S := $(shell uname -s)
+	ifeq ($(UNAME_S),Linux)
+		CC := $(CC_LIN)
+		CFLAGS_PLATFORM := $(CFLAGS_LIN)
+	endif
+	ifeq ($(UNAME_S),Darwin)
+		CC := $(CC_MAC)
+		CFLAGS_PLATFORM := $(CFLAGS_MAC)
+	endif
+endif
 
 DIR_MEMORY	:=	memory/
 SRC_MEMORY	:=	ft_memalloc.c	\
@@ -54,23 +73,27 @@ SRC_STRINGARRAY	:=	ft_strsplit.c	\
 
 DIR_CONVERT	:=	convert/
 SRC_CONVERT	:=	ft_int_s_to_str.c		\
-				ft_int_u_to_str.c		\
-				ft_float_to_str.c		\
-				ft_other_to_str.c		\
-				ft_int_u_to_hex.c		\
 				ft_int_s_to_strbase.c	\
+				ft_int_u_to_str.c		\
 				ft_int_u_to_strbase.c	\
+				ft_int_u_to_hex.c		\
+				ft_float_to_str.c		\
+				ft_size_to_str.c		\
+				ft_bool_to_str.c		\
 				ft_str_to_int_s.c		\
 				ft_str_to_int_u.c		\
 				ft_str_to_float.c		\
-				ft_str_to_other.c		\
+				ft_str_to_size.c		\
+				ft_str_to_bool.c		\
 				ft_hex_to_int_u.c		\
 
 DIR_COLOR	:=	color/
 SRC_COLOR	:=	ft_color_argb16_get.c	\
 				ft_color_argb16_set.c	\
+				ft_color_argb16_to.c	\
 				ft_color_argb32_get.c	\
 				ft_color_argb32_set.c	\
+				ft_color_argb32_to.c	\
 
 DIR_LIST	:=	list/
 SRC_LIST	:=	ft_lstnew.c		\
@@ -80,6 +103,9 @@ SRC_LIST	:=	ft_lstnew.c		\
 				ft_lstsize.c	\
 				ft_lstget.c		\
 				ft_lstsub.c		\
+				ft_lstiter.c	\
+				ft_lstmap.c		\
+				ft_lst_to.c
 
 DIR_MATH	:=	math/
 SRC_MATH	:=	
@@ -116,6 +142,10 @@ SRCS	=	$(addprefix $(DIR_MEMORY),		$(SRC_MEMORY)		)	\
 			$(addprefix $(DIR_IO),			$(SRC_IO)			)
 
 OBJS	=	${SRCS:%.c=$(OBJDIR)%.o}
+
+RESET	=	"\033[0m"
+RED		=	"\033[0;31m"
+GREEN	=	"\033[0;32m"
 
 all: $(NAME)
 

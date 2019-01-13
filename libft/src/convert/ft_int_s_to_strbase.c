@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_int_s_to_strbase.c                              :+:      :+:    :+:   */
+/*   convert/ft_int_s_to_strbase.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -56,11 +56,11 @@ char			*ft_s8_to_strbase(t_s8 number, char const *base)
 	if (!(result = (char *)malloc(i + 2)))
 		return (NULL);
 	result[0] = (number == 0) ? base[0] : '-';
-	n = 1;
+	n = (number <= 0) ? 1 : 0;
 	while (i--)
 		result[n++] = digits[i];
 	result[n] = '\0';
-	return (number <= 0 ? result : result + 1);
+	return (result);
 }
 
 char			*ft_s16_to_strbase(t_s16 number, char const *base)
@@ -85,11 +85,11 @@ char			*ft_s16_to_strbase(t_s16 number, char const *base)
 	if (!(result = (char *)malloc(i + 2)))
 		return (NULL);
 	result[0] = (number == 0) ? base[0] : '-';
-	n = 1;
+	n = (number <= 0) ? 1 : 0;
 	while (i--)
 		result[n++] = digits[i];
 	result[n] = '\0';
-	return (number <= 0 ? result : result + 1);
+	return (result);
 }
 
 char			*ft_s32_to_strbase(t_s32 number, char const *base)
@@ -114,11 +114,11 @@ char			*ft_s32_to_strbase(t_s32 number, char const *base)
 	if (!(result = (char *)malloc(i + 2)))
 		return (NULL);
 	result[0] = (number == 0) ? base[0] : '-';
-	n = 1;
+	n = (number <= 0) ? 1 : 0;
 	while (i--)
 		result[n++] = digits[i];
 	result[n] = '\0';
-	return (number <= 0 ? result : result + 1);
+	return (result);
 }
 
 char			*ft_s64_to_strbase(t_s64 number, char const *base)
@@ -143,9 +143,9 @@ char			*ft_s64_to_strbase(t_s64 number, char const *base)
 	if (!(result = (char *)malloc(i + 2)))
 		return (NULL);
 	result[0] = (number == 0) ? base[0] : '-';
-	n = 1;
+	n = (number <= 0) ? 1 : 0;
 	while (i--)
 		result[n++] = digits[i];
 	result[n] = '\0';
-	return (number <= 0 ? result : result + 1);
+	return (result);
 }

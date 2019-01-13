@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list/ft_lstadd.c                                   :+:      :+:    :+:   */
+/*   list/ft_lstiter.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,69 +12,32 @@
 
 #include "../../libft_list.h"
 
-void	ft_lstadd(t_list **alst, t_list *elem)
+void	ft_lstiter(t_list *lst, void (*f)(t_list *elem))
 {
-	if (*alst == NULL)
+	while (lst)
 	{
-		*alst = elem;
-		return ;
-	}
-	elem->next = *alst;
-	*alst = elem;
-}
-/*
-**	if (alst == NULL || new == NULL)
-**		return ;
-*/
-
-void	ft_lstappend(t_list **alst, t_list *elem)
-{
-	t_list *lst;
-
-	lst = *alst;
-	if (lst == NULL)
-	{
-		*alst = elem;
-		return ;
-	}
-	while (lst->next)
-	{
+		f(lst);
 		lst = lst->next;
 	}
-	lst->next = elem;
 }
 /*
-**	if (alst == NULL || elem == NULL)
+**	if (lst == NULL || f == NULL)
 **		return ;
 */
 
-void	ft_lstinsert(t_list **alst, t_list *elem, t_u32 index)
+void	ft_lstiteri(t_list *lst, void (*f)(t_list *elem, t_u32 index))
 {
-	t_list	*lst;
-	t_list	*tmp;
-	t_u32	i;
+	t_u32 i;
 
-	if (elem == NULL)
-		return ;
-	lst = *alst;
-	if (lst == NULL || index == 0)
-	{
-		*alst = elem;
-		if (lst == NULL || lst->next == NULL)
-			return ;
-		(*alst)->next = lst->next;
-		return ;
-	}
 	i = 0;
-	while (++i < index && lst->next)
+	while (lst)
 	{
+		f(lst, i);
 		lst = lst->next;
+		++i;
 	}
-	tmp = lst->next;
-	lst->next = elem;
-	elem->next = tmp;
 }
 /*
-**	if (alst == NULL || elem == NULL)
+**	if (lst == NULL || f == NULL)
 **		return ;
 */

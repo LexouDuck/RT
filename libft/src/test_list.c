@@ -383,7 +383,7 @@ printf("\n");
 
 
 /*
-**	void	ft_lstiter(t_list *lst, void (*f)(t_list *));
+**	void	ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 */
 void	print_test_lstiter(char const* test_name, int can_segfault,
 		char const* expecting,
@@ -408,10 +408,36 @@ printf("\n");
 */
 }
 
+/*
+**	void	ft_lstiteri(t_list *lst, void (*f)(t_list *elem, t_u32 index));
+*/
+void	print_test_lstiteri(char const* test_name, int can_segfault,
+		char const* expecting,
+		t_list *lst,
+		void (*f)(t_list *elem, t_u32 index))
+{
+	t_timer t = {0};
+	segfault = setjmp(restore);
+	if (!segfault) { timer_clock(&t.start1);
+		ft_lstiteri(lst, f);
+	timer_clock(&t.end1); } else can_segfault |= (1 << 1);
+	print_timer_result(&t, FALSE);
+}
+void	test_lstiteri(void)
+{
+printf("\n");
+/*	| TEST FUNCTION  | TEST NAME          |CAN SEGV| EXPECTING | TEST ARGS */
+/*	TODO
+//	ft_lstiteri(t_list *lst, void (*f)(t_list *elem));
+	ft_lstiteri(*a_lst, ft_lstiter_tolower);
+	print_test_lst("lstiteri", "lstiteri", a_lst, expect_lower, FALSE);
+*/
+}
+
 
 
 /*
-**	t_list	*ft_lstmap(t_list *lst, t_list *(*f)(t_list *));
+**	t_list	*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 */
 void	print_test_lstmap(char const* test_name, int can_segfault,
 		char const* expecting,
@@ -436,28 +462,30 @@ printf("\n");
 */
 }
 
-
-
 /*
-**	t_tuple	*ft_lst_to_tuple(t_list **alst);
+**	t_list	*ft_lstmapi(t_list *lst, t_list *(*f)(t_list *elem, t_u32 index));
 */
-void	print_test_lst_to_tuple(char const* test_name, int can_segfault,
+void	print_test_lstmapi(char const* test_name, int can_segfault,
 		char const* expecting,
-		t_list **alst)
+		t_list *lst,
+		t_list *(*f)(t_list *elem, t_u32 index))
 {
 	t_timer t = {0};
-	t_tuple* result;
 	segfault = setjmp(restore);
 	if (!segfault) { timer_clock(&t.start1);
-		result = ft_lst_to_tuple(alst);
+		ft_lstmapi(lst, f);
 	timer_clock(&t.end1); } else can_segfault |= (1 << 1);
 	print_timer_result(&t, FALSE);
 }
-void	test_lst_to_tuple(void)
+void	test_lstmapi(void)
 {
 printf("\n");
 /*	| TEST FUNCTION  | TEST NAME          |CAN SEGV| EXPECTING | TEST ARGS */
-//	TODO
+/*	TODO
+//	t_list	*ft_lstmapi(t_list *lst, t_list *(*f)(t_list *elem));
+	segfault = setjmp(restore); if (!segfault) *a_lst = ft_lstmap(*a_lst, ft_lstmap_toupper); else *a_lst = NULL;
+	print_test_lst("lstmapi", "lstmapi", *a_lst, expect_upper, FALSE);
+*/
 }
 
 
@@ -486,6 +514,31 @@ printf("\n");
 
 
 
+/*
+**	t_tuple	*ft_lst_to_tuple(t_list **alst, t_tuple *tuple);
+*/
+void	print_test_lst_to_tuple(char const* test_name, int can_segfault,
+		char const* expecting,
+		t_list **alst,
+		t_tuple *tuple)
+{
+	t_timer t = {0};
+	t_tuple* result;
+	segfault = setjmp(restore);
+	if (!segfault) { timer_clock(&t.start1);
+		result = ft_lst_to_tuple(alst, tuple);
+	timer_clock(&t.end1); } else can_segfault |= (1 << 1);
+	print_timer_result(&t, FALSE);
+}
+void	test_lst_to_tuple(void)
+{
+printf("\n");
+/*	| TEST FUNCTION  | TEST NAME          |CAN SEGV| EXPECTING | TEST ARGS */
+//	TODO
+}
+
+
+
 
 
 
@@ -504,7 +557,7 @@ void	print_test_lst_(char const* test_name, int can_segfault,
 	t_timer t = {0};
 	segfault = setjmp(restore);
 	if (!segfault) { timer_clock(&t.start1);
-		ft_lst_();
+//		ft_lst_();
 	timer_clock(&t.end1); } else can_segfault |= (1 << 1);
 	print_timer_result(&t, FALSE);
 }

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list/ft_lstsub.c                                   :+:      :+:    :+:   */
+/*   color/ft_color_argb32_to.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,27 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../libft_list.h"
+#include "../../libft_color.h"
 
-t_list	*ft_lstsub(t_list *lst, t_u32 index, t_u32 n)
+t_u16	ft_color_argb32_to_argb16(t_u32 color)
 {
-	t_list	*result;
-	t_list	*result_lst;
-	t_list	*tmp;
+	t_u32					result;
 
-	while (lst && index--)
-		lst = lst->next;
-	if (lst == NULL || n == 0)
-		return (NULL);
-	result = ft_lstnew(lst->item, lst->item_size);
-	result_lst = result;
-	lst = lst->next;
-	while (lst && n--)
-	{
-		tmp = ft_lstnew(lst->item, lst->item_size);
-		result_lst->next = tmp;
-		result_lst = result_lst->next;
-		lst = lst->next;
-	}
+	result = (color & COLOR_ARGB32_A) ? COLOR_ARGB16_A : 0;
+	result |= (ft_color_argb16_get_r(color) >> 3) << 10;
+	result |= (ft_color_argb16_get_g(color) >> 3) << 5;
+	result |= (ft_color_argb16_get_b(color) >> 3) << 0;
 	return (result);
 }

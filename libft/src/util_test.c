@@ -662,13 +662,13 @@ void	print_test_lst(
 	t_u32 i = 0;
 	while (lst && expect[i])
 	{
-		if (!str_equals(lst->item, expect[i]))
+		if ((lst && expect) ?
+			(memcmp(lst->item, expect[i], lst->item_size) != 0) :
+			(lst->item != expect[i]))
 			error = TRUE;
 		lst = lst->next;
 		++i;
 	}
-	if (lst || expect[i])
-		error = TRUE;
 	if (error)
 	{
 		printf(C_RED"ERROR\n");

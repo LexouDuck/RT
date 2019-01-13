@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list/ft_lstsub.c                                   :+:      :+:    :+:   */
+/*   convert/ft_size_to_str.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,27 +10,29 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../libft_list.h"
+#include "../../libft_convert.h"
 
-t_list	*ft_lstsub(t_list *lst, t_u32 index, t_u32 n)
+char	*ft_size_to_str(size_t number)
 {
-	t_list	*result;
-	t_list	*result_lst;
-	t_list	*tmp;
+	char	*result;
+	t_u8	digits[MAXDIGIT_64b];
+	t_u8	i;
+	size_t	n;
 
-	while (lst && index--)
-		lst = lst->next;
-	if (lst == NULL || n == 0)
-		return (NULL);
-	result = ft_lstnew(lst->item, lst->item_size);
-	result_lst = result;
-	lst = lst->next;
-	while (lst && n--)
+	n = number;
+	i = 0;
+	while (n > 0)
 	{
-		tmp = ft_lstnew(lst->item, lst->item_size);
-		result_lst->next = tmp;
-		result_lst = result_lst->next;
-		lst = lst->next;
+		digits[i++] = n % 10;
+		n /= 10;
 	}
+	if (i == 0)
+		digits[i++] = 0;
+	if (!(result = (char *)malloc(i + 1)))
+		return (NULL);
+	n = 0;
+	while (i--)
+		result[n++] = '0' + digits[i];
+	result[n] = '\0';
 	return (result);
 }

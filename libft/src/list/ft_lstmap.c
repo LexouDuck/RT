@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list/ft_lstadd.c                                   :+:      :+:    :+:   */
+/*   list/ft_lstmap.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,69 +12,61 @@
 
 #include "../../libft_list.h"
 
-void	ft_lstadd(t_list **alst, t_list *elem)
+static void	ft_lstmap_delete(void *content, size_t content_size)
 {
-	if (*alst == NULL)
+	if (content && content_size > 0)
 	{
-		*alst = elem;
-		return ;
+		free(content);
 	}
-	elem->next = *alst;
-	*alst = elem;
 }
-/*
-**	if (alst == NULL || new == NULL)
-**		return ;
-*/
 
-void	ft_lstappend(t_list **alst, t_list *elem)
+t_list		*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
 {
-	t_list *lst;
+	t_list	*result;
+	t_list	*current;
 
-	lst = *alst;
-	if (lst == NULL)
+	result = NULL;
+	while (lst)
 	{
-		*alst = elem;
-		return ;
-	}
-	while (lst->next)
-	{
+		current = f(lst);
+		if (current == NULL)
+		{
+			ft_lstdel(&result, ft_lstmap_delete);
+			return (NULL);
+		}
+		ft_lstappend(&result, current);
 		lst = lst->next;
 	}
-	lst->next = elem;
+	return (result);
 }
 /*
-**	if (alst == NULL || elem == NULL)
+**	if (lst == NULL || f == NULL)
 **		return ;
 */
 
-void	ft_lstinsert(t_list **alst, t_list *elem, t_u32 index)
+t_list		*ft_lstmapi(t_list *lst, t_list *(*f)(t_list *elem, t_u32 index))
 {
-	t_list	*lst;
-	t_list	*tmp;
+	t_list	*result;
+	t_list	*current;
 	t_u32	i;
 
-	if (elem == NULL)
-		return ;
-	lst = *alst;
-	if (lst == NULL || index == 0)
-	{
-		*alst = elem;
-		if (lst == NULL || lst->next == NULL)
-			return ;
-		(*alst)->next = lst->next;
-		return ;
-	}
+	result = NULL;
 	i = 0;
-	while (++i < index && lst->next)
+	while (lst)
 	{
+		current = f(lst, i);
+		if (current == NULL)
+		{
+			ft_lstdel(&result, ft_lstmap_delete);
+			return (NULL);
+		}
+		ft_lstappend(&result, current);
 		lst = lst->next;
+		++i;
 	}
-	tmp = lst->next;
-	lst->next = elem;
-	elem->next = tmp;
+	return (result);
 }
 /*
-**	if (alst == NULL || elem == NULL)
+**	if (lst == NULL || f == NULL)
 **		return ;
 */

@@ -19,7 +19,16 @@
 ** ************************************************************************** *|
 */
 
+/*
+**	Functions used:
+**	-	void*	malloc(size_t n);
+**	-	void	free(void* ptr);
+*/
 # include <stdlib.h>
+
+/*
+**	Included for the standard defined stable primitive int & uint types
+*/
 # include <inttypes.h>
 
 /*
@@ -95,8 +104,8 @@ typedef int16_t		t_s16;
 typedef int32_t		t_s32;
 typedef	int64_t		t_s64;
 
-typedef float			t_f32;
-typedef double			t_f64;
+typedef float		t_f32;
+typedef double		t_f64;
 
 /*
 ** So long as only the t_float type is used throughout the code, changing the
@@ -114,9 +123,10 @@ typedef t_f64			t_float;
 /*
 **	Define a boolean pseudo-type that is potentially faster than just 'int'.
 **	The uint_fast8_t type is the fastest primitive type on the current machine
-**	which contains at least 8 usable bits (so a range of -128/127 or 0/255).
+**	which contains at least 8 usable bits (ie: at least a range of 0-255).
 **	On ARM processors this type might be 'int', otherwise it might be 'char'.
-**	On embedded systems, this type could have all sorts of unusual bitsizes.
+**	On embedded systems, this type could have all sorts of unusual bitsizes,
+**	so no program should rely on any kind of overflow behavior from this type.
 */
 typedef uint_fast8_t	t_bool;
 

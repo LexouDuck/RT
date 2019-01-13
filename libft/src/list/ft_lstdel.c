@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdel.c                                        :+:      :+:    :+:   */
+/*   list/ft_lstdel.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,32 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../libft_list.h"
-
-void		ft_lstpop(t_list **alst, void (*del)(void *, size_t))
-{
-	t_list	*lst;
-	t_list	*lst_prev;
-
-	lst = *alst;
-	lst_prev = NULL;
-	while (lst)
-	{
-		if (lst->next == NULL)
-		{
-			del((lst)->item, (lst)->item_size);
-			free(lst);
-			if (lst_prev)
-				lst_prev->next = NULL;
-			return ;
-		}
-		lst_prev = lst;
-		lst = lst->next;
-	}
-}
-/*
-**	if (alst == NULL || del == NULL)
-**		return ;
-*/
 
 void	ft_lstdelone(t_list **alst, void (*del)(void *, size_t))
 {
@@ -66,6 +40,32 @@ void	ft_lstdel(t_list **alst, void (*del)(void *, size_t))
 		free(tmp);
 	}
 	*alst = NULL;
+}
+/*
+**	if (alst == NULL || del == NULL)
+**		return ;
+*/
+
+void		ft_lstpop(t_list **alst, void (*del)(void *, size_t))
+{
+	t_list	*lst;
+	t_list	*lst_prev;
+
+	lst = *alst;
+	lst_prev = NULL;
+	while (lst)
+	{
+		if (lst->next == NULL)
+		{
+			del((lst)->item, (lst)->item_size);
+			free(lst);
+			if (lst_prev)
+				lst_prev->next = NULL;
+			return ;
+		}
+		lst_prev = lst;
+		lst = lst->next;
+	}
 }
 /*
 **	if (alst == NULL || del == NULL)

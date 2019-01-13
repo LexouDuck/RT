@@ -70,6 +70,8 @@ t_u16	ft_color_argb16_set_g(t_u16 color, t_u8 g);
 t_u16	ft_color_argb16_set_b(t_u16 color, t_u8 b);
 t_u16	ft_color_argb16_set(t_u8 a, t_u8 r, t_u8 g, t_u8 b);
 
+t_u32	ft_color_argb16_to_argb32(t_u16 color);
+
 /*
 ** ************************************************************************** *|
 **                              ARGB 32bit Color                              *|
@@ -96,5 +98,7 @@ t_u32	ft_color_argb32_set_r(t_u32 color, t_u8 r);
 t_u32	ft_color_argb32_set_g(t_u32 color, t_u8 g);
 t_u32	ft_color_argb32_set_b(t_u32 color, t_u8 b);
 t_u32	ft_color_argb32_set(t_u8 a, t_u8 r, t_u8 g, t_u8 b);
+
+t_u16	ft_color_argb32_to_argb16(t_u32 color);
 
 #endif

@@ -30,11 +30,11 @@ char	*ft_s8_to_str(t_s8 number)
 	if (!(result = (char *)malloc(i + 2)))
 		return (NULL);
 	result[0] = (number == 0) ? '0' : '-';
-	n = 1;
+	n = (number <= 0) ? 1 : 0;
 	while (i--)
 		result[n++] = '0' + digits[i];
 	result[n] = '\0';
-	return (number <= 0 ? result : result + 1);
+	return (result);
 }
 
 char	*ft_s16_to_str(t_s16 number)
@@ -55,11 +55,11 @@ char	*ft_s16_to_str(t_s16 number)
 	if (!(result = (char *)malloc(i + 2)))
 		return (NULL);
 	result[0] = (number == 0) ? '0' : '-';
-	n = 1;
+	n = (number <= 0) ? 1 : 0;
 	while (i--)
 		result[n++] = '0' + digits[i];
 	result[n] = '\0';
-	return (number <= 0 ? result : result + 1);
+	return (result);
 }
 
 char	*ft_s32_to_str(t_s32 number)
@@ -80,11 +80,11 @@ char	*ft_s32_to_str(t_s32 number)
 	if (!(result = (char *)malloc(i + 2)))
 		return (NULL);
 	result[0] = (number == 0) ? '0' : '-';
-	n = 1;
+	n = (number <= 0) ? 1 : 0;
 	while (i--)
 		result[n++] = '0' + digits[i];
 	result[n] = '\0';
-	return (number <= 0 ? result : result + 1);
+	return (result);
 }
 
 char	*ft_s64_to_str(t_s64 number)
@@ -105,9 +105,9 @@ char	*ft_s64_to_str(t_s64 number)
 	if (!(result = (char *)malloc(i + 2)))
 		return (NULL);
 	result[0] = (number == 0) ? '0' : '-';
-	n = 1;
+	n = (number <= 0) ? 1 : 0;
 	while (i--)
 		result[n++] = '0' + digits[i];
 	result[n] = '\0';
-	return (number <= 0 ? result : result + 1);
+	return (result);
 }

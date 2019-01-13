@@ -32,13 +32,14 @@ char		*ft_f32_to_str(t_f32 number, t_u8 precision)
 			if (n == 0 && number != 0)
 				digits[i++] = '0';
 	}
-	if (!(result = (char *)malloc(i + 2)) || (n = 0))
+	if (!(result = (char *)malloc(i + 2)))
 		return (NULL);
 	result[0] = (number == 0) ? '0' : '-';
+	n = (number <= 0) ? 1 : 0;
 	while (i--)
-		result[++n] = digits[i];
+		result[n++] = digits[i];
 	result[n] = '\0';
-	return (number <= 0 ? result : result + 1);
+	return (result);
 }
 
 char		*ft_f64_to_str(t_f64 number, t_u8 precision)
@@ -61,11 +62,12 @@ char		*ft_f64_to_str(t_f64 number, t_u8 precision)
 			if (n == 0 && number != 0)
 				digits[i++] = '0';
 	}
-	if (!(result = (char *)malloc(i + 2)) || (n = 0))
+	if (!(result = (char *)malloc(i + 2)))
 		return (NULL);
 	result[0] = (number == 0) ? '0' : '-';
+	n = (number <= 0) ? 1 : 0;
 	while (i--)
-		result[++n] = digits[i];
+		result[n++] = digits[i];
 	result[n] = '\0';
-	return (number <= 0 ? result : result + 1);
+	return (result);
 }

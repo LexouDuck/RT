@@ -31,7 +31,8 @@ int	main(int argc, char *argv[])
 	canvas = NULL;
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
-		fprintf(stderr, "Could not initialize SDL2: %s\n", SDL_GetError());
+		FT_Output_String("Could not initialize SDL2: ");
+		FT_Output_Line(SDL_GetError());
 		return (ERROR);
 	}
 	window = SDL_CreateWindow(WINDOW_TITLE,
@@ -42,7 +43,8 @@ int	main(int argc, char *argv[])
 		SDL_WINDOW_SHOWN);
 	if (window == NULL)
 	{
-		fprintf(stderr, "Could not create window: %s\n", SDL_GetError());
+		FT_Output_String("Could not create window: ");
+		FT_Output_Line(SDL_GetError());
 		return (ERROR);
 	}
 	canvas = SDL_GetWindowSurface(window);

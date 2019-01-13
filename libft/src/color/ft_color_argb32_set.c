@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   color/ft_color_argb32_set.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,16 +10,29 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../libft_list.h"
+#include "../../libft_color.h"
 
-t_list	*ft_lstnew(void *item, size_t item_size)
+inline t_u32	ft_color_argb32_set_a(t_u32 color, t_u8 a)
 {
-	t_list *result;
+	return ((color & ~COLOR_ARGB32_A) | (a << 24));
+}
 
-	if (!(result = (t_list *)malloc(sizeof(t_list))))
-		return (NULL);
-	result->item = item;
-	result->item_size = (item ? item_size : 0);
-	result->next = NULL;
-	return (result);
+inline t_u32	ft_color_argb32_set_r(t_u32 color, t_u8 r)
+{
+	return ((color & ~COLOR_ARGB32_R) | (r << 16));
+}
+
+inline t_u32	ft_color_argb32_set_g(t_u32 color, t_u8 g)
+{
+	return ((color & ~COLOR_ARGB32_G) | (g << 8));
+}
+
+inline t_u32	ft_color_argb32_set_b(t_u32 color, t_u8 b)
+{
+	return ((color & ~COLOR_ARGB32_B) | b);
+}
+
+inline t_u32	ft_color_argb32_set(t_u8 a, t_u8 r, t_u8 g, t_u8 b)
+{
+	return ((t_u32)((a << 24) | (r << 16) | (g << 8) | b));
 }

@@ -13,8 +13,6 @@
 #ifndef RT_H
 # define RT_H
 
-# include <stdlib.h>
-# include <stdio.h>
 # include <math.h>
 
 # include "SDL2-2.0.9/include/SDL.h"

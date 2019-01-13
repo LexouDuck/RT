@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   ft_lstsub.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,14 +12,25 @@
 
 #include "../../libft_list.h"
 
-t_list	*ft_lstnew(void *item, size_t item_size)
+t_list	*ft_lstsub(t_list *lst, t_u32 index, t_u32 n)
 {
-	t_list *result;
+	t_list	*result;
+	t_list	*result_lst;
+	t_list	*tmp;
 
-	if (!(result = (t_list *)malloc(sizeof(t_list))))
+	while (lst && index--)
+		lst = lst->next;
+	if (lst == NULL || n == 0)
 		return (NULL);
-	result->item = item;
-	result->item_size = (item ? item_size : 0);
-	result->next = NULL;
+	result = ft_lstnew(lst->item, lst->item_size);
+	result_lst = result;
+	lst = lst->next;
+	while (lst && n--)
+	{
+		tmp = ft_lstnew(lst->item, lst->item_size);
+		result_lst->next = tmp;
+		result_lst = result_lst->next;
+		lst = lst->next;
+	}
 	return (result);
 }

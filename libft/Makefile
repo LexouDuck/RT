@@ -66,8 +66,20 @@ SRC_CONVERT	:=	ft_int_s_to_str.c		\
 				ft_str_to_other.c		\
 				ft_hex_to_int_u.c		\
 
+DIR_COLOR	:=	color/
+SRC_COLOR	:=	ft_color_argb16_get.c	\
+				ft_color_argb16_set.c	\
+				ft_color_argb32_get.c	\
+				ft_color_argb32_set.c	\
+
 DIR_LIST	:=	list/
 SRC_LIST	:=	ft_lstnew.c		\
+				ft_lstadd.c		\
+				ft_lstcpy.c		\
+				ft_lstdel.c		\
+				ft_lstsize.c	\
+				ft_lstget.c		\
+				ft_lstsub.c		\
 
 DIR_MATH	:=	math/
 SRC_MATH	:=	
@@ -97,6 +109,7 @@ SRCS	=	$(addprefix $(DIR_MEMORY),		$(SRC_MEMORY)		)	\
 			$(addprefix $(DIR_STRING),		$(SRC_STRING)		)	\
 			$(addprefix $(DIR_STRINGARRAY),	$(SRC_STRINGARRAY)	)	\
 			$(addprefix $(DIR_CONVERT),		$(SRC_CONVERT)		)	\
+			$(addprefix $(DIR_COLOR),		$(SRC_COLOR)		)	\
 			$(addprefix $(DIR_LIST),		$(SRC_LIST)			)	\
 			$(addprefix $(DIR_MATH),		$(SRC_MATH)			)	\
 			$(addprefix $(DIR_VLQ),			$(SRC_VLQ)			)	\
@@ -126,6 +139,7 @@ objdir:
 	@mkdir -p $(OBJDIR)$(DIR_STRING)
 	@mkdir -p $(OBJDIR)$(DIR_STRINGARRAY)
 	@mkdir -p $(OBJDIR)$(DIR_CONVERT)
+	@mkdir -p $(OBJDIR)$(DIR_COLOR)
 	@mkdir -p $(OBJDIR)$(DIR_LIST)
 	@mkdir -p $(OBJDIR)$(DIR_MATH)
 	@mkdir -p $(OBJDIR)$(DIR_VLQ)
@@ -150,6 +164,8 @@ tclean:
 
 re: fclean all
 
+
+
 PREPROCESSED	=	${SRCS:%.c=$(OBJDIR)%.c}
 
 preprocessed: all $(PREPROCESSED)
@@ -160,6 +176,8 @@ $(OBJDIR)%.c : $(SRCDIR)%.c $(HDRS)
 	@$(CC) $(CFLAGS) -E $< -o $@
 	@printf $(GREEN)"OK!"$(RESET)"\n"
 
+
+
 replace:
 	@sed -i -e "s|$(old)|$(new)|g" $(addprefix $(SRCDIR), $(SRCS))
 	@printf "Replaced all instances of \'"$(old)"\' with \'"$(new)"\'.\n"
@@ -168,11 +186,14 @@ rename:
 	@sed -i -e "s|\<$(old)\>|$(new)|g" $(addprefix $(SRCDIR), $(SRCS))
 	@printf "Renamed all words matching \'"$(old)"\' with \'"$(new)"\'.\n"
 
+
+
 TESTS :=	test_memory.c		\
 			test_char.c			\
 			test_string.c		\
 			test_stringarray.c	\
 			test_convert.c		\
+			test_color.c		\
 			test_list.c			\
 			test_math.c			\
 			test_vlq.c			\
@@ -200,6 +221,9 @@ test_stringarray: testprogram
 
 test_convert: testprogram
 	@./test -convert
+
+test_color: testprogram
+	@./test -color
 
 test_list: testprogram
 	@./test -list

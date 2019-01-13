@@ -18,7 +18,10 @@ void	print_test_strnew(char const* test_name, int can_segfault,
 	t_timer t = {0};
 	char* result;
 	int error = FALSE;
-	segfault = setjmp(restore); if (!segfault) { timer_clock(&t.start1); result = ft_strnew(n); timer_clock(&t.end1); } else result = segstr;
+	segfault = setjmp(restore);
+	if (!segfault) { timer_clock(&t.start1);
+		result = ft_strnew(n);
+	timer_clock(&t.end1); } else result = segstr;
 	printf("\n%s -> ", test_name);
 	if (result == NULL)
 	{
@@ -529,7 +532,10 @@ void	print_test_strhas(char const* test_name, int can_segfault,
 {
 	t_timer t = {0};
 	t_bool result_libft;
-	segfault = setjmp(restore); if (!segfault) { timer_clock(&t.start1); result_libft = ft_strhas(str, query); timer_clock(&t.end1); } else can_segfault |= (1 << 1);
+	segfault = setjmp(restore);
+	if (!segfault) { timer_clock(&t.start1);
+		result_libft = ft_strhas(str, query);
+	timer_clock(&t.end1); } else can_segfault |= (1 << 1);
 	print_test_bool(test_name, "_strhas", result_libft, expecting, can_segfault);
 	print_timer_result(&t, FALSE);
 }
@@ -557,7 +563,10 @@ void	print_test_strhasonly(char const* test_name, int can_segfault,
 {
 	t_timer t = {0};
 	t_bool result_libft;
-	segfault = setjmp(restore); if (!segfault) { timer_clock(&t.start1); result_libft = ft_strhasonly(str, query); timer_clock(&t.end1); } else can_segfault |= (1 << 1);
+	segfault = setjmp(restore);
+	if (!segfault) { timer_clock(&t.start1);
+		result_libft = ft_strhasonly(str, query);
+	timer_clock(&t.end1); } else can_segfault |= (1 << 1);
 	print_test_bool(test_name, "_strhasonly", result_libft, expecting, can_segfault);
 	print_timer_result(&t, FALSE);
 }
@@ -586,7 +595,10 @@ void	print_test_strcount_char(char const* test_name, int can_segfault,
 {
 	t_timer t = {0};
 	size_t result_libft = 0;
-	segfault = setjmp(restore); if (!segfault) { timer_clock(&t.start1); result_libft = ft_strcount_char(str, c); timer_clock(&t.end1); } else can_segfault |= (1 << 1);
+	segfault = setjmp(restore);
+	if (!segfault) { timer_clock(&t.start1);
+		result_libft = ft_strcount_char(str, c);
+	timer_clock(&t.end1); } else can_segfault |= (1 << 1);
 	print_test_size(test_name, "_strcount_char", result_libft, expecting, can_segfault);
 	print_timer_result(&t, FALSE);
 }
@@ -613,7 +625,10 @@ void	print_test_strcount_str(char const* test_name, int can_segfault,
 {
 	t_timer t = {0};
 	size_t result_libft = 0;
-	segfault = setjmp(restore); if (!segfault) { timer_clock(&t.start1); result_libft = ft_strcount_str(str, query); timer_clock(&t.end1); } else can_segfault |= (1 << 1);
+	segfault = setjmp(restore);
+	if (!segfault) { timer_clock(&t.start1);
+		result_libft = ft_strcount_str(str, query);
+	timer_clock(&t.end1); } else can_segfault |= (1 << 1);
 	print_test_size(test_name, "_strcount_str", result_libft, expecting, can_segfault);
 	print_timer_result(&t, FALSE);
 }
@@ -940,7 +955,10 @@ void	print_test_strtrim(char const* test_name, int can_segfault,
 {
 	t_timer t = {0};
 	char* result_libft;
-	segfault = setjmp(restore); if (!segfault) { timer_clock(&t.start1); result_libft = ft_strtrim(str, charset); timer_clock(&t.end1); } else result_libft = segstr;
+	segfault = setjmp(restore);
+	if (!segfault) { timer_clock(&t.start1);
+		result_libft = ft_strtrim(str, charset);
+	timer_clock(&t.end1); } else result_libft = segstr;
 	print_test_str(test_name, "_strtrim", result_libft, expecting, can_segfault);
 	print_timer_result(&t, FALSE);
 	if (result_libft && result_libft != segstr) free(result_libft);
@@ -1103,7 +1121,10 @@ void	print_test_strjoin(char const* test_name, int can_segfault,
 {
 	t_timer t = {0};
 	char* result_libft;
-	segfault = setjmp(restore); if (!segfault) { timer_clock(&t.start1); result_libft = ft_strjoin(str1, str2); timer_clock(&t.end1); } else result_libft = segstr;
+	segfault = setjmp(restore);
+	if (!segfault) { timer_clock(&t.start1);
+		result_libft = ft_strjoin(str1, str2);
+	timer_clock(&t.end1); } else result_libft = segstr;
 	print_test_str(test_name, "_strjoin", result_libft, expecting, can_segfault);
 	print_timer_result(&t, FALSE);
 	if (result_libft && result_libft != segstr) free(result_libft);
@@ -1150,7 +1171,10 @@ void	print_test_strsub(char const* test_name, int can_segfault,
 {
 	t_timer t = {0};
 	char* result_libft;
-	segfault = setjmp(restore); if (!segfault) { timer_clock(&t.start1); result_libft = ft_strsub(str, offset, n); timer_clock(&t.end1); } else result_libft = segstr;
+	segfault = setjmp(restore);
+	if (!segfault) { timer_clock(&t.start1);
+		result_libft = ft_strsub(str, offset, n);
+	timer_clock(&t.end1); } else result_libft = segstr;
 	print_test_str(test_name, "_strsub", result_libft, expecting, can_segfault);
 	print_timer_result(&t, FALSE);
 	if (result_libft && result_libft != segstr) free(result_libft);
@@ -1206,7 +1230,10 @@ void	print_test_striter(char const* test_name, int can_segfault,
 {
 	t_timer t = {0};
 	char* result_libft = str == NULL ? NULL : strdup(str);
-	segfault = setjmp(restore); if (!segfault) { timer_clock(&t.start1); ft_striter(result_libft, f); timer_clock(&t.end1); } else result_libft = segstr;
+	segfault = setjmp(restore);
+	if (!segfault) { timer_clock(&t.start1);
+		ft_striter(result_libft, f);
+	timer_clock(&t.end1); } else result_libft = segstr;
 	print_test_str(test_name, "_striter", result_libft, expecting, can_segfault);
 	if (result_libft && result_libft != segstr) free(result_libft);
 	print_timer_result(&t, FALSE);
@@ -1233,7 +1260,10 @@ void	print_test_striteri(char const* test_name, int can_segfault,
 {
 	t_timer t = {0};
 	char* result_libft = str == NULL ? NULL : strdup(str);
-	segfault = setjmp(restore); if (!segfault) { timer_clock(&t.start1); ft_striteri(result_libft, f); timer_clock(&t.end1); } else result_libft = segstr;
+	segfault = setjmp(restore);
+	if (!segfault) { timer_clock(&t.start1);
+		ft_striteri(result_libft, f);
+	timer_clock(&t.end1); } else result_libft = segstr;
 	print_test_str(test_name, "_striteri", result_libft, expecting, can_segfault);
 	if (result_libft && result_libft != segstr) free(result_libft);
 	print_timer_result(&t, FALSE);
@@ -1260,7 +1290,10 @@ void	print_test_strmap(char const* test_name, int can_segfault,
 {
 	t_timer t = {0};
 	char* result_libft = NULL;
-	segfault = setjmp(restore); if (!segfault) { timer_clock(&t.start1); result_libft = ft_strmap(str, f); timer_clock(&t.end1); } else result_libft = segstr;
+	segfault = setjmp(restore);
+	if (!segfault) { timer_clock(&t.start1);
+		result_libft = ft_strmap(str, f);
+	timer_clock(&t.end1); } else result_libft = segstr;
 	print_test_str(test_name, "_strmap", result_libft, expecting, can_segfault);
 	if (result_libft && result_libft != segstr) free(result_libft);
 	print_timer_result(&t, FALSE);
@@ -1287,7 +1320,9 @@ void	print_test_strmapi(char const* test_name, int can_segfault,
 {
 	t_timer t = {0};
 	char* result_libft = NULL;
-	segfault = setjmp(restore); if (!segfault) { timer_clock(&t.start1); result_libft = ft_strmapi(str, f); timer_clock(&t.end1); }  else result_libft = segstr;
+	segfault = setjmp(restore);
+	if (!segfault) { timer_clock(&t.start1);
+		result_libft = ft_strmapi(str, f); timer_clock(&t.end1); }  else result_libft = segstr;
 	print_test_str(test_name, "_strmapi", result_libft, expecting, can_segfault);
 	if (result_libft && result_libft != segstr) free(result_libft);
 	print_timer_result(&t, FALSE);

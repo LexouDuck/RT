@@ -25,6 +25,7 @@
 #define FT_ListAdd(alst, elem)				ft_lstadd(alst, elem)
 #define FT_ListAppend(alst, elem)			ft_lstappend(alst, elem)
 #define FT_ListInsert(alst, elem, index)	ft_lstinsert(alst, elem, index)
+#define FT_ListCopy(lst)					ft_lstcpy(lst)
 #define FT_ListRemove(alst, f)				ft_lstdelone(alst, f)
 #define FT_ListDelete(alst, f)				ft_lstdel(alst, f)
 
@@ -35,8 +36,8 @@
 #define FT_ListSub(alst, index, n)			ft_lstsub(alst, index, n)
 #define FT_ListIterate(lst, f)				ft_lstiter(lst, f)
 #define FT_ListMap(lst, f)					ft_lstmap(lst, f)
-#define FT_ListToTuple(alst)				ft_array_fixed(alst)
-#define FT_ListToArray(alst)				ft_array(alst)
+#define FT_ListToTuple(alst)				ft_lst_to_tuple(alst)
+#define FT_ListToArray(alst)				ft_lst_to_array(alst)
 
 
 
@@ -57,7 +58,6 @@ typedef struct			s_list
 {
 	void				*item;
 	size_t				item_size;
-	struct s_list		*prev;
 	struct s_list		*next;
 }						t_list;
 
@@ -72,10 +72,10 @@ typedef t_list *(*f_list_map)(t_list *);
 */
 
 /*
-**	Allocates and returns a new element of a list,
-**	according to the given arguments.
+**	Allocates a new linked list element, and feeds it the given 'item' pointer
+**	and the given 'item_size' (if 'item' is NULL, item_size is set to 0).
 */
-t_list	*ft_lstnew(void const *item, size_t size);
+t_list	*ft_lstnew(void *item, size_t item_size);
 
 /*
 **	Inserts a new element of a list 'elem' at the pointer '*alst',
@@ -91,20 +91,34 @@ void	ft_lstappend(t_list **alst, t_list *elem);
 
 /*
 **	Inserts the given element 'elem' at the given 'index' of the list '*alst'.
+**	If 'index' is too large, the 'elem' is appended to the end of the list.
+**	If 'elem' is NULL, then nothing is done by this function.
 */
 void	ft_lstinsert(t_list **alst, t_list *elem, t_u32 index);
 
 /*
-**	Deletes the given element pointed to by 'alst' with the function 'f',
+**	Returns a newly allocated copy of the given linked list 'lst'.
+**	The underlying data is not copied, only the t_list* structs are malloc'ed.
+*/
+t_list	*ft_lstcpy(t_list *lst);
+
+/*
+**	Deletes the last element in the list starting at '*alst', calling 'del'
+**	and freeing that element, and setting the preceding 'lst->next' as NULL.
+*/
+void	ft_lstpop(t_list **alst, void (*del)(void *, size_t));
+
+/*
+**	Deletes the given element pointed to by 'alst' with the function 'del',
 **	and then frees memory and sets '*alst' as a NULL pointer.
 */
-void	ft_lstdelone(t_list **alst, void (*f)(void *, size_t));
+void	ft_lstdelone(t_list **alst, void (*del)(void *, size_t));
 
 /*
 **	Deletes all the elements in the list starting at '*alst',
-**	calls 'f' and frees memory for each, and lastly sets '*alst' as NULL.
+**	calls 'del' and frees memory for each, and lastly sets '*alst' as NULL.
 */
-void	ft_lstdel(t_list **alst, void (*f)(void *, size_t));
+void	ft_lstdel(t_list **alst, void (*del)(void *, size_t));
 
 /*
 ** ************************************************************************** *|
@@ -118,13 +132,14 @@ void	ft_lstdel(t_list **alst, void (*f)(void *, size_t));
 t_u32	ft_lstsize(t_list *lst);
 
 /*
-**	Returns the 'index'th element in the given list 'alst'.
+**	Returns the 'index'th element in the given list 'lst'.
 **	Will return NULL if 'index' is beyond the last element.
 */
-t_list	*ft_lstget(t_list **alst, t_u32 index);
+t_list	*ft_lstget(t_list *lst, t_u32 index);
 
 /*
-**	Returns the first encountered element of 'lst' for which lst.item == 'query'
+**	Returns the first encountered element of the given linked list 'lst'
+**	for which (lst.item == query), matching only the pointers, not the data.
 */
 t_list	*ft_lstfind(t_list *lst, void const* query);
 
@@ -135,13 +150,13 @@ t_list	*ft_lstfind(t_list *lst, void const* query);
 */
 
 /*
-**	Returns a subsection of the given list 'alst',
-**	starting at 'index', and copying 'n' list elements.
+**	Returns a newly allocated subsection of the given list 'lst',
+**	starting at 'index', and copying 'n' list elements (not their 'item' data).
 **	Will return NULL if 'index' is too large or if 'n' is 0.
 **	If 'index' is valid but the list is not large enough for 'n',
 **	then the resulting list will have fewer than 'n' elements.
 */
-t_list	**ft_lstsub(t_list **alst, t_u32 index, t_u32 n);
+t_list	*ft_lstsub(t_list *lst, t_u32 index, t_u32 n);
 
 /*
 **	Iterates upon each element of the given list 'lst',

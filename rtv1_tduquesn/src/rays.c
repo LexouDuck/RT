@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/16 23:00:36 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/11 01:01:34 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/13 02:20:03 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,6 +192,27 @@ t_vcolor					resolve_intersection(t_control *ctrl,
 		}
 		vec3_scale(res.vec, INV_RAY_SAMPLE_NB, res.vec);
 		vec3_schur(res.vec, res.vec, shdr.hit_obj->rgb.vec);
+
+		t_object	*spot;
+		t_float		quaddist;
+		t_float		costh;
+		t_vcolor	dirlum;
+
+		for (int i = 0; i < ctrl->spotlst_len; ++i)
+		{
+			shdr.out_ray_ws = rsamp.rays[i];
+			spot = &(ctrl->spotlst[i]);
+			vec3_sub(shdr.out_ray_ws.dir, spot->pos, shdr.out_ray_ws.pos);
+			quaddist = vec3_dot(shdr.out_ray_ws.dir, shdr.out_ray_ws.dir);
+			shdr.out_ray_ws.t = sqrt(quaddist);
+			vec3_scale(shdr.out_ray_ws.dir, 1. / shdr.out_ray_ws.t, shdr.out_ray_ws.dir);
+			if (trace_ray_to_objs(ctrl, shdr.out_ray_ws, NULL, NULL))
+				continue ;
+			costh = vec3_dot(shdr.normal_ws, shdr.out_ray_ws.dir);
+			vec3_scale(dirlum.vec, INV_PI * spot->intensity * ft_fmax(0., costh) / quaddist, shdr.hit_obj->rgb.vec);
+			vec3_schur(dirlum.vec, dirlum.vec, spot->rgb.vec);
+			vec3_add(res.vec, res.vec, dirlum.vec);
+		}
 	}
 
 	else

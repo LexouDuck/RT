@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/16 23:00:36 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/13 02:20:03 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/13 02:26:18 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,7 +184,7 @@ t_vcolor					resolve_intersection(t_control *ctrl,
 
 		rsamp = ray_sample_init_w_fixed_origin(shdr.out_ray_ws, shdr.normal_ws, 1);
 		res.val = (t_rgb){0., 0., 0.};
-		for (int i = 0; i < RAY_SAMPLE_NB; ++i)
+/*		for (int i = 0; i < RAY_SAMPLE_NB; ++i)
 		{
 			shdr.out_ray_ws = rsamp.rays[i];
 			rsamp.lum[i] = trace_ray_to_scene(ctrl, shdr);
@@ -192,7 +192,7 @@ t_vcolor					resolve_intersection(t_control *ctrl,
 		}
 		vec3_scale(res.vec, INV_RAY_SAMPLE_NB, res.vec);
 		vec3_schur(res.vec, res.vec, shdr.hit_obj->rgb.vec);
-
+*/
 		t_object	*spot;
 		t_float		quaddist;
 		t_float		costh;

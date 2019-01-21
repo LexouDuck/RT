@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 17:34:32 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/11 03:01:49 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/21 04:29:09 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,9 @@
 # define MAX_OBJ_NB				32
 
 # define MAX_RAY_DEPTH			4 //4
-# define RAY_SAMPLE_NB			16//32 //8
-# define INV_RAY_SAMPLE_NB		0.0625//0.003125//0.125
+# define MAX_SAMPRAY_DEPTH		3
+# define RAY_SAMPLE_NB			64//16//32 //8
+# define INV_RAY_SAMPLE_NB		1. / RAY_SAMPLE_NB//0.0625//0.003125//0.125
 
 typedef struct	s_point
 {
@@ -140,6 +141,7 @@ typedef struct	s_ray
 	t_vec_3d	dir;
 	t_float		t;
 	t_u8		depth;
+	t_u8		sray_depth;
 }				t_ray;
 
 /*

@@ -80,3 +80,9 @@ discriminant of a degree 2 polynomial), and these roots (t1 and t2) are
 negative iff the object is behind the camera origin. If the roots are of
 opposite sign to each other, then the camera/ray origin is located inside the
 sphere.
+
+
+
+IDEAS:
+Only call GPU for intersections with object lists for now ?
+Limit depth of "multiple branchs" generation more than absolute ray depth ?

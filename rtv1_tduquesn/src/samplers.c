@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/09 03:16:19 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/09 14:58:29 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/21 04:49:37 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ t_ray_sample		ray_sample_init_w_fixed_origin(
 	while (i < RAY_SAMPLE_NB)
 	{	
 		rsamp.rays[i] = fxd_pos;
+		++(rsamp.rays[i].sray_depth);
 		if (phong == 0)
 		{
 			vec3_rand_hemi(rsamp.rays[i].dir, axis);
@@ -128,7 +129,7 @@ t_ray_sample		ray_sample_init_w_fixed_origin(
 		else
 		{
 			vec3_rand_coslobe(rsamp.rays[i].dir, axis, phong);//compare with math.h exp()
-			rsamp.probs[i] = ft_lfpowi(vec3_dot(rsamp.rays[i].dir, axis), phong)
+			rsamp.probs[i] = pow(vec3_dot(rsamp.rays[i].dir, axis), phong)//ft_lfpowi(vec3_dot(rsamp.rays[i].dir, axis), phong)
 								* INV_TAU * (phong + 1);
 		}
 		rsamp.lum[i].val = (t_rgb){0., 0., 0.};

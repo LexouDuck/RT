@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/29 07:05:34 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/11 02:04:37 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/21 05:14:32 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,23 +41,18 @@ t_color				color_app_lum(t_vcolor const lum)
 	return (red << 16 | grn << 8 | blu);
 }
 
-t_vcolor			get_lum_from_lightsrc(//t_control *ctrl,
+t_vcolor			get_lum_from_lightsrc(
 								t_shader const objshdr,
-								t_shader const lgtshdr/*, t_float *costheta*/)
+								t_shader const lgtshdr)
 {
 	t_vcolor	reslum;
 	t_float		quaddist;
 	t_float		costh;
+	t_material	mater;
 
-//printf("lgtshdr.in_ray.t %f", lgtshdr.in_ray.t);
-//	reslum.val = (t_rgb){2550., 0., 0.};
-//	if (trace_ray_to_objs(ctrl, lgtshdr.in_ray, NULL, NULL))
-//		return (reslum);
-//	else
-//	{
-
-
-	if (lgtshdr.in_ray.depth == 0)
+	if (lgtshdr.in_ray.depth >= 1) 
+		mater = objshdr.hit_obj->material;
+	if (lgtshdr.in_ray.depth == 0 || mater == glassy || mater == mirror)
 	{
 		vec3_scale(reslum.vec, lgtshdr.hit_obj->intensity, lgtshdr.hit_obj->rgb.vec);
 //		return (reslum);
@@ -66,7 +61,7 @@ t_vcolor			get_lum_from_lightsrc(//t_control *ctrl,
 	{
 //printf("p");
 		quaddist = lgtshdr.in_ray.t * lgtshdr.in_ray.t;
-		costh = vec3_dot(objshdr.normal_os, objshdr.out_ray_os.dir);
+		costh = vec3_dot(objshdr.normal_ws, objshdr.out_ray_ws.dir);
 		vec3_scale(reslum.vec,
 			INV_PI * lgtshdr.hit_obj->intensity * ft_fmax(0., costh) / quaddist,
 			objshdr.hit_obj->rgb.vec);
@@ -174,32 +169,13 @@ static void			shader_get_diff_n_spec(t_control *ctrl,
 	//vec3_add(reslum, reslum, spec);
 }
 
-
-void					get_lighting_at_point(t_control *ctrl,
-							t_object const obj, t_ray const objray, int is_direct)
-{
-	t_shader		shdr;
-	t_ray_sample	raysamp;
-
-	//for each vector in  sample
-		//get intersection point on primitive (dirlight.pos) and "normal fix" it
-		//get normal at point of intersection
-		//set ray origin to world space
-		//
-
-	//loop on spotlst
-	//loop on objlst
-}
-#endif
-
-
 /*
 ** Principle: you cast a ray from the point of contact in question to the light
 ** source(s) and if it intersects with an object, and
 ** 		dist(contact, light) > dist(contact, shadow_ray_contact)
 ** then the contact point is hidden from the light source
 */
-/*
+
 t_vcolor				get_color_from_fixed_objray(t_control *ctrl,
 							t_object const obj, t_ray const objray)
 {
@@ -232,4 +208,4 @@ t_vcolor				get_color_from_fixed_objray(t_control *ctrl,
 	}
 	return (lum);
 }
-*/
+#endif

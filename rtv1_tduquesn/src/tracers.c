@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/09 02:52:55 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/11 01:15:00 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/21 06:00:12 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ t_vcolor		trace_ray_to_scene(t_control *ctrl, t_shader shdr)
 								|| has_inter);
 	if (has_inter)
 	{
-		shdr.out_ray_ws.t = objray.t;
+//		shdr.out_ray_ws.t = objray.t;
 		reslum = resolve_intersection(ctrl, shdr, &hit_obj, objray);
 	}
 	else

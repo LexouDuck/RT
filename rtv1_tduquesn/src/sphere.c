@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/16 22:59:05 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/13 02:47:26 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/22 00:17:52 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,10 @@ t_bool		intersect_ray_sphere(t_ray *objray)
 	if ((root1 <= 0. && root2 <= 0.) ||
 		(root1 > objray->t && root2 > objray->t))
 		return (FALSE);
-	root1 = root1 <= 0. ? root2 : root1;
-	root2 = root2 <= 0. ? root1 : root2;
+	if (root1 <= 0.)
+		root1 = root2;
+	if (root2 <= 0.)
+		root2 = root1;
 	objray->t = ft_fmin(root1, root2);
 	return (TRUE);
 }

@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/28 01:05:01 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/09 14:44:06 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/21 17:31:26 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,6 @@ t_bool			get_realroots_quadpoly(t_float *root1, t_float *root2,
 	return (TRUE);
 }
 
-/*
-** Returns the point on the object hit by a ray in object space coordinates.
-*/
-
-inline void		get_ray_hitpos(t_vec_3d hitpos, t_ray const objray)
-{
-	vec3_scale(hitpos, objray.t, objray.dir);
-	vec3_add(hitpos, hitpos, objray.pos);
-}
-
 inline void		print_object(t_object const obj)
 {
 	printf("type: %d\n"
@@ -49,7 +39,7 @@ inline void		print_object(t_object const obj)
 			"pos: (%f, %f, %f)\n"
 			"scl: (%f, %f, %f)\n"
 			"rot: (%f, %f, %f)\n"
-			"abd: (%f, %f, %f)\n"
+			"rgb: (%f, %f, %f)\n"
 			"spc: (%f, %f, %f)\n",
 			obj.type, obj.material,
 			obj.pos[0], obj.pos[1], obj.pos[2],

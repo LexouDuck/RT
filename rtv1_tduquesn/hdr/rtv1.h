@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 17:34:32 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/21 04:29:09 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/22 00:43:44 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@
 # define MAX_LGT_NB				16
 # define MAX_OBJ_NB				32
 
-# define MAX_RAY_DEPTH			4 //4
-# define MAX_SAMPRAY_DEPTH		3
+# define MAX_RAY_DEPTH			1 //4
+# define MAX_SAMPRAY_DEPTH		0 //3
 # define RAY_SAMPLE_NB			64//16//32 //8
 # define INV_RAY_SAMPLE_NB		1. / RAY_SAMPLE_NB//0.0625//0.003125//0.125
 
@@ -125,6 +125,8 @@ typedef struct	s_camera
 	t_float			hrz_fov;
 	t_mat_4b4		c_to_w;
 	t_mat_4b4		w_to_c;
+	t_mat_3b3		linear_c_to_w;
+	t_mat_3b3		linear_w_to_c;
 }				t_camera;
 
 /*
@@ -167,17 +169,17 @@ typedef struct	s_ray_sample
 */
 typedef enum	e_objtype
 {
-	null_obj,
-	sphere,
-	plane,
+	null_obj,			//0
+	sphere,				//1
+	plane,				//2
 	disk,
 	square,
-	triangle,
+	triangle,			//5
 	infcylinder,
 	cylinder,
 	infcone,
 	cone,
-	cube,
+	cube,				//10
 	paraboloid,
 	saddle
 }				t_objtype;
@@ -193,7 +195,8 @@ typedef enum	e_material
 	diffuse,
 	mirror,
 	glassy,
-	glossy/*,
+	glossy
+	/*,
 	skybox ?*/
 }				t_material;
 
@@ -312,6 +315,20 @@ typedef struct	s_control
 
 void			exit_error(char *e_msg, int e_no);
 
+
+/*
+** vec3_utils.c
+*/
+void			vec3_schur(t_vec_3d res,
+								t_vec_3d const v1,
+								t_vec_3d const v2);
+void			vec3_displace(t_vec_3d edit,
+									t_float const coef,
+									t_vec_3d const dir);
+void			mat44_app_vec3(t_vec_3d result,
+									t_mat_4b4 const mat,
+									t_vec_3d const v);
+
 /*
 ** image_utils.c
 */
@@ -361,14 +378,8 @@ int				handle_key(int key, void *param);
 
 /*
 ** rays.c
+** TODO move ray_handlers
 */
-void			mat44_app_vec3(t_vec_3d result,
-								t_mat_4b4 const mat,
-								t_vec_3d const v);
-
-t_ray			ray_x_to_y(t_mat_4b4 const x_to_y,
-							t_mat_3b3 const linear_x_to_y,
-							t_ray const ray);
 t_vcolor		resolve_intersection(t_control *ctrl,
 							t_shader oldshdr,
 							t_object *hit_obj,
@@ -376,12 +387,25 @@ t_vcolor		resolve_intersection(t_control *ctrl,
 void			cast_rays(t_control *ctrl);
 
 /*
+** ray_utils.c
+*/
+t_ray			ray_x_to_y(t_mat_4b4 const x_to_y,
+						t_mat_3b3 const linear_x_to_y,
+						t_ray const ray);
+void			get_ray_hitpos(t_vec_3d hitpos, t_ray const objray);
+//void			get_reflect(t_vec_3d res,
+//							t_vec_3d const incident, t_vec_3d const normal);
+void			shader_get_reflect(t_shader *shdr);
+t_bool			shader_get_transmit(t_shader *shdr);
+
+
+/*
 ** tracers.c
 */
 t_bool			trace_ray_to_objs(t_control *ctrl, t_ray ray,
-									t_object *hit_obj, t_ray *res_objray);
+									t_object **hit_obj, t_ray *res_objray);
 t_bool			trace_ray_to_spots(t_control *ctrl, t_ray ray,
-									t_object *hit_spot, t_ray *res_lgtray);
+									t_object **hit_spot, t_ray *res_lgtray);
 t_vcolor		trace_ray_to_scene(t_control *ctrl, t_shader shdr);
 
 
@@ -393,23 +417,15 @@ void			build_obj(t_object *obj, t_objtype type, t_material material);
 /*
 ** shader.c
 */
-//t_color			get_color_from_fixed_objray(t_control *ctrl,
-//							t_object const obj, t_ray const objray);
-t_vcolor			get_lum_from_lightsrc(//t_control *ctrl,
+t_vcolor		get_lum_from_lightsrc(
 								t_shader const objshdr,
 								t_shader const lgtshdr);
-t_color				color_app_lum(t_vcolor const lum);
-
-
-void				vec3_displace(t_vec_3d edit, t_float const coef,
-									t_vec_3d const dir);
-void				vec3_schur(t_vec_3d res,
-								t_vec_3d const v1, t_vec_3d const v2);
+t_color			color_app_lum(t_vcolor const lum);
 
 /*
 ** samplers.c
 */
-t_ray_sample		ray_sample_init_w_fixed_origin(
+t_ray_sample	ray_sample_init_w_fixed_origin(
 							t_ray const fxd_pos,
 							t_vec_3d const axis,
 							t_u32 const phong);
@@ -419,11 +435,6 @@ t_ray_sample		ray_sample_init_w_fixed_origin(
 */
 t_bool			get_realroots_quadpoly(t_float *root1, t_float *root2,
 									t_vec_3d const quadpoly);
-void			get_ray_hitpos(t_vec_3d hitpos, t_ray const objray);
-//void			get_reflect(t_vec_3d res,
-//							t_vec_3d const incident, t_vec_3d const normal);
-void			get_reflect(t_shader *shdr);
-t_bool			get_transmit(t_shader *shdr);
 void			print_object(t_object const obj);
 
 /*

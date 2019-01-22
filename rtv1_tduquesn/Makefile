@@ -6,7 +6,7 @@
 #    By: tduquesn <tduquesn@42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/17 21:33:56 by tduquesn          #+#    #+#              #
-#    Updated: 2019/01/10 04:12:17 by fulguritu        ###   ########.fr        #
+#    Updated: 2019/01/21 18:03:22 by fulguritu        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,7 @@ SRCS_	:=	camera.c			\
 			reader_utils.c		\
 			objects.c			\
 			rays.c				\
+			ray_utils.c			\
 			primitive_utils.c	\
 			primitives_2d.c		\
 			sphere.c			\
@@ -62,6 +63,7 @@ SRCS_	:=	camera.c			\
 			render.c			\
 			tracers.c			\
 			samplers.c			\
+			vec3_utils.c		\
 			ft_stat.c ft_random.c ft_integral.c ft_stat_nblst_utils.c ft_prob.c\
 
 MAIN	:=	main_$(NAME).c

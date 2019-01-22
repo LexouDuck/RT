@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 00:31:44 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/05 07:44:51 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/21 21:42:09 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static void		cam_build_matrices(t_camera *cam)
 	t_mat_4b4	result;
 
 	mat33_set(tmp, cam->axis_x, cam->axis_y, cam->axis_z);
+	ft_memcpy(cam->linear_c_to_w, tmp, T_MAT33_SIZE);
+	mat33_inv(cam->linear_w_to_c, cam->linear_c_to_w);
 	result[0] = tmp[0];
 	result[1] = tmp[1];
 	result[2] = tmp[2];

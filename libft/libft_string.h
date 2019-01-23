@@ -35,10 +35,9 @@
 
 #define	FT_StringLength(str)					ft_strlen(str)
 #define	FT_StringCompare(str1, str2)			ft_strcmp(str1, str2)
-#define	FT_StringCompare_N(str1, str2, n)		ft_strcmp(str1, str2, n)
-#define	FT_StringEquals(str1, str2)				ft_strcmp(str1, str2)
-#define	FT_StringEquals_N(str1, str2, n)		ft_strcmp(str1, str2, n)
-#define	FT_StringCompare(str1, str2)			ft_strcmp(str1, str2)
+#define	FT_StringCompare_N(str1, str2, n)		ft_strncmp(str1, str2, n)
+#define	FT_StringEquals(str1, str2)				ft_strequ(str1, str2)
+#define	FT_StringEquals_N(str1, str2, n)		ft_strnequ(str1, str2, n)
 #define	FT_StringHas(str, charset)				ft_strhas(str, charset)
 #define	FT_StringHasOnly(str, charset)			ft_strhasonly(str, charset)
 #define	FT_StringCount_Char(str, c)				ft_strcount_char(str, c)

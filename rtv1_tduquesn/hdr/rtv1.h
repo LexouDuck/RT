@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 17:34:32 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/22 00:43:44 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/25 02:30:39 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,9 @@
 # define DBG_COLOR				0x5500BB
 # define MIRROR_DBG_COLOR		0x11BB33
 # define BG_COLOR				0x00BB88
-//# define NO_INTER				0xFF000000
+# define MIRROR_DAMPEN_COLOR	0xDDEEDD
+# define GLASSY_DAMPEN_COLOR	0xDDDDEE
+# define INV_MAX_COLOR			(1. / 255.)
 
 # define APPROX					0.000001
 
@@ -66,10 +68,10 @@
 # define MAX_LGT_NB				16
 # define MAX_OBJ_NB				32
 
-# define MAX_RAY_DEPTH			1 //4
+# define MAX_RAY_DEPTH			7 //4
 # define MAX_SAMPRAY_DEPTH		0 //3
-# define RAY_SAMPLE_NB			64//16//32 //8
-# define INV_RAY_SAMPLE_NB		1. / RAY_SAMPLE_NB//0.0625//0.003125//0.125
+# define RAY_SAMPLE_NB			32//16//32 //8
+# define INV_RAY_SAMPLE_NB		(1. / RAY_SAMPLE_NB)//0.0625//0.003125//0.125
 
 typedef struct	s_point
 {
@@ -393,8 +395,9 @@ t_ray			ray_x_to_y(t_mat_4b4 const x_to_y,
 						t_mat_3b3 const linear_x_to_y,
 						t_ray const ray);
 void			get_ray_hitpos(t_vec_3d hitpos, t_ray const objray);
-//void			get_reflect(t_vec_3d res,
-//							t_vec_3d const incident, t_vec_3d const normal);
+void			get_reflect(t_vec_3d res_reflected_dir,
+							t_vec_3d const incident_dir,
+							t_vec_3d const normal);
 void			shader_get_reflect(t_shader *shdr);
 t_bool			shader_get_transmit(t_shader *shdr);
 
@@ -420,7 +423,9 @@ void			build_obj(t_object *obj, t_objtype type, t_material material);
 t_vcolor		get_lum_from_lightsrc(
 								t_shader const objshdr,
 								t_shader const lgtshdr);
-t_color			color_app_lum(t_vcolor const lum);
+t_color			vcolor_to_color(t_vcolor const lum);
+t_vcolor		color_to_vcolor(t_color const clr);
+
 
 /*
 ** samplers.c

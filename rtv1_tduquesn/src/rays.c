@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/16 23:00:36 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/22 01:28:37 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/25 02:27:02 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_vcolor					ray_handle_mirror(t_control *ctrl, t_shader shdr)
 	shdr.out_ray_ws = ray_x_to_y(shdr.hit_obj->o_to_w,
 						shdr.hit_obj->linear_o_to_w, shdr.out_ray_os);
 	res = trace_ray_to_scene(ctrl, shdr);
-	vec3_schur(res.vec, res.vec, (t_vec_3d){0.9, 0.95, 0.9});//mirror blur
+	vec3_schur(res.vec, res.vec, color_to_vcolor(MIRROR_DAMPEN_COLOR).vec);//(t_vec_3d){0.9, 0.95, 0.9});//mirror blur
 	return (res);
 }
 
@@ -33,9 +33,8 @@ t_vcolor					ray_handle_glassy(t_control *ctrl, t_shader shdr)
 	if (shader_get_transmit(&shdr)) //normal should be altered to the right direction here
 	{
 		shdr.out_ray_ws = ray_x_to_y(shdr.hit_obj->o_to_w, shdr.hit_obj->linear_o_to_w, shdr.out_ray_os);
-		//add normal to world here ?
 		res = trace_ray_to_scene(ctrl, shdr);
-		vec3_schur(res.vec, res.vec, (t_vec_3d){0.9, 0.95, 0.95});
+		vec3_schur(res.vec, res.vec, color_to_vcolor(GLASSY_DAMPEN_COLOR).vec);// (t_vec_3d){0.9, 0.95, 0.95});
 	}
 	else
 		res.val = (t_rgb){0., 0., 0.};
@@ -101,7 +100,7 @@ t_vcolor					ray_handle_global_lum(t_control *ctrl,
 t_vcolor					ray_handle_glossy(t_control *ctrl, t_shader shdr)
 {
 	t_vcolor	res;
-	t_vcolor	tmp;
+//	t_vcolor	tmp;
 
 	vec3_displace(shdr.out_ray_os.pos, APPROX, shdr.normal_os);
 	shader_get_reflect(&shdr);
@@ -110,33 +109,42 @@ t_vcolor					ray_handle_glossy(t_control *ctrl, t_shader shdr)
 							shdr.out_ray_os);
 	//TODO remove ?
 	res = ray_handle_direct_lum(ctrl, shdr);
-	if (shdr.out_ray_ws.sray_depth < MAX_SAMPRAY_DEPTH)
+/*	if (shdr.out_ray_ws.sray_depth <= MAX_SAMPRAY_DEPTH)// && shdr.out_ray_ws.depth <= 2)
 	{
-		tmp = ray_handle_global_lum(ctrl, shdr, 7);
+		tmp = ray_handle_global_lum(ctrl, shdr, 6);
 		vec3_add(res.vec, res.vec, tmp.vec);
 	}
-
+*/
 	return (res);
 }
 
 t_vcolor					ray_handle_diffuse(t_control *ctrl, t_shader shdr)
 {
 	t_vcolor	res;
-	t_vcolor	tmp;
+//	t_vcolor	tmp;
 
 	vec3_displace(shdr.out_ray_os.pos, APPROX, shdr.normal_os);
 	mat44_app_vec3(shdr.out_ray_ws.pos, shdr.hit_obj->o_to_w, shdr.out_ray_os.pos);
 	//direct lighting
 	res = ray_handle_direct_lum(ctrl, shdr);
 	//indirect lighting
-	if (shdr.out_ray_ws.sray_depth < MAX_SAMPRAY_DEPTH)
+/*	if (shdr.out_ray_ws.sray_depth <= MAX_SAMPRAY_DEPTH)// && shdr.out_ray_ws.depth <= 2)
 	{
 		tmp = ray_handle_global_lum(ctrl, shdr, 1);
 		vec3_add(res.vec, res.vec, tmp.vec);
 	}
+*/
 	return (res);
 }
+#if 0
+t_vcolor					ray_handle_lightsrc(t_shader const objshdr,
+												t_shader lgtshdr)
+{
+	t_vcolor		res;
 
+	//sample over single light src object
+}
+#endif
 
 t_vcolor					resolve_intersection(t_control *ctrl,
 									t_shader oldshdr,
@@ -216,7 +224,7 @@ void			cast_rays(t_control *ctrl)
 			reslum = trace_ray_to_scene(ctrl, shdr);
 //t_color color = color_app_lum(reslum);
 //printf("reslum %10f, %10f, %10f | color %#06x\n", reslum.val.r, reslum.val.g, reslum.val.b, color);
-			((t_u32*)ctrl->img_data)[i * REN_W + j] = color_app_lum(reslum);
+			((t_u32*)ctrl->img_data)[i * REN_W + j] = vcolor_to_color(reslum);
 		}
 printf("%.2f / 100.00\n", 100. * (i + 1.) / REN_H);
 	}

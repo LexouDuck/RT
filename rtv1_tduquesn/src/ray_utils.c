@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/21 17:23:47 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/22 01:24:38 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/25 00:59:08 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,25 @@ t_ray			ray_x_to_y(t_mat_4b4 const x_to_y,
 	return (result);
 }
 
+inline void		get_reflect(t_vec_3d refdir,
+							t_vec_3d const incdir,
+							t_vec_3d const normal)
+{
+	vec3_scale(refdir, -2 * vec3_dot(incdir, normal), normal);
+	vec3_add(refdir, refdir, incdir);
+}
+
 /*
 ** The normal and in_ray.dir should be set.
 */
 
 inline void		shader_get_reflect(t_shader *shdr)
 {
-	vec3_scale(shdr->out_ray_os.dir,
+	get_reflect(shdr->out_ray_os.dir, shdr->in_ray.dir, shdr->normal_os);
+/*	vec3_scale(,
 		-2 * vec3_dot(shdr->in_ray.dir, shdr->normal_os), shdr->normal_os);
 	vec3_add(shdr->out_ray_os.dir, shdr->out_ray_os.dir, shdr->in_ray.dir);
+*/
 }
 
 /*

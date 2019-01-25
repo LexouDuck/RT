@@ -6,13 +6,13 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/29 07:05:34 by fulguritu         #+#    #+#             */
-/*   Updated: 2019/01/21 17:30:02 by fulguritu        ###   ########.fr       */
+/*   Updated: 2019/01/25 02:23:22 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-t_color				color_app_lum(t_vcolor const lum)
+t_color				vcolor_to_color(t_vcolor const lum)
 {
 	t_u8		red;
 	t_u8		grn;
@@ -22,6 +22,23 @@ t_color				color_app_lum(t_vcolor const lum)
 	grn = ft_fmax(0., ft_fmin(255., lum.val.g));
 	blu = ft_fmax(0., ft_fmin(255., lum.val.b));
 	return (red << 16 | grn << 8 | blu);
+}
+
+t_vcolor			color_to_vcolor(t_color const clr)
+{
+	t_u8		red;
+	t_u8		grn;
+	t_u8		blu;
+	t_vcolor	res;
+
+	red = clr >> 16;
+	grn = clr >> 8;
+	blu = clr;
+	vec3_set(res.vec,
+		red * INV_MAX_COLOR,
+		grn * INV_MAX_COLOR,
+		blu * INV_MAX_COLOR);
+	return (res);
 }
 
 t_vcolor			get_lum_from_lightsrc(
@@ -37,29 +54,36 @@ t_vcolor			get_lum_from_lightsrc(
 		mater = objshdr.hit_obj->material;
 	if (lgtshdr.in_ray.depth == 0 || mater == glassy || mater == mirror)
 	{
-		vec3_scale(reslum.vec, lgtshdr.hit_obj->intensity, lgtshdr.hit_obj->rgb.vec);
-//		return (reslum);
+		vec3_scale(reslum.vec, lgtshdr.hit_obj->intensity * INV_MAX_COLOR, lgtshdr.hit_obj->rgb.vec);
+	//	quaddist = ft_fmax(ft_fmax(lgtshdr, ), );
 	}
 	else
 	{
 //printf("p");
+//	Direct light
 		quaddist = lgtshdr.in_ray.t * lgtshdr.in_ray.t;
 		costh = vec3_dot(objshdr.normal_ws, objshdr.out_ray_ws.dir);
 		vec3_scale(reslum.vec,
 			INV_PI * lgtshdr.hit_obj->intensity * ft_fmax(0., costh) / quaddist,
 			objshdr.hit_obj->rgb.vec);
 		vec3_schur(reslum.vec, reslum.vec, lgtshdr.hit_obj->rgb.vec);
+
+//	Specular
+		t_vec_3d	ref;
+		t_vec_3d	tmp;
+		t_vec_3d	spec;
+		
+		vec3_scale(ref, -1., objshdr.out_ray_ws.dir);
+		get_reflect(ref, ref, objshdr.normal_ws);
+		
+		mat33_app_vec(tmp, objshdr.hit_obj->linear_o_to_w, objshdr.in_ray.dir);
+		costh = ft_fmax(0., -vec3_dot(ref, tmp));
+		vec3_set(spec, powf(costh, objshdr.hit_obj->specul[0]),
+			powf(costh, objshdr.hit_obj->specul[1]), powf(costh, objshdr.hit_obj->specul[2]));
+		vec3_schur(spec, spec, lgtshdr.hit_obj->rgb.vec);
+		vec3_add(reslum.vec, spec, reslum.vec);
 	}
-/*		if (ctrl->show_specular)
-		{
-			vec3_scale(ref, -1., lgtshdr.in_ray.dir);
-			get_reflect(ref, ref, shdr.normal);
-			tmp = ft_fmax(0., -vec3_dot(ref, shdr.objray_dir));
-			vec3_set(spec, powf(tmp, shdr.obj_specul[0]),
-				powf(tmp, shdr.obj_specul[1]), powf(tmp, shdr.obj_specul[2]));
-			vec3_schur(spec, spec, lgtshdr.hit_obj.rgb);
-		}
-*///	}
+
 //if (reslum.val.g != 0. || reslum.val.b != 0.)
 //printf("%f %f %f\n", reslum.val.r, reslum.val.g, reslum.val.b);
 	return (reslum);
@@ -125,9 +149,9 @@ static void			shader_get_diff_n_spec(t_control *ctrl,
 	t_vec_3d	ref;
 	t_vec_3d	spec;
 
-//	vec3_sub(shdr.dirlight.dir, spot.pos, shdr.dirlight.pos);
-//	tmp = vec3_eucl_quadnorm(shdr.dirlight.dir);
-//	shdr.dirlight.t = sqrt(tmp);
+	vec3_sub(shdr.dirlight.dir, spot.pos, shdr.dirlight.pos);
+	tmp = vec3_eucl_quadnorm(shdr.dirlight.dir);
+	shdr.dirlight.t = sqrt(tmp);
 	vec3_scale(shdr.dirlight.dir, 1. / shdr.dirlight.t, shdr.dirlight.dir);
 
 	if (ctrl->show_diffuse)
@@ -186,7 +210,6 @@ t_vcolor				get_color_from_fixed_objray(t_control *ctrl,
 	while (++i < ctrl->spotlst_len)
 	{
 		cur_spot = ctrl->spotlst[i];
-		shader_get_directlgt(ctrl, 
 		shader_get_diff_n_spec(ctrl, shdr, cur_spot);
 	}
 	return (lum);

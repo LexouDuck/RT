@@ -12,7 +12,7 @@
 
 #include "../../libft_convert.h"
 
-char	*ft_bool_to_str(t_bool number)
+char	*ft_bool_to_str(t_bool number, t_bool uppercase)
 {
 	char	*result;
 
@@ -20,21 +20,21 @@ char	*ft_bool_to_str(t_bool number)
 	{
 		if (!(result = (char *)malloc(5)))
 			return (NULL);
-		result[0] = 'T';
-		result[1] = 'R';
-		result[2] = 'U';
-		result[3] = 'E';
+		result[0] = uppercase ? 'T' : 't';
+		result[1] = uppercase ? 'R' : 'r';
+		result[2] = uppercase ? 'U' : 'u';
+		result[3] = uppercase ? 'E' : 'e';
 		result[4] = '\0';
 	}
 	else
 	{
 		if (!(result = (char *)malloc(6)))
 			return (NULL);
-		result[0] = 'F';
-		result[1] = 'A';
-		result[2] = 'L';
-		result[3] = 'S';
-		result[4] = 'E';
+		result[0] = uppercase ? 'F' : 'f';
+		result[1] = uppercase ? 'A' : 'a';
+		result[2] = uppercase ? 'L' : 'l';
+		result[3] = uppercase ? 'S' : 's';
+		result[4] = uppercase ? 'E' : 'e';
 		result[5] = '\0';
 	}
 	return (result);

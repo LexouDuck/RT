@@ -10,14 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <errno.h>
+
+#include "libft_memory.h"
+#include "libft_io.h"
+
 #include "../rt.h"
 #include "config.h"
 #include "debug.h"
-
-#include <sys/stat.h>
-#include <fcntl.h>
-#include "libft_memory.h"
-#include "libft_io.h"
 
 void	config_make_ini(int fd)
 {

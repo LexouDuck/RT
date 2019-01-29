@@ -19,9 +19,8 @@
 ** ************************************************************************** *|
 */
 
-#include "SDL.h"
-
-#include "libft.h"
+# include "SDL.h"
+# include "libft.h"
 
 /*
 ** ************************************************************************** *|
@@ -33,9 +32,9 @@
 **	This define will make the program do debug output to terminal (and log.txt)
 **	If commented or removed, the debug output will only appear in log.txt
 */
-#define DEBUG
+# define DEBUG
 
-#define DEBUG_FILE	"log.txt"
+# define DEBUG_FILE	"log.txt"
 
 int		debug_init();
 void	debug_output(char const* str);

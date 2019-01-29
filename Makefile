@@ -1,5 +1,7 @@
 NAME	=	RT
 
+OS = _
+
 # Compiler
 CC	= _
 CC_WIN	= x86_64-w64-mingw32-gcc
@@ -15,9 +17,13 @@ CFLAGS_MAC	=
 # Libraries
 LIBS		=	$(LIBFT) $(LIBSDL)
 
+INCLUDE_DIRS =  -I$(LFTDIR) -I$(SDLHDRS)
 OPENCL		=	-lopencl
-LIBFT		=	-L$(LFTDIR) -lft -I$(LFTDIR)
-LIBSDL		=	-L$(SDLDIR) -lSDL2 -I$(SDLHDRS)
+LIBFT		=	-L$(LFTDIR) -lft
+LIBSDL		= _
+LIBSDL_WIN	= -L$(SDLDIR) -lSDL2
+LIBSDL_WIN	= -L$(SDLDIR) -lSDL2
+LIBSDL_MAC	= -L./SDL2.framework/Versions/Current -F. -framework SDL2
 
 # Directories that this Makefile will use
 SRCDIR	=	./src/
@@ -29,16 +35,22 @@ SDLHDRS	=	./SDL2-2.0.9/include/
 
 # Set platform-specific variables
 ifeq ($(OS),Windows_NT)
+	OS := "WIN"
 	CC := $(CC_WIN)
+	LIBSDL := $(LIBSDL_WIN)
 	CFLAGS_PLATFORM := $(CFLAGS_WIN)
 else
 	UNAME_S := $(shell uname -s)
 	ifeq ($(UNAME_S),Linux)
+		OS := "LIN"
 		CC := $(CC_LIN)
+		LIBSDL := $(LIBSDL_LIN)
 		CFLAGS_PLATFORM := $(CFLAGS_LIN)
 	endif
 	ifeq ($(UNAME_S),Darwin)
+		OS := "MAC"
 		CC := $(CC_MAC)
+		LIBSDL := $(LIBSDL_MAC)
 		CFLAGS_PLATFORM := $(CFLAGS_MAC)
 	endif
 endif
@@ -82,11 +94,12 @@ $(OBJS): | objdir
 $(NAME): $(OBJS) $(HDRS)
 	@printf "Compiling program: "$@" -> "
 	@$(CC) $(CFLAGS) $(OBJS) -o $@ $(LIBS)
+	@if [ $(OS) = "MAC" ]; then install_name_tool -change @rpath/SDL2.framework/Versions/A/SDL2 @executable_path/SDL2.framework/Versions/A/SDL2 RT; fi
 	@printf $(GREEN)"OK!"$(RESET)"\n"
 
 $(OBJDIR)%.o : $(SRCDIR)%.c $(HDRS)
 	@printf "Compiling file: "$@" -> "
-	@$(CC) $(CFLAGS) -c $< -o $@ $(LIBS) -MF $(OBJDIR)$*.d
+	@$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDE_DIRS) -MF $(OBJDIR)$*.d
 	@printf $(GREEN)"OK!"$(RESET)"\n"
 
 objdir:

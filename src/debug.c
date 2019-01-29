@@ -10,11 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "debug.h"
-
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <errno.h>
+
 #include "libft_io.h"
+
+#include "debug.h"
 
 void	debug_output(char const* str)
 {

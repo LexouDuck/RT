@@ -2,9 +2,9 @@ NAME	=	RT
 
 # Linker
 LD	= _
-LD_WIN	= x86_64-w64-mingw32-ld
-LD_LIN	= ld
-LD_MAC	= ld
+LD_WIN	= x86_64-w64-mingw32-ld -r -b binary
+LD_LIN	= ld -r -b binary
+LD_MAC	= gcc -sectcreate __DATA__ui_chr
 
 # Compiler
 CC	= _
@@ -122,7 +122,7 @@ ASSET_FILES	=	$(addprefix $(INCDIR),$(INCS))
 
 assets.o : $(ASSET_FILES)
 	@printf "Compiling assets: "$@" -> "
-	@$(LD) -r -b binary -o assets.o $(ASSET_FILES)
+	@$(LD) -o $@ $(ASSET_FILES)
 	@printf $(GREEN)"OK!"$(RESET)"\n"
 
 objdir:

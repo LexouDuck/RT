@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RT_H
-# define RT_H
+#ifndef __RT_H
+# define __RT_H
 
 /*
 ** ************************************************************************** *|
@@ -19,10 +19,12 @@
 ** ************************************************************************** *|
 */
 
-# include <math.h>
+//# include <math.h>
 
 # include "SDL.h"
 # include "libft.h"
+
+# include "src/ui.h"
 
 /*
 ** ************************************************************************** *|
@@ -30,21 +32,36 @@
 ** ************************************************************************** *|
 */
 
-# define WINDOW_W	640
-# define WINDOW_H	480
 # define WINDOW_TITLE	"RT: 42 Raytracer"
 
 # define FRAMERATE	60
 # define FRAME_MS	(1000 / FRAMERATE)
 
 /*
+**	This struct holds all info for the global state of the program.
+*/
+typedef struct		t_rt
+{
+	SDL_Window*		window;
+	SDL_Surface*	window_surface;
+	SDL_Texture*	window_texture;
+	SDL_Renderer*	window_renderer;
+	t_bool			must_render;
+	SDL_Surface*	canvas;
+	t_bool			fullscreen;
+	t_ui			ui;
+	t_u32			mouse_button;
+	SDL_Point		mouse;
+}					t_rt;
+
+t_rt				rt;
+
+/*
 **	init.c
 */
 int		init_sdl();
-int		init_window(SDL_Window **window);
-int		init_screen(SDL_Window *window,
-	SDL_Texture **screen,
-	SDL_Renderer **renderer);
+int		init_window();
+int		init_screen();
 
 /*
 ** ************************************************************************** *|
@@ -52,10 +69,15 @@ int		init_screen(SDL_Window *window,
 ** ************************************************************************** *|
 */
 
+# define KEY_ALT		0b00000011
 # define KEY_ALT_L		0b00000001
 # define KEY_ALT_R		0b00000010
+
+# define KEY_CTRL		0b00001100
 # define KEY_CTRL_L		0b00000100
 # define KEY_CTRL_R		0b00001000
+
+# define KEY_SHIFT		0b00110000
 # define KEY_SHIFT_L	0b00010000
 # define KEY_SHIFT_R	0b00100000
 
@@ -64,7 +86,7 @@ int		init_screen(SDL_Window *window,
 **	event_window.c
 */
 t_bool	event_checkevents(SDL_Window *window);
-void	event_window_resize(SDL_Window *window, int window_w, int window_h);
+void	event_window_resize(SDL_Window *window, t_s32 window_w, t_s32 window_h);
 void	event_window_fullscreen(SDL_Window *window, t_bool fullscreen);
 
 /*
@@ -89,7 +111,19 @@ typedef enum	e_cameramode
 /*
 **	render.c
 */
-void	render_init();
-void	render(SDL_Texture *screen, SDL_Renderer *renderer);
+int		render_init();
+void	render();
+
+void		render_text(
+	char* str,
+	t_s32 x,
+	t_s32 y,
+	t_bool colored);
+
+void	render_rect(
+	t_s32 x,
+	t_s32 y,
+	t_u8 w,
+	t_u8 h);
 
 #endif

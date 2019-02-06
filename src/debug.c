@@ -18,12 +18,25 @@
 
 #include "debug.h"
 
+int		debug_init()
+{
+	if (access(DEBUG_FILE, W_OK) != -1)
+	{	// if file exists
+		if (remove(DEBUG_FILE))
+		{
+			debug_output_value("Could not clear "DEBUG_FILE": ", strerror(errno), FALSE);
+			return (ERROR);
+		}
+	}
+	return (OK);
+}
+
 void	debug_output(char const* str)
 {
 #ifdef DEBUG
 	FT_Write_String(STDERR, str);
 #endif
-	int fd = open(DEBUG_FILE, O_WRONLY | O_CREAT | O_APPEND, 0777);
+	int fd = open(DEBUG_FILE, O_WRONLY | O_CREAT | O_APPEND, 0755);
 	if (fd < 0)
 	{
 		FT_Write_String(STDERR, "Error in debug_output() -> "DEBUG_FILE
@@ -32,7 +45,8 @@ void	debug_output(char const* str)
 		return;
 	}
 	FT_Write_String(fd, str);
-	close(fd);
+	if (close(fd) < 0)
+		FT_Write_Line(STDERR, strerror(errno));
 }
 
 void	debug_output_value(char const* str, char* value, t_bool free_value)
@@ -41,7 +55,7 @@ void	debug_output_value(char const* str, char* value, t_bool free_value)
 	FT_Write_String(STDERR, str);
 	FT_Write_Line(STDERR, value);
 #endif
-	int fd = open(DEBUG_FILE, O_WRONLY | O_CREAT | O_APPEND, 0777);
+	int fd = open(DEBUG_FILE, O_WRONLY | O_CREAT | O_APPEND, 0755);
 	if (fd < 0)
 	{
 		FT_Write_String(STDERR, "Error in debug_output_value() -> "DEBUG_FILE
@@ -53,7 +67,8 @@ void	debug_output_value(char const* str, char* value, t_bool free_value)
 	FT_Write_Line(fd, value);
 	if (free_value)
 		free(value);
-	close(fd);
+	if (close(fd) < 0)
+		FT_Write_Line(STDERR, strerror(errno));
 }
 
 void	debug_output_error(char const* str, t_bool sdl_error)
@@ -66,7 +81,7 @@ void	debug_output_error(char const* str, t_bool sdl_error)
 	}
 	else FT_Write_Line(STDERR, str);
 #endif
-	int fd = open(DEBUG_FILE, O_WRONLY | O_CREAT | O_APPEND, 0777);
+	int fd = open(DEBUG_FILE, O_WRONLY | O_CREAT | O_APPEND, 0755);
 	if (fd < 0)
 	{
 		FT_Write_String(STDERR, "Error in debug_output_error() -> "DEBUG_FILE
@@ -80,18 +95,6 @@ void	debug_output_error(char const* str, t_bool sdl_error)
 		FT_Write_Line(fd, SDL_GetError());
 	}
 	else FT_Write_Line(fd, str);
-	close(fd);
-}
-
-int		debug_init()
-{
-	if (access(DEBUG_FILE, W_OK) != -1)
-	{	// if file exists
-		if (remove(DEBUG_FILE))
-		{
-			debug_output_value("Could not clear "DEBUG_FILE": ", strerror(errno), FALSE);
-			return (ERROR);
-		}
-	}
-	return (OK);
+	if (close(fd) < 0)
+		FT_Write_Line(STDERR, strerror(errno));
 }

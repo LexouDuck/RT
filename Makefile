@@ -1,6 +1,10 @@
 NAME	=	RT
 
-OS = _
+# Linker
+LD	= _
+LD_WIN	= x86_64-w64-mingw32-ld
+LD_LIN	= ld
+LD_MAC	= ld
 
 # Compiler
 CC	= _
@@ -8,6 +12,7 @@ CC_WIN	= x86_64-w64-mingw32-gcc
 CC_LIN	= gcc
 CC_MAC	= gcc
 
+# Compiler flags
 CFLAGS	=	-Wall -Wextra $(CFLAGS_PLATFORM) -O2 -MMD
 CFLAGS_PLATFORM = _
 CFLAGS_WIN	= -mwindows
@@ -16,8 +21,8 @@ CFLAGS_MAC	=
 
 # Libraries
 LIBS		=	$(LIBFT) $(LIBSDL)
-
 INCLUDE_DIRS =  -I$(LFTDIR) -I$(SDLHDRS)
+
 OPENCL		=	-lopencl
 LIBFT		=	-L$(LFTDIR) -lft
 LIBSDL		= _
@@ -35,21 +40,24 @@ SDLHDRS	=	./SDL2-2.0.9/include/
 
 # Set platform-specific variables
 ifeq ($(OS),Windows_NT)
-	OS := "WIN"
+	OSFLAG := "WIN"
 	CC := $(CC_WIN)
+	LD := $(LD_WIN)
 	LIBSDL := $(LIBSDL_WIN)
 	CFLAGS_PLATFORM := $(CFLAGS_WIN)
 else
 	UNAME_S := $(shell uname -s)
 	ifeq ($(UNAME_S),Linux)
-		OS := "LIN"
+		OSFLAG := "LIN"
 		CC := $(CC_LIN)
+		LD := $(LD_LIN)
 		LIBSDL := $(LIBSDL_LIN)
 		CFLAGS_PLATFORM := $(CFLAGS_LIN)
 	endif
 	ifeq ($(UNAME_S),Darwin)
-		OS := "MAC"
+		OSFLAG := "MAC"
 		CC := $(CC_MAC)
+		LD := $(LD_MAC)
 		LIBSDL := $(LIBSDL_MAC)
 		CFLAGS_PLATFORM := $(CFLAGS_MAC)
 	endif
@@ -60,8 +68,10 @@ endif
 # List of C header files
 HDRS	=	$(LFTDIR)libft.h 	\
 			rt.h				\
+			assets.h			\
 			$(SRCDIR)debug.h	\
 			$(SRCDIR)config.h	\
+			$(SRCDIR)ui.h		\
 
 # List of C source code files
 SRCS	= 	main.c				\
@@ -72,7 +82,12 @@ SRCS	= 	main.c				\
 			config_access.c		\
 			event.c				\
 			event_window.c		\
+			ui.c				\
+			render_ui.c			\
 			render.c			\
+
+# List of asset files to be embedded within the program
+INCS	=	ui.chr
 
 
 
@@ -91,15 +106,22 @@ all: libraries $(NAME)
 
 $(OBJS): | objdir
 
-$(NAME): $(OBJS) $(HDRS)
+$(NAME): $(OBJS) $(HDRS) assets.o
 	@printf "Compiling program: "$@" -> "
-	@$(CC) $(CFLAGS) $(OBJS) -o $@ $(LIBS)
-	@if [ $(OS) = "MAC" ]; then install_name_tool -change @rpath/SDL2.framework/Versions/A/SDL2 @executable_path/SDL2.framework/Versions/A/SDL2 RT; fi
+	@$(CC) $(CFLAGS) $(OBJS) assets.o -o $@ $(LIBS)
+	@if [ $(OSFLAG) = "MAC" ]; then install_name_tool -change @rpath/SDL2.framework/Versions/A/SDL2 @executable_path/SDL2.framework/Versions/A/SDL2 RT; fi
 	@printf $(GREEN)"OK!"$(RESET)"\n"
 
 $(OBJDIR)%.o : $(SRCDIR)%.c $(HDRS)
 	@printf "Compiling file: "$@" -> "
 	@$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDE_DIRS) -MF $(OBJDIR)$*.d
+	@printf $(GREEN)"OK!"$(RESET)"\n"
+
+ASSET_FILES	=	$(addprefix $(INCDIR),$(INCS))
+
+assets.o : $(ASSET_FILES)
+	@printf "Compiling assets: "$@" -> "
+	@$(LD) -r -b binary -o assets.o $(ASSET_FILES)
 	@printf $(GREEN)"OK!"$(RESET)"\n"
 
 objdir:
@@ -125,6 +147,16 @@ rclean:
 	@rm -rf $(OBJDIR)
 
 re: fclean all
+
+
+
+replace:
+	@sed -i -e "s|$(old)|$(new)|g" $(addprefix $(SRCDIR), $(SRCS)) $(addprefix $(HDRDIR), $(HDRS))
+	@printf "Replaced all instances of \'"$(old)"\' with \'"$(new)"\'.\n"
+
+rename:
+	@sed -i -e "s|\<$(old)\>|$(new)|g" $(addprefix $(SRCDIR), $(SRCS)) $(addprefix $(HDRDIR), $(HDRS))
+	@printf "Renamed all words matching \'"$(old)"\' with \'"$(new)"\'.\n"
 
 
 

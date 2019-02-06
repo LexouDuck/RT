@@ -5,6 +5,10 @@ correc.*
 *.tar
 *.gif
 
+# Program
+./RT
+./RT.exe
+
 # Macintosh files
 *.DS_Store
 *._*

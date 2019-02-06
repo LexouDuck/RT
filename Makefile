@@ -83,6 +83,7 @@ SRCS	= 	main.c				\
 			event.c				\
 			event_window.c		\
 			ui.c				\
+			ui_init.c			\
 			render_ui.c			\
 			render.c			\
 

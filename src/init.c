@@ -31,9 +31,9 @@ int		init_sdl()
 
 int		init_window()
 {
-	t_s32 window_w;
-	t_s32 window_h;
-	t_u32 flags;
+	t_s32	window_w;
+	t_s32	window_h;
+	t_u32	flags;
 
 	window_w = FT_String_To_S32(config_get(CONFIG_INDEX_WINDOW_W));
 	window_h = FT_String_To_S32(config_get(CONFIG_INDEX_WINDOW_H));
@@ -58,10 +58,10 @@ int		init_window()
 	return (OK);
 }
 
-int		init_screen()
+int		init_window_display()
 {
-	t_s32 window_w;
-	t_s32 window_h;
+	t_s32	window_w;
+	t_s32	window_h;
 
 	SDL_GetWindowSize(rt.window, &window_w, &window_h);
 	rt.window_texture = SDL_CreateTexture(rt.window_renderer,

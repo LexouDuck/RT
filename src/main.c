@@ -98,7 +98,7 @@ int			main(int argc, char* argv[])
 		return (ERROR);
 	if (init_window())
 		return (ERROR);
-	if (init_screen())
+	if (init_window_display())
 		return (ERROR);
 	if (ui_init())
 		return (ERROR);

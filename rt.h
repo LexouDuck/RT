@@ -43,9 +43,9 @@
 typedef struct		t_rt
 {
 	SDL_Window*		window;
-	SDL_Surface*	window_surface;
-	SDL_Texture*	window_texture;
 	SDL_Renderer*	window_renderer;
+	SDL_Texture*	window_texture;
+	SDL_Surface*	window_surface;
 	t_bool			must_render;
 	SDL_Surface*	canvas;
 	t_bool			fullscreen;
@@ -61,7 +61,7 @@ t_rt				rt;
 */
 int		init_sdl();
 int		init_window();
-int		init_screen();
+int		init_window_display();
 
 /*
 ** ************************************************************************** *|

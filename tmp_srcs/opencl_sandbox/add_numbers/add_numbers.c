@@ -15,6 +15,20 @@
 #include <CL/cl.h>
 #endif
 
+/*
+typedef struct	s_rt_cl
+{
+	cl_platform_id		platform;
+	cl_device_id		cpu;
+	cl_device_id		gpu;
+	cl_context			context;
+	cl_program			program;
+	cl_command_queue	cmd_queue;
+	cl_kernel			kernels[1];
+	cl_int				status;
+}				t_rt_cl;
+*/
+
 /* Find a GPU or CPU associated with the first available platform */
 cl_device_id		create_device(void)
 {

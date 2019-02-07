@@ -6,7 +6,7 @@
 /*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
-/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
+/*   Updated: 2019/01/26 16:40:00 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,7 @@
 #include "config.h"
 #include "debug.h"
 
-int		init_sdl()
-{
-	if (SDL_Init(
-		SDL_INIT_TIMER |
-		SDL_INIT_VIDEO |
-		SDL_INIT_AUDIO |
-		SDL_INIT_JOYSTICK) < 0)
-	{
-		debug_output_error("Could not initialize SDL2: ", TRUE);
-		return (ERROR);
-	}
-	return (OK);
-}
-
-int		init_window(SDL_Window** window)
+static int		init_window(SDL_Window** window)
 {
 	t_u16 window_w;
 	t_u16 window_h;
@@ -57,18 +43,19 @@ int		init_window(SDL_Window** window)
 	return (OK);
 }
 
-int		init_screen(
+static int		init_screen(
 	SDL_Window* window,
-	SDL_Texture** screen,
+	SDL_Surface** screen,
 	SDL_Renderer** renderer)
 {
-	*renderer = SDL_CreateRenderer(window, -1, 0);
+	*renderer = SDL_CreateRenderer(window, -1,
+					SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
 	if (*renderer == NULL)
 	{
 		debug_output_error("Could not create SDL_Renderer: ", TRUE);
 		return (ERROR);
 	}
-	*screen = SDL_CreateTexture(*renderer,
+	*screen = SDL_CreateSurface(*renderer,
 		SDL_PIXELFORMAT_ARGB8888,
 		SDL_TEXTUREACCESS_STREAMING,
 		WINDOW_W, WINDOW_H);
@@ -79,3 +66,23 @@ int		init_screen(
 	}
 	return (OK);
 }
+
+int				init_sdl(t_rt_sdl *sdl)
+{
+	if (SDL_Init(
+		SDL_INIT_TIMER |
+		SDL_INIT_VIDEO |
+		SDL_INIT_AUDIO |
+		SDL_INIT_JOYSTICK) < 0)
+	{
+		debug_output_error("Could not initialize SDL2: ", TRUE);
+		return (ERROR);
+	}
+	if (init_window(&(sdl->window)))
+		return (ERROR);
+	if (init_screen(sdl->window, &(sdl->screen), &(sdl->renderer)))
+		return (ERROR);
+	sdl->texture = NULL;
+	return (OK);
+}
+

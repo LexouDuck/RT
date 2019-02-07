@@ -6,7 +6,7 @@
 /*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
-/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
+/*   Updated: 2019/01/26 17:04:21 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,7 @@
 /*
 **	The main program loop: pretty much everything is called from here
 */
-static int	main_loop(
-	SDL_Window*	window,
-	SDL_Texture* screen,
-	SDL_Renderer* renderer)
+static int	main_loop(t_rt_sdl *sdl, t_rt_cl *ocl)
 {
 	t_bool			loop = TRUE;
 	t_u32			frame_wait = 0;
@@ -32,15 +29,20 @@ static int	main_loop(
 			SDL_Delay(1);
 		frame_wait = SDL_GetTicks() + FRAME_MS;
 
-		loop = event_checkevents(window);
+		loop = event_checkevents(sdl->window);
 
 		// TODO do stuff here
 
-		render(screen, renderer);
+		render(sdl, ocl);
 	}
 	config_save();
 	config_free();
-	SDL_DestroyWindow(window);
+
+	clReleaseCommandQueue(ocl->cmd_queue);
+	clReleaseProgram(ocl->program);
+	clReleaseContext(ocl->context);
+
+	SDL_DestroyWindow(sdl->window);
 	SDL_Quit();
 	return (OK);
 }
@@ -57,9 +59,8 @@ static int	main_loop(
 
 int			main(int argc, char* argv[])
 {
-	SDL_Window*	window;
-	SDL_Texture* screen;
-	SDL_Renderer* renderer;
+	t_rt_sdl	sdl;
+	t_rt_cl		ocl;
 
 	if (argc != 1 || !argv)
 		return (ERROR);
@@ -68,14 +69,12 @@ int			main(int argc, char* argv[])
 		return (ERROR);
 	config_init();
 
-	if (init_sdl())
+	if (init_sdl(&sdl))
 		return (ERROR);
-	if (init_window(&window))
+	if (init_opencl(&ocl))
 		return (ERROR);
-	if (init_screen(window, &screen, &renderer))
-		return (ERROR);
+//	if (init_scene(&scene))
+//		return (ERROR);
 
-	render_init();
-
-	return (main_loop(window, screen, renderer));
+	return (main_loop(&sdl, &ocl));
 }

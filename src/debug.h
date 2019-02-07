@@ -6,7 +6,7 @@
 /*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
-/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
+/*   Updated: 2019/02/01 03:29:49 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include "SDL.h"
 
 #include "libft.h"
+#include <errno.h>
 
 /*
 ** ************************************************************************** *|
@@ -41,5 +42,9 @@ int		debug_init();
 void	debug_output(char const* str);
 void	debug_output_value(char const* str, char* value, t_bool free_value);
 void	debug_output_error(char const* str, t_bool sdl_error);
+/*
+** Prints str + '\n' to DEBUG_FILE, ifdef DEBUG, also prints to terminal. 
+*/
+int		debug_perror(char const *str);
 
 #endif

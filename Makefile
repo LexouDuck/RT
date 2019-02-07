@@ -53,7 +53,7 @@ HDRS	=	$(LFTDIR)libft.h 	\
 
 # List of C source code files
 SRCS	= 	main.c				\
-			init.c				\
+			init_sdl.c			\
 			debug.c				\
 			config.c			\
 			config_ini.c		\
@@ -61,6 +61,7 @@ SRCS	= 	main.c				\
 			event.c				\
 			event_window.c		\
 			render.c			\
+			init_opencl.c
 
 
 

@@ -10,8 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft_convert.h"
+
 #include "../rt.h"
 #include "../assets.h"
+#include "debug.h"
 
 static void	ui_init_menubar()
 {
@@ -105,32 +108,32 @@ static void	ui_init_dropdown_view()
 
 int			ui_init()
 {
-	static const t_u32 palette[PALETTE] = {
+	static const t_u32	palette[PALETTE] = {
 		0x000000,
 		0x0058F8,
 		0x3CBCFC,
 		0xFCFCFC
 	};
+	size_t				size = 0;
 
+printf("debug ui_init:");
 #ifdef __APPLE__
-	rt.ui.chr = (t_u32*)getsectbyname("__DATA", "__inc_ui_chr")->addr;
+	rt.ui.chr = getsectiondata(&_mh_execute_header,
+		"__DATA", "__inc_ui_chr", &size);
+	if (size != CHR_SIZE)
+		debug_output_value(
+			"Invalid binary size: ", FT_Size_To_String(size), TRUE);
 #else
 	rt.ui.chr = _binary___inc_ui_chr_start;
 #endif
-printf("debug ui_init 0\n");
+printf("OK!\n");
 	if (!(rt.ui.tileset = ui_set_tileset(rt.ui.chr, CHR_SIZE)))
 		return (ERROR);
-printf("debug ui_init 1\n");
 	if (!(ui_set_palette(rt.ui.tileset, palette)))
 		return (ERROR);
-printf("debug ui_init 2\n");
 	ui_init_menubar();
-printf("debug ui_init 3\n");
 	ui_init_dropdown_file();
-printf("debug ui_init 4\n");
 	ui_init_dropdown_edit();
-printf("debug ui_init 5\n");
 	ui_init_dropdown_view();
-printf("debug ui_init 6\n");
 	return (OK);
 }

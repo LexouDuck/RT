@@ -16,6 +16,10 @@
 # ifdef __APPLE__
 #  define CL_SILENCE_DEPRECATION
 #  include <OpenCL/cl.h>
+# elif (defined __WIN32__)
+#  define CL_USE_DEPRECATED_OPENCL_1_1_APIS
+#  define CL_TARGET_OPENCL_VERSION	110
+#  include "CL/cl.h"
 # else
 #  include <CL/cl.h>
 # endif

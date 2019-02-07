@@ -114,10 +114,9 @@ int			ui_init()
 		0x3CBCFC,
 		0xFCFCFC
 	};
-	size_t				size = 0;
 
-printf("debug ui_init:");
 #ifdef __APPLE__
+	size_t				size = 0;
 	rt.ui.chr = getsectiondata(&_mh_execute_header,
 		"__DATA", "__inc_ui_chr", &size);
 	if (size != CHR_SIZE)
@@ -126,7 +125,6 @@ printf("debug ui_init:");
 #else
 	rt.ui.chr = _binary___inc_ui_chr_start;
 #endif
-printf("OK!\n");
 	if (!(rt.ui.tileset = ui_set_tileset(rt.ui.chr, CHR_SIZE)))
 		return (ERROR);
 	if (!(ui_set_palette(rt.ui.tileset, palette)))

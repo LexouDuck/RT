@@ -69,10 +69,12 @@ static void	event_check_keyup(SDL_Event *event,
 		*keys &= ~KEY_SHIFT_R;
 }
 
+/*
 static void	event_check_mouse(SDL_Event *event)
 {
 
 }
+*/
 
 t_bool		event_checkevents(SDL_Window *window)
 {
@@ -90,8 +92,8 @@ t_bool		event_checkevents(SDL_Window *window)
 			event_check_keydown(&event, window, &keys);
 		else if (event.type == SDL_KEYUP)
 			event_check_keyup(&event, &keys);
-		else if (event.type == SDL_MOUSEBUTTONDOWN)
-			event_check_mouse(&event);
+//		else if (event.type == SDL_MOUSEBUTTONDOWN)
+//			event_check_mouse(&event);
 	}
 	return (TRUE);
 }

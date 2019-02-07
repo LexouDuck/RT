@@ -10,11 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../rt.h"
-#include "debug.h"
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+// TODO remove stdio include
+#include <stdio.h>
+
+#include "../rt.h"
+#include "debug.h"
 
 /*
 **	cl_int clGetDeviceInfo(
@@ -94,12 +97,12 @@ int				print_device_info()
 
 
 printf("Platform: %s | Device: %s | Version: %s\n\t"
-		"- global mem size (nb of bytes): %#llx\n\t"
+		"- global mem size (nb of bytes): %#I64x\n\t"
 		"- compute unit nb: %u\n\t"
-		"- max kernel args size: %#lx\n\t"
-		"- max work items per group: %#lx\n\t"
+		"- max kernel args size: %#I64x\n\t"
+		"- max work items per group: %#I64x\n\t"
 		"- max nD range: %u\n\t"
-		"- max_witems_per_dim: (%#lx, %#lx, %#lx)\n",
+		"- max_witems_per_dim: (%#I64x, %#I64x, %#I64x)\n",
 		platform_name, gpu_name, gpu_ocl_version,
 		rt.ocl.gpu.global_mem_size,
 		rt.ocl.gpu.comp_unit_nb,
@@ -191,6 +194,5 @@ int				init_opencl()
 		return (debug_perror("init_opencl: could not create device, context or queue."));
 	if (read_and_build_program())
 		return (debug_perror("init_opencl: could not build program."));
-//printf("init_opencl success!\n");
 	return (OK);
 }

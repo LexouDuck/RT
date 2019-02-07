@@ -103,10 +103,13 @@ int			main(int argc, char* argv[])
 		return (ERROR);
 	if (init_window_display())
 		return (ERROR);
+printf("debug main 1\n");
 	if (ui_init())
 		return (ERROR);
+printf("debug main 2\n");
 	if (init_opencl())
 		return (ERROR);
+printf("debug main 3\n");
 	if (render_init())
 		return (ERROR);
 	return (main_loop());

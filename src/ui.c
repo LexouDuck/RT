@@ -66,6 +66,7 @@ SDL_Surface*	ui_set_tileset(t_u8 const* chr, size_t length)
 		return (NULL);
 	t_u16 index;
 	t_u8 pixel;
+printf("set tileset before for loop\n");
 	for (t_u16 tile = 0; tile < tilecount; ++tile)
 	{
 		index = (tile / TILESET_W_TILES) * TILE * TILESET_W + (tile % TILESET_W_TILES) * TILE;
@@ -82,6 +83,7 @@ SDL_Surface*	ui_set_tileset(t_u8 const* chr, size_t length)
 			index += TILESET_W;
 		}
 	}
+printf("set tileset after for loop\n");
 	if (!(result = SDL_CreateRGBSurfaceWithFormatFrom(result_pixels, TILESET_W,
 		((tilecount / TILESET_W_TILES) + (tilecount % TILESET_W_TILES ? 1 : 0)) * TILE, 8, TILESET_W, SDL_PIXELFORMAT_INDEX8)))
 	{

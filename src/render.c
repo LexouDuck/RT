@@ -31,36 +31,54 @@ int		render_init()
 //			CL_MEM_COPY_HOST_PTR, sizeof(t_scene), &scene, &err); //TODO Once pointer based BVH are implemented, edit here so that scene is the right format, or add args to kernel
 
 	size_t	work_dim[2] = {rt.sdl.window_w, rt.sdl.window_h};
-	rt.ocl.result_gpu_buf = clCreateBuffer(rt.ocl.context, CL_MEM_READ_WRITE |
-			CL_MEM_COPY_HOST_PTR, sizeof(uint) * rt.sdl.pixel_amount, rt.canvas->pixels, &err);
+	rt.ocl.result_gpu_buf = clCreateBuffer(rt.ocl.context, CL_MEM_WRITE_ONLY |
+			CL_MEM_COPY_HOST_PTR, sizeof(t_u32) * rt.sdl.pixel_amount, rt.canvas->pixels, &err);
+	if (err < 0)
+	{
+/*printf("contexterr: %d; value err: %d; buffersize err: %d; hostptr err: %d; memalloc err: %d; hostmem err: %d\nerr: %d\n",
+	CL_INVALID_CONTEXT, CL_INVALID_VALUE, CL_INVALID_BUFFER_SIZE, CL_INVALID_HOST_PTR,
+	CL_MEM_OBJECT_ALLOCATION_FAILURE, CL_OUT_OF_HOST_MEMORY, err);
+*/		return (debug_perror("Couldn't create write buffer"));
+	}
+
+	err = clEnqueueWriteBuffer(rt.ocl.cmd_queue, rt.ocl.result_gpu_buf, CL_TRUE, 0, 
+			sizeof(uint) * rt.sdl.pixel_amount, rt.canvas->pixels, 0, NULL, NULL);
+
+
 	/* Create kernel arguments */
-
-
 //	err = clSetKernelArg(rt.ocl.kernels[0], 0, rt.sdl.pixel_amount * sizeof(cl_uint), NULL);//empty declaration for local memory.
 	err = clSetKernelArg(rt.ocl.kernels[0], 0, sizeof(cl_mem), &(rt.ocl.result_gpu_buf));
 //	err |= clSetKernelArg(rt.ocl.kernels[0], 1, sizeof(cl_mem), &(rt.ocl.scene_gpu_buf));
 	if (err < 0)
 		return (debug_perror("Couldn't create a kernel argument"));
 
-
-
 	/* Enqueue kernel */
 	err = clEnqueueNDRangeKernel(rt.ocl.cmd_queue, rt.ocl.kernels[0], 2, NULL /*dim_offsets*/, work_dim, 
 			NULL /*&local_size*/, 0, NULL, NULL); 
 	if (err < 0)
 		return (debug_perror("Couldn't enqueue the kernel"));
+
+	clFlush(rt.ocl.cmd_queue);
+	clFinish(rt.ocl.cmd_queue);
+
+
 	/* Read the kernel's output */
 	err = clEnqueueReadBuffer(rt.ocl.cmd_queue, rt.ocl.result_gpu_buf, CL_TRUE, 0, 
 			sizeof(uint) * rt.sdl.pixel_amount, rt.canvas->pixels, 0, NULL, NULL);
+t_u32 * tmp = (t_u32*)rt.canvas->pixels;
+printf("%#x %#x %#x %#x\n", tmp[0], tmp[rt.sdl.window_w - 1], tmp[(rt.sdl.window_h - 1) * rt.sdl.window_w], tmp[rt.sdl.pixel_amount - 1]);
 	if(err < 0)
 		return (debug_perror("Couldn't read the buffer"));
 
+	clFlush(rt.ocl.cmd_queue);
+	clFinish(rt.ocl.cmd_queue);
 
 
 
 	clReleaseKernel(rt.ocl.kernels[0]);
 	clReleaseMemObject(rt.ocl.result_gpu_buf);
 //	clReleaseMemObject(rt.ocl.scene_gpu_buf);
+	return (OK);
 }
 
 void	render()

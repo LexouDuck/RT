@@ -31,19 +31,18 @@ int		init_sdl()
 
 int		init_window()
 {
-	t_s32	window_w;
-	t_s32	window_h;
 	t_u32	flags;
 
-	window_w = FT_String_To_S32(config_get(CONFIG_INDEX_WINDOW_W));
-	window_h = FT_String_To_S32(config_get(CONFIG_INDEX_WINDOW_H));
+	rt.sdl.window_w = FT_String_To_S32(config_get(CONFIG_INDEX_WINDOW_W));
+	rt.sdl.window_h = FT_String_To_S32(config_get(CONFIG_INDEX_WINDOW_H));
+	rt.sdl.pixel_amount = rt.sdl.window_w * rt.sdl.window_h;
 	flags = (SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 	if (FT_String_To_Bool(config_get(CONFIG_INDEX_FULLSCREEN)))
 		flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 	if (FT_String_To_Bool(config_get(CONFIG_INDEX_MAXIMIZED)))
 		flags |= SDL_WINDOW_MAXIMIZED;
 	rt.sdl.window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED,
-		SDL_WINDOWPOS_UNDEFINED, window_w, window_h, flags);
+		SDL_WINDOWPOS_UNDEFINED, rt.sdl.window_w, rt.sdl.window_h, flags);
 	if (rt.sdl.window == NULL)
 	{
 		debug_output_error("Could not create SDL_Window: ", TRUE);
@@ -60,15 +59,12 @@ int		init_window()
 
 int		init_window_display()
 {
-	t_s32	window_w;
-	t_s32	window_h;
-
-	SDL_GetWindowSize(rt.sdl.window, &window_w, &window_h);
+	SDL_GetWindowSize(rt.sdl.window, &rt.sdl.window_w, &rt.sdl.window_h);
 	rt.sdl.window_texture = SDL_CreateTexture(rt.sdl.window_renderer,
 		SDL_PIXELFORMAT_ARGB8888,
 		SDL_TEXTUREACCESS_STREAMING,
-		window_w,
-		window_h);
+		rt.sdl.window_w,
+		rt.sdl.window_h);
 	if (rt.sdl.window_texture == NULL)
 	{
 		debug_output_error("Could not create window's SDL_Texture: ", TRUE);
@@ -76,9 +72,19 @@ int		init_window_display()
 	}
 	rt.sdl.window_surface = SDL_CreateRGBSurfaceWithFormat(
 		SDL_RLEACCEL,
-		window_w, window_h,
+		rt.sdl.window_w, rt.sdl.window_h,
 		8, SDL_PIXELFORMAT_ARGB8888);
 	if (rt.sdl.window_surface == NULL)
+	{
+		debug_output_error("Could not create window's SDL_Surface: ", TRUE);
+		return (ERROR);
+	}
+
+	rt.canvas = SDL_CreateRGBSurfaceWithFormat(
+		SDL_RLEACCEL,
+		rt.sdl.window_w, rt.sdl.window_h,
+		8, SDL_PIXELFORMAT_ARGB8888);
+	if (rt.canvas == NULL)
 	{
 		debug_output_error("Could not create window's SDL_Surface: ", TRUE);
 		return (ERROR);

@@ -113,17 +113,24 @@ int			ui_init()
 	};
 
 #ifdef __APPLE__
-	rt.ui.chr = getsectbyname("__DATA", "__inc_ui_chr")->addr;
+	rt.ui.chr = (t_u32*)getsectbyname("__DATA", "__inc_ui_chr")->addr;
 #else
 	rt.ui.chr = _binary___inc_ui_chr_start;
 #endif
+printf("debug ui_init 0\n");
 	if (!(rt.ui.tileset = ui_set_tileset(rt.ui.chr, CHR_SIZE)))
 		return (ERROR);
+printf("debug ui_init 1\n");
 	if (!(ui_set_palette(rt.ui.tileset, palette)))
 		return (ERROR);
+printf("debug ui_init 2\n");
 	ui_init_menubar();
+printf("debug ui_init 3\n");
 	ui_init_dropdown_file();
+printf("debug ui_init 4\n");
 	ui_init_dropdown_edit();
+printf("debug ui_init 5\n");
 	ui_init_dropdown_view();
+printf("debug ui_init 6\n");
 	return (OK);
 }

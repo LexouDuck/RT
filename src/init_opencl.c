@@ -83,11 +83,11 @@ int				print_device_info()
 						&(rt.ocl.gpu.max_kernel_args_size), NULL);
 	clGetDeviceInfo(rt.ocl.gpu.id, CL_DEVICE_MAX_WORK_GROUP_SIZE, sizeof(size_t),
 						&(rt.ocl.gpu.max_witems_per_wgroup), NULL);
-//	clGetDeviceInfo(rt.ocl.gpu.id, CL_DEVICE_MAX_ITEM_DIMENSIONS, sizeof(cl_uint),
-//						&(rt.ocl.gpu.max_nd_range), NULL);
-//	clGetDeviceInfo(rt.ocl.gpu.id, CL_DEVICE_MAX_ITEM_SIZES,
-//						sizeof(size_t) * rt.ocl.gpu.max_nd_range,
-//						&(rt.ocl.gpu.max_witems_per_dim), NULL);
+	clGetDeviceInfo(rt.ocl.gpu.id, CL_DEVICE_MAX_WORK_ITEM_DIMENSIONS, sizeof(cl_uint),
+						&(rt.ocl.gpu.max_nd_range), NULL);
+	clGetDeviceInfo(rt.ocl.gpu.id, CL_DEVICE_MAX_WORK_ITEM_SIZES,
+						sizeof(size_t) * rt.ocl.gpu.max_nd_range,
+						&(rt.ocl.gpu.max_witems_per_dim), NULL);
 
 
 	clGetPlatformInfo(rt.ocl.platform, CL_PLATFORM_NAME, 256, platform_name, NULL);
@@ -98,15 +98,15 @@ printf("Platform: %s | Device: %s | Version: %s\n\t"
 		"- compute unit nb: %u\n\t"
 		"- max kernel args size: %#lx\n\t"
 		"- max work items per group: %#lx\n\t"
-/*		"- max nD range: %u\n\t"
-		"- max_witems_per_dim: (%f, %f, %f)\n"*/,
+		"- max nD range: %u\n\t"
+		"- max_witems_per_dim: (%#lx, %#lx, %#lx)\n",
 		platform_name, gpu_name, gpu_ocl_version,
 		rt.ocl.gpu.global_mem_size,
 		rt.ocl.gpu.comp_unit_nb,
 		rt.ocl.gpu.max_kernel_args_size,
-		rt.ocl.gpu.max_witems_per_wgroup//,
-//		rt.ocl.gpu.max_nd_range,
-//		rt.ocl.gpu.max_witems_per_dim[0], rt.ocl.gpu.max_witems_per_dim[1], rt.ocl.gpu.max_witems_per_dim[2]
+		rt.ocl.gpu.max_witems_per_wgroup,
+		rt.ocl.gpu.max_nd_range,
+		rt.ocl.gpu.max_witems_per_dim[0], rt.ocl.gpu.max_witems_per_dim[1], rt.ocl.gpu.max_witems_per_dim[2]
 );
 	return (OK);
 }
@@ -191,5 +191,6 @@ int				init_opencl()
 		return (debug_perror("init_opencl: could not create device, context or queue."));
 	if (read_and_build_program())
 		return (debug_perror("init_opencl: could not build program."));
+//printf("init_opencl success!\n");
 	return (OK);
 }

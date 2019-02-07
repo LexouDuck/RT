@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #ifndef __CONFIG_H
-#define __CONFIG_H
+# define __CONFIG_H
 
 /*
 ** ************************************************************************** *|
@@ -19,7 +19,7 @@
 ** ************************************************************************** *|
 */
 
-#include "libft.h"
+# include "libft.h"
 
 /*
 ** ************************************************************************** *|
@@ -27,12 +27,14 @@
 ** ************************************************************************** *|
 */
 
-#define CONFIG_FILE		"config.ini"
+# define CONFIG_FILE		"config.ini"
 
-#define CONFIG_AMOUNT	4
+# define CONFIG_AMOUNT	4
 
 /*
-**	This struct is meant to hold all persistent program data (in strings)
+**	This struct is meant to hold all persistent program data (in strings).
+**	There's only one of these: rt.config, it holds current state of all the
+**	persistent program data (this is thanks to read/writing an INI file).
 */
 typedef	struct	s_config
 {
@@ -42,32 +44,26 @@ typedef	struct	s_config
 }				t_config;
 
 /*
-**	This is the global var which holds current state of all the persistent
-**	program data (this data is presistent thanks to read/writing an INI file).
-*/
-t_config		config;
-
-/*
 **	If "true", the window mode is fullscreen
 */
-#define CONFIG_INDEX_FULLSCREEN	0x00
-#define CONFIG_LABEL_FULLSCREEN	"fullscreen"
-#define CONFIG_VALUE_FULLSCREEN	"false"
+# define CONFIG_INDEX_FULLSCREEN	0x00
+# define CONFIG_LABEL_FULLSCREEN	"fullscreen"
+# define CONFIG_VALUE_FULLSCREEN	"false"
 /*
 **	If "true", the window is maximized
 */
-#define CONFIG_INDEX_MAXIMIZED	0x01
-#define CONFIG_LABEL_MAXIMIZED	"window_maximized"
-#define CONFIG_VALUE_MAXIMIZED	"false"
+# define CONFIG_INDEX_MAXIMIZED	0x01
+# define CONFIG_LABEL_MAXIMIZED	"window_maximized"
+# define CONFIG_VALUE_MAXIMIZED	"false"
 /*
 **	The current dimensions of the window (irrelevant if fullscreen)
 */
-#define CONFIG_INDEX_WINDOW_W	0x02
-#define CONFIG_LABEL_WINDOW_W	"window_w"
-#define CONFIG_VALUE_WINDOW_W	"640"
-#define CONFIG_INDEX_WINDOW_H	0x03
-#define CONFIG_LABEL_WINDOW_H	"window_h"
-#define CONFIG_VALUE_WINDOW_H	"480"
+# define CONFIG_INDEX_WINDOW_W	0x02
+# define CONFIG_LABEL_WINDOW_W	"window_w"
+# define CONFIG_VALUE_WINDOW_W	"640"
+# define CONFIG_INDEX_WINDOW_H	0x03
+# define CONFIG_LABEL_WINDOW_H	"window_h"
+# define CONFIG_VALUE_WINDOW_H	"480"
 
 /*
 **	config.c

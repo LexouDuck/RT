@@ -18,7 +18,6 @@
 #include "libft_io.h"
 
 #include "../rt.h"
-#include "config.h"
 #include "debug.h"
 
 static void	config_make_ini(int fd)
@@ -28,14 +27,14 @@ static void	config_make_ini(int fd)
 	i = 0;
 	while (i < CONFIG_AMOUNT)
 	{
-		if (config.names[i])
+		if (rt.config.names[i])
 		{
-			FT_Write_String(fd, config.names[i]);
+			FT_Write_String(fd, rt.config.names[i]);
 			FT_Write_Char(fd, '=');
-			if (config.values[i])
-				FT_Write_Line(fd, config.values[i]);
+			if (rt.config.values[i])
+				FT_Write_Line(fd, rt.config.values[i]);
 			else
-				FT_Write_Line(fd, config.defaults[i]);
+				FT_Write_Line(fd, rt.config.defaults[i]);
 		}
 		++i;
 	}
@@ -43,17 +42,17 @@ static void	config_make_ini(int fd)
 
 static void	config_init_settings()
 {
-	FT_MemoryClear(config.names, CONFIG_AMOUNT * sizeof(char *));
-	config.names[CONFIG_INDEX_FULLSCREEN]	= CONFIG_LABEL_FULLSCREEN;
-	config.names[CONFIG_INDEX_MAXIMIZED]	= CONFIG_LABEL_MAXIMIZED;
-	config.names[CONFIG_INDEX_WINDOW_W]		= CONFIG_LABEL_WINDOW_W;
-	config.names[CONFIG_INDEX_WINDOW_H]		= CONFIG_LABEL_WINDOW_H;
-	FT_MemoryClear(config.values, CONFIG_AMOUNT * sizeof(char *));
-	FT_MemoryClear(config.defaults, CONFIG_AMOUNT * sizeof(char *));
-	config.defaults[CONFIG_INDEX_FULLSCREEN]	= CONFIG_VALUE_FULLSCREEN;
-	config.defaults[CONFIG_INDEX_MAXIMIZED]		= CONFIG_VALUE_MAXIMIZED;
-	config.defaults[CONFIG_INDEX_WINDOW_W]		= CONFIG_VALUE_WINDOW_W;
-	config.defaults[CONFIG_INDEX_WINDOW_H]		= CONFIG_VALUE_WINDOW_H;
+	FT_MemoryClear(rt.config.names, CONFIG_AMOUNT * sizeof(char *));
+	rt.config.names[CONFIG_INDEX_FULLSCREEN]	= CONFIG_LABEL_FULLSCREEN;
+	rt.config.names[CONFIG_INDEX_MAXIMIZED]	= CONFIG_LABEL_MAXIMIZED;
+	rt.config.names[CONFIG_INDEX_WINDOW_W]		= CONFIG_LABEL_WINDOW_W;
+	rt.config.names[CONFIG_INDEX_WINDOW_H]		= CONFIG_LABEL_WINDOW_H;
+	FT_MemoryClear(rt.config.values, CONFIG_AMOUNT * sizeof(char *));
+	FT_MemoryClear(rt.config.defaults, CONFIG_AMOUNT * sizeof(char *));
+	rt.config.defaults[CONFIG_INDEX_FULLSCREEN]	= CONFIG_VALUE_FULLSCREEN;
+	rt.config.defaults[CONFIG_INDEX_MAXIMIZED]		= CONFIG_VALUE_MAXIMIZED;
+	rt.config.defaults[CONFIG_INDEX_WINDOW_W]		= CONFIG_VALUE_WINDOW_W;
+	rt.config.defaults[CONFIG_INDEX_WINDOW_H]		= CONFIG_VALUE_WINDOW_H;
 }
 
 int			config_init()
@@ -111,10 +110,10 @@ void		config_free()
 	i = 0;
 	while (i < CONFIG_AMOUNT)
 	{
-		if (config.values[i])
+		if (rt.config.values[i])
 		{
-			free(config.values[i]);
-			config.values[i] = NULL;
+			free(rt.config.values[i]);
+			rt.config.values[i] = NULL;
 		}
 		++i;
 	}

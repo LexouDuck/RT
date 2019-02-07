@@ -63,7 +63,7 @@
 typedef struct	s_menu
 {
 	t_s8		item_amount;
-	char const*	item_labels[MENU_MAX_ITEMS];
+	char const	*item_labels[MENU_MAX_ITEMS];
 	SDL_Rect	item_hitbox[MENU_MAX_ITEMS];
 	t_u32		item_hotkey[MENU_MAX_ITEMS];
 //	void		(*items)(void)[MENU_MAX_ITEMS];
@@ -85,13 +85,23 @@ typedef struct	s_ui
 **	ui.c
 */
 int				ui_init();
-SDL_Palette*	ui_set_palette(SDL_Surface* surface, t_u32 const* palette);
-SDL_Surface*	ui_set_tileset(t_u8 const* chr, size_t length);
+SDL_Palette*	ui_set_palette(SDL_Surface *surface, t_u32 const *palette);
+SDL_Surface*	ui_set_tileset(t_u8 const *chr, size_t length);
 
 /*
 **	render_ui.c
 */
 void	render_ui_menubar();
 void	render_ui_dropdown(t_menu *dropdown);
+void	render_ui_text(
+	char const *str,
+	t_s32 x,
+	t_s32 y,
+	t_bool colored);
+void	render_ui_rect(
+	t_s32 x,
+	t_s32 y,
+	t_u8 w,
+	t_u8 h);
 
 #endif

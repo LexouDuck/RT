@@ -16,8 +16,8 @@
 #include "libft_convert.h"
 #include "libft_io.h"
 
+#include "../rt.h"
 #include "debug.h"
-#include "config.h"
 
 static char	*INI_Error(char expected, char *description, char instead)
 {
@@ -73,7 +73,7 @@ static char	*INI_ApplySetting(t_parser *p)
 	i = -1;
 	index = -1;
 	while (++i < CONFIG_AMOUNT)
-		if (config.names[i] && FT_StringEquals(p->name, config.names[i]))
+		if (rt.config.names[i] && FT_StringEquals(p->name, rt.config.names[i]))
 			index = i;
 	if (index == -1)
 	{
@@ -84,7 +84,7 @@ static char	*INI_ApplySetting(t_parser *p)
 	}
 	if (*(p->value + p->value_length))
 		*(p->value + p->value_length) = '\0';
-	if (!(config.values[index] = FT_StringDuplicate(p->value)))
+	if (!(rt.config.values[index] = FT_StringDuplicate(p->value)))
 		return ("Could not create config value string");
 	return (NULL);
 }

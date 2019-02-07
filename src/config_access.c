@@ -10,28 +10,28 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "config.h"
+#include "../rt.h"
 
 inline char*	config_get(int index)
 {
-	if (config.names[index])
+	if (rt.config.names[index])
 	{
-		if (config.values[index])
-			return (config.values[index]);
+		if (rt.config.values[index])
+			return (rt.config.values[index]);
 		else
-			return (config.defaults[index]);
+			return (rt.config.defaults[index]);
 	}
 	return (NULL);
 }
 
 inline void		config_set(int index, char* value)
 {
-	if (config.names[index])
+	if (rt.config.names[index])
 	{
-		if (config.values[index])
+		if (rt.config.values[index])
 		{
-			free(config.values[index]);
+			free(rt.config.values[index]);
 		}
-		config.values[index] = value;
+		rt.config.values[index] = value;
 	}
 }

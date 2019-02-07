@@ -23,8 +23,11 @@
 
 # include "SDL.h"
 # include "libft.h"
+# include "libft_io.h"
 
 # include "src/ui.h"
+# include "src/rt_cl.h"
+# include "src/config.h"
 
 /*
 ** ************************************************************************** *|
@@ -38,17 +41,31 @@
 # define FRAME_MS	(1000 / FRAMERATE)
 
 /*
-**	This struct holds all info for the global state of the program.
+**	This struct contains information relative to the full image in window.
 */
-typedef struct		t_rt
+typedef struct		s_sdl
 {
 	SDL_Window*		window;
 	SDL_Renderer*	window_renderer;
 	SDL_Texture*	window_texture;
 	SDL_Surface*	window_surface;
-	t_bool			must_render;
-	SDL_Surface*	canvas;
+	int				window_w;
+	int				window_h;
+	int				pixel_amount;
 	t_bool			fullscreen;
+}					t_sdl;
+
+/*
+**	This struct holds all info for the global state of the program.
+*/
+typedef struct		t_rt
+{
+	t_sdl			sdl;
+	t_cl			ocl;
+	t_config		config;
+//	t_scene			scene;	
+	SDL_Surface*	canvas;
+	t_bool			must_render;
 	t_ui			ui;
 	t_u32			mouse_button;
 	SDL_Point		mouse;
@@ -95,14 +112,6 @@ void	event_window_fullscreen(SDL_Window *window, t_bool fullscreen);
 ** ************************************************************************** *|
 */
 
-typedef enum	e_cameramode
-{
-	CAMERA_NONE,
-	CAMERA_ROTATE,
-	CAMERA_TILT,
-	CAMERA_PAN,
-}				t_cameramode;
-
 /*
 **	camera.c
 */
@@ -113,17 +122,5 @@ typedef enum	e_cameramode
 */
 int		render_init();
 void	render();
-
-void		render_text(
-	char* str,
-	t_s32 x,
-	t_s32 y,
-	t_bool colored);
-
-void	render_rect(
-	t_s32 x,
-	t_s32 y,
-	t_u8 w,
-	t_u8 h);
 
 #endif

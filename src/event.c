@@ -16,7 +16,7 @@ static void	event_check_window(SDL_Event *event, SDL_Window *window)
 {
 	if (event->window.event == SDL_WINDOWEVENT_RESIZED)
 	{
-		if (!rt.fullscreen)
+		if (!rt.sdl.fullscreen)
 			event_window_resize(window, 0, 0);
 	}
 }
@@ -25,15 +25,15 @@ static void	event_check_keydown(SDL_Event *event, SDL_Window *window,
 	t_u8 *keys)
 {
 	if (event->key.keysym.sym == SDLK_ESCAPE)
-		if (rt.fullscreen)
+		if (rt.sdl.fullscreen)
 		{
-			rt.fullscreen = FALSE;
+			rt.sdl.fullscreen = FALSE;
 			event_window_fullscreen(window, FALSE);
 		}
 	if (event->key.keysym.sym == SDLK_RETURN)
-		if (!(rt.fullscreen) && (*keys & KEY_ALT))
+		if (!(rt.sdl.fullscreen) && (*keys & KEY_ALT))
 		{
-			rt.fullscreen = TRUE;
+			rt.sdl.fullscreen = TRUE;
 			event_window_fullscreen(window, TRUE);
 		}
 	// set modifier key flags to be on
@@ -79,7 +79,7 @@ t_bool		event_checkevents(SDL_Window *window)
 	static t_u8	keys = 0;
 	SDL_Event	event;
 
-	rt.fullscreen = (SDL_GetWindowFlags(window) & SDL_WINDOW_FULLSCREEN_DESKTOP);
+	rt.sdl.fullscreen = (SDL_GetWindowFlags(window) & SDL_WINDOW_FULLSCREEN_DESKTOP);
 	while (SDL_PollEvent(&event))
 	{	// Handle events on queue
 		if (event.type == SDL_QUIT)

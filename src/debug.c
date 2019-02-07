@@ -98,3 +98,28 @@ void	debug_output_error(char const* str, t_bool sdl_error)
 	if (close(fd) < 0)
 		FT_Write_Line(STDERR, strerror(errno));
 }
+
+int		debug_perror(char const *str)
+{
+#ifdef DEBUG
+	FT_Write_String(STDERR, str);
+	FT_Write_Char(STDERR, '\n');
+#endif
+	int fd = open(DEBUG_FILE, O_WRONLY | O_CREAT | O_APPEND, 0755);
+	if (fd < 0)
+	{
+		FT_Write_String(STDERR, "Error in debug_perror() -> "DEBUG_FILE
+			" could not be opened for writing: ");
+		FT_Write_Line(STDERR, strerror(errno));
+		return (ERROR);
+	}
+	FT_Write_Line(fd, str);
+	if (close(fd) < 0)
+	{
+		FT_Write_String(STDERR, "Error in debug_perror() -> "DEBUG_FILE
+			" could not be closed properly: ");
+		FT_Write_Line(STDERR, strerror(errno));
+		return (ERROR);
+	}
+	return (ERROR);
+}

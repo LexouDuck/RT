@@ -15,10 +15,11 @@
 #include "config.h"
 #include "debug.h"
 #include "ui.h"
+#include "libft_convert.h" //Tristan@Alexis : TODO remove if unnecessary ?
 
 static void	update_window()
 {
-	if (SDL_FillRect(rt.window_surface, NULL, 0x000000))
+	if (SDL_FillRect(rt.sdl.window_surface, NULL, 0x000000))
 		debug_output_error(
 			"Error during update_window() -> Screen clear: ", TRUE);
 	// display the UI
@@ -29,22 +30,21 @@ static void	update_window()
 	// Do the 3d render if needed
 	if (rt.must_render)
 		render();
-	if (rt.canvas && SDL_BlitSurface(rt.canvas, NULL, rt.window_surface, NULL))
+	if (rt.canvas && SDL_BlitSurface(rt.canvas, NULL, rt.sdl.window_surface, NULL))
 		debug_output_error(
 			"Error during update_window() -> render blit: ", TRUE);
 
 	// and update the window display
-	if (SDL_UpdateTexture(rt.window_texture, NULL,
-		rt.window_surface->pixels, rt.window_surface->pitch))
+	if (SDL_UpdateTexture(rt.sdl.window_texture, NULL,
+		rt.sdl.window_surface->pixels, rt.sdl.window_surface->pitch))
 		debug_output_error("Error during window update: ", TRUE);
-	if (SDL_RenderClear(rt.window_renderer))
+	if (SDL_RenderClear(rt.sdl.window_renderer))
 		debug_output_error("Error during render screen clear: ", TRUE);
-	if (SDL_RenderCopy(rt.window_renderer, rt.window_texture, NULL, NULL))
+	if (SDL_RenderCopy(rt.sdl.window_renderer, rt.sdl.window_texture, NULL, NULL))
 		debug_output_error("Error during render copy: ", TRUE);
-	SDL_RenderPresent(rt.window_renderer);
+	SDL_RenderPresent(rt.sdl.window_renderer);
 }
 
-#include "libft_convert.h"
 /*
 **	The main program loop: pretty much everything is called from here
 **	Runs at 60fps (the 3 first lines of code inside the loop do this)
@@ -60,7 +60,7 @@ static int	main_loop()
 			SDL_Delay(1);
 		frame_wait = SDL_GetTicks() + FRAME_MS;
 
-		loop = event_checkevents(rt.window);
+		loop = event_checkevents(rt.sdl.window);
 		rt.mouse_button = SDL_GetMouseState(&rt.mouse.x, &rt.mouse.y);
 
 		// TODO do stuff here
@@ -69,7 +69,10 @@ static int	main_loop()
 	}
 	config_save();
 	config_free();
-	SDL_DestroyWindow(rt.window);
+	clReleaseCommandQueue(rt.ocl.cmd_queue);
+	clReleaseProgram(rt.ocl.program);
+	clReleaseContext(rt.ocl.context);
+	SDL_DestroyWindow(rt.sdl.window);
 	SDL_Quit();
 	return (OK);
 }
@@ -101,6 +104,8 @@ int			main(int argc, char* argv[])
 	if (init_window_display())
 		return (ERROR);
 	if (ui_init())
+		return (ERROR);
+	if (init_opencl())
 		return (ERROR);
 	if (render_init())
 		return (ERROR);

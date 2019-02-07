@@ -20,10 +20,10 @@ CFLAGS_LIN	=
 CFLAGS_MAC	=
 
 # Libraries
-LIBS		=	$(LIBFT) $(LIBSDL)
+LIBS		=	$(LIBFT) $(LIBSDL) $(OPENCL)
 INCLUDE_DIRS =  -I$(LFTDIR) -I$(SDLHDRS)
 
-OPENCL		=	-lopencl
+#OPENCL		=	-lopencl
 LIBFT		=	-L$(LFTDIR) -lft
 LIBSDL		= _
 LIBSDL_WIN	= -L$(SDLDIR) -lSDL2
@@ -53,6 +53,26 @@ else
 		LD := $(LD_LIN)
 		LIBSDL := $(LIBSDL_LIN)
 		CFLAGS_PLATFORM := $(CFLAGS_LIN)
+		LIBS += -lOpenCL
+		ifeq ($(PROC_TYPE),)
+			CFLAGS += -m32
+		else
+			CFLAGS += -m64
+		endif
+		# Check for Linux-AMD
+		ifdef AMDAPPSDKROOT
+		   INC_DIRS =. $(AMDAPPSDKROOT)/include
+			ifeq ($(PROC_TYPE),)
+				LIB_DIRS = $(AMDAPPSDKROOT)/lib/x86
+			else
+				LIB_DIRS = $(AMDAPPSDKROOT)/lib/x86_64
+			endif
+		else				
+			# Check for Linux-Nvidia
+			ifdef CUDA
+			   INC_DIRS =. $(CUDA)/OpenCL/common/inc
+			endif
+		endif
 	endif
 	ifeq ($(UNAME_S),Darwin)
 		OSFLAG := "MAC"
@@ -60,6 +80,8 @@ else
 		LD := $(LD_MAC)
 		LIBSDL := $(LIBSDL_MAC)
 		CFLAGS_PLATFORM := $(CFLAGS_MAC)
+		CFLAGS += -DMAC
+		OPENCL := -framework OpenCL
 	endif
 endif
 
@@ -72,10 +94,12 @@ HDRS	=	$(LFTDIR)libft.h 	\
 			$(SRCDIR)debug.h	\
 			$(SRCDIR)config.h	\
 			$(SRCDIR)ui.h		\
+			$(SRCDIR)rt_cl.h
 
 # List of C source code files
 SRCS	= 	main.c				\
-			init.c				\
+			init_sdl.c			\
+			init_opencl.c		\
 			debug.c				\
 			config.c			\
 			config_ini.c		\
@@ -85,7 +109,7 @@ SRCS	= 	main.c				\
 			ui.c				\
 			ui_init.c			\
 			render_ui.c			\
-			render.c			\
+			render.c
 
 # List of asset files to be embedded within the program
 INCS	=	ui.chr

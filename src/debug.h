@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #ifndef __DEBUG_H
-#define __DEBUG_H
+# define __DEBUG_H
 
 /*
 ** ************************************************************************** *|
@@ -61,5 +61,9 @@ void	debug_output_value(char const* str, char* value, t_bool free_value);
 **	not 0, then SDL_GetError() will be called and its return will be written.
 */
 void	debug_output_error(char const* str, t_bool sdl_error);
+/*
+**	Prints str + '\n' to DEBUG_FILE, ifdef DEBUG, also prints to terminal. 
+*/
+int		debug_perror(char const *str);
 
 #endif

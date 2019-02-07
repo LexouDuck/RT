@@ -30,8 +30,8 @@ inline void	event_window_resize(SDL_Window *window, t_s32 window_w, t_s32 window
 			SDL_SetWindowSize(window, window_w, window_h);
 		config_set(CONFIG_INDEX_WINDOW_W, FT_S32_To_String(window_w));
 		config_set(CONFIG_INDEX_WINDOW_H, FT_S32_To_String(window_h));
-		SDL_DestroyTexture(rt.window_texture);
-		SDL_FreeSurface(rt.window_surface);
+		SDL_DestroyTexture(rt.sdl.window_texture);
+		SDL_FreeSurface(rt.sdl.window_surface);
 		init_window_display();
 	}
 }

@@ -42,15 +42,15 @@ int		init_window()
 		flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 	if (FT_String_To_Bool(config_get(CONFIG_INDEX_MAXIMIZED)))
 		flags |= SDL_WINDOW_MAXIMIZED;
-	rt.window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED,
+	rt.sdl.window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED, window_w, window_h, flags);
-	if (rt.window == NULL)
+	if (rt.sdl.window == NULL)
 	{
 		debug_output_error("Could not create SDL_Window: ", TRUE);
 		return (ERROR);
 	}
-	rt.window_renderer = SDL_CreateRenderer(rt.window, -1, 0);
-	if (rt.window_renderer == NULL)
+	rt.sdl.window_renderer = SDL_CreateRenderer(rt.sdl.window, -1, 0);
+	if (rt.sdl.window_renderer == NULL)
 	{
 		debug_output_error("Could not create SDL_Renderer: ", TRUE);
 		return (ERROR);
@@ -63,22 +63,22 @@ int		init_window_display()
 	t_s32	window_w;
 	t_s32	window_h;
 
-	SDL_GetWindowSize(rt.window, &window_w, &window_h);
-	rt.window_texture = SDL_CreateTexture(rt.window_renderer,
+	SDL_GetWindowSize(rt.sdl.window, &window_w, &window_h);
+	rt.sdl.window_texture = SDL_CreateTexture(rt.sdl.window_renderer,
 		SDL_PIXELFORMAT_ARGB8888,
 		SDL_TEXTUREACCESS_STREAMING,
 		window_w,
 		window_h);
-	if (rt.window_texture == NULL)
+	if (rt.sdl.window_texture == NULL)
 	{
 		debug_output_error("Could not create window's SDL_Texture: ", TRUE);
 		return (ERROR);
 	}
-	rt.window_surface = SDL_CreateRGBSurfaceWithFormat(
+	rt.sdl.window_surface = SDL_CreateRGBSurfaceWithFormat(
 		SDL_RLEACCEL,
 		window_w, window_h,
 		8, SDL_PIXELFORMAT_ARGB8888);
-	if (rt.window_surface == NULL)
+	if (rt.sdl.window_surface == NULL)
 	{
 		debug_output_error("Could not create window's SDL_Surface: ", TRUE);
 		return (ERROR);

@@ -113,7 +113,7 @@ int			ui_init()
 	};
 
 #ifdef __APPLE__
-	rt.ui.chr = _section$__DATA____inc_ui_chr;
+	rt.ui.chr = getsectbyname("__DATA", "__inc_ui_chr")->addr;
 #else
 	rt.ui.chr = _binary___inc_ui_chr_start;
 #endif

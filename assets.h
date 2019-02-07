@@ -40,7 +40,8 @@
 **	UI Tileset: 4-color 2bpp CHR pixel data format
 */
 # ifdef __APPLE__
-extern const t_u8 _section$__DATA____inc_ui_chr[CHR_SIZE];
+#include <mach-o/getsect.h>
+extern const t_u8 _section$__DATA__inc_ui_chr[CHR_SIZE];
 # else
 extern const t_u8 _binary___inc_ui_chr_start[CHR_SIZE];
 # endif

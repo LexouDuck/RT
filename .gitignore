@@ -6,8 +6,10 @@ correc.*
 *.gif
 
 # Program
-./RT
-./RT.exe
+RT
+RT.exe
+log.txt
+config.ini
 
 # Macintosh files
 *.DS_Store

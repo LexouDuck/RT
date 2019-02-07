@@ -4,7 +4,7 @@ NAME	=	RT
 LD	= _
 LD_WIN	= x86_64-w64-mingw32-ld -r -b binary
 LD_LIN	= ld -r -b binary
-LD_MAC	= gcc -sectcreate __DATA__ui_chr
+LD_MAC	= ld -r -sectcreate __DATA __inc_ui_chr
 
 # Compiler
 CC	= _
@@ -17,7 +17,7 @@ CFLAGS	=	-Wall -Wextra $(CFLAGS_PLATFORM) -O2 -MMD
 CFLAGS_PLATFORM = _
 CFLAGS_WIN	= -mwindows
 CFLAGS_LIN	= 
-CFLAGS_MAC	= 
+CFLAGS_MAC	=
 
 # Libraries
 LIBS		=	$(LIBFT) $(LIBSDL)
@@ -110,7 +110,9 @@ $(OBJS): | objdir
 $(NAME): $(OBJS) $(HDRS) assets.o
 	@printf "Compiling program: "$@" -> "
 	@$(CC) $(CFLAGS) $(OBJS) assets.o -o $@ $(LIBS)
-	@if [ $(OSFLAG) = "MAC" ]; then install_name_tool -change @rpath/SDL2.framework/Versions/A/SDL2 @executable_path/SDL2.framework/Versions/A/SDL2 RT; fi
+	@if [ $(OSFLAG) = "MAC" ]; then \
+		install_name_tool -change @rpath/SDL2.framework/Versions/A/SDL2 @executable_path/SDL2.framework/Versions/A/SDL2 RT; \
+	fi
 	@printf $(GREEN)"OK!"$(RESET)"\n"
 
 $(OBJDIR)%.o : $(SRCDIR)%.c $(HDRS)
@@ -122,7 +124,12 @@ ASSET_FILES	=	$(addprefix $(INCDIR),$(INCS))
 
 assets.o : $(ASSET_FILES)
 	@printf "Compiling assets: "$@" -> "
-	@$(LD) -o $@ $(ASSET_FILES)
+	@if [ $(OSFLAG) = "MAC" ]; then \
+		touch empty.c && gcc -c empty.c -o $@; \
+		$(LD) $(ASSET_FILES) $@ -o $@; \
+	else \
+		$(LD) $(ASSET_FILES) -o $@; \
+	fi
 	@printf $(GREEN)"OK!"$(RESET)"\n"
 
 objdir:

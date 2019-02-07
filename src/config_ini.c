@@ -10,14 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "debug.h"
-#include "config.h"
-
 #include "libft_memory.h"
 #include "libft_char.h"
 #include "libft_string.h"
 #include "libft_convert.h"
 #include "libft_io.h"
+
+#include "debug.h"
+#include "config.h"
 
 static char	*INI_Error(char expected, char *description, char instead)
 {

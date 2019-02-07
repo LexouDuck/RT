@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef __CONFIG_H
+#define __CONFIG_H
 
 /*
 ** ************************************************************************** *|
@@ -72,9 +72,8 @@ t_config		config;
 /*
 **	config.c
 */
-void	config_make_ini(int fd);
 int		config_init();
-void	config_save();
+int		config_save();
 void	config_free();
 /*
 **	config_access.c

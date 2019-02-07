@@ -10,16 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <errno.h>
+
+#include "libft_memory.h"
+#include "libft_io.h"
+
 #include "../rt.h"
 #include "config.h"
 #include "debug.h"
 
-#include <sys/stat.h>
-#include <fcntl.h>
-#include "libft_memory.h"
-#include "libft_io.h"
-
-void	config_make_ini(int fd)
+static void	config_make_ini(int fd)
 {
 	int i;
 
@@ -59,12 +61,12 @@ int			config_init()
 	int	fd;
 
 	config_init_settings();
-	if (access(CONFIG_FILE, W_OK) < 0)
+	if (access(CONFIG_FILE, R_OK) < 0)
 	{	// if file does not exist
 		debug_output_value("Using default settings, no ", CONFIG_FILE, FALSE);
 		return (OK);
 	}
-	fd = open(CONFIG_FILE, O_RDONLY, 0777);
+	fd = open(CONFIG_FILE, O_RDONLY, 0755);
 	if (fd < 0)
 	{
 		debug_output_value("Error during config_init() -> "CONFIG_FILE
@@ -72,26 +74,37 @@ int			config_init()
 		return (ERROR);
 	}
 	INI_ReadFile(fd);
-	close(fd);
+	if (close(fd) < 0)
+	{
+		debug_output_value("Error during config_save() -> "CONFIG_FILE
+			" could not be closed correctly: ", strerror(errno), FALSE);
+		return (ERROR);
+	}
 	return (OK);
 }
 
-void	config_save()
+int			config_save()
 {
 	int fd;
 
-	fd = open(CONFIG_FILE, O_WRONLY | O_CREAT, 0777);
+	fd = open(CONFIG_FILE, O_WRONLY | O_CREAT, 0755);
 	if (fd < 0)
 	{
 		debug_output_value("Error during config_save() -> "CONFIG_FILE
 			" could not be opened for writing: ", strerror(errno), FALSE);
-		return;
+		return (ERROR);
 	}
 	config_make_ini(fd);
-	close(fd);
+	if (close(fd) < 0)
+	{
+		debug_output_value("Error during config_save() -> "CONFIG_FILE
+			" could not be closed correctly: ", strerror(errno), FALSE);
+		return (ERROR);
+	}
+	return (OK);
 }
 
-void	config_free()
+void		config_free()
 {
 	int i;
 

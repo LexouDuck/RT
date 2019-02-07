@@ -94,7 +94,7 @@ int				print_device_info()
 
 
 printf("Platform: %s | Device: %s | Version: %s\n\t"
-		"- global mem size (nb of bytes): %#llx\n\t"
+		"- global mem size (nb of bytes): %#lx\n\t"
 		"- compute unit nb: %u\n\t"
 		"- max kernel args size: %#lx\n\t"
 		"- max work items per group: %#lx\n\t"
@@ -117,7 +117,10 @@ int				create_device_context_and_queue()
 	int			err;
 
 	if ((err = clGetPlatformIDs(1, &(rt.ocl.platform), NULL)) != CL_SUCCESS)
+	{
+		printf("%d\n", err);
 		return (debug_perror("OpenCL: could not get a platform ID."));
+	}
 //	if (clGetDeviceIDs(rt.ocl.platform, CL_DEVICE_TYPE_CPU, 1, &(rt.ocl.cpu), NULL))
 //		return (ERROR);
 	if ((err = clGetDeviceIDs(rt.ocl.platform, CL_DEVICE_TYPE_GPU, 1, &(rt.ocl.gpu.id), NULL)))

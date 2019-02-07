@@ -11,6 +11,15 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "src/init_opencl.c",
+			"settings":
+			{
+				"buffer_size": 7163,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -42,6 +51,11 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
+	"expanded_folders":
+	[
+		"/home/fulguritude/Desktop/42/Workspace/08-rt",
+		"/home/fulguritude/Desktop/42/Workspace/08-rt/src"
+	],
 	"file_history":
 	[
 		"/Users/fulguritude/Workspace/42/09-rt/rt.h",
@@ -95,8 +109,38 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "src/init_opencl.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7163,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1695,
+								1695
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
 			]
 		}
 	],

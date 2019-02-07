@@ -8,7 +8,7 @@ CC_MAC	= gcc
 CFLAGS	=	-Wall -Wextra -Werror $(CFLAGS_PLATFORM) -O2 -MMD
 CFLAGS_PLATFORM = _
 CFLAGS_WIN	= -mwindows
-CFLAGS_LIN	= 
+CFLAGS_LIN	= -Wno-unused-result 
 CFLAGS_MAC	= 
 
 ifeq ($(OS),Windows_NT)

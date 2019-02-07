@@ -16,7 +16,7 @@ CC_MAC	= gcc
 CFLAGS	=	-Wall -Wextra $(CFLAGS_PLATFORM) -O2 -MMD
 CFLAGS_PLATFORM = _
 CFLAGS_WIN	= -mwindows
-CFLAGS_LIN	= 
+CFLAGS_LIN	= -Wno-unused-result -fsanitize=address 
 CFLAGS_MAC	=
 
 # Libraries
@@ -27,7 +27,7 @@ INCLUDE_DIRS =  -I$(LFTDIR) -I$(SDLHDRS)
 LIBFT		=	-L$(LFTDIR) -lft
 LIBSDL		= _
 LIBSDL_WIN	= -L$(SDLDIR) -lSDL2
-LIBSDL_WIN	= -L$(SDLDIR) -lSDL2
+LIBSDL_LIN	= -L$(SDLDIR) -lSDL2
 LIBSDL_MAC	= -L./SDL2.framework/Versions/Current -F. -framework SDL2
 
 # Directories that this Makefile will use
@@ -54,11 +54,11 @@ else
 		LIBSDL := $(LIBSDL_LIN)
 		CFLAGS_PLATFORM := $(CFLAGS_LIN)
 		LIBS += -lOpenCL
-		ifeq ($(PROC_TYPE),)
-			CFLAGS += -m32
-		else
-			CFLAGS += -m64
-		endif
+		#ifeq ($(PROC_TYPE),)
+		#	CFLAGS += -m32
+		#else
+		#	CFLAGS += -m64
+		#endif
 		# Check for Linux-AMD
 		ifdef AMDAPPSDKROOT
 		   INC_DIRS =. $(AMDAPPSDKROOT)/include
@@ -133,7 +133,7 @@ $(OBJS): | objdir
 
 $(NAME): $(OBJS) $(HDRS) assets.o
 	@printf "Compiling program: "$@" -> "
-	@$(CC) $(CFLAGS) $(OBJS) assets.o -o $@ $(LIBS)
+	$(CC) $(CFLAGS) $(OBJS) assets.o -o $@ $(LIBS)
 	@if [ $(OSFLAG) = "MAC" ]; then \
 		install_name_tool -change @rpath/SDL2.framework/Versions/A/SDL2 @executable_path/SDL2.framework/Versions/A/SDL2 RT; \
 	fi

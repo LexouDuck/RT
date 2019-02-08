@@ -18,6 +18,7 @@ static void	event_check_window(SDL_Event *event, SDL_Window *window)
 	{
 		if (!rt.sdl.fullscreen)
 			event_window_resize(window, 0, 0);
+		rt.must_render = TRUE;
 	}
 }
 
@@ -36,6 +37,7 @@ static void	event_check_keydown(SDL_Event *event, SDL_Window *window,
 			rt.sdl.fullscreen = TRUE;
 			event_window_fullscreen(window, TRUE);
 		}
+	// press space to refresh render
 	if (event->key.keysym.sym == SDLK_SPACE)
 		rt.must_render = TRUE;
 

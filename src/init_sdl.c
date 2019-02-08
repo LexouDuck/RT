@@ -35,7 +35,6 @@ int		init_window()
 
 	rt.sdl.window_w = FT_String_To_S32(config_get(CONFIG_INDEX_WINDOW_W));
 	rt.sdl.window_h = FT_String_To_S32(config_get(CONFIG_INDEX_WINDOW_H));
-	rt.sdl.pixel_amount = rt.sdl.window_w * rt.sdl.window_h;
 	flags = (SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 	if (FT_String_To_Bool(config_get(CONFIG_INDEX_FULLSCREEN)))
 		flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
@@ -79,10 +78,12 @@ int		init_window_display()
 		debug_output_error("Could not create window's SDL_Surface: ", TRUE);
 		return (ERROR);
 	}
-
+	rt.canvas_w = (rt.sdl.window_w - UI_WIDTH);
+	rt.canvas_h = (rt.sdl.window_h);
+	rt.canvas_pixels = (rt.canvas_w * rt.canvas_h);
 	rt.canvas = SDL_CreateRGBSurfaceWithFormat(
 		SDL_RLEACCEL,
-		rt.sdl.window_w, rt.sdl.window_h,
+		rt.canvas_w, rt.canvas_h,
 		8, SDL_PIXELFORMAT_ARGB8888);
 	if (rt.canvas == NULL)
 	{

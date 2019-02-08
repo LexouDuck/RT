@@ -1,11 +1,5 @@
 NAME	=	RT
 
-# Linker
-LD	= _
-LD_WIN	= x86_64-w64-mingw32-ld -r -b binary
-LD_LIN	= ld -r -b binary
-LD_MAC	= ld -r -sectcreate __DATA __inc_ui_chr
-
 # Compiler
 CC	= _
 CC_WIN	= x86_64-w64-mingw32-gcc
@@ -18,6 +12,12 @@ CFLAGS_PLATFORM = _
 CFLAGS_WIN	= -mwindows -I./ -L./
 CFLAGS_LIN	= -Wno-unused-result #-fsanitize=address 
 CFLAGS_MAC	=
+
+# Linker (for embedding binary files inside the program)
+LD	= _
+LD_WIN	= x86_64-w64-mingw32-ld -r -b binary
+LD_LIN	= ld -r -b binary
+LD_MAC	= ld -r -sectcreate __DATA __inc_ui_chr
 
 # Libraries
 LIBS		=	$(LIBFT) $(LIBSDL) $(OPENCL)

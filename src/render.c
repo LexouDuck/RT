@@ -33,9 +33,9 @@ int		render_init()
 //	rt.ocl.scene_hostbuf = clCreateBuffer(context, CL_MEM_READ_ONLY |
 //			CL_MEM_COPY_HOST_PTR, sizeof(t_scene), &scene, &err); //TODO Once pointer based BVH are implemented, edit here so that scene is the right format, or add args to kernel
 
-	size_t	work_dim[2] = {rt.sdl.window_w, rt.sdl.window_h};
+	size_t	work_dim[2] = {rt.canvas_w, rt.canvas_h};
 	rt.ocl.result_gpu_buf = clCreateBuffer(rt.ocl.context, CL_MEM_WRITE_ONLY |
-			CL_MEM_COPY_HOST_PTR, sizeof(t_u32) * rt.sdl.pixel_amount, rt.canvas->pixels, &err);
+			CL_MEM_COPY_HOST_PTR, sizeof(t_u32) * rt.canvas_pixels, rt.canvas->pixels, &err);
 	if (err < 0)
 	{
 /*printf("contexterr: %d; value err: %d; buffersize err: %d; hostptr err: %d; memalloc err: %d; hostmem err: %d\nerr: %d\n",
@@ -45,7 +45,7 @@ int		render_init()
 	}
 
 	err = clEnqueueWriteBuffer(rt.ocl.cmd_queue, rt.ocl.result_gpu_buf, CL_TRUE, 0, 
-			sizeof(t_u32) * rt.sdl.pixel_amount, rt.canvas->pixels, 0, NULL, NULL);
+			sizeof(t_u32) * rt.canvas_pixels, rt.canvas->pixels, 0, NULL, NULL);
 
 
 	/* Create kernel arguments */
@@ -67,10 +67,9 @@ int		render_init()
 
 	/* Read the kernel's output */
 	err = clEnqueueReadBuffer(rt.ocl.cmd_queue, rt.ocl.result_gpu_buf, CL_TRUE, 0, 
-			sizeof(t_u32) * rt.sdl.pixel_amount, rt.canvas->pixels, 0, NULL, NULL);
+			sizeof(t_u32) * rt.canvas_pixels, rt.canvas->pixels, 0, NULL, NULL);
 t_u32 * tmp = (t_u32*)rt.canvas->pixels;
-printf("Dimensions given were: w %d | h %d | w*h %d | pixamount %d\n", rt.sdl.window_w, rt.sdl.window_h, rt.sdl.window_w * rt.sdl.window_h, rt.sdl.pixel_amount);
-printf("Corners after kernel return %#x %#x %#x %#x\n", tmp[0], tmp[rt.sdl.window_w - 1], tmp[(rt.sdl.window_h - 1) * rt.sdl.window_w], tmp[rt.sdl.pixel_amount - 1]);
+printf("Corners after kernel return %#x %#x %#x %#x\n", tmp[0], tmp[rt.canvas_w - 1], tmp[(rt.canvas_h - 1) * rt.canvas_w], tmp[rt.canvas_pixels - 1]);
 	if(err < 0)
 		return (debug_perror("Couldn't read the buffer"));
 

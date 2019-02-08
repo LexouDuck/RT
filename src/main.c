@@ -33,7 +33,8 @@ static void	update_window()
 	if (rt.must_render)
 		render();
 	dest = rt.sdl.window_surface->clip_rect;
-	dest.x += 30 * TILE;
+	dest.x += UI_WIDTH;
+	dest.w -= UI_WIDTH;
 	if (SDL_BlitSurface(rt.canvas, &rt.canvas->clip_rect, rt.sdl.window_surface, &dest))
 		debug_output_error(
 			"Error during update_window() -> render blit: ", TRUE);

@@ -51,7 +51,6 @@ typedef struct		s_sdl
 	SDL_Surface*	window_surface;
 	int				window_w;
 	int				window_h;
-	int				pixel_amount;
 	t_bool			fullscreen;
 }					t_sdl;
 
@@ -65,6 +64,9 @@ typedef struct		t_rt
 	t_config		config;
 //	t_scene			scene;	
 	SDL_Surface*	canvas;
+	int				canvas_w;
+	int				canvas_h;
+	t_u32			canvas_pixels;
 	t_bool			must_render;
 	t_ui			ui;
 	t_u32			mouse_button;

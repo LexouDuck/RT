@@ -16,6 +16,10 @@
 # ifdef __APPLE__
 #  define CL_SILENCE_DEPRECATION
 #  include <OpenCL/cl.h>
+# elif (defined __WIN32__)
+#  define CL_USE_DEPRECATED_OPENCL_1_1_APIS
+#  define CL_TARGET_OPENCL_VERSION	110
+#  include "CL/cl.h"
 # else
 #  include <CL/cl.h>
 # endif
@@ -30,7 +34,7 @@
 // TODO experiment with optimization options
 */
 # define RT_CL_PROGRAM_SOURCE		"src/rt_cl_render.cl"
-# define RT_CL_PROGRAM_OPTIONS		"-Werror -g" //-cl-nv-verbose" //-cl-kernel-arg-info" //-cl-fast-relaxed-math" //-cl-unsafe-math-optimizations //-cl-mad-enable
+# define RT_CL_PROGRAM_OPTIONS		"-Werror"// -g" //-cl-nv-verbose" //-cl-kernel-arg-info" //-cl-fast-relaxed-math" //-cl-unsafe-math-optimizations //-cl-mad-enable
 # define RT_CL_KERNEL_NB			1
 # define RT_CL_KERNEL_0				"rt_cl_render"
 

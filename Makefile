@@ -15,15 +15,14 @@ CC_MAC	= gcc
 # Compiler flags
 CFLAGS	=	-Wall -Wextra $(CFLAGS_PLATFORM) -O2 -MMD
 CFLAGS_PLATFORM = _
-CFLAGS_WIN	= -mwindows
-CFLAGS_LIN	= -Wno-unused-result -fsanitize=address 
+CFLAGS_WIN	= -mwindows -I./ -L./
+CFLAGS_LIN	= -Wno-unused-result #-fsanitize=address 
 CFLAGS_MAC	=
 
 # Libraries
 LIBS		=	$(LIBFT) $(LIBSDL) $(OPENCL)
 INCLUDE_DIRS =  -I$(LFTDIR) -I$(SDLHDRS)
 
-#OPENCL		=	-lopencl
 LIBFT		=	-L$(LFTDIR) -lft
 LIBSDL		= _
 LIBSDL_WIN	= -L$(SDLDIR) -lSDL2
@@ -45,6 +44,7 @@ ifeq ($(OS),Windows_NT)
 	LD := $(LD_WIN)
 	LIBSDL := $(LIBSDL_WIN)
 	CFLAGS_PLATFORM := $(CFLAGS_WIN)
+	LIBS += -lOpenCL
 else
 	UNAME_S := $(shell uname -s)
 	ifeq ($(UNAME_S),Linux)
@@ -135,7 +135,7 @@ $(NAME): $(OBJS) $(HDRS) assets.o
 	@printf "Compiling program: "$@" -> "
 	$(CC) $(CFLAGS) $(OBJS) assets.o -o $@ $(LIBS)
 	@if [ $(OSFLAG) = "MAC" ]; then \
-		install_name_tool -change @rpath/SDL2.framework/Versions/A/SDL2 @executable_path/SDL2.framework/Versions/A/SDL2 RT; \
+		install_name_tool -change @rpath/SDL2.framework/Versions/A/SDL2 @executable_path/SDL2.framework/Versions/A/SDL2 $@; \
 	fi
 	@printf $(GREEN)"OK!"$(RESET)"\n"
 

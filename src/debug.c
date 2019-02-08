@@ -15,12 +15,12 @@
 #include <errno.h>
 
 #include "libft_io.h"
-
+#include <string.h>
 #include "debug.h"
 
 int		debug_init()
 {
-	if (access(DEBUG_FILE, W_OK) != -1)
+/*	if (access(DEBUG_FILE, W_OK) != -1)
 	{	// if file exists
 		if (remove(DEBUG_FILE))
 		{
@@ -28,6 +28,9 @@ int		debug_init()
 			return (ERROR);
 		}
 	}
+*/
+	int fd = open(DEBUG_FILE, O_CREAT, 0644);
+	close(fd);
 	return (OK);
 }
 
@@ -36,7 +39,7 @@ void	debug_output(char const* str)
 #ifdef DEBUG
 	FT_Write_String(STDERR, str);
 #endif
-	int fd = open(DEBUG_FILE, O_WRONLY | O_CREAT | O_APPEND, 0755);
+	int fd = open(DEBUG_FILE, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
 	{
 		FT_Write_String(STDERR, "Error in debug_output() -> "DEBUG_FILE
@@ -55,7 +58,7 @@ void	debug_output_value(char const* str, char* value, t_bool free_value)
 	FT_Write_String(STDERR, str);
 	FT_Write_Line(STDERR, value);
 #endif
-	int fd = open(DEBUG_FILE, O_WRONLY | O_CREAT | O_APPEND, 0755);
+	int fd = open(DEBUG_FILE, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
 	{
 		FT_Write_String(STDERR, "Error in debug_output_value() -> "DEBUG_FILE
@@ -79,9 +82,12 @@ void	debug_output_error(char const* str, t_bool sdl_error)
 		FT_Write_String(STDERR, str);
 		FT_Write_Line(STDERR, SDL_GetError());
 	}
-	else FT_Write_Line(STDERR, str);
+	else
+	{
+		FT_Write_Line(STDERR, str);
+	}
 #endif
-	int fd = open(DEBUG_FILE, O_WRONLY | O_CREAT | O_APPEND, 0755);
+	int fd = open(DEBUG_FILE, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
 	{
 		FT_Write_String(STDERR, "Error in debug_output_error() -> "DEBUG_FILE
@@ -105,7 +111,7 @@ int		debug_perror(char const *str)
 	FT_Write_String(STDERR, str);
 	FT_Write_Char(STDERR, '\n');
 #endif
-	int fd = open(DEBUG_FILE, O_WRONLY | O_CREAT | O_APPEND, 0755);
+	int fd = open(DEBUG_FILE, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
 	{
 		FT_Write_String(STDERR, "Error in debug_perror() -> "DEBUG_FILE

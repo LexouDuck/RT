@@ -19,6 +19,8 @@
 
 static void	update_window()
 {
+	SDL_Rect	dest;
+
 	if (SDL_FillRect(rt.sdl.window_surface, NULL, 0x000000))
 		debug_output_error(
 			"Error during update_window() -> Screen clear: ", TRUE);
@@ -30,7 +32,9 @@ static void	update_window()
 	// Do the 3d render if needed
 	if (rt.must_render)
 		render();
-	if (rt.canvas && SDL_BlitSurface(rt.canvas, NULL, rt.sdl.window_surface, NULL))
+	dest = rt.sdl.window_surface->clip_rect;
+	dest.x += 30 * TILE;
+	if (SDL_BlitSurface(rt.canvas, &rt.canvas->clip_rect, rt.sdl.window_surface, &dest))
 		debug_output_error(
 			"Error during update_window() -> render blit: ", TRUE);
 
@@ -38,8 +42,8 @@ static void	update_window()
 	if (SDL_UpdateTexture(rt.sdl.window_texture, NULL,
 		rt.sdl.window_surface->pixels, rt.sdl.window_surface->pitch))
 		debug_output_error("Error during window update: ", TRUE);
-	if (SDL_RenderClear(rt.sdl.window_renderer))
-		debug_output_error("Error during render screen clear: ", TRUE);
+//	if (SDL_RenderClear(rt.sdl.window_renderer))
+//		debug_output_error("Error during render screen clear: ", TRUE);
 	if (SDL_RenderCopy(rt.sdl.window_renderer, rt.sdl.window_texture, NULL, NULL))
 		debug_output_error("Error during render copy: ", TRUE);
 	SDL_RenderPresent(rt.sdl.window_renderer);
@@ -95,16 +99,23 @@ int			main(int argc, char* argv[])
 
 	if (debug_init())
 		return (ERROR);
+
+//printf("debug 1\n");
 	if (config_init())
 		return (ERROR);
+//printf("debug 2\n");
 	if (init_sdl())
 		return (ERROR);
+
+//printf("debug 3\n");
 	if (init_window())
 		return (ERROR);
 	if (init_window_display())
 		return (ERROR);
+//printf("debug 4\n");
 	if (ui_init())
 		return (ERROR);
+//printf("debug 5\n");
 	if (init_opencl())
 		return (ERROR);
 	if (render_init())

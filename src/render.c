@@ -10,10 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../rt.h"
-#include "debug.h"
+// TODO remove stdio include
+#include <stdio.h>
 
 #include "libft_memory.h"
+
+#include "../rt.h"
+#include "debug.h"
 
 int		render_init()
 {
@@ -42,7 +45,7 @@ int		render_init()
 	}
 
 	err = clEnqueueWriteBuffer(rt.ocl.cmd_queue, rt.ocl.result_gpu_buf, CL_TRUE, 0, 
-			sizeof(uint) * rt.sdl.pixel_amount, rt.canvas->pixels, 0, NULL, NULL);
+			sizeof(t_u32) * rt.sdl.pixel_amount, rt.canvas->pixels, 0, NULL, NULL);
 
 
 	/* Create kernel arguments */
@@ -58,20 +61,20 @@ int		render_init()
 	if (err < 0)
 		return (debug_perror("Couldn't enqueue the kernel"));
 
-	clFlush(rt.ocl.cmd_queue);
-	clFinish(rt.ocl.cmd_queue);
+//	clFlush(rt.ocl.cmd_queue);
+//	clFinish(rt.ocl.cmd_queue);
 
 
 	/* Read the kernel's output */
 	err = clEnqueueReadBuffer(rt.ocl.cmd_queue, rt.ocl.result_gpu_buf, CL_TRUE, 0, 
-			sizeof(uint) * rt.sdl.pixel_amount, rt.canvas->pixels, 0, NULL, NULL);
+			sizeof(t_u32) * rt.sdl.pixel_amount, rt.canvas->pixels, 0, NULL, NULL);
 t_u32 * tmp = (t_u32*)rt.canvas->pixels;
-printf("%#x %#x %#x %#x\n", tmp[0], tmp[rt.sdl.window_w - 1], tmp[(rt.sdl.window_h - 1) * rt.sdl.window_w], tmp[rt.sdl.pixel_amount - 1]);
+printf("Corners after kernel return %#x %#x %#x %#x\n", tmp[0], tmp[rt.sdl.window_w - 1], tmp[(rt.sdl.window_h - 1) * rt.sdl.window_w], tmp[rt.sdl.pixel_amount - 1]);
 	if(err < 0)
 		return (debug_perror("Couldn't read the buffer"));
 
-	clFlush(rt.ocl.cmd_queue);
-	clFinish(rt.ocl.cmd_queue);
+//	clFlush(rt.ocl.cmd_queue);
+//	clFinish(rt.ocl.cmd_queue);
 
 
 

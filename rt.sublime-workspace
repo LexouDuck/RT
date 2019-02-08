@@ -12,10 +12,28 @@
 	"buffers":
 	[
 		{
-			"file": "src/init_opencl.c",
+			"file": "Makefile",
 			"settings":
 			{
-				"buffer_size": 7163,
+				"buffer_size": 4376,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/main.c",
+			"settings":
+			{
+				"buffer_size": 3703,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/init_sdl.c",
+			"settings":
+			{
+				"buffer_size": 3108,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -58,6 +76,11 @@
 	],
 	"file_history":
 	[
+		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/config.c",
+		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/debug.c",
+		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/debug.h",
+		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/init_opencl.c",
+		"/home/fulguritude/Desktop/42/Workspace/08-rt/Makefile",
 		"/Users/fulguritude/Workspace/42/09-rt/rt.h",
 		"/Users/fulguritude/Workspace/42/09-rt/src/debug.h",
 		"/Users/fulguritude/Workspace/42/09-rt/libft/libft_io.h",
@@ -85,6 +108,7 @@
 		"height": 101.0,
 		"where_history":
 		[
+			"<current file>"
 		]
 	},
 	"find_state":
@@ -92,6 +116,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"0755"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -99,6 +124,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"0644"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -109,24 +135,82 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 2,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "src/init_opencl.c",
+					"file": "Makefile",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7163,
+						"buffer_size": 4376,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1695,
-								1695
+								375,
+								375
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Makefile/Makefile.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/main.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3703,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3305,
+								3305
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 765.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/init_sdl.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3108,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1202,
+								1202
 							]
 						],
 						"settings":

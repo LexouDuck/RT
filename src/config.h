@@ -60,7 +60,7 @@ typedef	struct	s_config
 */
 # define CONFIG_INDEX_WINDOW_W	0x02
 # define CONFIG_LABEL_WINDOW_W	"window_w"
-# define CONFIG_VALUE_WINDOW_W	"640"
+# define CONFIG_VALUE_WINDOW_W	"880"
 # define CONFIG_INDEX_WINDOW_H	0x03
 # define CONFIG_LABEL_WINDOW_H	"window_h"
 # define CONFIG_VALUE_WINDOW_H	"480"

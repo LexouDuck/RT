@@ -62,19 +62,20 @@ int		render_init()
 		return (debug_perror("Couldn't enqueue the kernel"));
 
 //	clFlush(rt.ocl.cmd_queue);
-//	clFinish(rt.ocl.cmd_queue);
+	clFinish(rt.ocl.cmd_queue);
 
 
 	/* Read the kernel's output */
 	err = clEnqueueReadBuffer(rt.ocl.cmd_queue, rt.ocl.result_gpu_buf, CL_TRUE, 0, 
 			sizeof(t_u32) * rt.sdl.pixel_amount, rt.canvas->pixels, 0, NULL, NULL);
 t_u32 * tmp = (t_u32*)rt.canvas->pixels;
+printf("Dimensions given were: w %d | h %d | w*h %d | pixamount %d\n", rt.sdl.window_w, rt.sdl.window_h, rt.sdl.window_w * rt.sdl.window_h, rt.sdl.pixel_amount);
 printf("Corners after kernel return %#x %#x %#x %#x\n", tmp[0], tmp[rt.sdl.window_w - 1], tmp[(rt.sdl.window_h - 1) * rt.sdl.window_w], tmp[rt.sdl.pixel_amount - 1]);
 	if(err < 0)
 		return (debug_perror("Couldn't read the buffer"));
 
 //	clFlush(rt.ocl.cmd_queue);
-//	clFinish(rt.ocl.cmd_queue);
+	clFinish(rt.ocl.cmd_queue);
 
 
 

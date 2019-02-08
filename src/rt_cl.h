@@ -33,6 +33,7 @@
 ** see clBuildProgram in OpenCL API for details
 // TODO experiment with optimization options
 */
+# define RT_CL_HOST_PLATFORM_AMOUNT	1
 # define RT_CL_PROGRAM_SOURCE		"src/rt_cl_render.cl"
 # define RT_CL_PROGRAM_OPTIONS		"-Werror"// -g" //-cl-nv-verbose" //-cl-kernel-arg-info" //-cl-fast-relaxed-math" //-cl-unsafe-math-optimizations //-cl-mad-enable
 # define RT_CL_KERNEL_NB			1
@@ -57,7 +58,7 @@ typedef struct	s_gpu
 
 typedef struct	s_cl
 {
-	cl_platform_id		platform;
+	cl_platform_id		platform[RT_CL_HOST_PLATFORM_AMOUNT];
 	t_gpu				gpu;
 	cl_context			context;
 	cl_program			program;

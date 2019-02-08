@@ -93,7 +93,7 @@ int				print_device_info()
 						&(rt.ocl.gpu.max_witems_per_dim), NULL);
 
 
-	clGetPlatformInfo(rt.ocl.platform, CL_PLATFORM_NAME, 256, platform_name, NULL);
+	clGetPlatformInfo(rt.ocl.platform[0], CL_PLATFORM_NAME, 256, platform_name, NULL);
 
 
 printf("Platform: %s | Device: %s | Version: %s\n\t"
@@ -119,14 +119,14 @@ int				create_device_context_and_queue()
 {
 	int			err;
 
-	if ((err = clGetPlatformIDs(1, &(rt.ocl.platform), NULL)) != CL_SUCCESS)
+	if ((err = clGetPlatformIDs(RT_CL_HOST_PLATFORM_AMOUNT, rt.ocl.platform, NULL)) != CL_SUCCESS)
 	{
 		printf("%d\n", err);
 		return (debug_perror("OpenCL: could not get a platform ID."));
 	}
 //	if (clGetDeviceIDs(rt.ocl.platform, CL_DEVICE_TYPE_CPU, 1, &(rt.ocl.cpu), NULL))
 //		return (ERROR);
-	if ((err = clGetDeviceIDs(rt.ocl.platform, CL_DEVICE_TYPE_GPU, 1, &(rt.ocl.gpu.id), NULL)))
+	if ((err = clGetDeviceIDs(rt.ocl.platform[0], CL_DEVICE_TYPE_GPU, 1, &(rt.ocl.gpu.id), NULL)))
 		return (debug_perror("OpenCL: no GPU device found."));
 	
 	print_device_info();

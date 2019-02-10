@@ -84,29 +84,17 @@ int		init_window_display();
 
 /*
 ** ************************************************************************** *|
-**                               Event handling                               *|
+**                                 RT File I/O                                *|
 ** ************************************************************************** *|
 */
 
-# define KEY_ALT		0b00000011
-# define KEY_ALT_L		0b00000001
-# define KEY_ALT_R		0b00000010
-
-# define KEY_CTRL		0b00001100
-# define KEY_CTRL_L		0b00000100
-# define KEY_CTRL_R		0b00001000
-
-# define KEY_SHIFT		0b00110000
-# define KEY_SHIFT_L	0b00010000
-# define KEY_SHIFT_R	0b00100000
-
 /*
-**	event.c
-**	event_window.c
+void		rt_read_whitespace(t_parser *parser);
+char		*rt_read_file(t_rtv1 *rtv1, t_parser *parser, int fd);
+char		*rt_read_arg_vector(t_parser *parser, t_vector *result);
+char		*rt_read_arg_number(t_parser *parser, float *result);
+char		*rt_read_arg_color(t_parser *parser, t_u32 *result);
 */
-t_bool	event_checkevents(SDL_Window *window);
-void	event_window_resize(SDL_Window *window, t_s32 window_w, t_s32 window_h);
-void	event_window_fullscreen(SDL_Window *window, t_bool fullscreen);
 
 /*
 ** ************************************************************************** *|

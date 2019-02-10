@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../rt.h"
+#include "event.h"
 
 static void	event_check_window(SDL_Event *event, SDL_Window *window)
 {

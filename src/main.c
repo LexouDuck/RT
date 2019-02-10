@@ -14,8 +14,8 @@
 #include "../rt.h"
 #include "config.h"
 #include "debug.h"
+#include "event.h"
 #include "ui.h"
-#include "libft_convert.h" //Tristan@Alexis : TODO remove if unnecessary ?
 
 static void	update_window()
 {
@@ -101,22 +101,22 @@ int			main(int argc, char* argv[])
 	if (debug_init())
 		return (ERROR);
 
-//printf("debug 1\n");
+//printf("debug init config\n");
 	if (config_init())
 		return (ERROR);
-//printf("debug 2\n");
+//printf("debug init sdl\n");
 	if (init_sdl())
 		return (ERROR);
 
-//printf("debug 3\n");
+//printf("debug init window\n");
 	if (init_window())
 		return (ERROR);
 	if (init_window_display())
 		return (ERROR);
-//printf("debug 4\n");
+//printf("debug init ui\n");
 	if (ui_init())
 		return (ERROR);
-//printf("debug 5\n");
+//printf("debug init opencl\n");
 	if (init_opencl())
 		return (ERROR);
 	if (render_init())

@@ -10,11 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft_convert.h"
+
 #include "../rt.h"
 #include "config.h"
 #include "debug.h"
-
-#include "libft_convert.h"
+#include "event.h"
 
 inline void	event_window_resize(SDL_Window *window, t_s32 window_w, t_s32 window_h)
 {

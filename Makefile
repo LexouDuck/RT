@@ -93,6 +93,7 @@ HDRS	=	$(LFTDIR)libft.h 	\
 			assets.h			\
 			$(SRCDIR)debug.h	\
 			$(SRCDIR)config.h	\
+			$(SRCDIR)event.h	\
 			$(SRCDIR)ui.h		\
 			$(SRCDIR)rt_cl.h
 

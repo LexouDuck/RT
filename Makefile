@@ -44,7 +44,7 @@ ifeq ($(OS),Windows_NT)
 	LD := $(LD_WIN)
 	LIBSDL := $(LIBSDL_WIN)
 	CFLAGS_PLATFORM := $(CFLAGS_WIN)
-	LIBS += -lOpenCL
+	LIBS += -L./ -lOpenCL
 else
 	UNAME_S := $(shell uname -s)
 	ifeq ($(UNAME_S),Linux)
@@ -93,6 +93,7 @@ HDRS	=	$(LFTDIR)libft.h 	\
 			assets.h			\
 			$(SRCDIR)debug.h	\
 			$(SRCDIR)config.h	\
+			$(SRCDIR)event.h	\
 			$(SRCDIR)ui.h		\
 			$(SRCDIR)rt_cl.h
 
@@ -133,7 +134,7 @@ $(OBJS): | objdir
 
 $(NAME): $(OBJS) $(HDRS) assets.o
 	@printf "Compiling program: "$@" -> "
-	$(CC) $(CFLAGS) $(OBJS) assets.o -o $@ $(LIBS)
+	@$(CC) $(CFLAGS) $(OBJS) assets.o -o $@ $(LIBS)
 	@if [ $(OSFLAG) = "MAC" ]; then \
 		install_name_tool -change @rpath/SDL2.framework/Versions/A/SDL2 @executable_path/SDL2.framework/Versions/A/SDL2 $@; \
 	fi

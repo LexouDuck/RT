@@ -1,6 +1,18 @@
 #ifndef __RT_SCENE_H
 # define __RT_SCENE_H
 
+# define BG_COLOR				0xFF00BB88 //0xFF000000
+
+# define MAX_OBJ_NB				32
+# define DEFAULT_RAYSAMP_SIZE	1024
+
+typedef enum		e_intersection
+{
+	INTER_INSIDE = -1;
+	INTER_OUTSIDE = 1;
+	INTER_NONE = 0;
+}					t_intersection;
+
 /*
 ** CAMERA
 **
@@ -37,8 +49,9 @@ typedef struct	s_camera
 //	cl_float3		axis_z;
 	cl_float		tilt;
 	cl_float		hrz_fov;
-//	t_mat_4b4		c_to_w;
-//	t_mat_4b4		w_to_c;
+	cl_float		aperture;
+//	cl_float16		c_to_w;
+//	cl_float16		w_to_c;
 //	t_mat_3b3		linear_c_to_w;
 //	t_mat_3b3		linear_w_to_c;
 	t_cameramode	mode;
@@ -58,8 +71,10 @@ typedef struct	s_ray
 	cl_float3	pos;
 	cl_float3	dir;
 	cl_float	t;
-	cl_uint		depth;
-	cl_float3	lum_contrib_at_pos;
+	cl_bool		complete;
+	cl_int		hit_obj_id;
+//	cl_uint		depth;
+	cl_float3	lum_acc;
 }				t_ray;
 
 /*
@@ -78,15 +93,13 @@ typedef struct	s_bvh
 	cl_bst_node	*root;
 }				t_bvh;
 
-
-
 /*
 ** PRIMITIVES
 **
 ** All primitives are considered to be centered near the origin with default
 ** unit dimensions.
 */
-typedef enum	e_objtype
+typedef enum	e_primitive
 {
 	null_obj,			//0
 	sphere//,				//1
@@ -100,8 +113,9 @@ typedef enum	e_objtype
 //	cone,
 //	cube,				//10
 //	paraboloid,
-//	saddle
-}				t_objtype;
+//	saddle,
+//	obj_mesh	
+}				t_primitive;
 
 /*
 ** Categories for the optical properties of materials for each geometric
@@ -130,9 +144,9 @@ typedef enum	e_material
 **
 ** type			: an enum to sort each geometric primitive, see above
 ** pos			: position in world space
-** scl			: (x, y, z) scaling factors as a vector (tmp diagonal matrix)
 ** rot			: model angles of rotation (in radians) around (resp.)
 **					the x-, y-, and z-axes
+** scale		: (x, y, z) scaling factors as a vector (tmp diagonal matrix)
 ** rgb			: a vector of float from 0. to 1. representing how much each
 **					object reflects each primary color of light,
 **					respectively (r, g, b); albedo for a diffuse surface;
@@ -162,11 +176,11 @@ typedef enum	e_material
 
 typedef struct	s_object
 {
-	t_objtype		type;
+	t_primitive		type;
 	t_material		material;
 	cl_float3		pos;
-	cl_float3		scl;
-	cl_float3		rot; 
+	cl_float3		rot;
+	cl_float3		scale; 
 	cl_float3		rgb;
 	t_bbox			bbox;
 //	cl_float3		specul;
@@ -181,10 +195,12 @@ typedef struct	s_object
 
 typedef struct	s_scene
 {
-	t_camera	cam;
-	t_object	objs[MAX_OBJ_NB];
-	cl_int		objlst_len;
+	t_camera	camera;
+	t_object	objects[MAX_OBJ_NB];
+	cl_int		object_array_len;
+	cl_float	render_dist;
 	cl_int		max_ray_depth;
+	cl_int		mc_raysamp_size;
 }				t_scene;
 
 #endif

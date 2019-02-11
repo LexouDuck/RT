@@ -8,6 +8,8 @@
 
 #if 0
 
+#include "src/rt_cl_camera.cl"
+
 bool			get_realroots_quadpoly
 (
 							float2 *	roots,
@@ -22,22 +24,19 @@ bool			get_realroots_quadpoly
 	{
 		roots[0].x = 0. / 0.;
 		roots[0].y = 0. / 0.;
-		return (FALSE);
+		return (CL_FALSE);
 	}
 	one_over_two_a = 0.5 / quadpoly.a;
 	delta = sqrt(delta);
 	roots[0].x = (-quadpoly.y + delta) * one_over_two_a;
 	roots[0].y = (-quadpoly.y - delta) * one_over_two_a;
-	return (TRUE);
+	return (CL_TRUE);
 }
 
-
 /*
-**	========================================================================
-**
-**							Intersection handling
-**
-**	========================================================================
+** ************************************************************************** *|
+**	                        Intersection handling                             *|
+** ************************************************************************** *|
 */
 
 bool			ray_intersect_bbox
@@ -110,7 +109,7 @@ t_bool			trace_ray_to_scene
 	t_float			new_t;
 	t_ray			res;
 
-	for (int i = 0; i < scene.object_array_len; ++i)
+	for (int i = 0; i < scene.object_amount; ++i)
 	{
 		inter = CL_FALSE;
 		inter = ray_intersect_bbox(ray, scene.objects[i].bbox, 0, ray.t);
@@ -133,7 +132,35 @@ void			accumulate_lum_and_bounce_ray
 						__constant	t_scene		scene,				
 )
 {
+	t_object	*obj = &(scene.objects[ray->hit_obj_id]);
+/*
+		quaddist = lgtshdr.in_ray.t * lgtshdr.in_ray.t;
+		costh = vec3_dot(objshdr.normal_ws, objshdr.out_ray_ws.dir);
+		vec3_scale(reslum.vec,
+			INV_PI * lgtshdr.hit_obj->intensity * ft_fmax(0., costh) / quaddist,
+			objshdr.hit_obj->rgb.vec);
+		vec3_schur(reslum.vec, reslum.vec, lgtshdr.hit_obj->rgb.vec);
+*/
 
+	ray.lum_acc *= obj->rgb;
+	if (obj.material == lightsrc)
+	{
+		ray.complete = CL_TRUE;
+		return ;
+	}
+	else
+	{
+
+
+
+
+
+
+
+
+
+
+	}
 }
 
 float3			get_pixel_color_from_mc_sampling
@@ -147,7 +174,7 @@ float3			get_pixel_color_from_mc_sampling
 	float3			res_pixel_color = (float3)(0.);
 	float16	const	cam_mat44 = init_cam(scene.camera.world_pos, scene.camera.anchor, scene.camera.tilt);
 	float const		fov_val = -get_global_size(0) / (2 * tan(scene.camera.hrz_fov));
-	float3			cur_color;
+//	float3			cur_color;
 	t_ray			ray_i;
 
 	for (int i = 0; i < scene.mc_raysamp_size; ++i)
@@ -162,7 +189,7 @@ float3			get_pixel_color_from_mc_sampling
 /*		ray_i.dir += rt_cl_f3rand_0_to_1(random_seed) - (float3)(0.005, 0.005, 0.); //add and fix for anti-aliasing
 */		ray_i.dir = apply_linear_matrix(cam_mat44, ray_i.dir);
 		ray_i.dir = normalize(ray_i.dir);
-		cur_color = (float3)(0.);
+		ray_i.lum_acc = (float3)(1.);
 		for (int depth = 0; !ray.complete && depth < scene.max_ray_depth; ++depth)
 		{
 		//	trace_ray_to_bboxes(ray, scene);
@@ -174,13 +201,13 @@ float3			get_pixel_color_from_mc_sampling
 			else
 			{
 				ray.complete = CL_TRUE;
-				cur_color = ray.lum_acc * BG_COLOR;
+				ray.lum_acc = ray.lum_acc * scene.bg_rgb;
 				break ;
 			}
 		}
-		res_pixel_color = res_pixel_color + cur_color;
+		res_pixel_color = res_pixel_color + ray.lum_acc;
 	}
-	res_pixel_color = res_pixel_color;
+	res_pixel_color = res_pixel_color * (float3)(1. / scene.mc_raysamp_size); //TODO 1/MCRSS can be precalculated
 }
 
 
@@ -205,7 +232,6 @@ __kernel void	rt_cl_render
 }
 #endif
 
-
 __kernel void	rt_cl_render
 (
 					__global		uint *		result_imgbuf,
@@ -219,7 +245,7 @@ __kernel void	rt_cl_render
 	int const			work_item_id = y_id * get_global_size(0) + x_id;
 
 	*random_seed = DEFAULT_SEED * work_item_id + DEFAULT_SEED;
-	float3 vcolor3 = rt_cl_f3rand_0_to_1(random_seed);
+	float3 vcolor3 = rt_cl_f3rand_0_to_1(random_seed) * (float3)(255.);
 	uint3 color3 = (uint3)(floor(vcolor3.x), floor(vcolor3.y), floor(vcolor3.z));
 //	printf((__constant char *)"kernel %u %u %u\n", color3.x, color3.y, color3.z);
 	uint color = 0xFF000000 | (color3.x << 16) | (color3.y << 8) | (color3.z);

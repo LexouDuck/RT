@@ -83,7 +83,7 @@ void	config_set(int index, char* value);
 ** ************************************************************************** *|
 */
 
-typedef struct	s_parser
+typedef struct	s_iniparser
 {
 	char		*file;
 	size_t		index;
@@ -92,7 +92,7 @@ typedef struct	s_parser
 	size_t		name_length;
 	char		*value;
 	size_t		value_length;
-}				t_parser;
+}				t_iniparser;
 
 /*
 **	config_ini.c

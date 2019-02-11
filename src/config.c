@@ -65,7 +65,7 @@ int			config_init()
 		debug_output_value("Using default settings, no ", CONFIG_FILE, FALSE);
 		return (OK);
 	}
-	fd = open(CONFIG_FILE, O_RDONLY, 0755);
+	fd = open(CONFIG_FILE, O_RDONLY, 0644);
 	if (fd < 0)
 	{
 		debug_output_value("Error during config_init() -> "CONFIG_FILE
@@ -86,7 +86,7 @@ int			config_save()
 {
 	int fd;
 
-	fd = open(CONFIG_FILE, O_WRONLY | O_CREAT, 0755);
+	fd = open(CONFIG_FILE, O_WRONLY | O_CREAT, 0644);
 	if (fd < 0)
 	{
 		debug_output_value("Error during config_save() -> "CONFIG_FILE

@@ -25,9 +25,10 @@
 # include "libft.h"
 # include "libft_io.h"
 
+# include "src/config.h"
 # include "src/ui.h"
 # include "src/rt_cl.h"
-# include "src/config.h"
+# include "src/rt_scene.h"
 
 /*
 ** ************************************************************************** *|
@@ -62,7 +63,7 @@ typedef struct		t_rt
 	t_sdl			sdl;
 	t_cl			ocl;
 	t_config		config;
-//	t_scene			scene;	
+	t_scene			scene;
 	SDL_Surface*	canvas;
 	int				canvas_w;
 	int				canvas_h;
@@ -88,13 +89,19 @@ int		init_window_display();
 ** ************************************************************************** *|
 */
 
-/*
-void		rt_read_whitespace(t_parser *parser);
-char		*rt_read_file(t_rtv1 *rtv1, t_parser *parser, int fd);
-char		*rt_read_arg_vector(t_parser *parser, t_vector *result);
-char		*rt_read_arg_number(t_parser *parser, float *result);
-char		*rt_read_arg_color(t_parser *parser, t_u32 *result);
-*/
+typedef struct	s_rtparser
+{
+	char		*file;
+	int			index;
+	int			line;
+	int			current_object;
+}				t_rtparser;
+
+int			rt_open_file(char *filepath);
+void		rt_read_whitespace(t_rtparser *p);
+char		*rt_read_arg_vector(t_rtparser *p, cl_float3 *result);
+char		*rt_read_arg_number(t_rtparser *p, float *result);
+char		*rt_read_arg_color(t_rtparser *p, t_u32 *result);
 
 /*
 ** ************************************************************************** *|

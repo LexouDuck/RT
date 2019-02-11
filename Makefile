@@ -107,6 +107,8 @@ SRCS	= 	main.c				\
 			config_access.c		\
 			event.c				\
 			event_window.c		\
+			rt_open.c			\
+			rt_open_util.c		\
 			ui.c				\
 			ui_init.c			\
 			render_ui.c			\

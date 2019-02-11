@@ -97,12 +97,12 @@ int				print_device_info()
 
 
 printf("Platform: %s | Device: %s | Version: %s\n\t"
-		"- global mem size (nb of bytes): %#x\n\t"//"- global mem size (nb of bytes): %#lx\n\t"
+		"- global mem size (nb of bytes): "OPENCL_S64"\n\t"//"- global mem size (nb of bytes): %#lx\n\t"
 		"- compute unit nb: %u\n\t"
-		"- max kernel args size: %#x\n\t"
-		"- max work items per group: %#x\n\t"
+		"- max kernel args size: "OPENCL_S64"\n\t"
+		"- max work items per group: "OPENCL_S64"\n\t"
 		"- max nD range: %u\n\t"
-		"- max_witems_per_dim: (%#x, %#x, %#x)\n",
+		"- max_witems_per_dim: ("OPENCL_S64", "OPENCL_S64", "OPENCL_S64")\n",
 		platform_name, gpu_name, gpu_ocl_version,
 		rt.ocl.gpu.global_mem_size,
 		rt.ocl.gpu.comp_unit_nb,

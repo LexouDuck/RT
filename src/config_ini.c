@@ -42,7 +42,7 @@ static char	*INI_Error(char expected, char *description, char instead)
 	return (result);
 }
 
-static void	INI_ParseWhitespace(t_parser *p)
+static void	INI_ParseWhitespace(t_iniparser *p)
 {
 	char	*file;
 
@@ -63,7 +63,7 @@ static void	INI_ParseWhitespace(t_parser *p)
 	}
 }
 
-static char	*INI_ApplySetting(t_parser *p)
+static char	*INI_ApplySetting(t_iniparser *p)
 {
 	int index;
 	int	i;
@@ -89,7 +89,7 @@ static char	*INI_ApplySetting(t_parser *p)
 	return (NULL);
 }
 
-static char	*INI_ReadSetting(t_parser *p)
+static char	*INI_ReadSetting(t_iniparser *p)
 {
 	char	*file;
 
@@ -119,7 +119,7 @@ static char	*INI_ReadSetting(t_parser *p)
 
 void		INI_ReadFile(int fd)
 {
-	t_parser	parser;
+	t_iniparser	parser;
 	char		*error;
 
 	parser.file = NULL;

@@ -16,12 +16,15 @@
 # ifdef __APPLE__
 #  define CL_SILENCE_DEPRECATION
 #  include <OpenCL/cl.h>
+#  define OPENCL_S64 "%#x"
 # elif (defined __WIN32__)
-#  define CL_USE_DEPRECATED_OPENCL_1_1_APIS
+#  define CL_USE_DEPRECATED_OPENCL_1_2_APIS
 #  define CL_TARGET_OPENCL_VERSION	120
 #  include "CL/cl.h"
+#  define OPENCL_S64 "%#I64x"
 # else
 #  include <CL/cl.h>
+#  define OPENCL_S64 "%#x"
 # endif
 
 /*

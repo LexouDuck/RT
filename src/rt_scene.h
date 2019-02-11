@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rt_scene.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
+/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef __RT_SCENE_H
 # define __RT_SCENE_H
 
@@ -8,9 +20,9 @@
 
 typedef enum		e_intersection
 {
-	INTER_INSIDE = -1;
-	INTER_OUTSIDE = 1;
-	INTER_NONE = 0;
+	INTER_INSIDE = -1,
+	INTER_OUTSIDE = 1,
+	INTER_NONE = 0
 }					t_intersection;
 
 /*
@@ -92,6 +104,7 @@ typedef struct	s_bvh
 {
 	cl_bst_node	*root;
 }				t_bvh;
+*/
 
 /*
 ** PRIMITIVES
@@ -101,20 +114,19 @@ typedef struct	s_bvh
 */
 typedef enum	e_primitive
 {
-	null_obj,			//0
-	sphere//,				//1
-//	plane,				//2
-//	disk,
-//	square,
-//	triangle,			//5
+	none = 0,
+	plane,
+	disk,
+	rectangle,			
+	cube,
+	sphere,
+	cylinder,
+	cone,
 //	infcylinder,
-//	cylinder,
 //	infcone,
-//	cone,
-//	cube,				//10
 //	paraboloid,
 //	saddle,
-//	obj_mesh	
+	obj_mesh	
 }				t_primitive;
 
 /*
@@ -125,12 +137,11 @@ typedef enum	e_primitive
 typedef enum	e_material
 {
 	lightsrc,
-	diffuse/*,
-	mirror,
-	glassy,
-	glossy*/
-	/*,
-	skybox ?*/
+	diffuse,
+//	mirror,
+//	glassy,
+//	glossy,
+//	skybox ?
 }				t_material;
 
 /*
@@ -180,7 +191,8 @@ typedef struct	s_object
 	t_material		material;
 	cl_float3		pos;
 	cl_float3		rot;
-	cl_float3		scale; 
+	cl_float3		scale;
+	t_u32			color; 
 	cl_float3		rgb;
 	t_bbox			bbox;
 //	cl_float3		specul;
@@ -195,9 +207,11 @@ typedef struct	s_object
 
 typedef struct	s_scene
 {
+	t_u32		bg_color;
+	cl_float3	bg_rgb;
 	t_camera	camera;
 	t_object	objects[MAX_OBJ_NB];
-	cl_int		object_array_len;
+	cl_int		object_amount;
 	cl_float	render_dist;
 	cl_int		max_ray_depth;
 	cl_int		mc_raysamp_size;

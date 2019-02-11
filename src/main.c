@@ -94,9 +94,11 @@ static int	main_loop()
 
 int			main(int argc, char* argv[])
 {
-	// TODO open files given as args
-	if (argc != 1 || !argv)
-		return (ERROR);
+	// TODO open all files given as args
+	if (argc > 1)
+	{
+		rt_open_file(argv[1]);
+	}
 
 	if (debug_init())
 		return (ERROR);

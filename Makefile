@@ -111,6 +111,7 @@ SRCS	= 	main.c				\
 			rt_open_util.c		\
 			ui.c				\
 			ui_init.c			\
+			render_ui_util.c	\
 			render_ui.c			\
 			render.c
 

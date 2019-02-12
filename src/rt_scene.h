@@ -136,11 +136,12 @@ typedef enum	e_primitive
 */
 typedef enum	e_material
 {
-	lightsrc,
-	diffuse,
-//	mirror,
-//	glassy,
-//	glossy,
+	solidcolor = 0,	// simply returns object->color
+	diffuse,		// linear to-dark shading
+	light,			// this material emits light
+//	mirror,			// returns a reflection ray color
+//	glass,			// returns a blended color of a reflection ray and a refraction ray
+//	glossy,			// has a special "lighter" mode of specular hightlighting
 //	skybox ?
 }				t_material;
 

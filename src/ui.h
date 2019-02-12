@@ -76,8 +76,8 @@ typedef struct	s_menu
 
 typedef struct	s_ui
 {
-	t_u8		*pal;
 	t_u8 const	*chr;
+	t_u32		pal[PALETTE];
 	SDL_Palette	*palette;
 	SDL_Surface	*tileset;
 
@@ -101,11 +101,7 @@ void	render_ui_text(
 	char const *str,
 	t_s32 x,
 	t_s32 y,
-	t_bool colored);
-void	render_ui_rect(
-	t_s32 x,
-	t_s32 y,
-	t_u8 w,
-	t_u8 h);
+	t_bool transparent);
+void	render_ui_rect(SDL_Rect rect, t_bool filled);
 
 #endif

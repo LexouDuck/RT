@@ -116,7 +116,7 @@ int			ui_init()
 	};
 
 #ifdef __APPLE__
-	size_t				size = 0;
+	size_t		size = 0;
 	rt.ui.chr = getsectiondata(&_mh_execute_header,
 		"__DATA", "__inc_ui_chr", &size);
 	if (size != CHR_SIZE)

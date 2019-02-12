@@ -90,4 +90,5 @@ typedef struct	s_cl
 ** init_opencl.c
 */
 int		init_opencl();
+
 #endif

@@ -13,9 +13,25 @@
 #ifndef __RT_SCENE_H
 # define __RT_SCENE_H
 
+/*
+** ************************************************************************** *|
+**                                   Includes                                 *|
+** ************************************************************************** *|
+*/
+
+# include "libft.h"
+
+# include "rt_cl.h"
+
+/*
+** ************************************************************************** *|
+**                                 Definitions                                *|
+** ************************************************************************** *|
+*/
+
 # define BG_COLOR				0xFF00BB88 //0xFF000000
 
-# define MAX_OBJ_NB				32
+# define OBJECT_MAX_AMOUNT		255
 # define DEFAULT_RAYSAMP_SIZE	1024
 
 typedef enum		e_intersection
@@ -211,7 +227,7 @@ typedef struct	s_scene
 	t_u32		bg_color;
 	cl_float3	bg_rgb;
 	t_camera	camera;
-	t_object	objects[MAX_OBJ_NB];
+	t_object	objects[OBJECT_MAX_AMOUNT];
 	cl_int		object_amount;
 	cl_float	render_dist;
 	cl_int		max_ray_depth;

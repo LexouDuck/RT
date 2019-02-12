@@ -15,37 +15,86 @@
 #include "debug.h"
 
 /*
-**	Displays the given string in 8x8 monospace font at the given coordinates
+**	Displays a rectangle of the given tile on the given tile region onscreen
 */
-void		render_ui_text(
-	char const* str,
-	t_s32 x,
-	t_s32 y,
-	t_bool transparent)
+void	render_ui_fill(t_u8 tile_index,
+	SDL_Rect dest_region, t_bool transparent)
+{
+	static SDL_Rect	dest = {0, 0, TILE, TILE};
+	static SDL_Rect	tile = {0, 0, TILE, TILE};
+	t_s32			x;
+	t_s32			y;
+
+	if (transparent)
+		SDL_SetColorKey(rt.ui.tileset, SDL_TRUE, rt.ui.pal[0]);
+	tile.x = TILE * (tile_index % 16);
+	tile.y = TILE * (tile_index / 16);
+	y = -1;
+	while (++y < dest_region.h)
+	{
+		x = -1;
+		while (++x < dest_region.w)
+		{
+			dest.x = TILE * (dest_region.x + x);
+			dest.y = TILE * (dest_region.y + y);
+			if (SDL_BlitSurface(rt.ui.tileset, &tile,
+				rt.sdl.window_surface, &dest))
+				debug_output_error("Error during render_text(): ", TRUE);
+		}
+	}
+	if (transparent)
+		SDL_SetColorKey(rt.ui.tileset, SDL_FALSE, rt.ui.pal[0]);
+}
+
+/*
+**	Displays a 16x16 icon at the given tile coordinates
+*/
+void	render_ui_icon(t_u8 icon_index,
+	t_s32 x, t_s32 y, t_bool transparent)
+{
+	static SDL_Rect	dest = {0, 0, TILE * 2, TILE * 2};
+	static SDL_Rect	tile = {0, 0, TILE * 2, TILE * 2};
+
+	if (transparent)
+		SDL_SetColorKey(rt.ui.tileset, SDL_TRUE, rt.ui.pal[0]);
+	tile.x = (TILE * 2) * (icon_index % 8);
+	tile.y = (TILE * 2) * (icon_index / 8) + TILE * 8;
+	dest.x = TILE * x;
+	dest.y = TILE * y;
+	if (SDL_BlitSurface(rt.ui.tileset, &tile, rt.sdl.window_surface, &dest))
+		debug_output_error("Error during render_text(): ", TRUE);
+	if (transparent)
+		SDL_SetColorKey(rt.ui.tileset, SDL_FALSE, rt.ui.pal[0]);
+}
+
+/*
+**	Displays the given string in 8x8 monospace font at the given tile coords
+*/
+void		render_ui_text(char const* str,
+	t_s32 x, t_s32 y, t_bool transparent)
 {
 	static SDL_Rect	dest = {0, 0, TILE, TILE};
 	static SDL_Rect	tile = {0, 0, TILE, TILE};
 	size_t			i;
 
-	if (str)
+	if (str == NULL)
+		str = "NULL";
+	if (transparent)
+		SDL_SetColorKey(rt.ui.tileset, SDL_TRUE, rt.ui.pal[0]);
+	dest.x = TILE * x;
+	dest.y = TILE * y;
+	i = 0;
+	while (str[i])
 	{
-		if (transparent)
-			SDL_SetColorKey(rt.ui.tileset, SDL_TRUE, rt.ui.pal[0]);
-		dest.x = TILE * x;
-		dest.y = TILE * y;
-		i = 0;
-		while (str[i])
-		{
-			tile.x = (str[i] % 16) * TILE;
-			tile.y = (str[i] / 16) * TILE;
-			if (SDL_BlitSurface(rt.ui.tileset, &tile, rt.sdl.window_surface, &dest))
-				debug_output_error("Error during render_text(): ", TRUE);
-			dest.x += TILE;
-			++i;
-		}
-		if (transparent)
-			SDL_SetColorKey(rt.ui.tileset, SDL_FALSE, rt.ui.pal[0]);
+		tile.x = (str[i] % 16) * TILE;
+		tile.y = (str[i] / 16) * TILE;
+		if (SDL_BlitSurface(rt.ui.tileset, &tile, rt.sdl.window_surface, &dest))
+			debug_output_error("Error during render_text(): ", TRUE);
+		dest.x += TILE;
+		++i;
 	}
+	if (transparent)
+		SDL_SetColorKey(rt.ui.tileset, SDL_FALSE, rt.ui.pal[0]);
 }
 
 static void	render_ui_rect_corners(SDL_Rect *rect, t_bool filled)

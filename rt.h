@@ -26,6 +26,7 @@
 # include "libft_io.h"
 
 # include "src/config.h"
+# include "src/event.h"
 # include "src/ui.h"
 # include "src/rt_cl.h"
 # include "src/rt_scene.h"
@@ -63,6 +64,7 @@ typedef struct		t_rt
 	t_sdl			sdl;
 	t_cl			ocl;
 	t_config		config;
+	t_input			input;
 	t_scene			scene;
 	SDL_Surface*	canvas;
 	int				canvas_w;
@@ -70,8 +72,6 @@ typedef struct		t_rt
 	t_u32			canvas_pixels;
 	t_bool			must_render;
 	t_ui			ui;
-	t_u32			mouse_button;
-	SDL_Point		mouse;
 }					t_rt;
 
 t_rt				rt;

@@ -32,7 +32,6 @@ SDL_Palette*	ui_set_palette(SDL_Surface* surface, t_u32 const* palette)
 			"Error during palette switching: Null argument given", FALSE);
 		return (NULL);
 	}
-	ft_memcpy(&rt.ui.pal, palette, PALETTE * sizeof(t_u32));
 	i = 0;
 	while (i < PALETTE)
 	{

@@ -10,13 +10,38 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft_memory.h"
 #include "libft_string.h"
 #include "libft_convert.h"
+#include "libft_color.h"
 
 #include "../rt.h"
 #include "../assets.h"
 #include "debug.h"
 #include "event.h"
+
+void	render_ui_icon_object(t_object* object, t_s32 y)
+{
+	static t_u32	palette[PALETTE] = {
+		0x000000,
+		0x0058F8,
+		0x3CBCFC,
+		0xFCFCFC
+	};
+
+	if (object->type == none)
+		return ;
+	palette[2] = object->color;
+	palette[1] = palette[2];
+	palette[1] = (ft_color_argb32_get_r(palette[1]) < 0x30) ? (palette[1] & 0x00FFFF) : (palette[1] - 0x300000);
+	palette[1] = (ft_color_argb32_get_g(palette[1]) < 0x30) ? (palette[1] & 0xFF00FF) : (palette[1] - 0x003000);
+	palette[1] = (ft_color_argb32_get_b(palette[1]) < 0x30) ? (palette[1] & 0xFFFF00) : (palette[1] - 0x000030);
+	if (!ui_set_palette(rt.ui.tileset, palette))
+		return ;
+	render_ui_icon((int)object->type - 1, 1, y, TRUE);
+	if (!ui_set_palette(rt.ui.tileset, rt.ui.pal))
+		return ;
+}
 
 void	render_ui_objects(SDL_Point* mouse_tile)
 {
@@ -30,27 +55,26 @@ void	render_ui_objects(SDL_Point* mouse_tile)
 	i = -1;
 	while (++i < OBJECT_MAX_AMOUNT)
 	{
-		if (rt.scene.objects[i].type)
+		if (rt.scene.objects[i].type == none)
+			continue ;
+		if (rt.ui.objects_selected[i])
+			render_ui_fill(2, rect, FALSE);
+		else if (SDL_PointInRect(mouse_tile, &rect))
 		{
-			if (rt.ui.objects_selected[i])
-				render_ui_fill(2, rect, FALSE);
-			else if (SDL_PointInRect(mouse_tile, &rect))
+			render_ui_fill(1, rect, FALSE);
+			if (rt.input.mouse_button)
 			{
-				render_ui_fill(1, rect, FALSE);
-				if (rt.input.mouse_button)
-				{
-					if (!(rt.input.keys & KEY_CTRL))
-						ft_memclr(rt.ui.objects_selected,
-							OBJECT_MAX_AMOUNT * sizeof(t_bool));
-					rt.ui.objects_selected[i] = TRUE;
-				}
+				if (!(rt.input.keys & KEY_CTRL))
+					ft_memclr(rt.ui.objects_selected,
+						OBJECT_MAX_AMOUNT * sizeof(t_bool));
+				rt.ui.objects_selected[i] = TRUE;
 			}
-			render_ui_icon((int)rt.scene.objects[i].type - 1,
-				1, rect.y, TRUE);
-			render_ui_text(/*rt.scene.objects[i].name*/NULL,
-				4, rect.y + 1, TRUE);
-			rect.y += 2;
 		}
+		render_ui_icon_object(&rt.scene.objects[i], rect.y);
+		render_ui_text(/*rt.scene.objects[i].name*/NULL, 4, rect.y + 1, TRUE);
+		render_ui_text((rt.ui.objects_expanded[i] ? "\xFE" : "\xFF"),
+			UI_WIDTH_TILES - 3, rect.y + 1, TRUE);
+		rect.y += 2;
 	}
 }
 

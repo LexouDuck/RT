@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft_memory.h"
 #include "libft_convert.h"
 
 #include "../rt.h"
@@ -129,6 +130,7 @@ int			ui_init()
 		return (ERROR);
 	if (!(ui_set_palette(rt.ui.tileset, palette)))
 		return (ERROR);
+	ft_memcpy(&rt.ui.pal, palette, PALETTE * sizeof(t_u32));
 	ui_init_menubar();
 	ui_init_dropdown_file();
 	ui_init_dropdown_edit();

@@ -86,8 +86,8 @@ void		render_ui_text(char const* str,
 	i = 0;
 	while (str[i])
 	{
-		tile.x = (str[i] % 16) * TILE;
-		tile.y = (str[i] / 16) * TILE;
+		tile.x = ((t_u8)str[i] % 16) * TILE;
+		tile.y = ((t_u8)str[i] / 16) * TILE;
 		if (SDL_BlitSurface(rt.ui.tileset, &tile, rt.sdl.window_surface, &dest))
 			debug_output_error("Error during render_text(): ", TRUE);
 		dest.x += TILE;

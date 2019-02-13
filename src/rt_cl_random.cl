@@ -18,13 +18,7 @@
 **		new_nb = (CEIL_SQRT_MOD  * old_nb + OFFSET) % MODULUS
 */
 
-# define DEFAULT_SEED	0x93E21FD5
-
-# define MODULUS		0x7FFFFFFF		
-# define CEIL_SQRT_MOD	46341
-# define OFFSET			2835
-
-static uint		rt_cl_rand_bit_shuffle
+static uint	rt_cl_rand_bit_shuffle
 (
 							uint	n
 )
@@ -89,6 +83,23 @@ float		rt_cl_frand_0_to_1
 	return ((float)rt_cl_rand(random_seed) / (float)MODULUS);
 }
 
+float		rt_cl_frand_neg1half_to_pos1half
+(
+				__local		uint *	random_seed
+)
+{
+	return (rt_cl_frand_0_to_1(random_seed) - 1);
+}
+
+float		rt_cl_frand_neg1_to_pos1
+(
+				__local		uint *	random_seed
+)
+{
+	return (2 * rt_cl_frand_neg1half_to_pos1half(random_seed));
+}
+
+
 float		rt_cl_frand_a_to_b
 (
 				__local		uint *	random_seed,
@@ -105,27 +116,73 @@ float		rt_cl_frand_a_to_b
 }
 
 
-float3		rt_cl_f3rand_0_to_1
+
+
+
+
+float3			rt_cl_f3rand_0_to_1
 (
-				__local		uint *	random_seed	
+				__local		uint *			random_seed	
 )
 {
-	return (float3)(rt_cl_frand_0_to_1(random_seed), rt_cl_frand_0_to_1(random_seed), rt_cl_frand_0_to_1(random_seed));
+	return (float3)(rt_cl_frand_0_to_1(random_seed),
+					rt_cl_frand_0_to_1(random_seed),
+					rt_cl_frand_0_to_1(random_seed));
+}
+
+float3			rt_cl_f3rand_neg1half_to_pos1half
+(
+				__local		uint *			random_seed	
+)
+{
+	return (float3)(rt_cl_frand_0_to_1(random_seed) - 0.5,
+					rt_cl_frand_0_to_1(random_seed) - 0.5,
+					rt_cl_frand_0_to_1(random_seed) - 0.5);
 }
 
 //TODO add vectorial cos/phong sampling etc
 //Add random points on algebraic curves
 
-# define TAU 			0x1.921fb54442d18p2
-
-float3		rt_cl_rand_dir_sphere
+float3			rt_cl_rand_dir_sphere
 (
-				__local		uint *	random_seed
+				__local		uint *			random_seed
 )
 {
-	float radius_cos_th = rt_cl_frand_0_to_1(random_seed) * 2 - 1; //rand_-1_to_1 = cos(theta)
+	float radius_cos_th = rt_cl_frand_neg1_to_pos1(random_seed); //rand_-1_to_1 = cos(theta)
     float radius_sin_th = sqrt(1 - radius_cos_th * radius_cos_th); // sin(theta)
     float lon = TAU * rt_cl_frand_0_to_1(random_seed);
 
     return (float3)(radius_cos_th, cos(lon) * radius_sin_th, sin(lon) * radius_sin_th);
+}
+
+/*
+** Returns a random vector in a hemisphere defined by 'axis'.
+** Axis should already be normalized when this function is called.
+*/
+float3			rt_cl_rand_dir_hemi
+(
+				__local		uint *			random_seed,
+							float3 const	axis
+)
+{
+	float3		randdir;
+	float2		seed;
+	float		tmp;
+	float3		vtan1;
+	float3		vtan2;
+	float16		lin_mat;
+
+	seed.x = TAU * rt_cl_frand_0_to_1(random_seed);
+	seed.y = rt_cl_frand_0_to_1(random_seed);
+	tmp = sqrt((float)(1. - seed.y * seed.y));
+	randdir = (float3)(cos(seed.x) * tmp, sin(seed.x) * tmp, seed.y); //TODO convert to sincos ?
+	vtan1 = rt_cl_f3rand_neg1half_to_pos1half(random_seed);
+	vtan1 = cross(axis, vtan1);
+	vtan1 = normalize(vtan1);
+	vtan2 = cross(vtan1, axis);
+	lin_mat.s012 = vtan1;
+	lin_mat.s456 = vtan2;
+	lin_mat.s89A = axis;
+	randdir = rt_cl_apply_linear_matrix(lin_mat, randdir);
+	return (randdir);
 }

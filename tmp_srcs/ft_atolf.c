@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atolf.c                                         :+:      :+:    :+:   */
+/*   ft_str_to_f64.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
+/*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/25 03:42:54 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/06/25 03:43:01 by fulguritu        ###   ########.fr       */
+/*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
+/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft_math.h"
+#include <math.h>
 
 # define F64_MANTISSA_BITS				52
 # define F64_EXP_BIAS					1023
@@ -31,7 +31,7 @@
 ** linked to input)
 */
 
-static t_f64	expon_str_to_lf(char const *s_mant, char const *s_exp)
+static t_f64	ft_str_to_f64_expon(char const *s_mant, char const *s_exp)
 {
 	t_f64		result;
 	int			exp;
@@ -39,19 +39,21 @@ static t_f64	expon_str_to_lf(char const *s_mant, char const *s_exp)
 	char const	*ro_tmp;
 	char		*tmp;
 
-	tmp = ft_strremove(s_mant, ".");
-	result = (t_f64)ft_atoi(tmp);
-	exp = ft_atoi(s_exp);
-/*	if ((exp = ft_atoi(s_exp)) > F64_EXP_BIAS)
-		return ((s_mant[0] == '-' ? -1. : 1.) / 0.);
-	else if (exp < 1 - F64_EXP_BIAS)
-		return (0.);
-*/	ro_tmp = s_mant + ft_strfind(s_mant, '.') + 1;
+	tmp = ft_strrep_str(s_mant, ".", "");
+	result = (t_f64)ft_str_to_s64(tmp);
+	exp = ft_str_to_s16(s_exp);
+/*
+**	if ((exp = ft_atoi(s_exp)) > F64_EXP_BIAS)
+**		return ((s_mant[0] == '-' ? -1. : 1.) / 0.);
+**	else if (exp < 1 - F64_EXP_BIAS)
+**		return (0.);
+*/
+	ro_tmp = s_mant + ft_strchr(s_mant, '.') + 1;
 	if ((frac_digits = ft_strlen(ro_tmp)) > 0)
 		exp -= frac_digits;
-	result *= ft_lfpowi(10., exp); //replace with math.h powf
+	result *= powf(10., exp);
 	free(tmp);
-	return (result);// * (s_mant[0] == '-' && result == 0. ? -1. : 1.));
+	return (result);
 }
 
 /*
@@ -61,7 +63,7 @@ static t_f64	expon_str_to_lf(char const *s_mant, char const *s_exp)
 ** its own sign
 */
 
-static t_f64	decim_str_to_lf(char const *str)
+static t_f64	ft_str_to_f64_decim(char const *str)
 {
 	t_s32		max_pow_ten;
 	t_f64		result;
@@ -71,7 +73,7 @@ static t_f64	decim_str_to_lf(char const *str)
 
 	s_mant = ft_strdup(str + (str[0] == '-' || str[0] == '+'));
 	if (s_mant[(i = 0)] != '0')
-		max_pow_ten = ft_strfind(s_mant, '.') - 1;
+		max_pow_ten = ft_strchr(s_mant, '.') - 1;
 	else
 	{
 		i = 1;
@@ -79,21 +81,25 @@ static t_f64	decim_str_to_lf(char const *str)
 			++i;
 		max_pow_ten = -(i - 2);
 	}
-	ft_strreplace_inplace(&s_mant, ".", "");
+	s_exp = ft_strrep_str(&s_mant, ".", "");
+	s_mant ^= s_exp;
+	s_exp ^= s_mant;
+	s_mant ^= s_exp;
+	free(s_exp);
 	ft_strinsert(&s_mant, ".", i + 1 - (s_mant[0] == '0'));
 	if (ft_strlen(s_mant + i) > 9)
 		s_mant[i + 9] = '\0';
-	s_exp = ft_itoa(max_pow_ten - (s_mant[0] == '0'));
+	s_exp = ft_s16_to_str(max_pow_ten - (s_mant[0] == '0'));
 	result = expon_str_to_lf(s_mant + i - (s_mant[0] == '0'), s_exp);
 	free(s_mant);
 	free(s_exp);
 	return (str[0] == '-' ? -result : result);
 }
 
-static t_f64	hexfp_str_to_lf(char const *s_mant, char const *s_exp, int sign)
+static t_f64	ft_str_to_f64_hexfp(char const *s_mant, char const *s_exp, int sign)
 {
 	t_f64		result;
-	int			exp;
+	t_s16		exp;
 	t_u64		mant;
 	char		*tmp;
 
@@ -104,10 +110,10 @@ static t_f64	hexfp_str_to_lf(char const *s_mant, char const *s_exp, int sign)
 		free(tmp);
 		return (0. * result);
 	}
-	mant = ft_atoui_base(tmp, HXUPP);
+	mant = ft_hex_to_u32(tmp);
 	result *= mant;
-	result *= F64_INIT_VAL * ft_lfpowi(2., (ft_strlen(tmp) - 1) * 4);
-	if ((exp = ft_atoi(s_exp)) > F64_EXP_BIAS)
+	result *= F64_INIT_VAL * powf(2., (ft_strlen(tmp) - 1) * 4);
+	if ((exp = ft_str_to_s16(s_exp)) > F64_EXP_BIAS)
 		return ((sign ? -1. : 1.) / 0.);
 	else if (exp < 1 - F64_EXP_BIAS)
 		return (0.);
@@ -119,51 +125,61 @@ static t_f64	hexfp_str_to_lf(char const *s_mant, char const *s_exp, int sign)
 	return (result);
 }
 
-static int		check_if_valid(char const *float_str, char **a_str)
+static int		ft_str_to_f64_checkinvalid(char const *str, char **result_tmp)
 {
-	char	*str;
+	size_t	i;
+	char	*tmp;
 
-	if (!float_str || !(*float_str))
+	if (!str || !str[0])
 		return (-1);
-	str = ft_strdup(float_str);
-	ft_str_toupper(str);
-	if (!str || !*str || !ft_str_containsonly(str, "0123456789.+-ABCDEFPX")
-		|| ft_str_countchar(str, 'P') > 1
-		|| (ft_str_countchar(str, 'P') == 0 && ft_str_countchar(str, 'E') > 1))
+	i = 0;
+	while (ft_isspace(str[i]))
+		++i;
+	tmp = ft_strdup(str + i);
+	ft_striter(tmp, &ft_toupper);
+	if (ft_strequ(tmp, "INF") || ft_strequ(tmp, "-INF"))
 	{
-		if (str)
-			free(str);
-		return (-1);
+		*result_tmp = tmp;
+		return (OK);
 	}
-	*a_str = str;
-	return (0);
+	i = ft_strcount_char(tmp, 'P');
+	if (!tmp || !tmp[0] || !ft_strhas_only(tmp, "0123456789.+-ABCDEFPX") ||
+		i > 1 || (i == 0 && ft_strcount_char(tmp, 'E') > 1))
+	{
+		if (tmp)
+			free(tmp);
+		return (ERROR);
+	}
+	*result_tmp = tmp;
+	return (OK);
 }
 
-t_f64			ft_atolf(char const *float_str)
+t_f64			ft_str_to_f64(char const *str)
 {
-	char	*str;
 	t_f64	result;
-	char	**strls;
+	char	*tmp;
+	char	*hexfp;
+	char	*exponent;
 	int		mode;
 
-	str = NULL;
-	if (check_if_valid(float_str, &str) == -1)
+	tmp = NULL;
+	if (ft_str_to_f64_checkinvalid(float_str, &tmp) == -1)
 		return (0. / 0.);
-	strls = ft_split(str, ft_strfind(str, 'X') >= 0 ? "P" : "E");
-	if (!(mode = ft_ptrarrlen(strls) + (ft_strfind(str, 'X') >= 0)))
+	if (tmp[0] == 'I' || tmp[0] == '-')
 	{
-		ft_strlsdel(&strls);
-		free(str);
-		return (0. / 0.);
+		free(tmp);
+		return (tmp[0] == '-' ? -INF : INF);
 	}
+	hexfp = ft_strchr(tmp, 'X');
+	exponent = ft_strchr(tmp, hexfp ? "P" : "E");
+	if (exponent)
+		exponent[0] = '\0';
+	if (!(mode = (hexfp != NULL) + (exponent != NULL)))
+		result = ft_str_to_f64_decim(tmp);
 	else if (mode == 1)
-		result = decim_str_to_lf(strls[0]);
+		result = ft_str_to_f64_expon(tmp, exponent + 1);
 	else if (mode == 2)
-		result = expon_str_to_lf(strls[0], strls[1]);
-	else
-		result = hexfp_str_to_lf((strls[0]) + ft_strfind(strls[0], 'X') + 1,
-					strls[1], strls[0][0] == '-');
-	ft_strlsdel(&strls);
-	free(str);
+		result = ft_str_to_f64_hexfp(hexfp + 1, exponent + 1, tmp[0] == '-');
+	free(tmp);
 	return (result);
 }

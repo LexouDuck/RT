@@ -359,7 +359,6 @@ char	*ft_strjoin(char const *str1, char const *str2);
 /*
 **	Returns a reallocated version of the given string 'dest', in which
 **	the string 'str' has been inserted at the index 'offset'.
-**	The previous string buffer 'dest' is freed in the process.
 */
 char	*ft_strinsert(char **dest, char const *src, size_t offset);
 

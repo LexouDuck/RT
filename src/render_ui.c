@@ -22,25 +22,26 @@
 
 void	render_ui_icon_object(t_object* object, t_s32 y)
 {
-	static t_u32	palette[PALETTE] = {
-		0x000000,
-		0x0058F8,
-		0x3CBCFC,
-		0xFCFCFC
-	};
+	static const t_u8	light = 0x50;
+	static const t_u8	shade = 0x50;
+	static t_u32		palette[PALETTE] = {
+		0x000000, 0x0058F8, 0x3CBCFC, 0xFCFCFC };
 
 	if (object->type == none)
 		return ;
+	palette[1] = object->color;
+	palette[1] = (ft_color_argb32_get_r(palette[1]) < shade) ? (palette[1] & 0x00FFFF) : (palette[1] - (shade << 16));
+	palette[1] = (ft_color_argb32_get_g(palette[1]) < shade) ? (palette[1] & 0xFF00FF) : (palette[1] - (shade << 8));
+	palette[1] = (ft_color_argb32_get_b(palette[1]) < shade) ? (palette[1] & 0xFFFF00) : (palette[1] - (shade << 0));
+	palette[3] = object->color;
+	palette[3] = (ft_color_argb32_get_r(palette[3]) >= 0xFF - light) ? (palette[3] | 0xFF0000) : (palette[3] + (light << 16));
+	palette[3] = (ft_color_argb32_get_g(palette[3]) >= 0xFF - light) ? (palette[3] | 0x00FF00) : (palette[3] + (light << 8));
+	palette[3] = (ft_color_argb32_get_b(palette[3]) >= 0xFF - light) ? (palette[3] | 0x0000FF) : (palette[3] + (light << 0));
 	palette[2] = object->color;
-	palette[1] = palette[2];
-	palette[1] = (ft_color_argb32_get_r(palette[1]) < 0x30) ? (palette[1] & 0x00FFFF) : (palette[1] - 0x300000);
-	palette[1] = (ft_color_argb32_get_g(palette[1]) < 0x30) ? (palette[1] & 0xFF00FF) : (palette[1] - 0x003000);
-	palette[1] = (ft_color_argb32_get_b(palette[1]) < 0x30) ? (palette[1] & 0xFFFF00) : (palette[1] - 0x000030);
 	if (!ui_set_palette(rt.ui.tileset, palette))
 		return ;
 	render_ui_icon((int)object->type - 1, 1, y, TRUE);
-	if (!ui_set_palette(rt.ui.tileset, rt.ui.pal))
-		return ;
+	ui_set_palette(rt.ui.tileset, rt.ui.pal);
 }
 
 void	render_ui_objects(SDL_Point* mouse_tile)
@@ -65,8 +66,7 @@ void	render_ui_objects(SDL_Point* mouse_tile)
 			if (rt.input.mouse_button)
 			{
 				if (!(rt.input.keys & KEY_CTRL))
-					ft_memclr(rt.ui.objects_selected,
-						OBJECT_MAX_AMOUNT * sizeof(t_bool));
+					ft_memclr(rt.ui.objects_selected, OBJECT_MAX_AMOUNT * sizeof(t_bool));
 				rt.ui.objects_selected[i] = TRUE;
 			}
 		}

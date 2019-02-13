@@ -1402,7 +1402,10 @@ printf("\n");
 
 	test_strnchr();
 	test_strrstr();
-//	test_strremove();
+//	test_strtoescape(str);
+//	test_strrep_char(str, old, new);
+//	test_strrep_charset(str, old, new);
+//	test_strrep_str(str, old, new);
 
 	test_strtrim();
 //	test_strtrim_l();

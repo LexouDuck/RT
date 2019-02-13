@@ -33,8 +33,6 @@ char	*ft_strinsert(char **dest, char const *src, size_t offset)
 	while (++i < len_dst)
 		result[i] = dest[i - src_len];
 	result[i] = '\0';
-	free(*dest);
-	*dest = NULL;
 	return (result);
 }
 /*

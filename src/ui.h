@@ -23,6 +23,7 @@
 # include "libft.h"
 
 # include "../assets.h"
+# include "rt_scene.h"
 
 /*
 ** ************************************************************************** *|
@@ -30,7 +31,8 @@
 ** ************************************************************************** *|
 */
 
-# define UI_WIDTH	30 * TILE
+# define UI_WIDTH_TILES	30
+# define UI_WIDTH		UI_WIDTH_TILES * TILE
 
 # define MENU_MAX_ITEMS	8
 
@@ -76,13 +78,15 @@ typedef struct	s_menu
 
 typedef struct	s_ui
 {
-	t_u8		*pal;
 	t_u8 const	*chr;
+	t_u32		pal[PALETTE];
 	SDL_Palette	*palette;
 	SDL_Surface	*tileset;
 
 	t_menu		menubar;
 	t_menu		dropdowns[MENUBAR_ITEMS];
+	t_bool		objects_selected[OBJECT_MAX_AMOUNT];
+	t_bool		objects_expanded[OBJECT_MAX_AMOUNT];
 }				t_ui;
 
 /*
@@ -95,17 +99,19 @@ SDL_Surface*	ui_set_tileset(t_u8 const *chr, size_t length);
 /*
 **	render_ui.c
 */
-void	render_ui_menubar();
-void	render_ui_dropdown(t_menu *dropdown);
-void	render_ui_text(
-	char const *str,
-	t_s32 x,
-	t_s32 y,
-	t_bool colored);
-void	render_ui_rect(
-	t_s32 x,
-	t_s32 y,
-	t_u8 w,
-	t_u8 h);
+void	render_ui_objects(SDL_Point* mouse_tile);
+void	render_ui_menubar(SDL_Point* mouse_tile);
+void	render_ui_dropdown(SDL_Point* mouse_tile, t_menu *dropdown);
+
+/*
+**	render_ui_util.c
+*/
+void	render_ui_fill(t_u8 tile_index,
+	SDL_Rect dest_region, t_bool transparent);
+void	render_ui_icon(t_u8 icon_index,
+	t_s32 x, t_s32 y, t_bool transparent);
+void	render_ui_text(char const *str,
+	t_s32 x, t_s32 y, t_bool transparent);
+void	render_ui_rect(SDL_Rect rect, t_bool filled);
 
 #endif

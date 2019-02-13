@@ -19,15 +19,19 @@
 
 static void	update_window()
 {
+	SDL_Point	mouse_tile;
 	SDL_Rect	dest;
 
 	if (SDL_FillRect(rt.sdl.window_surface, NULL, 0x000000))
 		debug_output_error(
 			"Error during update_window() -> Screen clear: ", TRUE);
+	mouse_tile.x = (rt.input.mouse.x) / TILE;
+	mouse_tile.y = (rt.input.mouse.y) / TILE;
 	// display the UI
-	render_ui_menubar();
+	render_ui_objects(&mouse_tile);
+	render_ui_menubar(&mouse_tile);
 	if (rt.ui.menubar.selection != -1)
-		render_ui_dropdown(&rt.ui.dropdowns[rt.ui.menubar.selection]);
+		render_ui_dropdown(&mouse_tile, &rt.ui.dropdowns[rt.ui.menubar.selection]);
 
 	// Do the 3d render if needed
 	if (rt.must_render)
@@ -66,7 +70,6 @@ static int	main_loop()
 		frame_wait = SDL_GetTicks() + FRAME_MS;
 
 		loop = event_checkevents(rt.sdl.window);
-		rt.mouse_button = SDL_GetMouseState(&rt.mouse.x, &rt.mouse.y);
 
 		// TODO do stuff here
 

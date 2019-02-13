@@ -13,11 +13,25 @@
 #ifndef __RT_SCENE_H
 # define __RT_SCENE_H
 
+/*
+** ************************************************************************** *|
+**                                   Includes                                 *|
+** ************************************************************************** *|
+*/
+
+# include "libft.h"
+
 # include "rt_cl.h"
+
+/*
+** ************************************************************************** *|
+**                                 Definitions                                *|
+** ************************************************************************** *|
+*/
 
 # define BG_COLOR				0xFF00BB88 //0xFF000000
 
-# define MAX_OBJ_NB				32
+# define OBJECT_MAX_AMOUNT		255
 # define DEFAULT_RAYSAMP_SIZE	1024
 # define DEFAULT_MAX_RAY_DEPTH	6
 
@@ -136,11 +150,12 @@ typedef enum	e_primitive
 */
 typedef enum	e_material
 {
-	lightsrc,
-	diffuse,
-//	mirror,
-//	glassy,
-//	glossy,
+	solidcolor = 0,	// simply returns object->color
+	diffuse,		// linear to-dark shading
+	light,			// this material emits light
+//	mirror,			// returns a reflection ray color
+//	glass,			// returns a blended color of a reflection ray and a refraction ray
+//	glossy,			// has a special "lighter" mode of specular hightlighting
 //	skybox ?
 }				t_material;
 
@@ -208,7 +223,7 @@ typedef struct	s_scene
 	cl_uint		bg_color;
 	cl_float3	bg_rgb;
 	t_camera	camera;
-	t_object	objects[MAX_OBJ_NB];
+	t_object	objects[OBJECT_MAX_AMOUNT];
 	size_t		object_amount;
 	cl_float	render_dist;
 	t_bbox		bbox;

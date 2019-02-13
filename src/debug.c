@@ -13,24 +13,29 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <string.h>
 
 #include "libft_io.h"
-#include <string.h>
+
 #include "debug.h"
 
 int		debug_init()
 {
-/*	if (access(DEBUG_FILE, W_OK) != -1)
-	{	// if file exists
-		if (remove(DEBUG_FILE))
-		{
-			debug_output_value("Could not clear "DEBUG_FILE": ", strerror(errno), FALSE);
-			return (ERROR);
-		}
+	int fd = open(DEBUG_FILE, O_WRONLY | O_CREAT, 0644);
+	if (fd < 0)
+	{
+		FT_Write_String(STDERR, "Error in debug_init() -> "DEBUG_FILE
+			" could not be opened for writing: ");
+		FT_Write_Line(STDERR, strerror(errno));
+		return (ERROR);
 	}
-*/
-	int fd = open(DEBUG_FILE, O_CREAT, 0644);
-	close(fd);
+	if (close(fd) < 0)
+	{
+		FT_Write_String(STDERR, "Error in debug_init() -> "DEBUG_FILE
+			" could not be closed properly: ");
+		FT_Write_Line(STDERR, strerror(errno));
+		return (ERROR);
+	}
 	return (OK);
 }
 
@@ -45,11 +50,16 @@ void	debug_output(char const* str)
 		FT_Write_String(STDERR, "Error in debug_output() -> "DEBUG_FILE
 			" could not be opened for writing: ");
 		FT_Write_Line(STDERR, strerror(errno));
-		return;
+		return ;
 	}
 	FT_Write_String(fd, str);
 	if (close(fd) < 0)
+	{
+		FT_Write_String(STDERR, "Error in debug_output() -> "DEBUG_FILE
+			" could not be closed properly: ");
 		FT_Write_Line(STDERR, strerror(errno));
+		return ;
+	}
 }
 
 void	debug_output_value(char const* str, char* value, t_bool free_value)
@@ -64,14 +74,19 @@ void	debug_output_value(char const* str, char* value, t_bool free_value)
 		FT_Write_String(STDERR, "Error in debug_output_value() -> "DEBUG_FILE
 			" could not be opened for writing: ");
 		FT_Write_Line(STDERR, strerror(errno));
-		return;
+		return ;
 	}
 	FT_Write_String(fd, str);
 	FT_Write_Line(fd, value);
 	if (free_value)
 		free(value);
 	if (close(fd) < 0)
+	{
+		FT_Write_String(STDERR, "Error in debug_output_value() -> "DEBUG_FILE
+			" could not be closed properly: ");
 		FT_Write_Line(STDERR, strerror(errno));
+		return ;
+	}
 }
 
 void	debug_output_error(char const* str, t_bool sdl_error)
@@ -93,7 +108,7 @@ void	debug_output_error(char const* str, t_bool sdl_error)
 		FT_Write_String(STDERR, "Error in debug_output_error() -> "DEBUG_FILE
 			" could not be opened for writing: ");
 		FT_Write_Line(STDERR, strerror(errno));
-		return;
+		return ;
 	}
 	if (sdl_error)
 	{
@@ -102,7 +117,12 @@ void	debug_output_error(char const* str, t_bool sdl_error)
 	}
 	else FT_Write_Line(fd, str);
 	if (close(fd) < 0)
+	{
+		FT_Write_String(STDERR, "Error in debug_output_error() -> "DEBUG_FILE
+			" could not be closed properly: ");
 		FT_Write_Line(STDERR, strerror(errno));
+		return ;
+	}
 }
 
 int		debug_perror(char const *str)

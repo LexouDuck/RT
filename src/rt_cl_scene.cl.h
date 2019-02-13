@@ -17,7 +17,7 @@
 
 # define BG_COLOR				0xFF00BB88 //0xFF000000
 
-# define MAX_OBJ_NB				32
+# define OBJ_MAX_AMOUNT			255
 # define DEFAULT_RAYSAMP_SIZE	1024
 # define DEFAULT_MAX_RAY_DEPTH	6
 
@@ -208,7 +208,7 @@ typedef struct	s_scene
 	uint		bg_color;
 	float3		bg_rgb;
 	t_camera	camera;
-	t_object	objects[MAX_OBJ_NB];
+	t_object	objects[OBJ_MAX_AMOUNT];
 	ulong		object_amount;
 	float		render_dist;
 	t_bbox		bbox;

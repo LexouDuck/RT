@@ -27,6 +27,9 @@
 ** ************************************************************************** *|
 */
 
+/*
+**	These bitflags are used with rt.keys
+*/
 # define KEY_ALT		0b00000011
 # define KEY_ALT_L		0b00000001
 # define KEY_ALT_R		0b00000010
@@ -38,6 +41,16 @@
 # define KEY_SHIFT		0b00110000
 # define KEY_SHIFT_L	0b00010000
 # define KEY_SHIFT_R	0b00100000
+
+/*
+**	This struct describes the current state of user inputs on the window
+*/
+typedef struct	s_input
+{
+	t_u8		keys;
+	t_u32		mouse_button;
+	SDL_Point	mouse;
+}				t_input;
 
 /*
 **	event.c

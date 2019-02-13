@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft_memory.h"
 #include "libft_convert.h"
 
 #include "../rt.h"
@@ -116,7 +117,7 @@ int			ui_init()
 	};
 
 #ifdef __APPLE__
-	size_t				size = 0;
+	size_t		size = 0;
 	rt.ui.chr = getsectiondata(&_mh_execute_header,
 		"__DATA", "__inc_ui_chr", &size);
 	if (size != CHR_SIZE)
@@ -129,6 +130,7 @@ int			ui_init()
 		return (ERROR);
 	if (!(ui_set_palette(rt.ui.tileset, palette)))
 		return (ERROR);
+	ft_memcpy(&rt.ui.pal, palette, PALETTE * sizeof(t_u32));
 	ui_init_menubar();
 	ui_init_dropdown_file();
 	ui_init_dropdown_edit();

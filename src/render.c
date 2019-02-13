@@ -18,6 +18,10 @@
 #include "../rt.h"
 #include "debug.h"
 
+
+#include "rt_scene.h"
+
+
 const char		*get_error_string(cl_int error)
 {
 	switch (error)
@@ -103,6 +107,7 @@ int		render_init()
 //assign group size and work dim etc //fat data buffers
 //kernels //setting args is done later ? //clCreateKernelsInProgram
 
+printf("t_scene size %#lx\n", sizeof(t_scene));
 
 
 	/* KERNEL 0: build_scene */
@@ -135,7 +140,8 @@ int		render_init()
 	}
 	/* Memory for scene is still on the GPU */
 
-
+//if ((err = clFinish(rt.ocl.cmd_queue)) < 0)
+//	return (debug_perror("Couldn't finish "RT_CL_KERNEL_0));
 
 
 	/* KERNEL 1: Launch camera rays and return color values */
@@ -172,7 +178,10 @@ int		render_init()
 	err = clEnqueueNDRangeKernel(rt.ocl.cmd_queue, rt.ocl.kernels[1], 2, NULL /*dim_offsets*/, work_dim, 
 			NULL /*&local_size*/, 0, NULL, NULL); 
 	if (err < 0)
+	{
+		debug_perror(get_error_string(err));
 		return (debug_perror("Couldn't enqueue the kernel for "RT_CL_KERNEL_1));
+	}
 
 //	clFlush(rt.ocl.cmd_queue);
 //	clFinish(rt.ocl.cmd_queue);

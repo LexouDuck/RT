@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rt_scene.c                                         :+:      :+:    :+:   */
+/*   rt_cl_scene.cl.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,14 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef __RT_SCENE_H
-# define __RT_SCENE_H
+#ifndef __RT_CL_SCENE_H
+# define __RT_CL_SCENE_H
 
 //# include "rt_cl.h"
 
 # define BG_COLOR				0xFF00BB88 //0xFF000000
 
-# define OBJ_MAX_AMOUNT			255
+# define OBJ_MAX_AMOUNT			32
 # define DEFAULT_RAYSAMP_SIZE	1024
 # define DEFAULT_MAX_RAY_DEPTH	6
 

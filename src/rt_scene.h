@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rt_scene.c                                         :+:      :+:    :+:   */
+/*   rt_scene.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -19,7 +19,7 @@
 ** ************************************************************************** *|
 */
 
-# include "libft.h"
+//# include "libft.h"
 
 # include "rt_cl.h"
 
@@ -31,7 +31,7 @@
 
 # define BG_COLOR				0xFF00BB88 //0xFF000000
 
-# define OBJECT_MAX_AMOUNT		255
+# define OBJECT_MAX_AMOUNT		32
 # define DEFAULT_RAYSAMP_SIZE	1024
 # define DEFAULT_MAX_RAY_DEPTH	6
 

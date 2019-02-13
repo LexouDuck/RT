@@ -52,6 +52,7 @@ static void	update_window()
 	if (SDL_RenderCopy(rt.sdl.window_renderer, rt.sdl.window_texture, NULL, NULL))
 		debug_output_error("Error during render copy: ", TRUE);
 	SDL_RenderPresent(rt.sdl.window_renderer);
+	rt.must_render = FALSE;
 }
 
 /*

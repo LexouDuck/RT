@@ -148,7 +148,8 @@ t_f64			ft_atolf(char const *float_str)
 
 	str = NULL;
 	if (check_if_valid(float_str, &str) == -1)
-		return (0. / 0.);
+		return (ft_strequ(str + (*str == '-'), "INF") ?
+			(((*str == '-') * -1.) + 0.5) / 0. : 0. / 0.);
 	strls = ft_split(str, ft_strfind(str, 'X') >= 0 ? "P" : "E");
 	if (!(mode = ft_ptrarrlen(strls) + (ft_strfind(str, 'X') >= 0)))
 	{

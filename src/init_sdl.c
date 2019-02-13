@@ -80,7 +80,7 @@ int		init_window_display()
 	}
 	rt.canvas_w = (rt.sdl.window_w - UI_WIDTH);
 	rt.canvas_h = (rt.sdl.window_h);
-	rt.canvas_pixels = (rt.canvas_w * rt.canvas_h);
+	rt.canvas_pixel_amount = (rt.canvas_w * rt.canvas_h);
 	rt.canvas = SDL_CreateRGBSurfaceWithFormat(
 		SDL_RLEACCEL,
 		rt.canvas_w, rt.canvas_h,

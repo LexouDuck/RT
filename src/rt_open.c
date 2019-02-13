@@ -71,7 +71,7 @@ static void	rt_output_readfile()
 		"OBJ MESH "
 	};
 	t_object *object;
-	int i;
+	unsigned int i;
 
 	debug_output("RT File successfully read:\n");
 	debug_output_value("BG Color: #", ft_u32_to_hex(rt.scene.bg_color), TRUE);

@@ -13,7 +13,7 @@
 #ifndef __RT_SCENE_H
 # define __RT_SCENE_H
 
-# include "rt_cl.h"
+//# include "rt_cl.h"
 
 # define BG_COLOR				0xFF00BB88 //0xFF000000
 
@@ -57,14 +57,14 @@ typedef enum	e_cameramode
 */
 typedef struct	s_camera
 {
-	cl_float3		world_pos;
+	float3		world_pos;
 //	cl_float3		reltv_pos;
 //	cl_float3		polar_pos;
-	cl_float3		anchor;
-	cl_float		tilt;
-	cl_float		hrz_fov;
-	cl_float		aperture;
-	cl_float16		c_to_w;
+	float3		anchor;
+	float		tilt;
+	float		hrz_fov;
+	float		aperture;
+	float16		c_to_w;
 //	cl_float16		w_to_c;
 	t_cameramode	mode;
 }				t_camera;
@@ -80,13 +80,13 @@ typedef struct	s_camera
 */
 typedef struct	s_ray
 {
-	cl_float3	pos;
-	cl_float3	dir;
-	cl_float	t;
-	cl_bool		complete;
-	cl_int		hit_obj_id;
+	float3	pos;
+	float3	dir;
+	float	t;
+	bool	complete;
+	int		hit_obj_id;
 //	cl_uint		depth;
-	cl_float3	lum_acc;
+	float3	lum_acc;
 }				t_ray;
 
 /*
@@ -96,8 +96,8 @@ typedef struct	s_ray
 
 typedef struct	s_bbox
 {
-	cl_float3	vi;
-	cl_float3	vf;
+	float3	vi;
+	float3	vf;
 }				t_bbox;
 /*
 typedef struct	s_bvh
@@ -189,31 +189,199 @@ typedef struct	s_object
 {
 	t_primitive		type;
 	t_material		material;
-	cl_float3		pos;
-	cl_float3		rot;
-	cl_float3		scale;
-	cl_uint			color; 
-	cl_float3		rgb;
+	float3		pos;
+	float3		rot;
+	float3		scale;
+	uint			color; 
+	float3		rgb;
 	t_bbox			bbox;
 //	cl_float3		specul;
 //	t_float			refrac;//refraction index for snell-descartes
 //	t_float			intensity;//intensity for lightsrc objects, 1. for other objects //or reflectivity ??
-	cl_float16		o_to_w;
-	cl_float16		w_to_o;
-	cl_float16		n_to_w;
+	float16		o_to_w;
+	float16		w_to_o;
+	float16		n_to_w;
 }				t_object;
 
 typedef struct	s_scene
 {
-	cl_uint		bg_color;
-	cl_float3	bg_rgb;
+	uint		bg_color;
+	float3		bg_rgb;
 	t_camera	camera;
 	t_object	objects[MAX_OBJ_NB];
-	size_t		object_amount;
-	cl_float	render_dist;
+	ulong		object_amount;
+	float		render_dist;
 	t_bbox		bbox;
-	cl_uint		max_ray_depth;
-	cl_uint		mc_raysamp_size;
+	uint		max_ray_depth;
+	uint		mc_raysamp_size;
 }				t_scene;
+
+
+
+
+float16			rt_cl_mat44_transpose(float16 mat44);
+float3			rt_cl_apply_linear_matrix(float16 mat44, float3 vec3);
+float3			rt_cl_apply_homogeneous_matrix(float16 mat44, float3 vec3);
+float16			rt_cl_build_diagonal_mat33in44(float3 diag);
+float16			rt_cl_build_rotation_mat33in44(float theta, int axis);
+float16			rt_cl_mat44_mul(float16 const mat_A, float16 const mat_B);
+float			rt_cl_mat33in44_det(float16 const mat33);
+float16			rt_cl_mat33in44_inv(float16 const mat33);
+float16			rt_cl_build_cam_matrix(t_camera	camera);
+void			rt_cl_build_object_matrices
+(
+				__global	t_object *	obj
+);
+void			rt_cl_get_vertices_for_bbox
+(
+							float3 *	vertices,
+							t_bbox		aabb
+);
+
+t_bbox			rt_cl_build_object_bbox
+(
+							t_primitive		type,
+							float16			o_to_w,
+							float			render_dist
+);
+
+
+
+
+/*
+** ************************************************************************** *|
+**                          Random Number Generator                           *|
+** ************************************************************************** *|
+*/
+
+/*
+** Random number generator. Modulus is 2^31
+**
+** - OFFSET and MODULUS are mutually prime.
+** - CEIL_SQRT_MOD % 4 should be = 1 because MODULUS is a multiple of 4
+** - For all P prime divisors of MODULUS, a % p = 1
+** - OFFSET should be small compared to the two other parameters
+** - The bitwise & is applied, which explains the choice of modulus to be
+**		2^31 - 1 in implementation (could also be called RAND_MAX)
+**
+** Basic RNG formula is:
+**		new_nb = (CEIL_SQRT_MOD  * old_nb + OFFSET) % MODULUS
+*/
+
+# define DEFAULT_SEED	0x93E21FD5
+
+# define MODULUS		0x7FFFFFFF		
+# define CEIL_SQRT_MOD	46341
+# define OFFSET			2835
+# define TAU 			0x1.921fb54442d18p2
+
+uint			rt_cl_rand
+(
+				__local		uint *	random_seed
+);
+uint			rt_cl_rand_0_to_pow2n
+(
+				__local 	uint *	random_seed,
+							uint	n
+);
+uint			rt_cl_rand_0_to_n
+(
+				__local		uint *	random_seed,
+							uint	n
+);
+int				rt_cl_rand_a_to_b
+(
+				__local		uint *	random_seed,
+							int		a,
+							int		b
+);
+
+
+float			rt_cl_frand_0_to_1
+(
+				__local		uint *	random_seed
+);
+float			rt_cl_frand_neg1half_to_pos1half
+(
+				__local		uint *	random_seed
+);
+float			rt_cl_frand_neg1_to_pos1
+(
+				__local		uint *	random_seed
+);
+float			rt_cl_frand_a_to_b
+(
+				__local		uint *	random_seed,
+							float	a,
+							float	b
+);
+
+
+float3			rt_cl_f3rand_0_to_1
+(
+				__local		uint *			random_seed	
+);
+float3			rt_cl_f3rand_neg1half_to_pos1half
+(
+				__local		uint *			random_seed	
+);
+float3			rt_cl_rand_dir_sphere
+(
+				__local		uint *			random_seed
+);
+/*
+** Returns a random vector in a hemisphere defined by 'axis'.
+** Axis should already be normalized when this function is called.
+*/
+float3			rt_cl_rand_dir_hemi
+(
+				__local		uint *			random_seed,
+							float3 const	axis
+);
+
+
+
+
+
+# define INV_PI			0x1.45f306dc9c883p-2
+
+bool			get_realroots_quadpoly
+(
+							float2 *	roots,
+							float3		quadpoly
+);
+bool			ray_intersect_bbox
+(
+					t_ray		ray,
+					t_bbox		aabb,
+					float		tmin,
+					float		tmax/*,
+					float *		tres*/
+);
+t_intersection	ray_intersect_sphere
+(
+							float *		res,
+							t_ray		ray
+);
+bool			trace_ray_to_scene
+(
+					__constant		t_scene	*	scene,
+									t_ray *		ray
+);
+void			accumulate_lum_and_bounce_ray
+(
+									t_ray *		ray,
+						__constant	t_scene	*	scene,
+						__local		uint *		random_seed,
+									int			depth		
+);
+float3			get_pixel_color_from_mc_sampling
+(
+					__constant		t_scene	*	scene,
+					__local			uint *		random_seed,
+									int			x_id,
+									int			y_id
+);
+
 
 #endif

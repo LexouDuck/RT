@@ -14,17 +14,26 @@
 # define __RT_CL_H
 
 # ifdef __APPLE__
+//#  define CL_USE_DEPRECATED_OPENCL_1_2_APIS
+#  define CL_TARGET_OPENCL_VERSION	120
 #  define CL_SILENCE_DEPRECATION
 #  include <OpenCL/cl.h>
-#  define OPENCL_S64 "%#x"
+#  define OPENCL_LU64	"%#lx"
+#  define OPENCL_LLU64	"%#llx"
+
 # elif (defined __WIN32__)
 #  define CL_USE_DEPRECATED_OPENCL_1_2_APIS
 #  define CL_TARGET_OPENCL_VERSION	120
 #  include "CL/cl.h"
-#  define OPENCL_S64 "%#I64x"
+#  define OPENCL_LLU64	"%#I64x"
+#  define OPENCL_LU64	"%#I64x"
+
 # else
+//#  include <stdint.h>
+//#  define CL_TARGET_OPENCL_VERSION	120
 #  include <CL/cl.h>
-#  define OPENCL_S64 "%#x"
+#  define OPENCL_LU64	"%#lx"
+#  define OPENCL_LLU64	"%#llx"
 # endif
 
 /*
@@ -45,10 +54,12 @@
 // TODO experiment with optimization options
 */
 # define RT_CL_HOST_PLATFORM_AMOUNT	1
-# define RT_CL_PROGRAM_SOURCE		"src/rt_cl_render.cl"//"tmp_srcs/opencl_sandbox/qjulia_kernel.cl"//
+//# define RT_CL_PROGRAM_SOURCE		"src/rt_cl_build_scene"//"tmp_srcs/opencl_sandbox/qjulia_kernel.cl"//
+# define RT_CL_PROGRAM_SOURCE		"src/rt_cl_render.cl"
 # define RT_CL_PROGRAM_OPTIONS		""//-Werror"// -g" //-cl-nv-verbose" //-cl-kernel-arg-info" //-cl-fast-relaxed-math" //-cl-unsafe-math-optimizations //-cl-mad-enable
-# define RT_CL_KERNEL_NB			1
-# define RT_CL_KERNEL_0				"rt_cl_render"//"QJuliaKernel"//
+# define RT_CL_KERNEL_NB			2
+# define RT_CL_KERNEL_0				"rt_cl_build_scene"
+# define RT_CL_KERNEL_1				"rt_cl_render"//"QJuliaKernel"//
 
 typedef struct	s_gpu
 {
@@ -70,8 +81,7 @@ typedef struct	s_gpu
 typedef	struct	s_gpu_buffers
 {
 	cl_mem			scene;
-	cl_mem			res_canvas;
-//	cl_mem			rand_seed;
+	cl_mem			canvas_pixels;
 }				t_gpu_buffers;
 
 typedef struct	s_cl
@@ -90,4 +100,5 @@ typedef struct	s_cl
 ** init_opencl.c
 */
 int		init_opencl();
+
 #endif

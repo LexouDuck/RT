@@ -29,8 +29,17 @@
 ** ************************************************************************** *|
 */
 
+
+# define DEFAULT_CAM_POS		((cl_float3){0., 0., -10.})
+# define DEFAULT_CAM_ANCHOR		((cl_float3){0., 0., 0.})
+# define DEFAULT_CAM_TILT		0.
+# define DEFAULT_CAM_FOV		1.
+# define DEFAULT_CAM_APERTURE	1.
+
+
 # define BG_COLOR				0xFF00BB88 //0xFF000000
 
+# define DEFAULT_RENDER_DIST	100000.
 # define OBJECT_MAX_AMOUNT		32
 # define DEFAULT_RAYSAMP_SIZE	1024
 # define DEFAULT_MAX_RAY_DEPTH	6
@@ -150,9 +159,9 @@ typedef enum	e_primitive
 */
 typedef enum	e_material
 {
-	solidcolor = 0,	// simply returns object->color
+	lightsrc = 0,	// simply returns object->color
 	diffuse,		// linear to-dark shading
-	light,			// this material emits light
+//	light,			// this material emits light
 //	mirror,			// returns a reflection ray color
 //	glass,			// returns a blended color of a reflection ray and a refraction ray
 //	glossy,			// has a special "lighter" mode of specular hightlighting

@@ -98,12 +98,16 @@ static int	main_loop()
 
 int			main(int argc, char* argv[])
 {
+	
+	init_scene();
+
 	// TODO open all files given as args
 	if (argc > 1)
 	{
 		rt_open_file(argv[1]);
 	}
 
+//TODO put in the right place
 	if (debug_init())
 		return (ERROR);
 

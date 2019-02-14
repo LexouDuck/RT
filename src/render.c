@@ -108,7 +108,8 @@ int		render_init()
 //kernels //setting args is done later ? //clCreateKernelsInProgram
 
 printf("t_scene size %#lx\n", sizeof(t_scene));
-
+rt.scene.objects[0].material = lightsrc;
+rt.scene.objects[0].rgb = (cl_float3){((BG_COLOR & 0xFF0000) >> 16) * 100000., ((BG_COLOR & 0xFF00) >> 8) * 100000., (BG_COLOR & 0xFF) * 100000.};
 
 	/* KERNEL 0: build_scene */
 	rt.ocl.gpu_buf.scene = clCreateBuffer(rt.ocl.context,
@@ -135,7 +136,7 @@ printf("t_scene size %#lx\n", sizeof(t_scene));
 	if (err < 0)
 	{
 		debug_perror(get_error_string(err));
-		printf(" %lu\n", rt.scene.object_amount);
+		printf("obj amount in render %lu\n", rt.scene.object_amount);
 		return (debug_perror("Couldn't enqueue the kernel for "RT_CL_KERNEL_0));
 	}
 	/* Memory for scene is still on the GPU */

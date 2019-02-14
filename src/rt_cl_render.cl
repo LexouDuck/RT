@@ -58,8 +58,8 @@ bool			ray_intersect_bbox
 	float3	tsup  = fmax(ti, tf);
 
 	// get biggest inferorior bound tmin and smallest superior bound tmax.
-	tmin = fmax(tmin, fmax(tinf[0], fmax(tinf[1], tinf[2])));
-	tmax = fmin(tmax, fmin(tsup[0], fmin(tsup[1], tsup[2])));
+	tmin = fmax(tmin, fmax(tinf.x, fmax(tinf.y, tinf.z)));
+	tmax = fmin(tmax, fmin(tsup.x, fmin(tsup.y, tsup.z)));
 
 	//intersection iff no incoherence in all previous checks and tmin = Max(inferior bound) < Min(superior bound) = tmax
 	return (tmin < tmax);
@@ -202,6 +202,8 @@ float3			get_pixel_color_from_mc_sampling
 	{
 		random_seed = DEFAULT_SEED + random_seed + x_id + y_id + i;
 		ray_i.t = scene->render_dist;
+		ray_i.complete = false;
+		ray_i.hit_obj_id = -1;
 		ray_i.pos = scene->camera.world_pos;
 /*		ray_i.pos = (float3(0., 0., 0.);
 		ray_i.pos += rt_cl_f3rand_0_to_1(random_seed) - (float3)(0.5, 0.5, 0.); //add and fix with camera.aperture for depth of field
@@ -217,6 +219,7 @@ float3			get_pixel_color_from_mc_sampling
 		//	trace_ray_to_primitives(ray, scene, index_list);
 			if (trace_ray_to_scene(scene, &ray_i))
 			{
+printf("hit_obj = %d\n", ray_i.hit_obj_id);
 				accumulate_lum_and_bounce_ray(&ray_i, scene, random_seed, depth);
 			}
 			else
@@ -243,7 +246,27 @@ __kernel void	rt_cl_render
 //	int const			sample_id = get_global_id(2); /* id of the current ray thread amongst the MC simulation for the current pixel*/
 	int const			work_item_id = y_id * get_global_size(0) + x_id;
 
+/*printf("scene.bg_color %#x | scene.camera.c_to_w %f %f %f %f - %f %f %f %f - %f %f %f %f - %f %f %f %f\n", scene->bg_color,
+	scene->camera.c_to_w.s0,
+	scene->camera.c_to_w.s1,
+	scene->camera.c_to_w.s2,
+	scene->camera.c_to_w.s3,
+	scene->camera.c_to_w.s4,
+	scene->camera.c_to_w.s5,
+	scene->camera.c_to_w.s6,
+	scene->camera.c_to_w.s7,
+	scene->camera.c_to_w.s8,
+	scene->camera.c_to_w.s9,
+	scene->camera.c_to_w.sA,
+	scene->camera.c_to_w.sB,
+	scene->camera.c_to_w.sC,
+	scene->camera.c_to_w.sD,
+	scene->camera.c_to_w.sE,
+	scene->camera.c_to_w.sF);
+*/
+
 	float3 vcolor3 = get_pixel_color_from_mc_sampling(scene, random_seed, x_id, y_id);
+//	printf((__constant char *)"kernel %f %f %f\n", vcolor3.x, vcolor3.y, vcolor3.z);
 	uint3 color3 = (uint3)(floor(vcolor3.x), floor(vcolor3.y), floor(vcolor3.z));
 //	printf((__constant char *)"kernel %u %u %u\n", color3.x, color3.y, color3.z);
 	uint color = 0xFF000000 | (color3.x << 16) | (color3.y << 8) | (color3.z);

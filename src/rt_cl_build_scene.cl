@@ -78,14 +78,14 @@ float16			rt_cl_mat44_mul(float16 const mat_A, float16 const mat_B)
 }
 
 
-float			rt_cl_mat33in44_det(float16 const mat33)
+float			rt_cl_mat33in44_det(float16 const mat33in44)
 {
-	return (mat33.s0 * mat33.s5 * mat33.sA
-			+ mat33.s1 * mat33.s6 * mat33.s8
-			+ mat33.s2 * mat33.s4 * mat33.s9
-			- mat33.s2 * mat33.s5 * mat33.s8
-			- mat33.s1 * mat33.s4 * mat33.sA
-			- mat33.s0 * mat33.s6 * mat33.s9);
+	return (mat33in44.s0 * mat33in44.s5 * mat33in44.sA
+			+ mat33in44.s1 * mat33in44.s6 * mat33in44.s8
+			+ mat33in44.s2 * mat33in44.s4 * mat33in44.s9
+			- mat33in44.s2 * mat33in44.s5 * mat33in44.s8
+			- mat33in44.s1 * mat33in44.s4 * mat33in44.sA
+			- mat33in44.s0 * mat33in44.s6 * mat33in44.s9);
 }
 
 
@@ -109,9 +109,8 @@ float16			rt_cl_mat33in44_inv(float16 const mat33)
 	result.s2 = mat33.s1 * mat33.s6 - mat33.s2 * mat33.s5;
 	result.s6 = mat33.s2 * mat33.s4 - mat33.s0 * mat33.s6;
 	result.sA = mat33.s0 * mat33.s5 - mat33.s1 * mat33.s4;
-	result.sF = 1.;
 	result.s37B = (float3)(0., 0., 0.);
-	result.sCDE = (float3)(0., 0., 0.);
+	result.sCDEF = (float4)(0., 0., 0., 1.);
 	result = (float16)(1. / det) * (result); //TODO use native_recip ?
 	return (result);
 }
@@ -142,7 +141,7 @@ float16			rt_cl_build_cam_matrix
 
 //TODO change here and/or in apply_matrix-s if row major is faster
 	cam_mat44.s012 = axis_x;
-	cam_mat44.s345 = axis_y;
+	cam_mat44.s456 = axis_y;
 	cam_mat44.s89A = axis_z;
 	cam_mat44.sCDE = camera.world_pos;
 	cam_mat44.sF = 1.;

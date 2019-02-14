@@ -21,8 +21,7 @@ bool			get_realroots_quadpoly
 	delta = quadpoly.y * quadpoly.y - 4 * quadpoly.x * quadpoly.z;
 	if (delta < 0.)
 	{
-		roots[0].x = 0. / 0.;
-		roots[0].y = 0. / 0.;
+		roots->x = roots->y = 0. / 0.;
 		return (false);
 	}
 	one_over_two_a = 0.5 / quadpoly.x;
@@ -213,13 +212,15 @@ float3			get_pixel_color_from_mc_sampling
 */		ray_i.dir = rt_cl_apply_linear_matrix(cam_mat44, ray_i.dir);
 		ray_i.dir = normalize(ray_i.dir);
 		ray_i.lum_acc = (float3)(1.);
+		if (fabs(scene->camera.c_to_w.sF) < 0.001)
+			return ((float3)(255., 0., 255.));
 		for (uint depth = 0; !ray_i.complete && depth < scene->max_ray_depth; ++depth)
 		{
 		//	trace_ray_to_bboxes(ray, scene);
 		//	trace_ray_to_primitives(ray, scene, index_list);
 			if (trace_ray_to_scene(scene, &ray_i))
 			{
-printf("hit_obj = %d\n", ray_i.hit_obj_id);
+//printf("hit_obj = %d\n", ray_i.hit_obj_id);
 				accumulate_lum_and_bounce_ray(&ray_i, scene, random_seed, depth);
 			}
 			else

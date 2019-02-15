@@ -5,7 +5,7 @@ CC_WIN	= x86_64-w64-mingw32-gcc
 CC_LIN	= gcc
 CC_MAC	= gcc
 
-CFLAGS	=	-Wall -Wextra -Werror $(CFLAGS_PLATFORM) -O2 -MMD
+CFLAGS	=	-Wall -Wextra -Werror $(CFLAGS_PLATFORM) -O2 -MMD -g
 CFLAGS_PLATFORM = _
 CFLAGS_WIN	= -mwindows
 CFLAGS_LIN	= -Wno-unused-result 
@@ -55,15 +55,17 @@ SRC_STRING	:=	ft_strnew.c		\
 				ft_strlen.c		\
 				ft_strcmp.c		\
 				ft_strequ.c		\
+				ft_strhas.c		\
+				ft_strcount.c	\
 				ft_strchr.c		\
 				ft_strstr.c		\
-				ft_strcount.c	\
-				ft_strhas.c		\
+				ft_strremove.c	\
 				ft_strtrim.c	\
 				ft_strpad.c		\
 				ft_strrev.c		\
-				ft_strsub.c		\
 				ft_strjoin.c	\
+				ft_strinsert.c	\
+				ft_strsub.c		\
 				ft_striter.c	\
 				ft_strmap.c		\
 
@@ -83,6 +85,8 @@ SRC_CONVERT	:=	ft_int_s_to_str.c		\
 				ft_str_to_int_s.c		\
 				ft_str_to_int_u.c		\
 				ft_str_to_float.c		\
+				ft_str_to_f32.c			\
+				ft_str_to_f64.c			\
 				ft_str_to_size.c		\
 				ft_str_to_bool.c		\
 				ft_hex_to_int_u.c		\
@@ -232,7 +236,7 @@ TESTS :=	test_memory.c		\
 			util_test.c
 
 testprogram: all
-	@$(CC) -o test $(addprefix $(SRCDIR), $(TESTS)) $(NAME)
+	@gcc -g -o test $(addprefix $(SRCDIR), $(TESTS)) $(NAME)
 
 test: testprogram
 	@./test

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   string/ft_strinsert.c                              :+:      :+:    :+:   */
+/*   string/ft_strremove.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,30 +12,36 @@
 
 #include "../../libft_string.h"
 
-char	*ft_strinsert(char const *dest, char const *src, size_t offset)
+char	*ft_strremove(char const *str, char const *query)
 {
 	char	*result;
-	size_t	len_dst;
-	size_t	len_src;
+	size_t	matches;
+	size_t	length;
+	size_t	length_query;
 	size_t	i;
 
-	len_dst = ft_strlen(dest);
-	len_src = ft_strlen(src);
-	if (!(result = (char *)malloc(len_dst + len_src + 1)))
+	matches = ft_strcount_str(str, query);
+	length = ft_strlen(str);
+	length_query = ft_strlen(query);
+	i = matches * length_query;
+	length = (length < i) ? 0 : length - i;
+	if (!(result = (char *)malloc(length + 1)))
 		return (NULL);
-	i = -1;
-	while (++i < offset)
-		result[i] = dest[i];
-	--i;
-	while (++i < len_src)
-		result[i] = src[i - offset];
-	--i;
-	while (++i < len_dst)
-		result[i] = dest[i - len_src];
+	matches = (size_t)(ft_strstr(str, query) - str);
+	i = (size_t)-1;
+	while (++i < length)
+	{
+		if (i == matches)
+		{
+			str += length_query;
+			matches = (size_t)(ft_strstr(str, query) - str);
+		}
+		result[i] = *(str++);
+	}
 	result[i] = '\0';
 	return (result);
 }
 /*
-**	if (dest == NULL || src == NULL)
+**	if (str == NULL)
 **		return (NULL);
 */

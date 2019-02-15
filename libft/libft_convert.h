@@ -111,7 +111,22 @@ t_u16	ft_str_to_u16(char const *str);
 t_u32	ft_str_to_u32(char const *str);
 t_u64	ft_str_to_u64(char const *str);
 
+int		ft_str_to_float_checkinvalid(char const *str, char **result_tmp);
+
+# define NOT_A_NUMBER					(0. / 0.)
+
+# define F32_MANTISSA_BITS				23
+# define F32_EXP_BIAS					127
+# define F32_SIGNED_MANTISSA_MASK		0x807FFFFF
+# define F32_EXP_MASK					0x7F800000
+# define F32_INIT_VAL					0x1.p-23
 t_f32	ft_str_to_f32(char const *str);
+
+# define F64_MANTISSA_BITS				52
+# define F64_EXP_BIAS					1023
+# define F64_SIGNED_MANTISSA_MASK		0x800FFFFFFFFFFFFF
+# define F64_EXP_MASK					0x7FF0000000000000
+# define F64_INIT_VAL					0x1.p-52
 t_f64	ft_str_to_f64(char const *str);
 
 /*

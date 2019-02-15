@@ -251,6 +251,36 @@ char	*u_to_str(t_u64 number)
 	return (result);
 }
 
+char		*f_to_str(t_f64 number, t_u8 precision)
+{
+	char	*result;
+	char	digits[64];
+	t_u8	i;
+	t_u64	n;
+
+	i = 0;
+	while (++i <= precision)
+		number *= 10;
+	n = (number < 0) ? -(t_u64)number : (t_u64)number;
+	i = 0;
+	while (n > 0 || i < precision)
+	{
+		digits[i++] = (n % 10) + '0';
+		n /= 10;
+		if (i == precision && (digits[i++] = '.'))
+			if (n == 0 && number != 0)
+				digits[i++] = '0';
+	}
+	if (!(result = (char *)malloc(i + 2)))
+		return (NULL);
+	result[0] = (number == 0) ? '0' : '-';
+	n = (number <= 0) ? 1 : 0;
+	while (i--)
+		result[n++] = digits[i];
+	result[n] = '\0';
+	return (result);
+}
+
 /*
 ** ************************************************************************** *|
 **                              Testing Functions                             *|
@@ -485,6 +515,62 @@ void	print_test_u64(
 	print_test(test_name, function,
 		(result_segfault ? segstr : u_to_str(result)),
 		(expect_segfault ? segstr : u_to_str(expect)),
+		can_segfault,
+		error);
+}
+
+
+
+void	print_test_f32(
+		char const *test_name,
+		char const *function,
+		t_f32 result,
+		t_f32 expect,
+		int can_segfault)
+{
+	int error;
+	int result_segfault = can_segfault & (1 << 1);
+	int expect_segfault = can_segfault & (1 << 2);
+	
+	if (result_segfault)
+		error = (expect_segfault ? FALSE : TRUE);
+	else if (expect_segfault)
+		 error = TRUE;
+	else error = (result != expect);
+
+	if (isnan(result) && isnan(expect))
+		error = FALSE;
+
+	print_test(test_name, function,
+		(result_segfault ? segstr : f_to_str(result, 4)),
+		(expect_segfault ? segstr : f_to_str(expect, 4)),
+		can_segfault,
+		error);
+}
+
+void	print_test_f64(
+		char const *test_name,
+		char const *function,
+		t_f64 result,
+		t_f64 expect,
+		int can_segfault)
+{
+	int error;
+	int result_segfault = can_segfault & (1 << 1);
+	int expect_segfault = can_segfault & (1 << 2);
+	
+	if (result_segfault)
+		error = (expect_segfault ? FALSE : TRUE);
+	else if (expect_segfault)
+		 error = TRUE;
+	else error = (result != expect);
+
+	if (isnan(result) && isnan(expect))
+		error = FALSE;
+
+	print_test(test_name, function,
+		(result_segfault ? segstr : f_to_str(result, 8)),
+		(expect_segfault ? segstr : f_to_str(expect, 8)),
 		can_segfault,
 		error);
 }

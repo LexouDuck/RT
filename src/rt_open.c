@@ -193,7 +193,6 @@ static char	*rt_read_file(t_rtparser *p)
 	rt.scene.bg_rgb.y = ft_color_argb32_get_g(rt.scene.bg_color);
 	rt.scene.bg_rgb.z = ft_color_argb32_get_b(rt.scene.bg_color);
 	rt.scene.object_amount = p->current_object;
-printf("obj amount %u\n", rt.scene.object_amount);
 	return (NULL);
 }
 

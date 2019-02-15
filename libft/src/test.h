@@ -15,6 +15,7 @@
 # include <setjmp.h>
 # include <signal.h>
 # include <time.h>
+# include <math.h>
 
 # include "../libft.h"
 # include "../libft_memory.h"
@@ -130,6 +131,9 @@ void	print_test_u8(char const *test_name, char const *function, t_u8 result, t_u
 void	print_test_u16(char const *test_name, char const *function, t_u16 result, t_u16 expect, int can_segfault);
 void	print_test_u32(char const *test_name, char const *function, t_u32 result, t_u32 expect, int can_segfault);
 void	print_test_u64(char const *test_name, char const *function, t_u64 result, t_u64 expect, int can_segfault);
+
+void	print_test_f32(char const *test_name, char const *function, t_f32 result, t_f32 expect, int can_segfault);
+void	print_test_f64(char const *test_name, char const *function, t_f64 result, t_f64 expect, int can_segfault);
 
 void	print_test_size(char const *test_name, char const *function, size_t result, size_t expect, int can_segfault);
 void	print_test_bool(char const *test_name, char const *function, t_bool result, t_bool expect, int can_segfault);

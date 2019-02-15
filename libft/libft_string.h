@@ -50,10 +50,11 @@
 #define	FT_StringFind_R_String(str, query)		ft_strrstr(str, query)
 #define	FT_StringFind_N_Char(str, c, n)			ft_strnchr(str, c, n)
 #define	FT_StringFind_N_String(str, query, n)	ft_strnstr(str, query, n)
+#define FT_StringRemove(str, query)				ft_strremove(str, query)
 #define	FT_StringToEscape(str)					ft_strtoescape(str)
 #define	FT_StringReplace_Char(str, old, new)	ft_strrep_char(str, old, new)
 #define	FT_StringReplace_Charset(str, old, new)	ft_strrep_charset(str, old, new)
-#define	FT_StringReplace_String(str, old, new)	ft_strrep_str(str, old, new)
+#define	FT_StringReplace_String(str, old, new)	ft_strrep_string(str, old, new)
 
 #define	FT_StringTrim(str, charset)				ft_strtrim(str, charset)
 #define	FT_StringTrim_L(str, charset)			ft_strtrim_l(str, charset)
@@ -360,7 +361,7 @@ char	*ft_strjoin(char const *str1, char const *str2);
 **	Returns a reallocated version of the given string 'dest', in which
 **	the string 'str' has been inserted at the index 'offset'.
 */
-char	*ft_strinsert(char **dest, char const *src, size_t offset);
+char	*ft_strinsert(char const *dest, char const *src, size_t offset);
 
 /*
 **	Returns a new null-terminated string which is a subsection of 'str',

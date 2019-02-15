@@ -482,9 +482,9 @@ printf("\n");
 	print_test_strequ("strequ            ", 	FALSE,	(strcmp(test1, test2) == 0), test1, test2);
 	print_test_strequ("strequ            ", 	FALSE,	(strcmp(test1, test1) == 0), test1, test1);
 	print_test_strequ("strequ (empty str)", 	FALSE,	(strcmp(test1, "")    == 0), test1, "");
-	print_test_strequ("strequ (null str1)", 	SEGV,	 0,                          NULL,  test2);
-	print_test_strequ("strequ (null str2)", 	SEGV,	 0,                          test1, NULL);
-	print_test_strequ("strequ (both null)", 	SEGV,	 1,                          NULL,  NULL);
+	print_test_strequ("strequ (null str1)", 	TRUE,	 0,                          NULL,  test2);
+	print_test_strequ("strequ (null str2)", 	TRUE,	 0,                          test1, NULL);
+	print_test_strequ("strequ (both null)", 	TRUE,	 1,                          NULL,  NULL);
 }
 
 
@@ -515,9 +515,9 @@ printf("\n");
 	print_test_strnequ("strnequ (empty str)",	FALSE,	(strncmp(test1, "",     5) == 0), test1, "",    5);
 	print_test_strnequ("strnequ (n = 0)    ",	FALSE,	(strncmp(test1, test1,  0) == 0), test1, test1, 0);
 	print_test_strnequ("strnequ (n > len)  ",	FALSE,	(strncmp(test1, test1, 30) == 0), test1, test1, 30);
-	print_test_strnequ("strnequ (null str1)",	SEGV,	0,                                NULL,  test2, 7);
-	print_test_strnequ("strnequ (null str2)",	SEGV,	0,                                test1, NULL,  7);
-	print_test_strnequ("strnequ (both null)",	SEGV,	1,                                NULL,  NULL,  7);
+	print_test_strnequ("strnequ (null str1)",	TRUE,	0,                                NULL,  test2, 7);
+	print_test_strnequ("strnequ (null str2)",	TRUE,	0,                                test1, NULL,  7);
+	print_test_strnequ("strnequ (both null)",	TRUE,	1,                                NULL,  NULL,  7);
 }
 
 

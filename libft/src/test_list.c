@@ -8,7 +8,7 @@
 */
 void	print_test_lstnew(char const* test_name, int can_segfault,
 		char const* expecting,
-		void const* item,
+		void* item,
 		size_t item_size)
 {
 	t_timer t = {0};

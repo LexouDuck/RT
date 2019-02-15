@@ -35,7 +35,7 @@ static void	update_window()
 
 	// Do the 3d render if needed
 	if (rt.must_render)
-		render();
+//		render();
 	dest = rt.sdl.window_surface->clip_rect;
 	dest.x += UI_WIDTH;
 	dest.w -= UI_WIDTH;
@@ -129,7 +129,7 @@ int			main(int argc, char* argv[])
 //printf("debug init opencl\n");
 	if (init_opencl())
 		return (ERROR);
-	if (render_init())
-		return (ERROR);
+//	if (render_init())
+//		return (ERROR);
 	return (main_loop());
 }

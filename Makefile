@@ -7,7 +7,7 @@ CC_LIN	= gcc
 CC_MAC	= gcc
 
 # Compiler flags
-CFLAGS	=	-Wall -Wextra $(CFLAGS_PLATFORM) -O2 -MMD
+CFLAGS	=	-Wall -Wextra $(CFLAGS_PLATFORM) -O2 -MMD -g
 CFLAGS_PLATFORM = _
 CFLAGS_WIN	= -mwindows -I./ -L./
 CFLAGS_LIN	= -Wno-unused-result #-fsanitize=address 

@@ -82,6 +82,7 @@ t_rt				rt;
 int		init_sdl();
 int		init_window();
 int		init_window_display();
+void	init_scene();
 
 /*
 ** ************************************************************************** *|

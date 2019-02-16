@@ -13,6 +13,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <string.h>
 
 #include "libft_memory.h"
 #include "libft_io.h"

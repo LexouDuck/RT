@@ -7,7 +7,8 @@ CC_LIN	= gcc
 CC_MAC	= gcc
 
 # Compiler flags
-CFLAGS	=	-Wall -Wextra $(CFLAGS_PLATFORM) -O2 -MMD -g
+CFLAGS	=	-Wall -Wextra $(CFLAGS_PLATFORM) -lm -ldl -O2 -MMD -g
+
 CFLAGS_PLATFORM = _
 CFLAGS_WIN	= -mwindows -I./ -L./
 CFLAGS_LIN	= -Wno-unused-result #-fsanitize=address 
@@ -26,7 +27,7 @@ INCLUDE_DIRS =  -I$(LFTDIR) -I$(SDLHDRS)
 LIBFT		=	-L$(LFTDIR) -lft
 LIBSDL		= _
 LIBSDL_WIN	= -L$(SDLDIR) -lSDL2
-LIBSDL_LIN	= -L$(SDLDIR) -lSDL2
+LIBSDL_LIN	= -L$(SDLDIR) -lSDL2 -lm
 LIBSDL_MAC	= -L./SDL2.framework/Versions/Current -F. -framework SDL2
 
 # Directories that this Makefile will use
@@ -95,7 +96,8 @@ HDRS	=	$(LFTDIR)libft.h 	\
 			$(SRCDIR)config.h	\
 			$(SRCDIR)event.h	\
 			$(SRCDIR)ui.h		\
-			$(SRCDIR)rt_cl.h
+			$(SRCDIR)rt_cl.h	\
+			$(SRCDIR)rt_scene.h
 
 # List of C source code files
 SRCS	= 	main.c				\

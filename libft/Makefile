@@ -163,7 +163,7 @@ $(NAME): $(OBJS) $(HDRS)
 
 $(OBJDIR)%.o : $(SRCDIR)%.c $(HDRS)
 	@printf "Compiling file: "$@" -> "
-	@$(CC) $(CFLAGS) -c $< -o $@ -MF $(OBJDIR)$*.d
+	@$(CC) $(CFLAGS) -c $< $(LIBS) -o $@ -MF $(OBJDIR)$*.d
 	@printf $(GREEN)"OK!"$(RESET)"\n"
 
 objdir:

@@ -266,8 +266,79 @@ __kernel void	rt_cl_build_scene
 				int const		obj_id = get_global_id(0);
 	__global	t_object *		obj = &(scene->objects[obj_id]);
 
+
+//printf("pos : %f %f %f | scale %f %f %f | rot %f %f %f \n", obj->pos.x, obj->pos.y, obj->pos.z, obj->scale.x, obj->scale.y, obj->scale.z, obj->rot.x, obj->rot.y, obj->rot.z);
+
 	scene->camera.c_to_w = rt_cl_build_cam_matrix(scene->camera);
 	rt_cl_build_object_matrices(obj);
 	obj->bbox = rt_cl_build_object_bbox(obj->type, obj->o_to_w, scene->render_dist);
+
 	//TODO sort objects by type and material
+
 }
+
+
+
+#if 0
+printf("pos : %f %f %f | scale %f %f %f | rot %f %f %f \n", obj->pos.x, obj->pos.y, obj->pos.z, obj->scale.x, obj->scale.y, obj->scale.z, obj->rot.x, obj->rot.y, obj->rot.z);
+
+float16		tmp;
+
+tmp = rt_cl_mat44_transpose(obj->w_to_o);
+printf("obj->w_to_o: \n%f %f %f %f\n%f %f %f %f\n%f %f %f %f\n%f %f %f %f\n",
+	tmp.s0,
+	tmp.s1,
+	tmp.s2,
+	tmp.s3,
+	tmp.s4,
+	tmp.s5,
+	tmp.s6,
+	tmp.s7,
+	tmp.s8,
+	tmp.s9,
+	tmp.sA,
+	tmp.sB,
+	tmp.sC,
+	tmp.sD,
+	tmp.sE,
+	tmp.sF);
+
+
+tmp = rt_cl_mat44_transpose(obj->o_to_w);
+printf("obj->o_to_w: \n%f %f %f %f\n%f %f %f %f\n%f %f %f %f\n%f %f %f %f\n",
+	tmp.s0,
+	tmp.s1,
+	tmp.s2,
+	tmp.s3,
+	tmp.s4,
+	tmp.s5,
+	tmp.s6,
+	tmp.s7,
+	tmp.s8,
+	tmp.s9,
+	tmp.sA,
+	tmp.sB,
+	tmp.sC,
+	tmp.sD,
+	tmp.sE,
+	tmp.sF);
+
+tmp = rt_cl_mat44_transpose(obj->n_to_w);
+printf("obj->n_to_w: \n%f %f %f %f\n%f %f %f %f\n%f %f %f %f\n%f %f %f %f\n", 
+	tmp.s0,
+	tmp.s1,
+	tmp.s2,
+	tmp.s3,
+	tmp.s4,
+	tmp.s5,
+	tmp.s6,
+	tmp.s7,
+	tmp.s8,
+	tmp.s9,
+	tmp.sA,
+	tmp.sB,
+	tmp.sC,
+	tmp.sD,
+	tmp.sE,
+	tmp.sF);
+#endif

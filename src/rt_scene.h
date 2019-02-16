@@ -30,19 +30,19 @@
 */
 
 
-# define DEFAULT_CAM_POS		((cl_float3){0., 0., -10.})
+# define DEFAULT_CAM_POS		((cl_float3){3., 6., -5.})
 # define DEFAULT_CAM_ANCHOR		((cl_float3){0., 0., 0.})
 # define DEFAULT_CAM_TILT		0.
-# define DEFAULT_CAM_FOV		1.
+# define DEFAULT_CAM_FOV		0.8
 # define DEFAULT_CAM_APERTURE	1.
 
+# define DEFAULT_RENDER_DIST	100000.
 
 # define BG_COLOR				0xFF00BB88 //0xFF000000
 
-# define DEFAULT_RENDER_DIST	100000.
 # define OBJECT_MAX_AMOUNT		32
-# define DEFAULT_RAYSAMP_SIZE	1024
-# define DEFAULT_MAX_RAY_DEPTH	6
+# define DEFAULT_RAYSAMP_SIZE	32
+# define DEFAULT_MAX_RAY_DEPTH	4
 
 typedef enum		e_intersection
 {
@@ -216,7 +216,7 @@ typedef struct	s_object
 	cl_float3		pos;
 	cl_float3		rot;
 	cl_float3		scale;
-	cl_uint			color; 
+	cl_uint			color;
 	cl_float3		rgb;
 	t_bbox			bbox;
 //	cl_float3		specul;

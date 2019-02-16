@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"rt_cl",
+				"rt_cl_mat44_transpose"
+			],
+			[
+				"w_",
+				"w_to_o"
+			],
+			[
 				"F64",
 				"F64_EXP_BIAS"
 			],
@@ -20,28 +28,10 @@
 	"buffers":
 	[
 		{
-			"file": "Makefile",
-			"settings":
-			{
-				"buffer_size": 4531,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
 			"file": "src/main.c",
 			"settings":
 			{
-				"buffer_size": 3989,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/event.c",
-			"settings":
-			{
-				"buffer_size": 3450,
+				"buffer_size": 3991,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -50,27 +40,39 @@
 			"file": "src/rt_cl_render.cl",
 			"settings":
 			{
-				"buffer_size": 8837,
+				"buffer_size": 10021,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/rt_scene.h",
+			"file": "src/rt_cl_build_scene.cl",
 			"settings":
 			{
-				"buffer_size": 7146,
+				"buffer_size": 8567,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
+			"contents": "/* ************************************************************************** */\n/*                                                                            */\n/*                                                        :::      ::::::::   */\n/*   render.c                                           :+:      :+:    :+:   */\n/*                                                    +:+ +:+         +:+     */\n/*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */\n/*                                                +#+#+#+#+#+   +#+           */\n/*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */\n/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */\n/*                                                                            */\n/* ************************************************************************** */\n\n// TODO remove stdio include\n#include <stdio.h>\n\n#include \"libft_memory.h\"\n\n#include \"../rt.h\"\n#include \"debug.h\"\n\n\n#include \"rt_scene.h\"\n\n\nconst char\t\t*get_error_string(cl_int error)\n{\n\tswitch (error)\n\t{\n\t    // run-time and JIT compiler errors\n\t    case 0: return \"CL_SUCCESS\";\n\t    case -1: return \"CL_DEVICE_NOT_FOUND\";\n\t    case -2: return \"CL_DEVICE_NOT_AVAILABLE\";\n\t    case -3: return \"CL_COMPILER_NOT_AVAILABLE\";\n\t    case -4: return \"CL_MEM_OBJECT_ALLOCATION_FAILURE\";\n\t    case -5: return \"CL_OUT_OF_RESOURCES\";\n\t    case -6: return \"CL_OUT_OF_HOST_MEMORY\";\n\t    case -7: return \"CL_PROFILING_INFO_NOT_AVAILABLE\";\n\t    case -8: return \"CL_MEM_COPY_OVERLAP\";\n\t    case -9: return \"CL_IMAGE_FORMAT_MISMATCH\";\n\t    case -10: return \"CL_IMAGE_FORMAT_NOT_SUPPORTED\";\n\t    case -11: return \"CL_BUILD_PROGRAM_FAILURE\";\n\t    case -12: return \"CL_MAP_FAILURE\";\n\t    case -13: return \"CL_MISALIGNED_SUB_BUFFER_OFFSET\";\n\t    case -14: return \"CL_EXEC_STATUS_ERROR_FOR_EVENTS_IN_WAIT_LIST\";\n\t    case -15: return \"CL_COMPILE_PROGRAM_FAILURE\";\n\t    case -16: return \"CL_LINKER_NOT_AVAILABLE\";\n\t    case -17: return \"CL_LINK_PROGRAM_FAILURE\";\n\t    case -18: return \"CL_DEVICE_PARTITION_FAILED\";\n\t    case -19: return \"CL_KERNEL_ARG_INFO_NOT_AVAILABLE\";\n\n\t    // compile-time errors\n\t    case -30: return \"CL_INVALID_VALUE\";\n\t    case -31: return \"CL_INVALID_DEVICE_TYPE\";\n\t    case -32: return \"CL_INVALID_PLATFORM\";\n\t    case -33: return \"CL_INVALID_DEVICE\";\n\t    case -34: return \"CL_INVALID_CONTEXT\";\n\t    case -35: return \"CL_INVALID_QUEUE_PROPERTIES\";\n\t    case -36: return \"CL_INVALID_COMMAND_QUEUE\";\n\t    case -37: return \"CL_INVALID_HOST_PTR\";\n\t    case -38: return \"CL_INVALID_MEM_OBJECT\";\n\t    case -39: return \"CL_INVALID_IMAGE_FORMAT_DESCRIPTOR\";\n\t    case -40: return \"CL_INVALID_IMAGE_SIZE\";\n\t    case -41: return \"CL_INVALID_SAMPLER\";\n\t    case -42: return \"CL_INVALID_BINARY\";\n\t    case -43: return \"CL_INVALID_BUILD_OPTIONS\";\n\t    case -44: return \"CL_INVALID_PROGRAM\";\n\t    case -45: return \"CL_INVALID_PROGRAM_EXECUTABLE\";\n\t    case -46: return \"CL_INVALID_KERNEL_NAME\";\n\t    case -47: return \"CL_INVALID_KERNEL_DEFINITION\";\n\t    case -48: return \"CL_INVALID_KERNEL\";\n\t    case -49: return \"CL_INVALID_ARG_INDEX\";\n\t    case -50: return \"CL_INVALID_ARG_VALUE\";\n\t    case -51: return \"CL_INVALID_ARG_SIZE\";\n\t    case -52: return \"CL_INVALID_KERNEL_ARGS\";\n\t    case -53: return \"CL_INVALID_WORK_DIMENSION\";\n\t    case -54: return \"CL_INVALID_WORK_GROUP_SIZE\";\n\t    case -55: return \"CL_INVALID_WORK_ITEM_SIZE\";\n\t    case -56: return \"CL_INVALID_GLOBAL_OFFSET\";\n\t    case -57: return \"CL_INVALID_EVENT_WAIT_LIST\";\n\t    case -58: return \"CL_INVALID_EVENT\";\n\t    case -59: return \"CL_INVALID_OPERATION\";\n\t    case -60: return \"CL_INVALID_GL_OBJECT\";\n\t    case -61: return \"CL_INVALID_BUFFER_SIZE\";\n\t    case -62: return \"CL_INVALID_MIP_LEVEL\";\n\t    case -63: return \"CL_INVALID_GLOBAL_WORK_SIZE\";\n\t    case -64: return \"CL_INVALID_PROPERTY\";\n\t    case -65: return \"CL_INVALID_IMAGE_DESCRIPTOR\";\n\t    case -66: return \"CL_INVALID_COMPILER_OPTIONS\";\n\t    case -67: return \"CL_INVALID_LINKER_OPTIONS\";\n\t    case -68: return \"CL_INVALID_DEVICE_PARTITION_COUNT\";\n\n\t    // extension errors\n\t    case -1000: return \"CL_INVALID_GL_SHAREGROUP_REFERENCE_KHR\";\n\t    case -1001: return \"CL_PLATFORM_NOT_FOUND_KHR\";\n\t    case -1002: return \"CL_INVALID_D3D10_DEVICE_KHR\";\n\t    case -1003: return \"CL_INVALID_D3D10_RESOURCE_KHR\";\n\t    case -1004: return \"CL_D3D10_RESOURCE_ALREADY_ACQUIRED_KHR\";\n\t    case -1005: return \"CL_D3D10_RESOURCE_NOT_ACQUIRED_KHR\";\n\t    default: return \"Unknown OpenCL error\";\n    }\n}\n\n\nint\t\trender_init()\n{\n\tint err = 0;\n//assign group size and work dim etc //fat data buffers\n//kernels //setting args is done later ? //clCreateKernelsInProgram\n\n/*\nchar str[20000];\n\n\terr = clGetProgramInfo(rt.ocl.program, CL_PROGRAM_SOURCE, 20000, str, NULL);\n\tif (err < 0)\n\t\treturn (debug_perror(\"Couldn't create read source \"RT_CL_PROGRAM_SOURCE));\n\n\nprintf(\"%s\\n\\n\\nt_scene size %#lx\\n\", str, sizeof(t_scene));\n*/\nrt.scene.objects[0].material = lightsrc;\nrt.scene.objects[0].rgb = (cl_float3){((BG_COLOR & 0xFF0000) >> 16) * 100000., ((BG_COLOR & 0xFF00) >> 8) * 100000., (BG_COLOR & 0xFF) * 100000.};\n\n\n#if 0\n\n\t/* KERNEL 0: build_scene */\n\trt.ocl.gpu_buf.scene = clCreateBuffer(rt.ocl.context,\n\t\tCL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR,\n\t\tsizeof(t_scene), &rt.scene, &err);\n\tif (err < 0)\n\t\treturn (debug_perror(\"Couldn't create read buffer for \"RT_CL_KERNEL_0));\n\n\terr = clEnqueueWriteBuffer(rt.ocl.cmd_queue, rt.ocl.gpu_buf.scene, CL_TRUE, 0, \n\t\t\tsizeof(t_scene), &(rt.scene), 0, NULL, NULL);\n\tif (err < 0)\n\t\treturn (debug_perror(\"Couldn't enqueue write to gpu for \"RT_CL_KERNEL_0));\n\n\trt.ocl.kernels[0] = clCreateKernel(rt.ocl.program, RT_CL_KERNEL_0, &err);\n\tif (err < 0)\n\t\treturn (debug_perror(\"Couldn't create a kernel for \"RT_CL_KERNEL_0));\n\n\terr = clSetKernelArg(rt.ocl.kernels[0], 0, sizeof(cl_mem), &(rt.ocl.gpu_buf.scene));\n\tif (err < 0)\n\t\treturn (debug_perror(\"Couldn't create a kernel argument for \"RT_CL_KERNEL_0));\n\n\terr = clEnqueueNDRangeKernel(rt.ocl.cmd_queue, rt.ocl.kernels[0], 1, NULL /*dim_offsets*/, &(rt.scene.object_amount), \n\t\t\tNULL /*&local_size*/, 0, NULL, NULL); \n\tif (err < 0)\n\t{\n\t\tdebug_perror(get_error_string(err));\n\t\tprintf(\"obj amount in render %lu\\n\", rt.scene.object_amount);\n\t\treturn (debug_perror(\"Couldn't enqueue the kernel for \"RT_CL_KERNEL_0));\n\t}\n\t/* Memory for scene is still on the GPU */\n\n//if ((err = clFinish(rt.ocl.cmd_queue)) < 0)\n//\treturn (debug_perror(\"Couldn't finish \"RT_CL_KERNEL_0));\n\n#endif\n\n\n\n\n\n\t/* KERNEL 1: Launch camera rays and return color values */\n\trt.ocl.kernels[1] = clCreateKernel(rt.ocl.program, RT_CL_KERNEL_1, &err);\n\tif (err < 0)\n\t\treturn (debug_perror(\"Couldn't create a kernel for \"RT_CL_KERNEL_1));\n\n\trt.ocl.gpu_buf.canvas_pixels = clCreateBuffer(rt.ocl.context,\n\t\tCL_MEM_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,\n\t\tsizeof(t_u32) * rt.canvas_pixel_amount, rt.canvas->pixels, &err);\n\tif (err < 0)\n\t{\n/*printf(\"contexterr: %d; value err: %d; buffersize err: %d; hostptr err: %d; memalloc err: %d; hostmem err: %d\\nerr: %d\\n\",\n\tCL_INVALID_CONTEXT, CL_INVALID_VALUE, CL_INVALID_BUFFER_SIZE, CL_INVALID_HOST_PTR,\n\tCL_MEM_OBJECT_ALLOCATION_FAILURE, CL_OUT_OF_HOST_MEMORY, err);\n*/\t\treturn (debug_perror(\"Couldn't create write buffer for \"RT_CL_KERNEL_1));\n\t}\n\n//\terr = clEnqueueWriteBuffer(rt.ocl.cmd_queue, rt.ocl.gpu_buf.canvas_pixels, CL_TRUE, 0, \n//\t\t\tsizeof(t_u32) * rt.canvas_pixel_amount, rt.canvas->pixels, 0, NULL, NULL);\n\n\n\t/* Create kernel arguments */\n//\terr = clSetKernelArg(rt.ocl.kernels[0], 0, rt.sdl.pixel_amount * sizeof(cl_uint), NULL);//empty declaration for local memory.\n\terr = clSetKernelArg(rt.ocl.kernels[1], 0, sizeof(cl_mem), &(rt.ocl.gpu_buf.canvas_pixels));\n//\terr |= clSetKernelArg(rt.ocl.kernels[1], 1, sizeof(cl_mem), &(rt.ocl.gpu_buf.scene));\n\terr |= clSetKernelArg(rt.ocl.kernels[1], 1 /*2*/, sizeof(cl_uint), NULL);\n\tif (err < 0)\n\t\treturn (debug_perror(\"Couldn't create a kernel argument for \"RT_CL_KERNEL_1));\n\n\n\t/* Enqueue kernel */\n\tsize_t\twork_dim[2] = {rt.canvas_w, rt.canvas_h};\n\terr = clEnqueueNDRangeKernel(rt.ocl.cmd_queue, rt.ocl.kernels[1], 3, NULL /*dim_offsets*/, work_dim, \n\t\t\tNULL /*&local_size*/, 0, NULL, NULL); \n\tif (err < 0)\n\t{\n\t\tdebug_perror(get_error_string(err));\n\t\treturn (debug_perror(\"Couldn't enqueue the kernel for \"RT_CL_KERNEL_1));\n\t}\n\t\n\n//\tclFlush(rt.ocl.cmd_queue);\n\n//if ((err = clFinish(rt.ocl.cmd_queue)) < 0)\n//\treturn (debug_perror(\"Couldn't finish \"RT_CL_KERNEL_1));\n\n\t/* Read the kernel's output */\n\terr = clEnqueueReadBuffer(rt.ocl.cmd_queue, rt.ocl.gpu_buf.canvas_pixels, CL_TRUE, 0, \n\t\t\tsizeof(t_u32) * rt.canvas_pixel_amount, rt.canvas->pixels, 0, NULL, NULL);\n//t_u32 * tmp = (t_u32*)rt.canvas->pixels;\n//printf(\"Corners after kernel return %#x %#x %#x %#x\\n\", tmp[0], tmp[rt.canvas_w - 1], tmp[(rt.canvas_h - 1) * rt.canvas_w], tmp[rt.canvas_pixels - 1]);\n\tif(err < 0)\n\t\treturn (debug_perror(\"Couldn't read the buffer for \"RT_CL_KERNEL_1));\n\n//\tclFlush(rt.ocl.cmd_queue);\n//\tclFinish(rt.ocl.cmd_queue);\n\n\n\tclReleaseKernel(rt.ocl.kernels[1]);\n\n\n//\tclReleaseKernel(rt.ocl.kernels[0]);\n\tclReleaseMemObject(rt.ocl.gpu_buf.canvas_pixels);\n\tclReleaseMemObject(rt.ocl.gpu_buf.scene);\n\treturn (OK);\n}\n\nvoid\trender()\n{\n\t// fill the canvas->pixels buffer here\n\tif (render_init())\n\t{\n\t\tdebug_output_error(\"Rendering failed: \", TRUE);\n\t\treturn ;\n\t}\n}",
 			"file": "src/render.c",
+			"file_size": 9518,
+			"file_write_time": 131947385182809550,
 			"settings":
 			{
-				"buffer_size": 8966,
+				"buffer_size": 9283,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/init_opencl.c",
+			"settings":
+			{
+				"buffer_size": 7304,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
 			}
 		},
 		{
@@ -86,7 +88,34 @@
 			"file": "src/rt_cl.h",
 			"settings":
 			{
-				"buffer_size": 3350,
+				"buffer_size": 3416,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/config.c",
+			"settings":
+			{
+				"buffer_size": 3452,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/rt_open.c",
+			"settings":
+			{
+				"buffer_size": 6228,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/rt_scene.h",
+			"settings":
+			{
+				"buffer_size": 7143,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -95,7 +124,8 @@
 			"file": "src/rt_cl_scene.cl.h",
 			"settings":
 			{
-				"buffer_size": 9555,
+				"buffer_size": 9581,
+				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		}
@@ -133,12 +163,16 @@
 	"expanded_folders":
 	[
 		"/home/fulguritude/Desktop/42/Workspace/08-rt",
+		"/home/fulguritude/Desktop/42/Workspace/08-rt/rtv1_tduquesn",
 		"/home/fulguritude/Desktop/42/Workspace/08-rt/src",
 		"/home/fulguritude/Desktop/42/Workspace/08-rt/tests",
 		"/home/fulguritude/Desktop/42/Workspace/08-rt/tmp_srcs"
 	],
 	"file_history":
 	[
+		"/home/fulguritude/Desktop/42/Workspace/08-rt/Makefile",
+		"/home/fulguritude/Desktop/42/Workspace/08-rt/rt.h",
+		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/event.c",
 		"/home/fulguritude/Desktop/42/Workspace/08-rt/tests/ex1.rt",
 		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/rt_open.c",
 		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/init_sdl.c",
@@ -150,7 +184,6 @@
 		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/config.c",
 		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/debug.c",
 		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/debug.h",
-		"/home/fulguritude/Desktop/42/Workspace/08-rt/Makefile",
 		"/Users/fulguritude/Workspace/42/09-rt/rt.h",
 		"/Users/fulguritude/Workspace/42/09-rt/src/debug.h",
 		"/Users/fulguritude/Workspace/42/09-rt/libft/libft_io.h",
@@ -187,6 +220,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"platf",
+			"printf",
 			"object_amount",
 			"0755"
 		],
@@ -207,169 +242,24 @@
 	"groups":
 	[
 		{
-			"selected": 3,
+			"selected": 2,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "Makefile",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4531,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2170,
-								2170
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Makefile/Makefile.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1170.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
 					"file": "src/main.c",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3989,
+						"buffer_size": 3991,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3963,
-								3963
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1305.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "src/event.c",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3450,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1151,
-								1151
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "src/rt_cl_render.cl",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 8837,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4491,
-								4491
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1891.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "src/rt_scene.h",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 7146,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4140,
-								4140
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C++.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 2115.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "src/render.c",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 8966,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4894,
-								4894
+								3467,
+								3467
 							]
 						],
 						"settings":
@@ -381,11 +271,127 @@
 						"translation.y": 1350.0,
 						"zoom_level": 1.0
 					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/rt_cl_render.cl",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10021,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								9017,
+								9017
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 4321.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/rt_cl_build_scene.cl",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8567,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7334,
+								7334
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 3420.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/render.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9283,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								8266,
+								8266
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2462.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "src/init_opencl.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7304,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4050,
+								4050
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1468.0,
+						"zoom_level": 1.0
+					},
 					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 5,
 					"file": "src/init_scene.c",
 					"semi_transient": false,
 					"settings":
@@ -410,24 +416,111 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 6,
 					"file": "src/rt_cl.h",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3350,
+						"buffer_size": 3416,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								3150,
+								3150
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 675.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "src/config.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3452,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1219,
+								1219
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "src/rt_open.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6228,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								971,
+								971
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "src/rt_scene.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7143,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4,
+								4
 							]
 						],
 						"settings":
@@ -439,24 +532,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
-					"buffer": 8,
+					"buffer": 10,
 					"file": "src/rt_cl_scene.cl.h",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 9555,
+						"buffer_size": 9581,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2591,
-								2591
+								5486,
+								5486
 							]
 						],
 						"settings":
@@ -465,10 +558,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 945.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 10,
 					"type": "text"
 				}
 			]

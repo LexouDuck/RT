@@ -9,6 +9,8 @@
 #include "src/rt_cl_random.cl"
 #include "src/rt_cl_build_scene.cl"
 
+#if 0
+
 bool			get_realroots_quadpoly
 (
 							float2 *	roots,
@@ -99,7 +101,8 @@ t_intersection			ray_intersect_sphere
 bool			trace_ray_to_scene
 (
 					__constant		t_scene	*	scene,
-									t_ray *		ray
+									t_ray *		ray,
+									uint		depth
 )
 {
 //	uint			obj_id = -1;
@@ -113,6 +116,7 @@ bool			trace_ray_to_scene
 	{
 		if (ray_intersect_bbox(*ray, scene->objects[i].bbox, 0, ray->t))
 		{
+//if (depth == 0 && i == 0) printf("a");
 			ray_os = *ray;
 			ray_os.pos = rt_cl_apply_homogeneous_matrix(scene->objects[i].w_to_o, ray_os.pos);
 			ray_os.dir = rt_cl_apply_linear_matrix(scene->objects[i].w_to_o, ray_os.dir);
@@ -124,7 +128,9 @@ bool			trace_ray_to_scene
 				new_ray.hit_obj_id = i;
 				ray->t = new_ray.t = new_t;
 			}
+			//else ; 
 		}
+		//else ;
 	}
 	if (inter)
 		*ray = new_ray;
@@ -183,6 +189,10 @@ void			accumulate_lum_and_bounce_ray
 	}
 }
 
+/*
+** If else probably linked to older hardware pb.
+** https://computergraphics.stackexchange.com/questions/4115/gpu-branching-if-without-else
+*/
 float3			get_pixel_color_from_mc_sampling
 (
 					__constant		t_scene	*	scene,
@@ -197,6 +207,7 @@ float3			get_pixel_color_from_mc_sampling
 //	float3			cur_color;
 	t_ray			ray_i;
 
+//printf("scene2 %f  ", scene->camera.c_to_w.sF);
 	for (uint i = 0; i < scene->mc_raysamp_size; ++i)
 	{
 		random_seed = DEFAULT_SEED + random_seed + x_id + y_id + i;
@@ -212,17 +223,25 @@ float3			get_pixel_color_from_mc_sampling
 */		ray_i.dir = rt_cl_apply_linear_matrix(cam_mat44, ray_i.dir);
 		ray_i.dir = normalize(ray_i.dir);
 		ray_i.lum_acc = (float3)(1.);
-		if (fabs(scene->camera.c_to_w.sF) < 0.001)
+/*		if (isequal((float)scene->camera.c_to_w.sF, (float)0.))
+		{
+			return ((float3)(0., 255., 0.));
+		}
+		else if (isequal((float)scene->camera.c_to_w.sF, (float)0.5))
+		{
 			return ((float3)(255., 0., 255.));
-		for (uint depth = 0; !ray_i.complete && depth < scene->max_ray_depth; ++depth)
+		}
+		else
+			return ((float3)(255., 255., 0.));
+*/		for (uint depth = 0; !ray_i.complete && depth < scene->max_ray_depth; ++depth)
 		{
 		//	trace_ray_to_bboxes(ray, scene);
 		//	trace_ray_to_primitives(ray, scene, index_list);
-			if (trace_ray_to_scene(scene, &ray_i))
+			if (trace_ray_to_scene(scene, &ray_i, depth))
 			{
-//printf("hit_obj = %d\n", ray_i.hit_obj_id);
 				accumulate_lum_and_bounce_ray(&ray_i, scene, random_seed, depth);
-			}
+			}			
+//printf("hit_obj = %d | depth = %d\n", ray_i.hit_obj_id);
 			else
 			{
 				ray_i.complete = true;
@@ -232,6 +251,7 @@ float3			get_pixel_color_from_mc_sampling
 		res_pixel_color = res_pixel_color + ray_i.lum_acc;
 	}
 	res_pixel_color = res_pixel_color * (float3)(1. / scene->mc_raysamp_size); //TODO 1/MCRSS can be precalculated
+	return (res_pixel_color);
 }
 
 
@@ -247,6 +267,30 @@ __kernel void	rt_cl_render
 //	int const			sample_id = get_global_id(2); /* id of the current ray thread amongst the MC simulation for the current pixel*/
 	int const			work_item_id = y_id * get_global_size(0) + x_id;
 
+
+//float16		tmp;
+	__constant t_object *	obj = &(scene->objects[0]);
+printf((__constant char *)"pos : %f %f %f | scale %f %f %f | rot %f %f %f \n", obj->pos.x, obj->pos.y, obj->pos.z, obj->scale.x, obj->scale.y, obj->scale.z, obj->rot.x, obj->rot.y, obj->rot.z);
+
+/*tmp = rt_cl_mat44_transpose(obj->w_to_o);
+printf("obj->w_to_o: \n%f %f %f %f\n%f %f %f %f\n%f %f %f %f\n%f %f %f %f\n",
+	tmp.s0,
+	tmp.s1,
+	tmp.s2,
+	tmp.s3,
+	tmp.s4,
+	tmp.s5,
+	tmp.s6,
+	tmp.s7,
+	tmp.s8,
+	tmp.s9,
+	tmp.sA,
+	tmp.sB,
+	tmp.sC,
+	tmp.sD,
+	tmp.sE,
+	tmp.sF);
+*/
 /*printf("scene.bg_color %#x | scene.camera.c_to_w %f %f %f %f - %f %f %f %f - %f %f %f %f - %f %f %f %f\n", scene->bg_color,
 	scene->camera.c_to_w.s0,
 	scene->camera.c_to_w.s1,
@@ -265,7 +309,7 @@ __kernel void	rt_cl_render
 	scene->camera.c_to_w.sE,
 	scene->camera.c_to_w.sF);
 */
-
+//printf("scene1 %f  ", scene->camera.c_to_w.sF);
 	float3 vcolor3 = get_pixel_color_from_mc_sampling(scene, random_seed, x_id, y_id);
 //	printf((__constant char *)"kernel %f %f %f\n", vcolor3.x, vcolor3.y, vcolor3.z);
 	uint3 color3 = (uint3)(floor(vcolor3.x), floor(vcolor3.y), floor(vcolor3.z));
@@ -274,12 +318,12 @@ __kernel void	rt_cl_render
 //	printf("kernel %x %x %x color %x\n", (color3.x << 16), (color3.y << 8), (color3.z), color);
 	result_imgbuf[work_item_id] = color; /* simple interpolated colour gradient based on pixel coordinates */
 }
+#endif
 
-#if 0
 __kernel void	rt_cl_render
 (
 					__global		uint *		result_imgbuf,
-		//			__constant		t_scene		scene,
+		//			__global		t_scene	*	scene,
 					__local			uint *		random_seed
 )
 {
@@ -289,11 +333,10 @@ __kernel void	rt_cl_render
 	int const			work_item_id = y_id * get_global_size(0) + x_id;
 
 	*random_seed = DEFAULT_SEED * work_item_id + DEFAULT_SEED;
-	float3 vcolor3 = rt_cl_f3rand_0_to_1(random_seed) * (float3)(255.);
-	uint3 color3 = (uint3)(floor(vcolor3.x), floor(vcolor3.y), floor(vcolor3.z));
+//	float3 vcolor3 = rt_cl_f3rand_0_to_1(random_seed) * (float3)(255.);
+//	uint3 color3 = (uint3)(floor(vcolor3.x), floor(vcolor3.y), floor(vcolor3.z));
 //	printf((__constant char *)"kernel %u %u %u\n", color3.x, color3.y, color3.z);
-	uint color = 0xFF000000 | (color3.x << 16) | (color3.y << 8) | (color3.z);
+//	uint color = 0xFF000000 | (color3.x << 16) | (color3.y << 8) | (color3.z);
 //	printf("kernel %x %x %x color %x\n", (color3.x << 16), (color3.y << 8), (color3.z), color);
-	result_imgbuf[work_item_id] = color; /* simple interpolated colour gradient based on pixel coordinates */
+	result_imgbuf[work_item_id] = 0xFFFFFFFF;// color; /* simple interpolated colour gradient based on pixel coordinates */
 }
-#endif

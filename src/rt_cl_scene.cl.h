@@ -18,8 +18,8 @@
 # define BG_COLOR				0xFF00BB88 //0xFF000000
 
 # define OBJ_MAX_AMOUNT			32
-# define DEFAULT_RAYSAMP_SIZE	1024
-# define DEFAULT_MAX_RAY_DEPTH	6
+# define DEFAULT_RAYSAMP_SIZE	32
+# define DEFAULT_MAX_RAY_DEPTH	4
 
 typedef enum		e_intersection
 {
@@ -57,14 +57,14 @@ typedef enum	e_cameramode
 */
 typedef struct	s_camera
 {
-	float3		world_pos;
+	float3			world_pos;
 //	cl_float3		reltv_pos;
 //	cl_float3		polar_pos;
-	float3		anchor;
-	float		tilt;
-	float		hrz_fov;
-	float		aperture;
-	float16		c_to_w;
+	float3			anchor;
+	float			tilt;
+	float			hrz_fov;
+	float			aperture;
+	float16			c_to_w;
 //	cl_float16		w_to_c;
 	t_cameramode	mode;
 }				t_camera;
@@ -209,7 +209,7 @@ typedef struct	s_scene
 	float3		bg_rgb;
 	t_camera	camera;
 	t_object	objects[OBJ_MAX_AMOUNT];
-	ulong		object_amount;
+	size_t		object_amount;
 	float		render_dist;
 	t_bbox		bbox;
 	uint		max_ray_depth;
@@ -217,7 +217,7 @@ typedef struct	s_scene
 }				t_scene;
 
 
-
+#if 0
 
 float16			rt_cl_mat44_transpose(float16 mat44);
 float3			rt_cl_apply_linear_matrix(float16 mat44, float3 vec3);
@@ -366,7 +366,8 @@ t_intersection	ray_intersect_sphere
 bool			trace_ray_to_scene
 (
 					__constant		t_scene	*	scene,
-									t_ray *		ray
+									t_ray *		ray,
+									uint		depth
 );
 void			accumulate_lum_and_bounce_ray
 (
@@ -383,5 +384,5 @@ float3			get_pixel_color_from_mc_sampling
 									int			y_id
 );
 
-
+#endif
 #endif

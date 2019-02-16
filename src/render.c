@@ -107,9 +107,22 @@ int		render_init()
 //assign group size and work dim etc //fat data buffers
 //kernels //setting args is done later ? //clCreateKernelsInProgram
 
-printf("t_scene size %#lx\n", sizeof(t_scene));
+/*
+char str[20000];
+
+	err = clGetProgramInfo(rt.ocl.program, CL_PROGRAM_SOURCE, 20000, str, NULL);
+	if (err < 0)
+		return (debug_perror("Couldn't create read source "RT_CL_PROGRAM_SOURCE));
+*/
+
+//printf("%s\n\n\nt_scene size %#lx\n", str, sizeof(t_scene));
+
+printf("workdim size %u %u\n", rt.canvas_w, rt.canvas_h);
+
 rt.scene.objects[0].material = lightsrc;
 rt.scene.objects[0].rgb = (cl_float3){((BG_COLOR & 0xFF0000) >> 16) * 100000., ((BG_COLOR & 0xFF00) >> 8) * 100000., (BG_COLOR & 0xFF) * 100000.};
+
+
 
 	/* KERNEL 0: build_scene */
 	rt.ocl.gpu_buf.scene = clCreateBuffer(rt.ocl.context,
@@ -117,7 +130,6 @@ rt.scene.objects[0].rgb = (cl_float3){((BG_COLOR & 0xFF0000) >> 16) * 100000., (
 		sizeof(t_scene), &rt.scene, &err);
 	if (err < 0)
 		return (debug_perror("Couldn't create read buffer for "RT_CL_KERNEL_0));
-
 	err = clEnqueueWriteBuffer(rt.ocl.cmd_queue, rt.ocl.gpu_buf.scene, CL_TRUE, 0, 
 			sizeof(t_scene), &(rt.scene), 0, NULL, NULL);
 	if (err < 0)
@@ -141,8 +153,11 @@ rt.scene.objects[0].rgb = (cl_float3){((BG_COLOR & 0xFF0000) >> 16) * 100000., (
 	}
 	/* Memory for scene is still on the GPU */
 
-//if ((err = clFinish(rt.ocl.cmd_queue)) < 0)
-//	return (debug_perror("Couldn't finish "RT_CL_KERNEL_0));
+if ((err = clFinish(rt.ocl.cmd_queue)) < 0)
+	return (debug_perror("Couldn't finish "RT_CL_KERNEL_0));
+
+
+
 
 
 	/* KERNEL 1: Launch camera rays and return color values */
@@ -167,26 +182,31 @@ rt.scene.objects[0].rgb = (cl_float3){((BG_COLOR & 0xFF0000) >> 16) * 100000., (
 
 	/* Create kernel arguments */
 //	err = clSetKernelArg(rt.ocl.kernels[0], 0, rt.sdl.pixel_amount * sizeof(cl_uint), NULL);//empty declaration for local memory.
-	err = clSetKernelArg(rt.ocl.kernels[1], 0, sizeof(cl_mem), &(rt.ocl.gpu_buf.canvas_pixels));
-	err |= clSetKernelArg(rt.ocl.kernels[1], 1, sizeof(cl_mem), &(rt.ocl.gpu_buf.scene));
-	err |= clSetKernelArg(rt.ocl.kernels[1], 2, sizeof(cl_uint), NULL);
+	int kernel_arg_nbr = -1;
+	err = clSetKernelArg(rt.ocl.kernels[1], ++kernel_arg_nbr, sizeof(cl_mem), &(rt.ocl.gpu_buf.canvas_pixels));
+	err |= clSetKernelArg(rt.ocl.kernels[1], ++kernel_arg_nbr, sizeof(cl_mem), &(rt.ocl.gpu_buf.scene));
+	err |= clSetKernelArg(rt.ocl.kernels[1], ++kernel_arg_nbr, sizeof(cl_uint), NULL);
+
 	if (err < 0)
 		return (debug_perror("Couldn't create a kernel argument for "RT_CL_KERNEL_1));
 
 
 	/* Enqueue kernel */
-	size_t	work_dim[2] = {rt.canvas_w, rt.canvas_h};
-	err = clEnqueueNDRangeKernel(rt.ocl.cmd_queue, rt.ocl.kernels[1], 2, NULL /*dim_offsets*/, work_dim, 
+	int		work_dim_amount = 2;
+	size_t	work_dim_array[2] = {(size_t)rt.canvas_w, (size_t)rt.canvas_h};
+	err = clEnqueueNDRangeKernel(rt.ocl.cmd_queue, rt.ocl.kernels[1], work_dim_amount, NULL /*dim_offsets*/, work_dim_array, 
 			NULL /*&local_size*/, 0, NULL, NULL); 
 	if (err < 0)
 	{
 		debug_perror(get_error_string(err));
 		return (debug_perror("Couldn't enqueue the kernel for "RT_CL_KERNEL_1));
 	}
+	
 
 //	clFlush(rt.ocl.cmd_queue);
-//	clFinish(rt.ocl.cmd_queue);
 
+//if ((err = clFinish(rt.ocl.cmd_queue)) < 0)
+//	return (debug_perror("Couldn't finish "RT_CL_KERNEL_1));
 
 	/* Read the kernel's output */
 	err = clEnqueueReadBuffer(rt.ocl.cmd_queue, rt.ocl.gpu_buf.canvas_pixels, CL_TRUE, 0, 
@@ -194,15 +214,23 @@ rt.scene.objects[0].rgb = (cl_float3){((BG_COLOR & 0xFF0000) >> 16) * 100000., (
 //t_u32 * tmp = (t_u32*)rt.canvas->pixels;
 //printf("Corners after kernel return %#x %#x %#x %#x\n", tmp[0], tmp[rt.canvas_w - 1], tmp[(rt.canvas_h - 1) * rt.canvas_w], tmp[rt.canvas_pixels - 1]);
 	if(err < 0)
+	{
+		debug_perror(get_error_string(err));
 		return (debug_perror("Couldn't read the buffer for "RT_CL_KERNEL_1));
+	}
 
 //	clFlush(rt.ocl.cmd_queue);
 //	clFinish(rt.ocl.cmd_queue);
 
-	clReleaseKernel(rt.ocl.kernels[0]);
+
 	clReleaseKernel(rt.ocl.kernels[1]);
+	clReleaseKernel(rt.ocl.kernels[0]);
+
 	clReleaseMemObject(rt.ocl.gpu_buf.canvas_pixels);
 	clReleaseMemObject(rt.ocl.gpu_buf.scene);
+
+//#endif
+
 	return (OK);
 }
 

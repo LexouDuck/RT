@@ -37,12 +37,13 @@
 # define DEFAULT_CAM_APERTURE	1.
 
 # define DEFAULT_RENDER_DIST	100000.
+# define EPS					0.001
 
 # define BG_COLOR				0xFF00BB88 //0xFF000000
 
 # define OBJECT_MAX_AMOUNT		32
-# define DEFAULT_RAYSAMP_SIZE	32
-# define DEFAULT_MAX_RAY_DEPTH	4
+# define DEFAULT_RAYSAMP_SIZE	1024
+# define DEFAULT_MAX_RAY_DEPTH	6
 
 typedef enum		e_intersection
 {
@@ -110,6 +111,7 @@ typedef struct	s_ray
 	cl_int		hit_obj_id;
 //	cl_uint		depth;
 	cl_float3	lum_mask;
+	cl_float3	lum_acc;
 }				t_ray;
 
 /*

@@ -119,8 +119,9 @@ char str[20000];
 
 printf("workdim size %u %u\n", rt.canvas_w, rt.canvas_h);
 
-//rt.scene.objects[0].material = lightsrc;
-rt.scene.objects[0].rgb = (cl_float3){((BG_COLOR & 0xFF0000) >> 16) * 100000., ((BG_COLOR & 0xFF00) >> 8) * 100000., (BG_COLOR & 0xFF) * 100000.};
+rt.scene.objects[0].material = !lightsrc;
+float intensity = 1. / 255.;
+rt.scene.objects[0].rgb = (cl_float3){((BG_COLOR & 0xFF0000) >> 16) * intensity, ((BG_COLOR & 0xFF00) >> 8) * intensity, (BG_COLOR & 0xFF) * intensity};
 
 
 
@@ -185,7 +186,7 @@ if ((err = clFinish(rt.ocl.cmd_queue)) < 0)
 	int kernel_arg_nbr = -1;
 	err = clSetKernelArg(rt.ocl.kernels[1], ++kernel_arg_nbr, sizeof(cl_mem), &(rt.ocl.gpu_buf.canvas_pixels));
 	err |= clSetKernelArg(rt.ocl.kernels[1], ++kernel_arg_nbr, sizeof(cl_mem), &(rt.ocl.gpu_buf.scene));
-	err |= clSetKernelArg(rt.ocl.kernels[1], ++kernel_arg_nbr, sizeof(cl_uint), NULL);
+//	err |= clSetKernelArg(rt.ocl.kernels[1], ++kernel_arg_nbr, sizeof(cl_uint), NULL);
 
 	if (err < 0)
 		return (debug_perror("Couldn't create a kernel argument for "RT_CL_KERNEL_1));
@@ -205,9 +206,11 @@ if ((err = clFinish(rt.ocl.cmd_queue)) < 0)
 
 //	clFlush(rt.ocl.cmd_queue);
 
-//if ((err = clFinish(rt.ocl.cmd_queue)) < 0)
-//	return (debug_perror("Couldn't finish "RT_CL_KERNEL_1));
-
+if ((err = clFinish(rt.ocl.cmd_queue)) < 0)
+{
+	debug_perror(get_error_string(err));
+	return (debug_perror("Couldn't finish "RT_CL_KERNEL_1));
+}
 	/* Read the kernel's output */
 	err = clEnqueueReadBuffer(rt.ocl.cmd_queue, rt.ocl.gpu_buf.canvas_pixels, CL_TRUE, 0, 
 			sizeof(t_u32) * rt.canvas_pixel_amount, rt.canvas->pixels, 0, NULL, NULL);

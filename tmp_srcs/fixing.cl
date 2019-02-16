@@ -325,8 +325,8 @@ t_bbox			rt_cl_build_object_bbox
 
 	if (type == sphere || type == cube)
 	{
-		objspace_bbox = (t_bbox){(float3)(-0.5, -0.5, -0.5),
-									(float3)(0.5, 0.5, 0.5)};
+		objspace_bbox = (t_bbox){(float3)(-1., -1., -1.),
+									(float3)(1., 1., 1.)};
 	}
 	else
 	{
@@ -733,7 +733,8 @@ bool			trace_ray_to_scene
 				inter = true;
 				new_ray = ray_os;
 				new_ray.hit_obj_id = i;
-				ray->t = new_ray.t = new_t;
+				ray->t = new_t;
+				new_ray.t = new_t;
 			}
 			//else ; 
 		}

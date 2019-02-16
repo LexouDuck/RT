@@ -119,7 +119,7 @@ char str[20000];
 
 printf("workdim size %u %u\n", rt.canvas_w, rt.canvas_h);
 
-rt.scene.objects[0].material = lightsrc;
+//rt.scene.objects[0].material = lightsrc;
 rt.scene.objects[0].rgb = (cl_float3){((BG_COLOR & 0xFF0000) >> 16) * 100000., ((BG_COLOR & 0xFF00) >> 8) * 100000., (BG_COLOR & 0xFF) * 100000.};
 
 

@@ -712,7 +712,6 @@ bool			trace_ray_to_scene
 									uint		depth
 )
 {
-//	uint			obj_id = -1;
 	bool			inter;
 	float			new_t;
 	t_ray			ray_os;
@@ -723,11 +722,9 @@ bool			trace_ray_to_scene
 	{
 		if (ray_intersect_bbox(*ray, scene->objects[i].bbox, 0, ray->t))
 		{
-//if (depth == 0 && i == 0) printf("a");
 			ray_os = *ray;
 			ray_os.pos = rt_cl_apply_homogeneous_matrix(scene->objects[i].w_to_o, ray_os.pos);
-			ray_os.dir = rt_cl_apply_linear_matrix(scene->objects[i].w_to_o, ray_os.dir);
-		//	ray_os.dir = normalize(ray_os.dir);
+			ray_os.dir = rt_cl_apply_linear_matrix(scene->objects[i].w_to_o, ray_os.dir);//DO NOT NORMALIZE: YOU NEED TO KEEP ray.t CONSISTENT
 			if (ray_intersect_sphere(&new_t, ray_os))
 			{	
 				inter = true;
@@ -736,9 +733,7 @@ bool			trace_ray_to_scene
 				ray->t = new_t;
 				new_ray.t = new_t;
 			}
-			//else ; 
 		}
-		//else ;
 	}
 	if (inter)
 		*ray = new_ray;
@@ -750,8 +745,8 @@ void			accumulate_lum_and_bounce_ray
 (
 									t_ray *		ray,
 						__constant	t_scene	*	scene,
-						__local		uint *		random_seed,
-									int			depth		
+						__local		uint *		random_seed//,
+						//			int			depth		
 )
 {
 	__constant t_object		*obj = &(scene->objects[ray->hit_obj_id]);
@@ -772,7 +767,7 @@ void			accumulate_lum_and_bounce_ray
 		vec3_schur(reslum.vec, reslum.vec, lgtshdr.hit_obj->rgb.vec);
 */
 
-	ray->lum_acc *= obj->rgb * (float3)(depth > 0 ? 1. : 1. / (ray->t * ray->t));
+	ray->lum_mask *= obj->rgb;// * (float3)(depth > 0 ? 1. : 1. / (ray->t * ray->t));
 	if (obj->material == lightsrc)
 	{
 		ray->complete = true;
@@ -780,14 +775,15 @@ void			accumulate_lum_and_bounce_ray
 	}
 	else
 	{
-		hitpos = ray->pos + (float3)ray->t * ray->dir;
+		hitpos = ray->pos + ((float3)ray->t) * ray->dir;
 		new_ray.pos = rt_cl_apply_homogeneous_matrix(obj->o_to_w, hitpos);
 		normal = normalize(rt_cl_apply_linear_matrix(obj->n_to_w, hitpos)); //sphere formula, normal == hitpos
-		new_ray.dir = rt_cl_rand_dir_hemi(random_seed, normal);
+//		new_ray.dir = rt_cl_rand_dir_hemi(random_seed, normal);
+//		new_ray.dir = normalize(rt_cl_f3rand_neg1half_to_pos1half(random_seed));
 		new_ray.complete = false;
 		new_ray.hit_obj_id = -1;
 		new_ray.t = scene->render_dist;
-		new_ray.lum_acc = ray->lum_acc * (float3)(INV_PI * fmax((float)0., (float)dot(normal, new_ray.dir)));
+		new_ray.lum_mask = ray->lum_mask * (float3)(INV_PI * fmax((float)0., (float)dot(normal, new_ray.dir)));
 
 
 
@@ -819,8 +815,8 @@ float3			get_pixel_color_from_mc_sampling
 	t_ray			ray_i;
 
 //printf("scene2 %10g  ", scene->camera.c_to_w.sF);
-//	for (uint i = 0; i < scene->mc_raysamp_size; ++i)
-//	{
+	for (uint i = 0; i < scene->mc_raysamp_size; ++i)
+	{
 		random_seed = DEFAULT_SEED + random_seed + x_id + y_id;// + i;
 		ray_i.t = scene->render_dist;
 		ray_i.complete = false;
@@ -828,12 +824,12 @@ float3			get_pixel_color_from_mc_sampling
 		ray_i.pos = scene->camera.world_pos;
 /*		ray_i.pos = (float3(0., 0., 0.);
 		ray_i.pos += rt_cl_f3rand_0_to_1(random_seed) - (float3)(0.005, 0.005, 0.); //add and fix with camera.aperture for depth of field
-		ray_i.pos = apply_homogeneous_matrix(cam_mat44, ray_i.pos);
+		ray_i.pos = rt_cl_apply_homogeneous_matrix(cam_mat44, ray_i.pos);
 */		ray_i.dir = (float3)(x_id - width / 2, y_id - height / 2, fov_val);
 /*		ray_i.dir += rt_cl_f3rand_0_to_1(random_seed) - (float3)(0.005, 0.005, 0.); //add and fix for anti-aliasing
 */		ray_i.dir = rt_cl_apply_linear_matrix(cam_mat44, ray_i.dir);
 		ray_i.dir = normalize(ray_i.dir);
-		ray_i.lum_acc = (float3)(1.);
+		ray_i.lum_mask = (float3)(1.);
 //		printf("pos: %g %g %g | dir: %g %g %g | t: %g\n", ray_i.pos.x, ray_i.pos.y, ray_i.pos.z, ray_i.dir.x, ray_i.dir.y, ray_i.dir.z, ray_i.t);
 /*		if (isequal((float)scene->camera.c_to_w.sF, (float)0.))
 		{
@@ -846,27 +842,28 @@ float3			get_pixel_color_from_mc_sampling
 		else
 			return ((float3)(255., 255., 0.));
 */
-//		for (uint depth = 0; !ray_i.complete && depth < scene->max_ray_depth; ++depth)
+//		for (uint depth = 0; depth < scene->max_ray_depth; ++depth)
 //		{
 		//	trace_ray_to_bboxes(ray, scene);
 		//	trace_ray_to_primitives(ray, scene, index_list);
 			if (trace_ray_to_scene(scene, &ray_i, 0))
 			{
-				return scene->objects[ray_i.hit_obj_id].rgb;
-//				accumulate_lum_and_bounce_ray(&ray_i, scene, random_seed, depth);
+//				return scene->objects[ray_i.hit_obj_id].rgb;
+				accumulate_lum_and_bounce_ray(&ray_i, scene, random_seed);
 			}			
 //printf("hit_obj = %d | depth = %d\n", ray_i.hit_obj_id);
 			else
 			{
-				return (0xFF000000);
-//				ray_i.complete = true;
-//				ray_i.lum_acc = ray_i.lum_acc * scene->bg_rgb;
+//				return (0xFF000000);
+				ray_i.complete = true;
+				ray_i.lum_mask = ray_i.lum_mask * scene->bg_rgb;
+				break;
 			}
 //		}
-//		res_pixel_color = res_pixel_color + ray_i.lum_acc;
-//	}
-//	res_pixel_color = res_pixel_color * (float3)(1. / scene->mc_raysamp_size); //TODO 1/MCRSS can be precalculated
-//	return (res_pixel_color);
+		res_pixel_color = res_pixel_color + ray_i.lum_mask;
+	}
+	res_pixel_color = res_pixel_color * (float3)(1. / scene->mc_raysamp_size); //TODO 1/MCRSS can be precalculated
+	return (res_pixel_color);
 }
 
 

@@ -86,7 +86,7 @@ typedef struct	s_ray
 	bool	complete;
 	int		hit_obj_id;
 //	cl_uint		depth;
-	float3	lum_acc;
+	float3	lum_mask;
 }				t_ray;
 
 /*

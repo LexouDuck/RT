@@ -163,7 +163,7 @@ void			accumulate_lum_and_bounce_ray
 		vec3_schur(reslum.vec, reslum.vec, lgtshdr.hit_obj->rgb.vec);
 */
 
-	ray->lum_acc *= obj->rgb * (float3)(depth > 0 ? 1. : 1. / (ray->t * ray->t));
+	ray->lum_mask *= obj->rgb * (float3)(depth > 0 ? 1. : 1. / (ray->t * ray->t));
 	if (obj->material == lightsrc)
 	{
 		ray->complete = true;
@@ -178,7 +178,7 @@ void			accumulate_lum_and_bounce_ray
 		new_ray.complete = false;
 		new_ray.hit_obj_id = -1;
 		new_ray.t = scene->render_dist;
-		new_ray.lum_acc = ray->lum_acc * (float3)(INV_PI * fmax((float)0., (float)dot(normal, new_ray.dir)));
+		new_ray.lum_mask = ray->lum_mask * (float3)(INV_PI * fmax((float)0., (float)dot(normal, new_ray.dir)));
 
 
 
@@ -222,7 +222,7 @@ float3			get_pixel_color_from_mc_sampling
 /*		ray_i.dir += rt_cl_f3rand_0_to_1(random_seed) - (float3)(0.005, 0.005, 0.); //add and fix for anti-aliasing
 */		ray_i.dir = rt_cl_apply_linear_matrix(cam_mat44, ray_i.dir);
 		ray_i.dir = normalize(ray_i.dir);
-		ray_i.lum_acc = (float3)(1.);
+		ray_i.lum_mask = (float3)(1.);
 /*		if (isequal((float)scene->camera.c_to_w.sF, (float)0.))
 		{
 			return ((float3)(0., 255., 0.));
@@ -245,10 +245,10 @@ float3			get_pixel_color_from_mc_sampling
 			else
 			{
 				ray_i.complete = true;
-				ray_i.lum_acc = ray_i.lum_acc * scene->bg_rgb;
+				ray_i.lum_mask = ray_i.lum_mask * scene->bg_rgb;
 			}
 		}
-		res_pixel_color = res_pixel_color + ray_i.lum_acc;
+		res_pixel_color = res_pixel_color + ray_i.lum_mask;
 	}
 	res_pixel_color = res_pixel_color * (float3)(1. / scene->mc_raysamp_size); //TODO 1/MCRSS can be precalculated
 	return (res_pixel_color);

@@ -102,6 +102,7 @@ SDL_Surface*	ui_set_tileset(t_u8 const *chr, size_t length);
 void	render_ui_objects(SDL_Point* mouse_tile);
 void	render_ui_menubar(SDL_Point* mouse_tile);
 void	render_ui_dropdown(SDL_Point* mouse_tile, t_menu *dropdown);
+void	render_ui_caminfo(t_camera *camera);
 
 /*
 **	render_ui_util.c

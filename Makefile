@@ -95,7 +95,8 @@ HDRS	=	$(LFTDIR)libft.h 	\
 			$(SRCDIR)config.h	\
 			$(SRCDIR)event.h	\
 			$(SRCDIR)ui.h		\
-			$(SRCDIR)rt_cl.h
+			$(SRCDIR)rt_cl.h	\
+			$(SRCDIR)rt_scene.h	\
 
 # List of C source code files
 SRCS	= 	main.c				\
@@ -108,10 +109,14 @@ SRCS	= 	main.c				\
 			config_access.c		\
 			event.c				\
 			event_window.c		\
+			event_mouse.c		\
+			event_key.c			\
 			rt_open.c			\
 			rt_open_util.c		\
 			ui.c				\
 			ui_init.c			\
+			camera.c			\
+			cl_float3_util.c	\
 			render_ui_util.c	\
 			render_ui.c			\
 			render.c

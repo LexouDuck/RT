@@ -46,6 +46,7 @@ static t_f64	ft_str_to_f64_expon(char const *s_mant, char const *s_exp)
 	result *= powf(10., exponent);
 	return (result);
 }
+
 static t_f64	ft_str_to_f64_hexfp(
 	char const *s_mant,
 	char const *s_exp,

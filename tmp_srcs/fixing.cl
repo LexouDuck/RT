@@ -425,7 +425,7 @@ debug_print_object(obj);
 
 # define INV_PI			0x1.45f306dc9c883p-2
 
-static uint	rt_cl_rand_bit_shuffle
+uint		rt_cl_rand_bit_shuffle
 (
 							uint	n
 )
@@ -435,13 +435,39 @@ static uint	rt_cl_rand_bit_shuffle
 	return ((n << (32 - offset)) ^ (n >> offset));
 }
 
+uint		rt_cl_rand_bit_entropy
+(
+						uint	seed0,
+						uint	seed1
+)
+{
+
+	/* hash the seeds using bitwise AND operations and bitshifts */
+	seed0 = 36969 * ((seed0) & 0xFFFF) + ((seed0) >> 16);  
+	seed1 = 18000 * ((seed1) & 0xFFFF) + ((seed1) >> 16);
+
+	uint tmp = ((seed0) << 16) + (seed1);
+
+	/* use union struct to convert int to float */
+	union
+	{
+		float 			f;
+		uint 			u;
+	} 					res;
+
+	res.u = rt_cl_rand_bit_shuffle((tmp & 0x007fffff) | 0x40000000);  /* bitwise AND, bitwise OR */
+	res.f = (res.f - 2.7) * 0.5;
+	return (res.u);
+}
 
 uint		rt_cl_rand
 (
 				__local		uint		random_seed[1]
 )
 {
-	*random_seed = (CEIL_SQRT_MOD * rt_cl_rand_bit_shuffle(*random_seed) + OFFSET) & MODULUS;
+	*random_seed = (CEIL_SQRT_MOD *
+		rt_cl_rand_bit_shuffle(*random_seed) *
+		rt_cl_rand_bit_entropy(*random_seed * (get_global_id(0) + 3), *random_seed + get_global_id(1)) + OFFSET) & MODULUS;
 	return (*random_seed);
 }
 
@@ -562,7 +588,7 @@ float3			rt_cl_rand_dir_sphere
     return (float3)(radius_cos_th, cos(lon) * radius_sin_th, sin(lon) * radius_sin_th);
 }
 
-#if 0
+
 /*
 ** Returns a random vector in a hemisphere defined by 'axis'.
 ** Axis should already be normalized when this function is called.
@@ -594,54 +620,6 @@ float3			rt_cl_rand_dir_hemi
 	randdir = rt_cl_apply_linear_matrix(lin_mat, randdir);
 	return (randdir);
 }
-#endif
-
-
-
-static float get_random(unsigned int *seed0, unsigned int *seed1) {
-
-	/* hash the seeds using bitwise AND operations and bitshifts */
-	*seed0 = 36969 * ((*seed0) & 65535) + ((*seed0) >> 16);  
-	*seed1 = 18000 * ((*seed1) & 65535) + ((*seed1) >> 16);
-
-	unsigned int ires = ((*seed0) << 16) + (*seed1);
-
-	/* use union struct to convert int to float */
-	union {
-		float f;
-		unsigned int ui;
-	} res;
-
-	res.ui = (ires & 0x007fffff) | 0x40000000;  /* bitwise AND, bitwise OR */
-	return (res.f - 2.0f) / 2.0f;
-}
-
-
-float3			rt_cl_rand_dir_hemi
-(
-				__local		uint *			random_seed,
-							float3 const	axis
-)
-{
-	uint	seed0 =	get_global_id(0) * rt_cl_rand(random_seed);
-	uint	seed1 = get_global_id(1) ^ rt_cl_rand(random_seed);
-
-
-	float rand1 = TAU * get_random(&seed0, &seed1);
-	float rand2 = get_random(&seed0, &seed1);
-	float rand2s = sqrt(rand2);
-	
-	/* create a local orthogonal coordinate frame centered at the hitpoint */
-	float3 w = axis;
-	float3 t = fabs(w.x) > 0.1f ? (float3)(0.0f, 1.0f, 0.0f) : (float3)(1.0f, 0.0f, 0.0f);
-	float3 u = normalize(cross(t, w));
-	float3 v = cross(w, u);
-	
-	/* use the coordinte frame and random numbers to compute the next ray direction */
-	float3 newdir = normalize(u * cos(rand1)*rand2s + v*sin(rand1)*rand2s + w*sqrt(1.0f - rand2));
-}
-
-
 
 
 
@@ -742,96 +720,90 @@ t_intersection			ray_intersect_sphere
 }
 
 
-bool			trace_ray_to_scene
+t_ray			trace_ray_to_scene
 (
 					__constant		t_scene	*	scene,
-									t_ray *		ray
+									t_ray		ray
 )
 {
 	bool			inter;
 	float			new_t;
 	t_ray			ray_os;
-	t_ray			new_ray;
+	t_ray			result_ray_os;
 
-	inter = false;
 	for (uint i = 0; i < scene->object_amount; ++i)
 	{
-		if (ray_intersect_bbox(*ray, scene->objects[i].bbox, 0, ray->t))
+		if (ray_intersect_bbox(ray, scene->objects[i].bbox, 0, ray.t))
 		{
-			ray_os = *ray;
+			ray_os = ray;
 			ray_os.pos = rt_cl_apply_homogeneous_matrix(scene->objects[i].w_to_o, ray_os.pos);
 			ray_os.dir = rt_cl_apply_linear_matrix(scene->objects[i].w_to_o, ray_os.dir);//DO NOT NORMALIZE: YOU NEED TO KEEP ray.t CONSISTENT
 			ray_os.inter_type = ray_intersect_sphere(&new_t, ray_os);
 			if (ray_os.inter_type)
 			{	
-				inter = true;
-				new_ray = ray_os;
-				new_ray.hit_obj_id = i;
-				ray->t = new_t;
-				new_ray.t = new_t;
+				ray.inter_type = ray_os.inter_type;
+				result_ray_os = ray_os;
+				result_ray_os.hit_obj_id = i;
+				ray.t = new_t;
+				result_ray_os.t = new_t;
 			}
 		}
 	}
-	if (inter)
-		*ray = new_ray;
-	return (inter);
+	return (ray.inter_type ? result_ray_os : ray);
 }
 
 
-void			accumulate_lum_and_bounce_ray
+t_ray			accumulate_lum_and_bounce_ray
 (
-									t_ray *		ray,
 						__constant	t_scene	*	scene,
-						__local		uint		random_seed[1]//,
-						//			int			depth		
+						__local		uint		random_seed[1],
+									t_ray		ray,
+									int			sampid,
+									int			depth
 )
 {
-	__constant t_object		*obj = &(scene->objects[ray->hit_obj_id]);
-		t_ray		new_ray;
-		float3		normal;
-		float3		hitpos;
-/*
+	__constant	t_object *	obj = &(scene->objects[ray.hit_obj_id]);
+				t_ray		new_ray;
+				float3		normal;
+				float3		hitpos;
 
-		hit obj
-		quaddist = ray.t * ray.t;
-		costh = dot(normal, objshdr.out_ray_ws.dir);
-		vec3_scale(reslum.vec,
-			INV_PI * lgtshdr.hit_obj->intensity * ft_fmax(0., costh) / quaddist,
-			objshdr.hit_obj->rgb.vec);
 
-		hit light
-		vec3_schur(reslum.vec, reslum.vec, lgtshdr.hit_obj->rgb.vec);
-*/
 
-	ray->lum_mask *= obj->rgb;// * (float3)(depth > 0 ? 1. : 1. / (ray->t * ray->t));
+//	ray->lum_mask *= obj->rgb;
+
+
+	hitpos = ray.pos + ((float3)ray.t) * ray.dir;
+	normal = normalize(rt_cl_apply_linear_matrix(obj->n_to_w, hitpos)) * ray.inter_type; //sphere formula, normal == hitpos
+	new_ray.pos = rt_cl_apply_homogeneous_matrix(obj->o_to_w, hitpos) + normal * (float3)(EPS);
+	new_ray.dir = rt_cl_rand_dir_hemi(random_seed, normal);
+//if (sampid == 0 && depth == 1) printf("normal %f %f %f => %f | hitpos %f %f %f \n", normal.x, normal.y, normal.z, (float)dot(normal, normal), new_ray.pos.x, new_ray.pos.y, new_ray.pos.z);
+
+//	if (sampid == 0 && depth == 0) printf("dir %f %f %f => %f | mask %f %f %f \n", new_ray.dir.x, new_ray.dir.y, new_ray.dir.z, (float)dot(new_ray.dir, new_ray.dir),
+//																				 new_ray.lum_mask.x, new_ray.lum_mask.y, new_ray.lum_mask.z);
+//	new_ray.dir = normalize(rt_cl_f3rand_neg1half_to_pos1half(random_seed));
+	new_ray.hit_obj_id = -1;
+	new_ray.inter_type = INTER_NONE;
+	new_ray.t = scene->render_dist;
 	if (obj->material == !lightsrc)
 	{
-//		ray->complete = true;
-		ray->lum_acc += ray->lum_mask;
+		new_ray.complete = true;
+		new_ray.lum_mask = ray.lum_mask;
+		new_ray.lum_acc = ray.lum_acc + ray.lum_mask * obj->rgb;
+//	if(sampid == 0 && depth == 0)	
+//		printf("acc %f %f %f\n", obj->rgb.x, obj->rgb.y, obj->rgb.z);//ray->lum_mask.x, ray->lum_mask.y, ray->lum_mask.z);//new_ray.lum_acc.x, new_ray.lum_acc.y, new_ray.lum_acc.z);
 	}
 	else
 	{
-		hitpos = ray->pos + ((float3)ray->t) * ray->dir;
-		normal = normalize(rt_cl_apply_linear_matrix(obj->n_to_w, hitpos)) * ray->inter_type; //sphere formula, normal == hitpos
-		new_ray.pos = rt_cl_apply_homogeneous_matrix(obj->o_to_w, hitpos) + normal * (float3)(EPS);
-		new_ray.dir = rt_cl_rand_dir_hemi(random_seed, normal);
-//		new_ray.dir = normalize(rt_cl_f3rand_neg1half_to_pos1half(random_seed));
 		new_ray.complete = false;
-		new_ray.hit_obj_id = -1;
-		new_ray.t = scene->render_dist;
-//		new_ray.lum_mask = ray->lum_mask * (float3)(INV_PI * fmax((float)0., (float)dot(normal, new_ray.dir)));
-/*		if (hit_obj == lightsrc)
-		{
-			new_ray.complete = true;
-			new_ray.lum_acc += ray->lum_mask;
-		}
-*/		new_ray.lum_mask = ray->lum_mask * dot(normal, new_ray.dir);
-
-
-
-
-		*ray = new_ray;
+		new_ray.lum_mask = ray.lum_mask * obj->rgb * (float3)(dot(normal, new_ray.dir));
+		new_ray.lum_acc = ray.lum_acc;// + ray.lum_mask;
 	}
+
+//	if (sampid == 0 && depth == 1) printf("normal %f %f %f => %f | hitpos %f %f %f \n", normal.x, normal.y, normal.z, (float)dot(normal, normal), new_ray.pos.x, new_ray.pos.y, new_ray.pos.z);
+//	if (sampid == 0 && depth == 0) printf("dir %f %f %f => %f | mask %f %f %f \n", new_ray.dir.x, new_ray.dir.y, new_ray.dir.z, (float)dot(new_ray.dir, new_ray.dir),
+//																				 new_ray.lum_mask.x, new_ray.lum_mask.y, new_ray.lum_mask.z);
+	return (new_ray);
+}
 
 #if 0
 		__constant t_object		hit_obj = scene->object[hit_obj_id]; 
@@ -878,12 +850,7 @@ void			accumulate_lum_and_bounce_ray
 #endif
 
 
-}
 
-/*
-** If else probably linked to older hardware pb.
-** https://computergraphics.stackexchange.com/questions/4115/gpu-branching-if-without-else
-*/
 float3			get_pixel_color_from_mc_sampling
 (
 					__constant		t_scene	*	scene,
@@ -892,48 +859,40 @@ float3			get_pixel_color_from_mc_sampling
 									int			y_id
 )
 {
+	float3				pixel_rgb = (float3)(0.);
 	int const			width = get_global_size(0);
 	int const			height = get_global_size(1);
 	float16	const		cam_mat44 = scene->camera.c_to_w;
 	float const			fov_val = -width / (2 * tan(scene->camera.hrz_fov));
 	float const			inv_samp_size = 1. / scene->mc_raysamp_size;
-//	float3				cur_color;
 	t_ray				ray_i;
 
-	ray_i.lum_acc = (float3)(0.);
 	for (uint i = 0; i < scene->mc_raysamp_size; ++i)
 	{
+		ray_i.lum_acc = (float3)(0.);
+		ray_i.lum_mask = (float3)(1.);
 		ray_i.t = scene->render_dist;
 		ray_i.complete = false;
 		ray_i.hit_obj_id = -1;
+		ray_i.inter_type = INTER_NONE;
 //		ray_i.pos = (float3)(0., 0., 0.);
 		ray_i.pos = (float3)(rt_cl_frand_neg1half_to_pos1half(random_seed) * 0.1, rt_cl_frand_neg1half_to_pos1half(random_seed) * 0.1, 0.); //add and fix with camera.aperture for depth of field
 		ray_i.pos = rt_cl_apply_homogeneous_matrix(cam_mat44, ray_i.pos);
+//		if (i = 0) printf("%f %f %f\n", ray_i.pos.x, ray_i.pos.y, ray_i.pos.z);
 		ray_i.dir = (float3)(x_id - width / 2, y_id - height / 2, fov_val);
 //		ray_i.dir += (float3)(rt_cl_frand_neg1half_to_pos1half(random_seed) * 0.1, rt_cl_frand_neg1half_to_pos1half(random_seed) * 0.1, 0.); //add and fix for anti-aliasing
 		ray_i.dir = rt_cl_apply_linear_matrix(cam_mat44, ray_i.dir);
 		ray_i.dir = normalize(ray_i.dir);
-		ray_i.lum_mask = (float3)(1.);
-//		printf("pos: %g %g %g | dir: %g %g %g | t: %g\n", ray_i.pos.x, ray_i.pos.y, ray_i.pos.z, ray_i.dir.x, ray_i.dir.y, ray_i.dir.z, ray_i.t);
-/*		if (isequal((float)scene->camera.c_to_w.sF, (float)0.))
-		{
-			return ((float3)(0., 255., 0.));
-		}
-		else if (isequal((float)scene->camera.c_to_w.sF, (float)0.5))
-		{
-			return ((float3)(255., 0., 255.));
-		}
-		else
-			return ((float3)(255., 255., 0.));
-*/
-		for (uint depth = 0; depth < scene->max_ray_depth; ++depth)
+		for (uint depth = 0; !ray_i.complete && depth < scene->max_ray_depth; ++depth)
 		{
 		//	trace_ray_to_bboxes(ray, scene);
 		//	trace_ray_to_primitives(ray, scene, index_list);
-			if (trace_ray_to_scene(scene, &ray_i))
+			ray_i = trace_ray_to_scene(scene, ray_i);
+			if (ray_i.inter_type)
+		//	if (trace_ray_to_scene(scene, &ray_i))
 			{
 //				return scene->objects[ray_i.hit_obj_id].rgb;
-				accumulate_lum_and_bounce_ray(&ray_i, scene, random_seed);
+				ray_i = accumulate_lum_and_bounce_ray(scene, random_seed, ray_i, i, depth);
 //				if (ray_i.complete)
 //					break ;
 			}
@@ -942,13 +901,14 @@ float3			get_pixel_color_from_mc_sampling
 //				return (0xFF000000);
 				ray_i.complete = true;
 				ray_i.lum_acc += ray_i.lum_mask * scene->bg_rgb;
-				break;
+				//break;
 			}
 		}
-		ray_i.lum_acc += ray_i.lum_mask;
+		pixel_rgb += ray_i.lum_acc;
+//		if (i = 0) printf("%f %f %f\n", ray_i.pos.x, ray_i.pos.y, ray_i.pos.z);//ray_i.lum_acc.x, ray_i.lum_acc.y, ray_i.lum_acc.z);//res_pixel_color.x, res_pixel_color.y, res_pixel_color.z);
 	}
-	ray_i.lum_acc *= (float3)(inv_samp_size); //TODO 1/MCRSS can be precalculated
-	return (ray_i.lum_acc);
+	pixel_rgb *= (float3)(inv_samp_size); 
+	return (pixel_rgb);
 }
 
 
@@ -970,8 +930,7 @@ __kernel void	rt_cl_render
 	uint seed0 = x_id;
 	uint seed1 = y_id;
 
-
-	*random_seed = DEFAULT_SEED * get_random(&seed0, &seed1) + (36969 * ((x_id) & 65535) + ((y_id) >> 16)) * (18230 * ((y_id) & 65535) + ((x_id) >> 15));
+	*random_seed = rt_cl_rand_bit_entropy(seed0, seed1);
 //if (x_id == 0 && y_id == 0) {debug_print_scene(scene); debug_print_camera(&(scene->camera));} printf("sizes %u in %u and %u in %u \n", x_id, width, y_id, height);
 //printf("scene1 %10g  ", scene->camera.c_to_w.sF);
 	float3 vcolor3 = (float3)(255.) * get_pixel_color_from_mc_sampling(scene, random_seed, x_id, y_id);//rt_cl_f3rand_neg1half_to_pos1half(random_seed) * (float3)(255.);//

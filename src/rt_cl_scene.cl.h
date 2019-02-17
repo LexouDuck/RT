@@ -140,7 +140,7 @@ typedef enum	e_primitive
 */
 typedef enum	e_material
 {
-	lightsrc,
+	lightsrc = 0,
 	diffuse,
 //	mirror,
 //	glassy,

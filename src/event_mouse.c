@@ -21,12 +21,13 @@ void	event_mouse_wheel(SDL_Event *event)
 	camera = &rt.scene.camera;
 	if (event->wheel.y)
 	{
-		if (event->wheel.y < 0)
-			camera->zoom *= 0.9;
 		if (event->wheel.y > 0)
+			camera->zoom *= 0.9;
+		if (event->wheel.y < 0)
 			camera->zoom *= 1.1;
 		if (camera->zoom < 1)
 			camera->zoom = 1;
+		camera_update(camera);
 	}
 	rt.must_render = TRUE;
 }

@@ -123,6 +123,18 @@ SRCS	= 	main.c				\
 			render_ui.c			\
 			render.c
 
+SRCDIR_CL	= $(SRCDIR)ocl/
+
+# List of OpenCL source code files. ORDER MATTERS: FILES ARE CONCATENATED THEN READ.
+SRCS_CL	=	../../tmp_srcs/fixing.cl
+
+#			rt_cl_scene.cl.h		\
+#			rt_cl_linear_algebra.h	\
+#			rt_cl_random.cl			\
+#			rt_cl_debug.cl			\
+#			rt_cl_build_scene		\
+#			rt_cl_render.cl
+
 # List of asset files to be embedded within the program
 INCS	=	ui.chr
 
@@ -143,7 +155,7 @@ all: libraries $(NAME)
 
 $(OBJS): | objdir
 
-$(NAME): $(OBJS) $(HDRS) assets.o
+$(NAME): $(OBJS) $(HDRS) assets.o concat.cl
 	@printf "Compiling program: "$@" -> "
 	@$(CC) $(CFLAGS) $(OBJS) assets.o -o $@ $(LIBS)
 	@if [ $(OSFLAG) = "MAC" ]; then \
@@ -155,6 +167,13 @@ $(OBJDIR)%.o : $(SRCDIR)%.c $(HDRS)
 	@printf "Compiling file: "$@" -> "
 	@$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDE_DIRS) -MF $(OBJDIR)$*.d
 	@printf $(GREEN)"OK!"$(RESET)"\n"
+
+
+CL_FILES	=	$(addprefix $(SRCDIR_CL), $(SRCS_CL))
+
+concat.cl: $(CL_FILES)
+	@cat $(CL_FILES) > $@
+
 
 ASSET_FILES	=	$(addprefix $(INCDIR),$(INCS))
 

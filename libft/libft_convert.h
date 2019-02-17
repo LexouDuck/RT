@@ -98,9 +98,6 @@ char	*ft_u16_to_str(t_u16 n);
 char	*ft_u32_to_str(t_u32 n);
 char	*ft_u64_to_str(t_u64 n);
 
-char	*ft_f32_to_str(t_f32 n, t_u8 precision);
-char	*ft_f64_to_str(t_f64 n, t_u8 precision);
-
 t_s8	ft_str_to_s8(char const *str);
 t_s16	ft_str_to_s16(char const *str);
 t_s32	ft_str_to_s32(char const *str);
@@ -110,8 +107,6 @@ t_u8	ft_str_to_u8(char const *str);
 t_u16	ft_str_to_u16(char const *str);
 t_u32	ft_str_to_u32(char const *str);
 t_u64	ft_str_to_u64(char const *str);
-
-int		ft_str_to_float_checkinvalid(char const *str, char **result_tmp);
 
 # define NOT_A_NUMBER					(0. / 0.)
 
@@ -128,6 +123,15 @@ t_f32	ft_str_to_f32(char const *str);
 # define F64_EXP_MASK					0x7FF0000000000000
 # define F64_INIT_VAL					0x1.p-52
 t_f64	ft_str_to_f64(char const *str);
+
+int		ft_str_to_float_checkinvalid(char const *str, char **result_tmp);
+
+# define FLOAT_THRESHOLD_HUGE	1e+10
+# define FLOAT_THRESHOLD_TINY	1e-10
+t_bool	ft_float_to_str_checkspecial(t_f32 number, char **result);
+
+char	*ft_f32_to_str(t_f32 n, t_u8 precision);
+char	*ft_f64_to_str(t_f64 n, t_u8 precision);
 
 /*
 ** ************************************************************************** *|

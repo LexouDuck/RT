@@ -328,14 +328,28 @@ printf("\n");
 	print_test_f32_to_str("f32_to_str               ",	FALSE,              "10000.000", 10000                , 3);
 	print_test_f32_to_str("f32_to_str               ",	FALSE,     "10000.000000000000", 10000                , 12);
 	print_test_f32_to_str("f32_to_str               ",	FALSE,              "123456789", 123456789            , 1);
-/* TODO make it so these tests are ok, they arent because the float conversion functions use a u64 tmp variable
-	print_test_f32_to_str("f32_to_str (n = max)     ",	FALSE,    "9223372036854775807", 9223372036854775807  , 1);
-	print_test_f32_to_str("f32_to_str (n = min)     ",	FALSE,   "-9223372036854775808",-9223372036854775808  , 1);
-	print_test_f32_to_str("f32_to_str (n > max)     ",	FALSE,    "9223372036854775808", 9223372036854775808  , 1);
-	print_test_f32_to_str("f32_to_str (n < min)     ",	FALSE,   "-9223372036854775809",-9223372036854775809  , 1);
-	print_test_f32_to_str("f32_to_str (n > maxdigit)",	FALSE,  "999999999999999999999", 999999999999999999999, 1);
-	print_test_f32_to_str("f32_to_str (n < maxdigit)",	FALSE, "-999999999999999999999",-999999999999999999999, 1);
-*/
+	print_test_f32_to_str("f32_to_str               ",	FALSE,     "696969696969696969", 696969696969696969.  , 10);
+	print_test_f32_to_str("f32_to_str               ",	FALSE,    "-696969696969696969",-696969696969696969.  , 10);
+	print_test_f32_to_str("f32_to_str               ",	FALSE,            "0.000000003", 0.000000003          , 10);
+	print_test_f32_to_str("f32_to_str               ",	FALSE,           "-0.000000003",-0.000000003          , 10);
+	print_test_f32_to_str("f32_to_str               ",	FALSE,     "0.0000000000000001", 0.0000000000000001   , 10);
+	print_test_f32_to_str("f32_to_str               ",	FALSE,    "-0.0000000000000001",-0.0000000000000001   , 10);
+// TODO make it so these tests are ok, they arent because the float conversion functions use a u64 tmp variable
+	print_test_f32_to_str("f32_to_str (n = max)     ",	FALSE,    "9223372036854775807", 9223372036854775807.  , 10);
+	print_test_f32_to_str("f32_to_str (n = min)     ",	FALSE,   "-9223372036854775808",-9223372036854775808.  , 10);
+	print_test_f32_to_str("f32_to_str (n > max)     ",	FALSE,    "9223372036854775808", 9223372036854775808.  , 10);
+	print_test_f32_to_str("f32_to_str (n < min)     ",	FALSE,   "-9223372036854775809",-9223372036854775809.  , 10);
+	print_test_f32_to_str("f32_to_str (n > maxdigit)",	FALSE,  "999999999999999999999", 999999999999999999999., 10);
+	print_test_f32_to_str("f32_to_str (n < maxdigit)",	FALSE, "-999999999999999999999",-999999999999999999999., 10);
+	print_test_f32_to_str("f32_to_str (n > +huge)   ",	FALSE,        "1.0000000000e20", 1.0000000000e20       , 10);
+	print_test_f32_to_str("f32_to_str (n < -huge)   ",	FALSE,       "-1.0000000000e20",-1.0000000000e20       , 10);
+	print_test_f32_to_str("f32_to_str (n < +tiny)   ",	FALSE,        "1.000000000e-20", 1.000000000e-20       , 9);
+	print_test_f32_to_str("f32_to_str (n > -tiny)   ",	FALSE,       "-1.000000000e-20",-1.000000000e-20       , 9);
+	print_test_f32_to_str("f32_to_str (n > +inf)    ",	FALSE,              "+INFINITY", 1.00000e100           , 5);
+	print_test_f32_to_str("f32_to_str (n < -inf)    ",	FALSE,              "-INFINITY",-1.00000e100           , 5);
+	print_test_f32_to_str("f32_to_str (+inf)        ",	FALSE,              "+INFINITY", INFINITY              , 1);
+	print_test_f32_to_str("f32_to_str (-inf)        ",	FALSE,              "-INFINITY",-INFINITY              , 1);
+	print_test_f32_to_str("f32_to_str (nan)         ",	FALSE,                    "NaN", NOT_A_NUMBER          , 1);
 }
 
 
@@ -376,14 +390,28 @@ printf("\n");
 	print_test_f64_to_str("f64_to_str               ",	FALSE,              "10000.000", 10000                , 3);
 	print_test_f64_to_str("f64_to_str               ",	FALSE,     "10000.000000000000", 10000                , 12);
 	print_test_f64_to_str("f64_to_str               ",	FALSE,              "123456789", 123456789            , 1);
-/* TODO make it so these tests are ok, they arent because the float conversion functions use a u64 tmp variable
-	print_test_f64_to_str("f64_to_str (n = max)     ",	FALSE,    "9223372036854775807", 9223372036854775807  , 1);
-	print_test_f64_to_str("f64_to_str (n = min)     ",	FALSE,   "-9223372036854775808",-9223372036854775808  , 1);
-	print_test_f64_to_str("f64_to_str (n > max)     ",	FALSE,    "9223372036854775808", 9223372036854775808  , 1);
-	print_test_f64_to_str("f64_to_str (n < min)     ",	FALSE,   "-9223372036854775809",-9223372036854775809  , 1);
-	print_test_f64_to_str("f64_to_str (n > maxdigit)",	FALSE,  "999999999999999999999", 999999999999999999999, 1);
-	print_test_f64_to_str("f64_to_str (n < maxdigit)",	FALSE, "-999999999999999999999",-999999999999999999999, 1);
-*/
+	print_test_f64_to_str("f64_to_str               ",	FALSE,     "696969696969696969", 696969696969696969.  , 10);
+	print_test_f64_to_str("f64_to_str               ",	FALSE,    "-696969696969696969",-696969696969696969.  , 10);
+	print_test_f64_to_str("f64_to_str               ",	FALSE,            "0.000000003", 0.000000003          , 10);
+	print_test_f64_to_str("f64_to_str               ",	FALSE,           "-0.000000003",-0.000000003          , 10);
+	print_test_f64_to_str("f64_to_str               ",	FALSE,     "0.0000000000000001", 0.0000000000000001   , 10);
+	print_test_f64_to_str("f64_to_str               ",	FALSE,    "-0.0000000000000001",-0.0000000000000001   , 10);
+// TODO make it so these tests are ok, they arent because the float conversion functions use a u64 tmp variable
+	print_test_f64_to_str("f64_to_str (n = max)     ",	FALSE,    "9223372036854775807", 9223372036854775807.  , 10);
+	print_test_f64_to_str("f64_to_str (n = min)     ",	FALSE,   "-9223372036854775808",-9223372036854775808.  , 10);
+	print_test_f64_to_str("f64_to_str (n > max)     ",	FALSE,    "9223372036854775808", 9223372036854775808.  , 10);
+	print_test_f64_to_str("f64_to_str (n < min)     ",	FALSE,   "-9223372036854775809",-9223372036854775809.  , 10);
+	print_test_f64_to_str("f64_to_str (n > maxdigit)",	FALSE,  "999999999999999999999", 999999999999999999999., 10);
+	print_test_f64_to_str("f64_to_str (n < maxdigit)",	FALSE, "-999999999999999999999",-999999999999999999999., 10);
+	print_test_f64_to_str("f64_to_str (n > +huge)   ",	FALSE,        "1.0000000000e20", 1.0000000000e20       , 10);
+	print_test_f64_to_str("f64_to_str (n < -huge)   ",	FALSE,       "-1.0000000000e20",-1.0000000000e20       , 10);
+	print_test_f64_to_str("f64_to_str (n < +tiny)   ",	FALSE,        "1.000000000e-20", 1.000000000e-20       , 9);
+	print_test_f64_to_str("f64_to_str (n > -tiny)   ",	FALSE,       "-1.000000000e-20",-1.000000000e-20       , 9);
+	print_test_f64_to_str("f64_to_str (n > +inf)    ",	FALSE,              "+INFINITY", 1.00000e100           , 5);
+	print_test_f64_to_str("f64_to_str (n < -inf)    ",	FALSE,              "-INFINITY",-1.00000e100           , 5);
+	print_test_f64_to_str("f64_to_str (+inf)        ",	FALSE,              "+INFINITY", INFINITY              , 1);
+	print_test_f64_to_str("f64_to_str (-inf)        ",	FALSE,              "-INFINITY",-INFINITY              , 1);
+	print_test_f64_to_str("f64_to_str (nan)         ",	FALSE,                    "NaN", NOT_A_NUMBER          , 1);
 }
 
 
@@ -1098,6 +1126,7 @@ printf("\n");
 	print_test_str_to_f64("str_to_f64",               	FALSE,                        1e-1, "1e-1"                       );
 	print_test_str_to_f64("str_to_f64",               	FALSE,                        1e-2, "1e-2"                       );
 	print_test_str_to_f64("str_to_f64",               	FALSE,                        1e10, "1e10"                       );
+	print_test_str_to_f64("str_to_f64",               	FALSE,                        1e10, "1e10"                       );
 	print_test_str_to_f64("str_to_f64",               	FALSE,                       -5435, "-5435"                      );
 	print_test_str_to_f64("str_to_f64",               	FALSE,                        3.25, "+3.25"                      );
 	print_test_str_to_f64("str_to_f64",               	FALSE,                        3.69, "3.69"                       );
@@ -1112,19 +1141,35 @@ printf("\n");
 	print_test_str_to_f64("str_to_f64",               	FALSE,                        8513, "\t8513"                     );
 	print_test_str_to_f64("str_to_f64",               	FALSE,                NOT_A_NUMBER, "- 45678978748f"             );
 	print_test_str_to_f64("str_to_f64",               	FALSE,                NOT_A_NUMBER, "swag123"                    );
+	print_test_str_to_f64("str_to_f64",               	FALSE,                NOT_A_NUMBER, "exp"                        );
+	print_test_str_to_f64("str_to_f64",               	FALSE,                NOT_A_NUMBER, "0xp"                        );
+	print_test_str_to_f64("str_to_f64",               	FALSE,                         0x0, "0x0p"                       );
+	print_test_str_to_f64("str_to_f64",               	FALSE,                       0x0p0, "0x0p0"                      );
+	print_test_str_to_f64("str_to_f64",               	FALSE,                       0x0p1, "0x0p1"                      );
+	print_test_str_to_f64("str_to_f64",               	FALSE,                       0x1p0, "0x1p0"                      );
+	print_test_str_to_f64("str_to_f64",               	FALSE,                       0x1p1, "0x1p1"                      );
+	print_test_str_to_f64("str_to_f64",               	FALSE,                     0x10p01, "0x10p01"                    );
+	print_test_str_to_f64("str_to_f64",               	FALSE,                NOT_A_NUMBER, "EXP"                        );
+	print_test_str_to_f64("str_to_f64",               	FALSE,                NOT_A_NUMBER, "0XP"                        );
+	print_test_str_to_f64("str_to_f64",               	FALSE,                         0x0, "0X0P"                       );
+	print_test_str_to_f64("str_to_f64",               	FALSE,                       0x0p0, "0X0P0"                      );
+	print_test_str_to_f64("str_to_f64",               	FALSE,                       0x0p1, "0X0P1"                      );
+	print_test_str_to_f64("str_to_f64",               	FALSE,                       0x1p0, "0X1P0"                      );
+	print_test_str_to_f64("str_to_f64",               	FALSE,                       0x1p1, "0X1P1"                      );
+	print_test_str_to_f64("str_to_f64",               	FALSE,                      0x7p05, "0X7P05"                     );
 	print_test_str_to_f64("str_to_f64",               	FALSE,                NOT_A_NUMBER, "(-(123"                     );
 	print_test_str_to_f64("str_to_f64",               	FALSE,                NOT_A_NUMBER, "[12]123"                    );
 	print_test_str_to_f64("str_to_f64",               	FALSE,                          45, "45_"                        );
 	print_test_str_to_f64("str_to_f64",               	FALSE,                        9876, "\v9876-"                    );
 	print_test_str_to_f64("str_to_f64",               	FALSE,                       65435, "65435+--+"                  );
 	print_test_str_to_f64("str_to_f64",               	FALSE,                NOT_A_NUMBER, "def58453"                   );
-	print_test_str_to_f64("str_to_f64",               	FALSE,                        5486, "5486helllo"                 );
+	print_test_str_to_f64("str_to_f64",               	FALSE,                NOT_A_NUMBER, "5486helllo"                 );
 	print_test_str_to_f64("str_to_f64",               	FALSE,                       -3541, "\f-3541"                    );
 	print_test_str_to_f64("str_to_f64",               	FALSE,                       -5643, "\n-5643"                    );
 	print_test_str_to_f64("str_to_f64",               	FALSE,                NOT_A_NUMBER, "-\r-397+"                   );
 	print_test_str_to_f64("str_to_f64",               	FALSE,                NOT_A_NUMBER, "---84648-+"                 );
 	print_test_str_to_f64("str_to_f64",               	FALSE,                NOT_A_NUMBER, "&%64"                       );
-	print_test_str_to_f64("str_to_f64",               	FALSE,                         125, "125\n12"                    );
+	print_test_str_to_f64("str_to_f64",               	FALSE,                NOT_A_NUMBER, "125\n12"                    );
 	print_test_str_to_f64("str_to_f64",               	FALSE,                          -2, "  -2"                       );
 	print_test_str_to_f64("str_to_f64",               	FALSE,                           2, "  2"                        );
 	print_test_str_to_f64("str_to_f64",               	FALSE,                NOT_A_NUMBER, "!789"                       );
@@ -1169,15 +1214,36 @@ printf("\n");
 	print_test_str_to_f64("str_to_f64",               	FALSE,                 -2147483649, "-2147483649"                );
 	print_test_str_to_f64("str_to_f64",               	FALSE,                  3000000000,  "3000000000"                );
 	print_test_str_to_f64("str_to_f64",               	FALSE,                 -3000000000, "-3000000000"                );
-	print_test_str_to_f64("str_to_f64 (n = max)     ",	FALSE,       9223372036854775807LL,  "9223372036854775807"       );
-	print_test_str_to_f64("str_to_f64 (n = min)     ",	FALSE,      -9223372036854775807LL, "-9223372036854775807"       );
+	print_test_str_to_f64("str_to_f64 (n = s64_max) ",	FALSE,        9223372036854775807.,  "9223372036854775807"       );
+	print_test_str_to_f64("str_to_f64 (n = s64_min) ",	FALSE,       -9223372036854775807., "-9223372036854775807"       );
+	print_test_str_to_f64("str_to_f64 (n > s64_max) ",	FALSE,        9223372036854775808.,  "9223372036854775808"       );
+	print_test_str_to_f64("str_to_f64 (n < s64_min) ",	FALSE,       -9223372036854775809., "-9223372036854775809"       );
+	print_test_str_to_f64("str_to_f64 (n > maxdigit)",	FALSE,     9999999999999999999999.,  "9999999999999999999999"    );
+	print_test_str_to_f64("str_to_f64 (n < maxdigit)",	FALSE,    -9999999999999999999999., "-9999999999999999999999"    );
+	print_test_str_to_f64("str_to_f64  (inf, lower) ",	FALSE,                    INFINITY,  "inf"                       );
+	print_test_str_to_f64("str_to_f64 (+inf, lower) ",	FALSE,                   +INFINITY, "+inf"                       );
+	print_test_str_to_f64("str_to_f64 (-inf, lower) ",	FALSE,                   -INFINITY, "-inf"                       );
+	print_test_str_to_f64("str_to_f64  (infy, lower)",	FALSE,                    INFINITY,  "infinity"                  );
+	print_test_str_to_f64("str_to_f64 (+infy, lower)",	FALSE,                   +INFINITY, "+infinity"                  );
+	print_test_str_to_f64("str_to_f64 (-infy, lower)",	FALSE,                   -INFINITY, "-infinity"                  );
+	print_test_str_to_f64("str_to_f64  (inf, upper) ",	FALSE,                    INFINITY,  "INF"                       );
+	print_test_str_to_f64("str_to_f64 (+inf, upper) ",	FALSE,                   +INFINITY, "+INF"                       );
+	print_test_str_to_f64("str_to_f64 (-inf, upper) ",	FALSE,                   -INFINITY, "-INF"                       );
+	print_test_str_to_f64("str_to_f64  (infy, upper)",	FALSE,                    INFINITY,  "INFINITY"                  );
+	print_test_str_to_f64("str_to_f64 (+infy, upper)",	FALSE,                   +INFINITY, "+INFINITY"                  );
+	print_test_str_to_f64("str_to_f64 (-infy, upper)",	FALSE,                   -INFINITY, "-INFINITY"                  );
+	print_test_str_to_f64("str_to_f64 (NaN)         ",	FALSE,                NOT_A_NUMBER, "NOT_A_NUMBER"               );
+	print_test_str_to_f64("str_to_f64 (NaN)         ",	FALSE,                NOT_A_NUMBER, "NAN"                        );
+	print_test_str_to_f64("str_to_f64 (NaN)         ",	FALSE,                NOT_A_NUMBER, "NaN"                        );
+	print_test_str_to_f64("str_to_f64 (NaN)         ",	FALSE,                NOT_A_NUMBER, "nan"                        );
+	print_test_str_to_f64("str_to_f64 (NaN)         ",	FALSE,                NOT_A_NUMBER, "Nan"                        );
+	print_test_str_to_f64("str_to_f64 (NaN)         ",	FALSE,                NOT_A_NUMBER, "0xNAN"                      );
+	print_test_str_to_f64("str_to_f64 (NaN)         ",	FALSE,                NOT_A_NUMBER, "0xNANP"                     );
+	print_test_str_to_f64("str_to_f64 (NaN)         ",	FALSE,                NOT_A_NUMBER, "0xNANP0"                    );
+	print_test_str_to_f64("str_to_f64 (NaN)         ",	FALSE,                NOT_A_NUMBER, "drop yer nan"               );
 	print_test_str_to_f64("str_to_f64 (empty str)   ",	FALSE,                NOT_A_NUMBER, ""                           );
 	print_test_str_to_f64("str_to_f64 (null str)    ",	SEGV,                            0, NULL                         );
 #ifdef __TEST_OVERFLOW
-	print_test_str_to_f64("str_to_f64 (n > max)     ",	FALSE,       9223372036854775808LL,  "9223372036854775808"       );
-	print_test_str_to_f64("str_to_f64 (n < min)     ",	FALSE,      -9223372036854775809LL, "-9223372036854775809"       );
-	print_test_str_to_f64("str_to_f64 (n > maxdigit)",	FALSE,     999999999999999999999LL,  "999999999999999999999"     );
-	print_test_str_to_f64("str_to_f64 (n < maxdigit)",	FALSE,    -999999999999999999999LL, "-999999999999999999999"     );
 #endif
 }
 

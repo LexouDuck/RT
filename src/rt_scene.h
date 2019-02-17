@@ -29,7 +29,6 @@
 ** ************************************************************************** *|
 */
 
-
 # define DEFAULT_CAM_POS		((cl_float3){3., 6., -5.})
 # define DEFAULT_CAM_ANCHOR		((cl_float3){0., 0., 0.})
 # define DEFAULT_CAM_TILT		0.
@@ -42,8 +41,8 @@
 # define BG_COLOR				0xFF00BB88 //0xFF000000
 
 # define OBJECT_MAX_AMOUNT		32
-# define DEFAULT_RAYSAMP_SIZE	1024
-# define DEFAULT_MAX_RAY_DEPTH	6
+# define DEFAULT_RAYSAMP_SIZE	256
+# define DEFAULT_MAX_RAY_DEPTH	4
 
 typedef enum		e_intersection
 {
@@ -52,47 +51,74 @@ typedef enum		e_intersection
 	INTER_NONE = 0
 }					t_intersection;
 
+typedef enum	e_cameramode
+{
+	CAMERA_MODE_NONE,
+	CAMERA_MODE_ROTATE,
+	CAMERA_MODE_TILT,
+	CAMERA_MODE_PAN,
+}				t_cameramode;
+
 /*
 ** CAMERA
 **
-** world_pos		: cartesian coordinate of camera in world
-**						(world = anchor + relative)
-** reltv_pos		: cartesian coordinate of camera with anchor as center
-** polar_pos		: zoom/radius, longitude, latitude relative to anchor
-** anchor			: origin of polar_pos and reltv_pos
-** axis_x			: right vector of cam
-** axis_y			: up vector of cam
-** axis_z			: "forward" vector of cam,  input eye vector
-** hrz_fov			: field-of-view horizontal angle in radians
-** w_to_c			: the camera's world-to-view/cam matrix
-** c_to_w			: the camera's view/cam-to-world matrix (useful to put
-**						 rays in world space)
-*/
-
-typedef enum	e_cameramode
-{
-	CAMERA_NONE,
-	CAMERA_ROTATE,
-	CAMERA_TILT,
-	CAMERA_PAN,
-}				t_cameramode;
-/*
-** c_to_w.s012 is axis_x, .s456 is axis_y, .s89A is axis_z and .sCDE is world_pos
+** world_pos	: cartesian coords of the camera in world space (world = anchor + pos)
+** anchor		: cartesian coords of the anchor point around which this camera rotates and zooms
+** pos			: cartesian coordinate of the camera's position relative to anchor
+** zoom			: polar anchor-relative coord: how far from the anchor point is pos
+** lat			: polar anchor-relative coord: horizontal angle of the camera
+** lon			: polar anchor-relative coord: vertical angle of the camera
+** tilt_angle	: the angle of tilting for this cam -> set to 0 for a regular upright cam
+** tilt_vector	: the tilting vector for this cam: is {0, 1, 0} for a regular upright cam
+** range_min	: the minimal amount of distance needed for an object to show on this cam
+** range_max	: the maximum vision distance for this camera
+** hrz_fov		: field-of-view horizontal angle in radians
+** aperture		: 
+** w_to_c		: the camera's world-to-view/cam matrix
+** c_to_w		: the camera's view/cam-to-world matrix (used to put rays in world space)
 */
 typedef struct	s_camera
 {
+	t_cameramode	mode;
 	cl_float3		world_pos;
-//	cl_float3		reltv_pos;
-//	cl_float3		polar_pos;
 	cl_float3		anchor;
-	cl_float		tilt;
+	cl_float3		relative_pos;
+	cl_float		zoom;
+	cl_float		lat;
+	cl_float		lon;
+	cl_float		tilt_angle;
+	cl_float3		tilt_vector;
+	cl_float		range_min;
+	cl_float		range_max;
 	cl_float		hrz_fov;
 	cl_float		aperture;
 	cl_float16		c_to_w;
 //	cl_float16		w_to_c;
-	t_cameramode	mode;
 }				t_camera;
+/*
+** c_to_w.s012 is axis_x, .s456 is axis_y, .s89A is axis_z and .sCDE is world_pos
+*/
 
+/*
+**	camera.c
+*/
+void		init_camera(t_camera *camera);
+void		camera_pan(t_camera *camera, float x, float y);
+void		camera_rotate(t_camera *camera, float x, float y);
+void		camera_zoom_tilt(t_camera *camera, float x, float y);
+void		camera_update(t_camera *camera);
+/*
+**	cl_float3_util.c
+*/
+cl_float	cl_float3_norm(cl_float3 const *vector);
+void		cl_float3_normalize(cl_float3 *vector);
+cl_float	cl_float3_dot(cl_float3 *v1, cl_float3 *v2);
+void		cl_float3_cross(cl_float3 *result, cl_float3 *v1, cl_float3 *v2);
+char		*cl_float3_to_str(cl_float3 *vector, int i);
+/*
+**	init_scene.c
+*/
+void		init_scene(void);
 
 /*
 ** RAYS

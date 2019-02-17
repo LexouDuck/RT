@@ -20,8 +20,8 @@
 # define EPS					0.001
 
 # define OBJ_MAX_AMOUNT			32
-# define DEFAULT_RAYSAMP_SIZE	1024
-# define DEFAULT_MAX_RAY_DEPTH	6
+# define DEFAULT_RAYSAMP_SIZE	256
+# define DEFAULT_MAX_RAY_DEPTH	4
 
 typedef enum		e_intersection
 {
@@ -49,26 +49,32 @@ typedef enum		e_intersection
 
 typedef enum	e_cameramode
 {
-	CAMERA_NONE,
-	CAMERA_ROTATE,
-	CAMERA_TILT,
-	CAMERA_PAN,
+	CAMERA_MODE_NONE,
+	CAMERA_MODE_ROTATE,
+	CAMERA_MODE_TILT,
+	CAMERA_MODE_PAN,
 }				t_cameramode;
 /*
 ** c_to_w.s012 is axis_x, .s456 is axis_y, .s89A is axis_z and .sCDE is world_pos
 */
+
 typedef struct	s_camera
 {
+	t_cameramode	mode;
 	float3			world_pos;
-//	cl_float3		reltv_pos;
-//	cl_float3		polar_pos;
 	float3			anchor;
-	float			tilt;
+	float3			relative_pos;
+	float			zoom;
+	float			lat;
+	float			lon;
+	float			tilt_angle;
+	float3			tilt_vector;
+	float			range_min;
+	float			range_max;
 	float			hrz_fov;
 	float			aperture;
 	float16			c_to_w;
-//	cl_float16		w_to_c;
-	t_cameramode	mode;
+//	float16			w_to_c;
 }				t_camera;
 
 

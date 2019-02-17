@@ -50,14 +50,29 @@ typedef struct	s_input
 	t_u8		keys;
 	t_u32		mouse_button;
 	SDL_Point	mouse;
+	SDL_Point	mouse_tile;
 }				t_input;
 
 /*
 **	event.c
-**	event_window.c
 */
 t_bool	event_checkevents(SDL_Window *window);
+/*
+**	event_window.c
+*/
 void	event_window_resize(SDL_Window *window, t_s32 window_w, t_s32 window_h);
 void	event_window_fullscreen(SDL_Window *window, t_bool fullscreen);
+/*
+**	event_mouse.c
+*/
+void	event_check_keydown(SDL_Event *event);
+void	event_check_keyup(SDL_Event *event);
+/*
+**	event_key.c
+*/
+void	event_mouse_wheel(SDL_Event *event);
+void	event_mouse_press(SDL_Event *event);
+void	event_mouse_release(SDL_Event *event);
+void	event_mouse_motion(SDL_Event *event);
 
 #endif

@@ -17,15 +17,17 @@
 static char	*ft_str_to_float_toupper(char const *str)
 {
 	char	*result;
-	size_t	end;
-	size_t	i;
+	t_s32	end;
+	t_s32	i;
 
 	i = 0;
 	while (ft_isspace(str[i]))
 		++i;
 	end = ft_strlen(str) - 1;
-	while (!ft_isdigit(str[end]))
+	while (end >= 0 && !ft_isalnum(str[end]))
 		--end;
+	if (end == -1 || 1 + end <= i)
+		return (NULL);
 	result = ft_strsub(str, i, 1 + end - i);
 	i = 0;
 	while (result[i])
@@ -42,11 +44,11 @@ int			ft_str_to_float_checkinvalid(char const *str, char **result_tmp)
 	size_t	count_p;
 	size_t	count_e;
 
-	if (str[0] == '\0')
+	if (str[0] == '\0' || !(tmp = ft_str_to_float_toupper(str)))
 		return (ERROR);
-	tmp = ft_str_to_float_toupper(str);
-	if (ft_strequ(tmp, "INF") || ft_strequ(tmp, "-INF") ||
-		ft_strequ(tmp, "INFINITY") || ft_strequ(tmp, "-INFINITY"))
+	if (ft_strequ(tmp, "INF") || ft_strequ(tmp, "INFINITY") ||
+		ft_strequ(tmp, "+INF") || ft_strequ(tmp, "+INFINITY") ||
+		ft_strequ(tmp, "-INF") || ft_strequ(tmp, "-INFINITY"))
 	{
 		*result_tmp = tmp;
 		return (OK);

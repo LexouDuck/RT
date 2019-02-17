@@ -44,8 +44,9 @@ void	render_ui_icon_object(t_object* object, t_s32 y)
 	ui_set_palette(rt.ui.tileset, rt.ui.pal);
 }
 
-void	render_ui_objects(SDL_Point* mouse_tile)
+void	render_ui_objects()
 {
+	t_bool		hover;
 	SDL_Rect	rect;
 	t_s32		i;
 
@@ -56,20 +57,15 @@ void	render_ui_objects(SDL_Point* mouse_tile)
 	i = -1;
 	while (++i < OBJECT_MAX_AMOUNT)
 	{
+		hover = FALSE;
 		if (rt.scene.objects[i].type == none)
 			continue ;
-		if (rt.ui.objects_selected[i])
-			render_ui_fill(2, rect, FALSE);
-		else if (SDL_PointInRect(mouse_tile, &rect))
+		if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
 		{
-			render_ui_fill(1, rect, FALSE);
-			if (rt.input.mouse_button)
-			{
-				if (!(rt.input.keys & KEY_CTRL))
-					ft_memclr(rt.ui.objects_selected, OBJECT_MAX_AMOUNT * sizeof(t_bool));
-				rt.ui.objects_selected[i] = TRUE;
-			}
+			hover = TRUE;
 		}
+		if (hover || rt.ui.objects_selected[i])
+			render_ui_fill((rt.ui.objects_selected[i] ? 2 : 1), rect, FALSE);
 		render_ui_icon_object(&rt.scene.objects[i], rect.y);
 		render_ui_text(/*rt.scene.objects[i].name*/NULL, 4, rect.y + 1, TRUE);
 		render_ui_text((rt.ui.objects_expanded[i] ? "\xFE" : "\xFF"),
@@ -78,52 +74,57 @@ void	render_ui_objects(SDL_Point* mouse_tile)
 	}
 }
 
-void	render_ui_menubar(SDL_Point* mouse_tile)
+void	render_ui_menubar()
 {
-	t_u8		collided;
+	t_bool		hover;
 	SDL_Rect	rect;
 	t_s8		i;
 
-	collided = 0;
 	i = -1;
 	while (++i < MENUBAR_ITEMS)
 	{
+		hover = FALSE;
 		rect = rt.ui.menubar.item_hitbox[i];
-		if (SDL_PointInRect(mouse_tile, &rect))
+		if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
 		{
-			++collided;
-			if (rt.input.mouse_button)
-				rt.ui.menubar.selection = i;
+			hover = TRUE;
 		}
-		render_ui_rect(rect, (collided == 1 ? ++collided : 0));
+		render_ui_rect(rect, hover);
 		render_ui_text(rt.ui.menubar.item_labels[i],
 			rt.ui.menubar.item_hitbox[i].x + 2, 1, TRUE);
 	}
-	if (!collided && rt.input.mouse_button)
-		rt.ui.menubar.selection = -1;
 }
 
-void	render_ui_dropdown(SDL_Point* mouse_tile, t_menu *dropdown)
+void	render_ui_dropdown(t_menu *dropdown)
 {
-	t_u8		collided;
+	t_bool		hover;
 	SDL_Rect	rect;
 	t_s8		i;
 
-	collided = 0;
 	i = -1;
 	while (++i < dropdown->item_amount)
 	{
+		hover = FALSE;
 		rect = dropdown->item_hitbox[i];
-		if (SDL_PointInRect(mouse_tile, &rect))
+		if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
 		{
-			++collided;
-			if (rt.input.mouse_button)
-				rt.ui.menubar.selection = i;
+			hover = TRUE;
 		}
-		render_ui_rect(rect, (collided == 1 ? ++collided : 0));
+		render_ui_rect(rect, hover);
 		render_ui_text(dropdown->item_labels[i],
 			2, 3 + 2 * i, TRUE);
 	}
-	if (!collided && rt.input.mouse_button)
-		dropdown->selection = -1;
+}
+
+void		render_ui_caminfo(t_camera *camera)
+{
+	char	*tmp;
+
+	render_ui_text("CAMERA", UI_WIDTH_TILES + 2, 1, FALSE);
+	render_ui_text("MODE: ", UI_WIDTH_TILES + 2, 2, FALSE);	tmp = ft_u32_to_str(camera->mode);			render_ui_text(tmp, UI_WIDTH_TILES + 8, 2, FALSE);	if (tmp) free(tmp);
+	render_ui_text("LAT-> ", UI_WIDTH_TILES + 2, 4, FALSE);	tmp = ft_f32_to_str(camera->lat, 3);		render_ui_text(tmp, UI_WIDTH_TILES + 8, 4, FALSE);	if (tmp) free(tmp);
+	render_ui_text("LON-> ", UI_WIDTH_TILES + 2, 6, FALSE);	tmp = ft_f32_to_str(camera->lon, 3);		render_ui_text(tmp, UI_WIDTH_TILES + 8, 6, FALSE);	if (tmp) free(tmp);
+	render_ui_text("ZOOM: ", UI_WIDTH_TILES + 2, 8, FALSE);	tmp = ft_f32_to_str(camera->zoom, 3);		render_ui_text(tmp, UI_WIDTH_TILES + 8, 8, FALSE);	if (tmp) free(tmp);
+	render_ui_text("TILT: ", UI_WIDTH_TILES + 2,10, FALSE);	tmp = ft_f32_to_str(camera->tilt_angle, 3);	render_ui_text(tmp, UI_WIDTH_TILES + 8,10, FALSE);	if (tmp) free(tmp);
+	render_ui_text("ANCHOR", UI_WIDTH_TILES + 2,12, FALSE);	tmp = cl_float3_to_str(&camera->anchor, 3);	render_ui_text(tmp, UI_WIDTH_TILES + 8,12, FALSE);	if (tmp) free(tmp);
 }

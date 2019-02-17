@@ -29,7 +29,9 @@ static t_f32	ft_str_to_f32_expon(char const *s_mant, char const *s_exp)
 	char		*tmp;
 
 	tmp = ft_strremove(s_mant, ".");
-	result = (t_f32)ft_str_to_s32(tmp);
+	if (ft_strlen(tmp) > 16)
+		tmp[16] = '\0';
+	result = (t_f32)ft_str_to_s64(tmp);
 	free(tmp);
 	exponent = 0;
 	if (s_exp)
@@ -90,7 +92,7 @@ t_f32			ft_str_to_f32(char const *str)
 	tmp = NULL;
 	if (ft_str_to_float_checkinvalid(str, &tmp))
 		return (NOT_A_NUMBER);
-	if (tmp[0] == 'I' || (tmp[0] == '-' && tmp[0] == 'I'))
+	if (tmp[0] == 'I' || (tmp[0] == '-' && tmp[1] == 'I'))
 	{
 		free(tmp);
 		return (tmp[0] == '-' ? -INFINITY : INFINITY);

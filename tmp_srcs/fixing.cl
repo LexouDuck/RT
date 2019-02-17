@@ -74,7 +74,7 @@ void			debug_print_camera(__constant	t_camera *	camera)
 			"\ttilt %g | hrz_fov %g | aperture %g"
 			"\tc_to_w: \n%10g %10g %10g %10g\n%10g %10g %10g %10g\n%10g %10g %10g %10g\n%10g %10g %10g %10g\n",
 		camera->world_pos.x, camera->world_pos.y, camera->world_pos.z, camera->anchor.x, camera->anchor.y, camera->anchor.z,
-		camera->tilt, camera->hrz_fov, camera->aperture,
+		camera->tilt_angle, camera->hrz_fov, camera->aperture,
 		c.s0, c.s1, c.s2, c.s3, c.s4, c.s5, c.s6, c.s7, c.s8, c.s9, c.sA, c.sB, c.sC, c.sD, c.sE, c.sF);
 }
 
@@ -230,7 +230,7 @@ float16			rt_cl_build_cam_matrix
 	float		sin_val;
 	float		cos_val;
 
-	sin_val = sincos(camera.tilt, &cos_val);
+	sin_val = sincos(camera.tilt_angle, &cos_val);
 	axis_y = (float3)(sin_val, cos_val, 0.);
 	axis_z = normalize(camera.world_pos - camera.anchor);
 	axis_x = cross(axis_y, axis_z);
@@ -891,14 +891,14 @@ float3			get_pixel_color_from_mc_sampling
 			if (ray_i.inter_type)
 		//	if (trace_ray_to_scene(scene, &ray_i))
 			{
-//				return scene->objects[ray_i.hit_obj_id].rgb;
+				return scene->objects[ray_i.hit_obj_id].rgb;
 				ray_i = accumulate_lum_and_bounce_ray(scene, random_seed, ray_i, i, depth);
 //				if (ray_i.complete)
 //					break ;
 			}
 			else
 			{
-//				return (0xFF000000);
+				return (0xFF000000);
 				ray_i.complete = true;
 				ray_i.lum_acc += ray_i.lum_mask * scene->bg_rgb;
 				//break;
@@ -930,9 +930,9 @@ __kernel void	rt_cl_render
 	uint seed0 = x_id;
 	uint seed1 = y_id;
 
+//if (work_item_id == 0) debug_print_camera(&(scene->camera));
 	*random_seed = rt_cl_rand_bit_entropy(seed0, seed1);
 //if (x_id == 0 && y_id == 0) {debug_print_scene(scene); debug_print_camera(&(scene->camera));} printf("sizes %u in %u and %u in %u \n", x_id, width, y_id, height);
-//printf("scene1 %10g  ", scene->camera.c_to_w.sF);
 	float3 vcolor3 = (float3)(255.) * get_pixel_color_from_mc_sampling(scene, random_seed, x_id, y_id);//rt_cl_f3rand_neg1half_to_pos1half(random_seed) * (float3)(255.);//
 //	printf((__constant char *)"kernel %10g %10g %10g\n", vcolor3.x, vcolor3.y, vcolor3.z);
 	uint3 color3 = (uint3)(floor(vcolor3.x), floor(vcolor3.y), floor(vcolor3.z));

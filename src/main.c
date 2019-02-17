@@ -10,28 +10,30 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft_convert.h"
+
 #include "../assets.h"
 #include "../rt.h"
 #include "config.h"
 #include "debug.h"
 #include "event.h"
 #include "ui.h"
+#include "rt_scene.h"
 
 static void	update_window()
 {
-	SDL_Point	mouse_tile;
 	SDL_Rect	dest;
 
+	// Fill the window pixel buffer with black
 	if (SDL_FillRect(rt.sdl.window_surface, NULL, 0x000000))
 		debug_output_error(
 			"Error during update_window() -> Screen clear: ", TRUE);
-	mouse_tile.x = (rt.input.mouse.x) / TILE;
-	mouse_tile.y = (rt.input.mouse.y) / TILE;
+
 	// display the UI
-	render_ui_objects(&mouse_tile);
-	render_ui_menubar(&mouse_tile);
+	render_ui_objects();
+	render_ui_menubar();
 	if (rt.ui.menubar.selection != -1)
-		render_ui_dropdown(&mouse_tile, &rt.ui.dropdowns[rt.ui.menubar.selection]);
+		render_ui_dropdown(&rt.ui.dropdowns[rt.ui.menubar.selection]);
 
 	// Do the 3d render if needed
 	if (rt.must_render)
@@ -42,6 +44,8 @@ static void	update_window()
 	if (SDL_BlitSurface(rt.canvas, &rt.canvas->clip_rect, rt.sdl.window_surface, &dest))
 		debug_output_error(
 			"Error during update_window() -> render blit: ", TRUE);
+
+	render_ui_caminfo(&rt.scene.camera);
 
 	// and update the window display
 	if (SDL_UpdateTexture(rt.sdl.window_texture, NULL,
@@ -98,8 +102,8 @@ static int	main_loop()
 
 int			main(int argc, char* argv[])
 {
-	
 	init_scene();
+	init_camera(&rt.scene.camera);
 
 	// TODO open all files given as args
 	if (argc > 1)

@@ -18,7 +18,13 @@
 **		new_nb = (CEIL_SQRT_MOD  * old_nb + OFFSET) % MODULUS
 */
 
-static uint	rt_cl_rand_bit_shuffle
+# define DEFAULT_SEED	0x93E21FD5
+
+# define MODULUS		0x7FFFFFFF		
+# define CEIL_SQRT_MOD	46341
+# define OFFSET			2835
+
+uint		rt_cl_rand_bit_shuffle
 (
 							uint	n
 )
@@ -28,20 +34,46 @@ static uint	rt_cl_rand_bit_shuffle
 	return ((n << (32 - offset)) ^ (n >> offset));
 }
 
+uint		rt_cl_rand_bit_entropy
+(
+						uint	seed0,
+						uint	seed1
+)
+{
+
+	/* hash the seeds using bitwise AND operations and bitshifts */
+	seed0 = 36969 * ((seed0) & 0xFFFF) + ((seed0) >> 16);  
+	seed1 = 18000 * ((seed1) & 0xFFFF) + ((seed1) >> 16);
+
+	uint tmp = ((seed0) << 16) + (seed1);
+
+	/* use union struct to convert int to float */
+	union
+	{
+		float 			f;
+		uint 			u;
+	} 					res;
+
+	res.u = rt_cl_rand_bit_shuffle((tmp & 0x007fffff) | 0x40000000);  /* bitwise AND, bitwise OR */
+	res.f = (res.f - 2.7) * 0.5;
+	return (res.u);
+}
 
 uint		rt_cl_rand
 (
-				__local		uint *	random_seed
+				__local		uint		random_seed[1]
 )
 {
-	*random_seed = (CEIL_SQRT_MOD * rt_cl_rand_bit_shuffle(*random_seed) + OFFSET) & MODULUS;
+	*random_seed = (CEIL_SQRT_MOD *
+		rt_cl_rand_bit_shuffle(*random_seed) *
+		rt_cl_rand_bit_entropy(*random_seed * (get_global_id(0) + 3), *random_seed + get_global_id(1)) + OFFSET) & MODULUS;
 	return (*random_seed);
 }
 
 
 uint		rt_cl_rand_0_to_pow2n
 (
-				__local 	uint *	random_seed,
+				__local 	uint		random_seed[1],
 							uint	n
 )
 {
@@ -51,7 +83,7 @@ uint		rt_cl_rand_0_to_pow2n
 
 uint		rt_cl_rand_0_to_n
 (
-				__local		uint *	random_seed,
+				__local		uint		random_seed[1],
 							uint	n
 )
 {
@@ -61,7 +93,7 @@ uint		rt_cl_rand_0_to_n
 
 int			rt_cl_rand_a_to_b
 (
-				__local		uint *	random_seed,
+				__local		uint		random_seed[1],
 							int		a,
 							int		b
 )
@@ -77,7 +109,7 @@ int			rt_cl_rand_a_to_b
 
 float		rt_cl_frand_0_to_1
 (
-				__local		uint *	random_seed
+				__local		uint		random_seed[1]
 )
 {
 	return ((float)rt_cl_rand(random_seed) / (float)MODULUS);
@@ -85,7 +117,7 @@ float		rt_cl_frand_0_to_1
 
 float		rt_cl_frand_neg1half_to_pos1half
 (
-				__local		uint *	random_seed
+				__local		uint		random_seed[1]
 )
 {
 	return (rt_cl_frand_0_to_1(random_seed) - 1);
@@ -93,7 +125,7 @@ float		rt_cl_frand_neg1half_to_pos1half
 
 float		rt_cl_frand_neg1_to_pos1
 (
-				__local		uint *	random_seed
+				__local		uint		random_seed[1]
 )
 {
 	return (2 * rt_cl_frand_neg1half_to_pos1half(random_seed));
@@ -102,7 +134,7 @@ float		rt_cl_frand_neg1_to_pos1
 
 float		rt_cl_frand_a_to_b
 (
-				__local		uint *	random_seed,
+				__local		uint		random_seed[1],
 							float	a,
 							float	b
 )
@@ -114,9 +146,6 @@ float		rt_cl_frand_a_to_b
 		(a - b) + b;
 	return (res);
 }
-
-
-
 
 
 
@@ -140,8 +169,12 @@ float3			rt_cl_f3rand_neg1half_to_pos1half
 					rt_cl_frand_0_to_1(random_seed) - 0.5);
 }
 
+
+
+
+
 //TODO add vectorial cos/phong sampling etc
-//Add random points on algebraic curves
+//TODO Add random points on algebraic curves
 
 float3			rt_cl_rand_dir_sphere
 (
@@ -154,6 +187,7 @@ float3			rt_cl_rand_dir_sphere
 
     return (float3)(radius_cos_th, cos(lon) * radius_sin_th, sin(lon) * radius_sin_th);
 }
+
 
 /*
 ** Returns a random vector in a hemisphere defined by 'axis'.

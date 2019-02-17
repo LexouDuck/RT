@@ -24,7 +24,7 @@ static char	*ft_str_to_float_toupper(char const *str)
 	while (ft_isspace(str[i]))
 		++i;
 	end = ft_strlen(str) - 1;
-	while (end >= 0 && !ft_isdigit(str[end]))
+	while (end >= 0 && !ft_isalnum(str[end]))
 		--end;
 	if (end == -1 || 1 + end <= i)
 		return (NULL);
@@ -46,8 +46,9 @@ int			ft_str_to_float_checkinvalid(char const *str, char **result_tmp)
 
 	if (str[0] == '\0' || !(tmp = ft_str_to_float_toupper(str)))
 		return (ERROR);
-	if (ft_strequ(tmp, "INF") || ft_strequ(tmp, "-INF") ||
-		ft_strequ(tmp, "INFINITY") || ft_strequ(tmp, "-INFINITY"))
+	if (ft_strequ(tmp, "INF") || ft_strequ(tmp, "INFINITY") ||
+		ft_strequ(tmp, "+INF") || ft_strequ(tmp, "+INFINITY") ||
+		ft_strequ(tmp, "-INF") || ft_strequ(tmp, "-INFINITY"))
 	{
 		*result_tmp = tmp;
 		return (OK);

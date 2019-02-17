@@ -80,6 +80,8 @@ SRC_CONVERT	:=	ft_int_s_to_str.c		\
 				ft_int_u_to_strbase.c	\
 				ft_int_u_to_hex.c		\
 				ft_float_to_str.c		\
+				ft_f32_to_str.c			\
+				ft_f64_to_str.c			\
 				ft_size_to_str.c		\
 				ft_bool_to_str.c		\
 				ft_str_to_int_s.c		\

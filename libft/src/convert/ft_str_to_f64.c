@@ -28,7 +28,10 @@ static t_f64	ft_str_to_f64_expon(char const *s_mant, char const *s_exp)
 	size_t		frac_digits;
 	char		*tmp;
 
-	tmp = ft_strremove(s_mant, ".");
+	if (!(tmp = ft_strremove(s_mant, ".")))
+		return (NOT_A_NUMBER);
+	if (ft_strlen(tmp) > 18)
+		tmp[18] = '\0';
 	result = (t_f64)ft_str_to_s64(tmp);
 	free(tmp);
 	exponent = 0;
@@ -42,7 +45,9 @@ static t_f64	ft_str_to_f64_expon(char const *s_mant, char const *s_exp)
 	}
 	tmp = ft_strchr(s_mant, '.');
 	if (tmp && (frac_digits = ft_strlen(tmp + 1)) > 0)
-			exponent -= frac_digits;
+		exponent -= frac_digits;
+	if (ft_strlen(s_mant) > 18)
+		exponent += ft_strlen(s_mant) - 18;
 	result *= powf(10., exponent);
 	return (result);
 }
@@ -90,7 +95,8 @@ t_f64			ft_str_to_f64(char const *str)
 	tmp = NULL;
 	if (ft_str_to_float_checkinvalid(str, &tmp))
 		return (NOT_A_NUMBER);
-	if (tmp[0] == 'I' || (tmp[0] == '-' && tmp[0] == 'I'))
+	if (tmp[0] == 'I' || (tmp[1] == 'I' &&
+		(tmp[0] == '-' || tmp[0] == '+')))
 	{
 		free(tmp);
 		return (tmp[0] == '-' ? -INFINITY : INFINITY);

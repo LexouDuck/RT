@@ -50,6 +50,7 @@ typedef struct	s_input
 	t_u8		keys;
 	t_u32		mouse_button;
 	SDL_Point	mouse;
+	SDL_Point	mouse_tile;
 }				t_input;
 
 /*

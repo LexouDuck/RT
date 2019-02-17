@@ -12,6 +12,7 @@
 
 #include "../rt.h"
 #include "event.h"
+#include "ui.h"
 
 void	event_mouse_wheel(SDL_Event *event)
 {
@@ -52,6 +53,13 @@ void	event_mouse_release(SDL_Event *event)
 
 	camera = &rt.scene.camera;
 	camera->mode = CAMERA_MODE_NONE;
+	if (event->button.button == SDL_BUTTON_LEFT)
+	{
+		ui_mouse_objectlist();
+		ui_mouse_menubar();
+		if (rt.ui.menubar.selection != -1)
+			ui_mouse_dropdown(&rt.ui.dropdowns[rt.ui.menubar.selection]);
+	}
 }
 
 void	event_mouse_motion(SDL_Event *event)

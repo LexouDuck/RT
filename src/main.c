@@ -22,7 +22,6 @@
 
 static void	update_window()
 {
-	SDL_Point	mouse_tile;
 	SDL_Rect	dest;
 
 	// Fill the window pixel buffer with black
@@ -30,13 +29,11 @@ static void	update_window()
 		debug_output_error(
 			"Error during update_window() -> Screen clear: ", TRUE);
 
-	mouse_tile.x = (rt.input.mouse.x) / TILE;
-	mouse_tile.y = (rt.input.mouse.y) / TILE;
 	// display the UI
-	render_ui_objects(&mouse_tile);
-	render_ui_menubar(&mouse_tile);
+	render_ui_objects();
+	render_ui_menubar();
 	if (rt.ui.menubar.selection != -1)
-		render_ui_dropdown(&mouse_tile, &rt.ui.dropdowns[rt.ui.menubar.selection]);
+		render_ui_dropdown(&rt.ui.dropdowns[rt.ui.menubar.selection]);
 
 	// Do the 3d render if needed
 	if (rt.must_render)

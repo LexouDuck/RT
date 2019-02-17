@@ -43,6 +43,8 @@ t_bool		event_checkevents(SDL_Window *window)
 
 	rt.input.mouse_button =
 		SDL_GetMouseState(&rt.input.mouse.x, &rt.input.mouse.y);
+	rt.input.mouse_tile.x = (rt.input.mouse.x) / TILE;
+	rt.input.mouse_tile.y = (rt.input.mouse.y) / TILE;
 	rt.sdl.fullscreen =
 		(SDL_GetWindowFlags(window) & SDL_WINDOW_FULLSCREEN_DESKTOP);
 	while (SDL_PollEvent(&event))

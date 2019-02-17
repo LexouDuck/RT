@@ -61,7 +61,7 @@ uint		rt_cl_rand_bit_entropy
 
 uint		rt_cl_rand
 (
-				__local		uint		random_seed[1]
+							uint *			random_seed
 )
 {
 	*random_seed = (CEIL_SQRT_MOD *
@@ -73,7 +73,7 @@ uint		rt_cl_rand
 
 uint		rt_cl_rand_0_to_pow2n
 (
-				__local 	uint		random_seed[1],
+						 	uint *	random_seed,
 							uint	n
 )
 {
@@ -83,7 +83,7 @@ uint		rt_cl_rand_0_to_pow2n
 
 uint		rt_cl_rand_0_to_n
 (
-				__local		uint		random_seed[1],
+							uint *			random_seed,
 							uint	n
 )
 {
@@ -93,7 +93,7 @@ uint		rt_cl_rand_0_to_n
 
 int			rt_cl_rand_a_to_b
 (
-				__local		uint		random_seed[1],
+							uint *			random_seed,
 							int		a,
 							int		b
 )
@@ -109,7 +109,7 @@ int			rt_cl_rand_a_to_b
 
 float		rt_cl_frand_0_to_1
 (
-				__local		uint		random_seed[1]
+							uint *			random_seed
 )
 {
 	return ((float)rt_cl_rand(random_seed) / (float)MODULUS);
@@ -117,7 +117,7 @@ float		rt_cl_frand_0_to_1
 
 float		rt_cl_frand_neg1half_to_pos1half
 (
-				__local		uint		random_seed[1]
+							uint *			random_seed
 )
 {
 	return (rt_cl_frand_0_to_1(random_seed) - 1);
@@ -125,7 +125,7 @@ float		rt_cl_frand_neg1half_to_pos1half
 
 float		rt_cl_frand_neg1_to_pos1
 (
-				__local		uint		random_seed[1]
+							uint *			random_seed
 )
 {
 	return (2 * rt_cl_frand_neg1half_to_pos1half(random_seed));
@@ -134,7 +134,7 @@ float		rt_cl_frand_neg1_to_pos1
 
 float		rt_cl_frand_a_to_b
 (
-				__local		uint		random_seed[1],
+							uint *	random_seed,
 							float	a,
 							float	b
 )
@@ -151,7 +151,7 @@ float		rt_cl_frand_a_to_b
 
 float3			rt_cl_f3rand_0_to_1
 (
-				__local		uint *			random_seed	
+							uint *			random_seed	
 )
 {
 	return (float3)(rt_cl_frand_0_to_1(random_seed),
@@ -161,7 +161,7 @@ float3			rt_cl_f3rand_0_to_1
 
 float3			rt_cl_f3rand_neg1half_to_pos1half
 (
-				__local		uint *			random_seed	
+							uint *			random_seed	
 )
 {
 	return (float3)(rt_cl_frand_0_to_1(random_seed) - 0.5,
@@ -178,7 +178,7 @@ float3			rt_cl_f3rand_neg1half_to_pos1half
 
 float3			rt_cl_rand_dir_sphere
 (
-				__local		uint *			random_seed
+							uint *			random_seed
 )
 {
 	float radius_cos_th = rt_cl_frand_neg1_to_pos1(random_seed); //rand_-1_to_1 = cos(theta)
@@ -195,7 +195,7 @@ float3			rt_cl_rand_dir_sphere
 */
 float3			rt_cl_rand_dir_hemi
 (
-				__local		uint *			random_seed,
+							uint *			random_seed,
 							float3 const	axis
 )
 {

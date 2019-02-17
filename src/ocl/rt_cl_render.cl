@@ -118,7 +118,7 @@ t_ray			trace_ray_to_scene
 t_ray			accumulate_lum_and_bounce_ray
 (
 						__constant	t_scene	*	scene,
-						__local		uint		random_seed[1],
+									uint *		random_seed,
 									t_ray		ray,
 									int			sampid,
 									int			depth
@@ -215,8 +215,8 @@ t_ray			accumulate_lum_and_bounce_ray
 
 float3			get_pixel_color_from_mc_sampling
 (
-					__constant		t_scene	*	scene,
-					__local			uint		random_seed[1],
+					__constant		t_scene	*	scene,	
+									uint *		random_seed,
 									int			x_id,
 									int			y_id
 )
@@ -253,14 +253,14 @@ float3			get_pixel_color_from_mc_sampling
 			if (ray_i.inter_type)
 		//	if (trace_ray_to_scene(scene, &ray_i))
 			{
-				return scene->objects[ray_i.hit_obj_id].rgb;
+//				return scene->objects[ray_i.hit_obj_id].rgb;
 				ray_i = accumulate_lum_and_bounce_ray(scene, random_seed, ray_i, i, depth);
 //				if (ray_i.complete)
 //					break ;
 			}
 			else
 			{
-				return (0xFF000000);
+//				return (0xFF000000);
 				ray_i.complete = true;
 				ray_i.lum_acc += ray_i.lum_mask * scene->bg_rgb;
 				//break;
@@ -278,7 +278,7 @@ __kernel void	rt_cl_render
 (
 					__global		uint *		result_imgbuf,
 					__constant		t_scene	*	scene//,
-//					__local			uint		random_seed[1]
+//										uint		random_seed[1]
 )
 {	
 	int const			width = get_global_size(0);
@@ -287,15 +287,16 @@ __kernel void	rt_cl_render
 	int const			y_id = get_global_id(1); /* y-coordinate of the current pixel */
 //	int const			sample_id = get_global_id(2); /* id of the current ray thread amongst the MC simulation for the current pixel*/
 	int const			work_item_id = y_id * get_global_size(0) + x_id;
-	__local	uint		random_seed[1];
+//				uint		random_seed[1];
+	uint				random_seed;
 
 	uint seed0 = x_id;
 	uint seed1 = y_id;
 
 //if (work_item_id == 0) debug_print_camera(&(scene->camera));
-	*random_seed = rt_cl_rand_bit_entropy(seed0, seed1);
+	random_seed = rt_cl_rand_bit_entropy(seed0, seed1);
 //if (x_id == 0 && y_id == 0) {debug_print_scene(scene); debug_print_camera(&(scene->camera));} printf("sizes %u in %u and %u in %u \n", x_id, width, y_id, height);
-	float3 vcolor3 = (float3)(255.) * get_pixel_color_from_mc_sampling(scene, random_seed, x_id, y_id);//rt_cl_f3rand_neg1half_to_pos1half(random_seed) * (float3)(255.);//
+	float3 vcolor3 = (float3)(255.) * get_pixel_color_from_mc_sampling(scene, &random_seed, x_id, y_id);//rt_cl_f3rand_neg1half_to_pos1half(random_seed) * (float3)(255.);//
 //	printf((__constant char *)"kernel %10g %10g %10g\n", vcolor3.x, vcolor3.y, vcolor3.z);
 	uint3 color3 = (uint3)(floor(vcolor3.x), floor(vcolor3.y), floor(vcolor3.z));
 //	printf((__constant char *)"kernel %u %u %u\n", color3.x, color3.y, color3.z);

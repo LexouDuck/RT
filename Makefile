@@ -196,6 +196,7 @@ clean:
 	@printf "Deleting object files...\n"
 	@rm -f $(OBJS)
 	@rm -f assets.o
+	@rm -f concat.cl
 
 fclean: clean
 	@make -C $(LFTDIR) fclean

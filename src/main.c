@@ -42,8 +42,7 @@ static void	update_window()
 	dest.x += UI_WIDTH;
 	dest.w -= UI_WIDTH;
 	if (SDL_BlitSurface(rt.canvas, &rt.canvas->clip_rect, rt.sdl.window_surface, &dest))
-		debug_output_error(
-			"Error during update_window() -> render blit: ", TRUE);
+		debug_output_error("Error during update_window() -> render blit: ", TRUE);
 
 	render_ui_caminfo(&rt.scene.camera);
 

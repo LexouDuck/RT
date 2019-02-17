@@ -20,11 +20,11 @@ void		init_camera(t_camera *camera)
 	camera->mode = CAMERA_MODE_NONE;
 	camera->anchor = DEFAULT_CAM_ANCHOR;
 	camera->relative_pos = DEFAULT_CAM_POS;
-	camera->world_pos = (cl_float3){
+	camera->world_pos = (cl_float3){{
 		camera->anchor.x + camera->relative_pos.x,
 		camera->anchor.y + camera->relative_pos.y,
 		camera->anchor.z + camera->relative_pos.z			
-	};
+	}};
 	camera->zoom = 50.0;
 	camera->lat = 90;
 	camera->lon = 0;
@@ -34,6 +34,7 @@ void		init_camera(t_camera *camera)
 	camera->range_max = 1000000;
 	camera->hrz_fov = DEFAULT_CAM_FOV;
 	camera->aperture = DEFAULT_CAM_APERTURE;
+	camera_update(camera);
 }
 
 void		camera_pan(t_camera *camera, float x, float y)
@@ -42,7 +43,11 @@ void		camera_pan(t_camera *camera, float x, float y)
 	cl_float3	pan_x;
 	cl_float3	pan_y;
 
-	tmp = (cl_float3){{ -camera->relative_pos.x, -camera->relative_pos.y, -camera->relative_pos.z }};
+	tmp = (cl_float3){{
+		-camera->relative_pos.x,
+		-camera->relative_pos.y,
+		-camera->relative_pos.z
+	}};
 	cl_float3_cross(&pan_x, &tmp, &camera->tilt_vector);
 	cl_float3_cross(&pan_y, &tmp, &pan_x);
 	cl_float3_normalize(&pan_x);
@@ -83,7 +88,11 @@ void		camera_zoom_tilt(t_camera *camera, float x, float y)
 
 	if (y)
 	{
-		tmp = (cl_float3){{ -camera->relative_pos.x, -camera->relative_pos.y, -camera->relative_pos.z }};
+		tmp = (cl_float3){{
+			-camera->relative_pos.x,
+			-camera->relative_pos.y,
+			-camera->relative_pos.z
+		}};
 		cl_float3_normalize(&tmp);
 		camera->anchor.x += (y * tmp.x);
 		camera->anchor.y += (y * tmp.y);
@@ -120,10 +129,9 @@ void		camera_update(t_camera *camera)
 	camera->relative_pos.x = camera->zoom * cos * camera->relative_pos.x;
 	camera->relative_pos.y = camera->zoom * sin;
 	camera->relative_pos.z = camera->zoom * cos * camera->relative_pos.z;
-	camera->world_pos = (cl_float3)
-	{
+	camera->world_pos = (cl_float3){{
 		camera->anchor.x + camera->relative_pos.x,
 		camera->anchor.y + camera->relative_pos.y,
 		camera->anchor.z + camera->relative_pos.z			
-	};
+	}};
 }

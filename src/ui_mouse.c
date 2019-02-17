@@ -77,7 +77,7 @@ void	ui_mouse_dropdown(t_menu *dropdown)
 			if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
 			{
 				rt.ui.menubar.selection = i;
-			collided = TRUE;
+				collided = TRUE;
 			}
 		}
 		if (!collided)

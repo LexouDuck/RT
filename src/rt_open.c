@@ -21,42 +21,7 @@
 
 #include "../rt.h"
 #include "debug.h"
-#include "config.h"
 #include "rt_scene.h"
-
-static char*	float3_to_str(cl_float3* vector, t_u8 precision)
-{
-	char*	result;
-	char*	x;
-	char*	y;
-	char*	z;
-	size_t	i;
-
-	x = ft_f32_to_str(vector->x, precision);
-	y = ft_f32_to_str(vector->y, precision);
-	z = ft_f32_to_str(vector->z, precision);
-	i = ft_strlen(x) + ft_strlen(y) + ft_strlen(z) + 7;
-	if (!(result = (char*)malloc(i)))
-		return (NULL);
-	i = 0;
-	result[i++] = '(';
-	ft_strcpy(result + i, x);
-	i += ft_strlen(x);
-	result[i++] = ',';
-	result[i++] = ' ';
-	ft_strcpy(result + i, y);
-	i += ft_strlen(y);
-	result[i++] = ',';
-	result[i++] = ' ';
-	ft_strcpy(result + i, z);
-	i += ft_strlen(z);
-	result[i++] = ')';
-	result[i] = '\0';
-	free(x);
-	free(y);
-	free(z);
-	return (result);
-}
 
 static void	rt_output_readfile()
 {
@@ -83,35 +48,12 @@ static void	rt_output_readfile()
 		object = &rt.scene.objects[i];
 		debug_output(primitive_types[(int)object->type]);
 		debug_output_value("-> #",	ft_u32_to_hex(object->color), TRUE);
-		debug_output_value(" -   pos:",	float3_to_str(&object->pos, 3), TRUE);
-		debug_output_value(" -   rot:",	float3_to_str(&object->rot, 3), TRUE);
-		debug_output_value(" - scale:",	float3_to_str(&object->scale, 3), TRUE);
+		debug_output_value("NAME: ",	object->name, FALSE);
+		debug_output_value(" -   pos:",	cl_float3_to_str(&object->pos, 3), TRUE);
+		debug_output_value(" -   rot:",	cl_float3_to_str(&object->rot, 3), TRUE);
+		debug_output_value(" - scale:",	cl_float3_to_str(&object->scale, 3), TRUE);
+		debug_output_value(" - light:",	cl_float3_to_str(&object->rgb, 3), TRUE);
 		++i;
-	}
-}
-
-void		rt_read_whitespace(t_rtparser *p)
-{
-	char	*file;
-
-	file = p->file;
-	while (file[p->index] &&
-		(ft_isspace(file[p->index]) || file[p->index] == '/'))
-	{
-		if (file[p->index] == '\n')
-			++(p->line);
-		else if (file[p->index] == '/')
-		{
-			if (file[p->index + 1] == '/')
-			{
-				while (file[p->index] && file[p->index] != '\n')
-					++(p->index);
-				++(p->line);
-			}
-			else
-				break;
-		}
-		++(p->index);
 	}
 }
 
@@ -121,14 +63,18 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 	t_object	object;
 
 	object.type = shape;
+	object.rgb = (cl_float3){{ 1., 1., 1. }};
 	if ((error = rt_read_arg_color(p, &object.color)) ||
 		(error = rt_read_arg_vector(p, &object.pos)) ||
 		(error = rt_read_arg_vector(p, &object.rot)) ||
 		(error = rt_read_arg_vector(p, &object.scale)))
 		return (error);
-	object.rgb.x = ft_color_argb32_get_r(object.color);
-	object.rgb.y = ft_color_argb32_get_g(object.color);
-	object.rgb.z = ft_color_argb32_get_b(object.color);
+	if ((error = rt_read_arg_name(p, &object.name)) ||
+		(error = rt_read_arg_light(p, &object.rgb)))
+		return (error);
+	object.rgb.x *= ft_color_argb32_get_r(object.color);
+	object.rgb.y *= ft_color_argb32_get_g(object.color);
+	object.rgb.z *= ft_color_argb32_get_b(object.color);
 	rt.scene.objects[p->current_object] = object;
 	++(p->current_object);
 	return (NULL);
@@ -140,7 +86,7 @@ static char	*rt_read_command(t_rtparser *p, char *label)
 
 	shape = none;
 	if (ft_strequ(label, "LIGHT"))
-		return ("'LIGHT' is not a valid usable label.\n"
+		return ("'LIGHT' is not a valid usable 3D object label.\n"
 			"To create a light, make any object and add a 'light' argument.");
 	else if (ft_strequ(label, "PLANE"))
 		shape = plane;

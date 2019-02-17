@@ -7,11 +7,11 @@ CC_LIN	= gcc
 CC_MAC	= gcc
 
 # Compiler flags
-CFLAGS	=	-Wall -Wextra $(CFLAGS_PLATFORM) -lm -ldl -O2 -MMD -g
+CFLAGS	=	-Wall -Wextra $(CFLAGS_PLATFORM) -lm -O2 -MMD -g
 
 CFLAGS_PLATFORM = _
 CFLAGS_WIN	= -mwindows -I./ -L./
-CFLAGS_LIN	= -Wno-unused-result #-fsanitize=address 
+CFLAGS_LIN	= -Wno-unused-result #-fsanitize=address -ldl
 CFLAGS_MAC	=
 
 # Linker (for embedding binary files inside the program)
@@ -114,6 +114,7 @@ SRCS	= 	main.c				\
 			event_key.c			\
 			rt_open.c			\
 			rt_open_util.c		\
+			rt_open_read.c		\
 			ui.c				\
 			ui_init.c			\
 			ui_mouse.c			\

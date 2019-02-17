@@ -29,8 +29,8 @@
 ** ************************************************************************** *|
 */
 
-# define DEFAULT_CAM_POS		((cl_float3){3., 6., -5.})
-# define DEFAULT_CAM_ANCHOR		((cl_float3){0., 0., 0.})
+# define DEFAULT_CAM_POS		((cl_float3){{ 3., 6.,-5. }})
+# define DEFAULT_CAM_ANCHOR		((cl_float3){{ 0., 0., 0. }})
 # define DEFAULT_CAM_TILT		0.
 # define DEFAULT_CAM_FOV		0.8
 # define DEFAULT_CAM_APERTURE	1.
@@ -241,6 +241,7 @@ typedef struct	s_object
 {
 	t_primitive		type;
 	t_material		material;
+	char			*name;
 	cl_float3		pos;
 	cl_float3		rot;
 	cl_float3		scale;

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../rt.h"
+#include "debug.h"
 #include "event.h"
 #include "ui.h"
 
@@ -21,14 +22,15 @@ void	event_mouse_wheel(SDL_Event *event)
 	camera = &rt.scene.camera;
 	if (event->wheel.y)
 	{
-		if (event->wheel.y < 0)
-			camera->zoom *= 0.9;
 		if (event->wheel.y > 0)
+			camera->zoom *= 0.9;
+		if (event->wheel.y < 0)
 			camera->zoom *= 1.1;
 		if (camera->zoom < 1)
 			camera->zoom = 1;
+		camera_update(camera);
+		rt.must_render = TRUE;
 	}
-	rt.must_render = TRUE;
 }
 
 void	event_mouse_press(SDL_Event *event)
@@ -44,7 +46,8 @@ void	event_mouse_press(SDL_Event *event)
 		camera->mode = CAMERA_MODE_TILT;
 	else if (event->button.button == SDL_BUTTON_RIGHT)
 		camera->mode = CAMERA_MODE_ROTATE;
-	rt.must_render = TRUE;
+	if (camera->mode && SDL_CaptureMouse(TRUE))
+		debug_output_error("Unable to capture the mouse cursor input.", TRUE);
 }
 
 void	event_mouse_release(SDL_Event *event)
@@ -60,6 +63,8 @@ void	event_mouse_release(SDL_Event *event)
 		if (rt.ui.menubar.selection != -1)
 			ui_mouse_dropdown(&rt.ui.dropdowns[rt.ui.menubar.selection]);
 	}
+	if (camera->mode && SDL_CaptureMouse(FALSE))
+		debug_output_error("Unable to release the mouse cursor input.", TRUE);
 }
 
 void	event_mouse_motion(SDL_Event *event)

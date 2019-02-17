@@ -126,14 +126,12 @@ SRCS	= 	main.c				\
 SRCDIR_CL	= $(SRCDIR)ocl/
 
 # List of OpenCL source code files. ORDER MATTERS: FILES ARE CONCATENATED THEN READ.
-SRCS_CL	=	../../tmp_srcs/fixing.cl
-
-#			rt_cl_scene.cl.h		\
-#			rt_cl_linear_algebra.h	\
-#			rt_cl_random.cl			\
-#			rt_cl_debug.cl			\
-#			rt_cl_build_scene		\
-#			rt_cl_render.cl
+SRCS_CL	=	rt_cl_scene.cl.h		\
+			rt_cl_linear_algebra.cl	\
+			rt_cl_random.cl			\
+			rt_cl_debug.cl			\
+			rt_cl_build_scene.cl	\
+			rt_cl_render.cl
 
 # List of asset files to be embedded within the program
 INCS	=	ui.chr

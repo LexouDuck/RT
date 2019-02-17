@@ -114,6 +114,7 @@ SRCS	= 	main.c				\
 			event_key.c			\
 			rt_open.c			\
 			rt_open_util.c		\
+			rt_open_read.c		\
 			ui.c				\
 			ui_init.c			\
 			ui_mouse.c			\

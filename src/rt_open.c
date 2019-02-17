@@ -48,9 +48,11 @@ static void	rt_output_readfile()
 		object = &rt.scene.objects[i];
 		debug_output(primitive_types[(int)object->type]);
 		debug_output_value("-> #",	ft_u32_to_hex(object->color), TRUE);
+		debug_output_value("NAME: ",	object->name, FALSE);
 		debug_output_value(" -   pos:",	cl_float3_to_str(&object->pos, 3), TRUE);
 		debug_output_value(" -   rot:",	cl_float3_to_str(&object->rot, 3), TRUE);
 		debug_output_value(" - scale:",	cl_float3_to_str(&object->scale, 3), TRUE);
+		debug_output_value(" - light:",	cl_float3_to_str(&object->rgb, 3), TRUE);
 		++i;
 	}
 }
@@ -61,14 +63,18 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 	t_object	object;
 
 	object.type = shape;
+	object.rgb = (cl_float3){{ 1., 1., 1. }};
 	if ((error = rt_read_arg_color(p, &object.color)) ||
 		(error = rt_read_arg_vector(p, &object.pos)) ||
 		(error = rt_read_arg_vector(p, &object.rot)) ||
 		(error = rt_read_arg_vector(p, &object.scale)))
 		return (error);
-	object.rgb.x = ft_color_argb32_get_r(object.color);
-	object.rgb.y = ft_color_argb32_get_g(object.color);
-	object.rgb.z = ft_color_argb32_get_b(object.color);
+	if ((error = rt_read_arg_name(p, &object.name)) ||
+		(error = rt_read_arg_light(p, &object.rgb)))
+		return (error);
+	object.rgb.x *= ft_color_argb32_get_r(object.color);
+	object.rgb.y *= ft_color_argb32_get_g(object.color);
+	object.rgb.z *= ft_color_argb32_get_b(object.color);
 	rt.scene.objects[p->current_object] = object;
 	++(p->current_object);
 	return (NULL);

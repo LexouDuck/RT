@@ -241,6 +241,7 @@ typedef struct	s_object
 {
 	t_primitive		type;
 	t_material		material;
+	char			*name;
 	cl_float3		pos;
 	cl_float3		rot;
 	cl_float3		scale;

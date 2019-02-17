@@ -43,7 +43,11 @@ void		camera_pan(t_camera *camera, float x, float y)
 	cl_float3	pan_x;
 	cl_float3	pan_y;
 
-	tmp = (cl_float3){{ -camera->relative_pos.x, -camera->relative_pos.y, -camera->relative_pos.z }};
+	tmp = (cl_float3){{
+		-camera->relative_pos.x,
+		-camera->relative_pos.y,
+		-camera->relative_pos.z
+	}};
 	cl_float3_cross(&pan_x, &tmp, &camera->tilt_vector);
 	cl_float3_cross(&pan_y, &tmp, &pan_x);
 	cl_float3_normalize(&pan_x);
@@ -84,7 +88,11 @@ void		camera_zoom_tilt(t_camera *camera, float x, float y)
 
 	if (y)
 	{
-		tmp = (cl_float3){{ -camera->relative_pos.x, -camera->relative_pos.y, -camera->relative_pos.z }};
+		tmp = (cl_float3){{
+			-camera->relative_pos.x,
+			-camera->relative_pos.y,
+			-camera->relative_pos.z
+		}};
 		cl_float3_normalize(&tmp);
 		camera->anchor.x += (y * tmp.x);
 		camera->anchor.y += (y * tmp.y);

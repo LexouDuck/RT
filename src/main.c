@@ -82,6 +82,8 @@ static int	main_loop()
 	}
 	config_save();
 	config_free();
+	for (int i = 0; i < RT_CL_KERNEL_AMOUNT; ++i)
+		clReleaseKernel(rt.ocl.kernels[i]);
 	clReleaseCommandQueue(rt.ocl.cmd_queue);
 	clReleaseProgram(rt.ocl.program);
 	clReleaseContext(rt.ocl.context);
@@ -132,8 +134,6 @@ int			main(int argc, char* argv[])
 		return (ERROR);
 //printf("debug init opencl\n");
 	if (init_opencl())
-		return (ERROR);
-	if (render_init())
 		return (ERROR);
 	return (main_loop());
 }

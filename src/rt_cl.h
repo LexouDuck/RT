@@ -58,7 +58,7 @@
 //# define RT_CL_PROGRAM_SOURCE		"src/rt_cl_build_scene"//"tmp_srcs/opencl_sandbox/qjulia_kernel.cl"//
 # define RT_CL_PROGRAM_SOURCE		"tmp_srcs/fixing.cl"//"src/rt_cl_render.cl"
 # define RT_CL_PROGRAM_OPTIONS		"-Werror"//-cl-opt-disable"//-Werror"// -g" //-cl-nv-verbose" //-cl-kernel-arg-info" //-cl-fast-relaxed-math" //-cl-unsafe-math-optimizations //-cl-mad-enable
-# define RT_CL_KERNEL_NB			2
+# define RT_CL_KERNEL_AMOUNT			2
 # define RT_CL_KERNEL_0				"rt_cl_build_scene"
 # define RT_CL_KERNEL_1				"rt_cl_render"//"QJuliaKernel"//
 
@@ -92,7 +92,7 @@ typedef struct	s_cl
 	cl_context			context;
 	cl_program			program;
 	cl_command_queue	cmd_queue;
-	cl_kernel			kernels[RT_CL_KERNEL_NB];
+	cl_kernel			kernels[RT_CL_KERNEL_AMOUNT];
 	t_gpu_buffers		gpu_buf;
 	cl_int				status;
 }				t_cl;

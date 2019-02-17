@@ -193,9 +193,13 @@ int				read_and_build_program()
 
 int				init_opencl()
 {
+	int		err;
+
 	if (create_device_context_and_queue())
 		return (debug_perror("init_opencl: could not create device, context or queue."));
 	if (read_and_build_program())
 		return (debug_perror("init_opencl: could not build program."));
+	if ((err = clCreateKernelsInProgram (rt.ocl.program, RT_CL_KERNEL_AMOUNT, rt.ocl.kernels, NULL)) < 0)
+		return (debug_perror("init_opencl: could not init kernels."));
 	return (OK);
 }

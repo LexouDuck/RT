@@ -22,6 +22,17 @@
 #include "rt_scene.h"
 
 
+
+#if 0
+	//code to print program as is stored in memory
+	char str[20000];
+
+	err = clGetProgramInfo(rt.ocl.program, CL_PROGRAM_SOURCE, 20000, str, NULL);
+	if (err < 0)
+		return (debug_perror("Couldn't create read source "RT_CL_PROGRAM_SOURCE));
+#endif
+
+
 const char		*get_error_string(cl_int error)
 {
 	switch (error)
@@ -100,30 +111,9 @@ const char		*get_error_string(cl_int error)
     }
 }
 
-
-int		render_init()
+int		render_launch_kernel0_build_scene(void)
 {
 	int err = 0;
-//assign group size and work dim etc //fat data buffers
-//kernels //setting args is done later ? //clCreateKernelsInProgram
-
-/*
-char str[20000];
-
-	err = clGetProgramInfo(rt.ocl.program, CL_PROGRAM_SOURCE, 20000, str, NULL);
-	if (err < 0)
-		return (debug_perror("Couldn't create read source "RT_CL_PROGRAM_SOURCE));
-*/
-
-//printf("%s\n\n\nt_scene size %#lx\n", str, sizeof(t_scene));
-
-printf("workdim size %u %u\n", rt.canvas_w, rt.canvas_h);
-
-rt.scene.objects[0].material = !lightsrc;
-//float intensity = 1. / 255.;
-rt.scene.objects[0].rgb = (cl_float3){255., 255., 255.};//((BG_COLOR & 0xFF0000) >> 16) * intensity, ((BG_COLOR & 0xFF00) >> 8) * intensity, (BG_COLOR & 0xFF) * intensity};
-
-
 
 	/* KERNEL 0: build_scene */
 	rt.ocl.gpu_buf.scene = clCreateBuffer(rt.ocl.context,
@@ -135,66 +125,41 @@ rt.scene.objects[0].rgb = (cl_float3){255., 255., 255.};//((BG_COLOR & 0xFF0000)
 			sizeof(t_scene), &(rt.scene), 0, NULL, NULL);
 	if (err < 0)
 		return (debug_perror("Couldn't enqueue write to gpu for "RT_CL_KERNEL_0));
-
-	rt.ocl.kernels[0] = clCreateKernel(rt.ocl.program, RT_CL_KERNEL_0, &err);
-	if (err < 0)
-		return (debug_perror("Couldn't create a kernel for "RT_CL_KERNEL_0));
-
 	err = clSetKernelArg(rt.ocl.kernels[0], 0, sizeof(cl_mem), &(rt.ocl.gpu_buf.scene));
 	if (err < 0)
 		return (debug_perror("Couldn't create a kernel argument for "RT_CL_KERNEL_0));
-
-	err = clEnqueueNDRangeKernel(rt.ocl.cmd_queue, rt.ocl.kernels[0], 1, NULL /*dim_offsets*/, &(rt.scene.object_amount), 
-			NULL /*&local_size*/, 0, NULL, NULL); 
+	err = clEnqueueNDRangeKernel(rt.ocl.cmd_queue, rt.ocl.kernels[0], 1, NULL /*dim_offsets*/,
+				&(rt.scene.object_amount), NULL /*&local_size*/, 0, NULL, NULL); 
 	if (err < 0)
 	{
 		debug_perror(get_error_string(err));
-		printf("obj amount in render %lu\n", rt.scene.object_amount);
 		return (debug_perror("Couldn't enqueue the kernel for "RT_CL_KERNEL_0));
 	}
-	/* Memory for scene is still on the GPU */
+	if ((err = clFinish(rt.ocl.cmd_queue)) < 0)
+		return (debug_perror("Couldn't finish "RT_CL_KERNEL_0));
+	return (OK);
+}
 
-if ((err = clFinish(rt.ocl.cmd_queue)) < 0)
-	return (debug_perror("Couldn't finish "RT_CL_KERNEL_0));
+//int		render_launch_kernel0_build_scene(void)
 
-
-
-
+int		render_launch_kernel1_rendermain(void)
+{
+	int		err = 0;
+	int		work_dim_amount = 2;
+	size_t	work_dim_array[2] = {(size_t)rt.canvas_w, (size_t)rt.canvas_h};
 
 	/* KERNEL 1: Launch camera rays and return color values */
-	rt.ocl.kernels[1] = clCreateKernel(rt.ocl.program, RT_CL_KERNEL_1, &err);
-	if (err < 0)
-		return (debug_perror("Couldn't create a kernel for "RT_CL_KERNEL_1));
-
 	rt.ocl.gpu_buf.canvas_pixels = clCreateBuffer(rt.ocl.context,
 		CL_MEM_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,
 		sizeof(t_u32) * rt.canvas_pixel_amount, rt.canvas->pixels, &err);
 	if (err < 0)
-	{
-/*printf("contexterr: %d; value err: %d; buffersize err: %d; hostptr err: %d; memalloc err: %d; hostmem err: %d\nerr: %d\n",
-	CL_INVALID_CONTEXT, CL_INVALID_VALUE, CL_INVALID_BUFFER_SIZE, CL_INVALID_HOST_PTR,
-	CL_MEM_OBJECT_ALLOCATION_FAILURE, CL_OUT_OF_HOST_MEMORY, err);
-*/		return (debug_perror("Couldn't create write buffer for "RT_CL_KERNEL_1));
-	}
-
-//	err = clEnqueueWriteBuffer(rt.ocl.cmd_queue, rt.ocl.gpu_buf.canvas_pixels, CL_TRUE, 0, 
-//			sizeof(t_u32) * rt.canvas_pixel_amount, rt.canvas->pixels, 0, NULL, NULL);
-
-
-	/* Create kernel arguments */
-//	err = clSetKernelArg(rt.ocl.kernels[0], 0, rt.sdl.pixel_amount * sizeof(cl_uint), NULL);//empty declaration for local memory.
+		return (debug_perror("Couldn't create write buffer for "RT_CL_KERNEL_1));
 	int kernel_arg_nbr = -1;
 	err = clSetKernelArg(rt.ocl.kernels[1], ++kernel_arg_nbr, sizeof(cl_mem), &(rt.ocl.gpu_buf.canvas_pixels));
 	err |= clSetKernelArg(rt.ocl.kernels[1], ++kernel_arg_nbr, sizeof(cl_mem), &(rt.ocl.gpu_buf.scene));
-//	err |= clSetKernelArg(rt.ocl.kernels[1], ++kernel_arg_nbr, sizeof(cl_uint), NULL);
-
+//	err |= clSetKernelArg(rt.ocl.kernels[1], ++kernel_arg_nbr, sizeof(cl_uint), NULL); TODO: check if adding this fixes work group seed problem
 	if (err < 0)
 		return (debug_perror("Couldn't create a kernel argument for "RT_CL_KERNEL_1));
-
-
-	/* Enqueue kernel */
-	int		work_dim_amount = 2;
-	size_t	work_dim_array[2] = {(size_t)rt.canvas_w, (size_t)rt.canvas_h};
 	err = clEnqueueNDRangeKernel(rt.ocl.cmd_queue, rt.ocl.kernels[1], work_dim_amount, NULL /*dim_offsets*/, work_dim_array, 
 			NULL /*&local_size*/, 0, NULL, NULL); 
 	if (err < 0)
@@ -202,32 +167,34 @@ if ((err = clFinish(rt.ocl.cmd_queue)) < 0)
 		debug_perror(get_error_string(err));
 		return (debug_perror("Couldn't enqueue the kernel for "RT_CL_KERNEL_1));
 	}
-	
+	if ((err = clFinish(rt.ocl.cmd_queue)) < 0)
+	{
+		debug_perror(get_error_string(err));
+		return (debug_perror("Couldn't finish "RT_CL_KERNEL_1));
+	}
 
-//	clFlush(rt.ocl.cmd_queue);
-
-if ((err = clFinish(rt.ocl.cmd_queue)) < 0)
-{
-	debug_perror(get_error_string(err));
-	return (debug_perror("Couldn't finish "RT_CL_KERNEL_1));
+	return (OK);
 }
-	/* Read the kernel's output */
+
+int		render_read_gpu_buffer(void)
+{
+	int err = 0;
+//assign group size and work dim etc //fat data buffers
+//kernels //setting args is done later ? //clCreateKernelsInProgram
+
+
+
 	err = clEnqueueReadBuffer(rt.ocl.cmd_queue, rt.ocl.gpu_buf.canvas_pixels, CL_TRUE, 0, 
 			sizeof(t_u32) * rt.canvas_pixel_amount, rt.canvas->pixels, 0, NULL, NULL);
-//t_u32 * tmp = (t_u32*)rt.canvas->pixels;
-//printf("Corners after kernel return %#x %#x %#x %#x\n", tmp[0], tmp[rt.canvas_w - 1], tmp[(rt.canvas_h - 1) * rt.canvas_w], tmp[rt.canvas_pixels - 1]);
 	if(err < 0)
 	{
 		debug_perror(get_error_string(err));
 		return (debug_perror("Couldn't read the buffer for "RT_CL_KERNEL_1));
 	}
 
-//	clFlush(rt.ocl.cmd_queue);
-//	clFinish(rt.ocl.cmd_queue);
 
-
-	clReleaseKernel(rt.ocl.kernels[1]);
-	clReleaseKernel(rt.ocl.kernels[0]);
+//	clReleaseKernel(rt.ocl.kernels[1]);
+//	clReleaseKernel(rt.ocl.kernels[0]);
 
 	clReleaseMemObject(rt.ocl.gpu_buf.canvas_pixels);
 	clReleaseMemObject(rt.ocl.gpu_buf.scene);
@@ -237,12 +204,19 @@ if ((err = clFinish(rt.ocl.cmd_queue)) < 0)
 	return (OK);
 }
 
-void	render()
+int		render()
 {
-	// fill the canvas->pixels buffer here
-	if (render_init())
-	{
-		debug_output_error("Rendering failed: ", TRUE);
-		return ;
-	}
+//	int		err;
+
+rt.scene.objects[0].material = !lightsrc;
+//float intensity = 1. / 255.;
+rt.scene.objects[0].rgb = (cl_float3){255., 255., 255.};//((BG_COLOR & 0xFF0000) >> 16) * intensity, ((BG_COLOR & 0xFF00) >> 8) * intensity, (BG_COLOR & 0xFF) * intensity};
+
+	if (render_launch_kernel0_build_scene())
+		return (ERROR);
+	if (render_launch_kernel1_rendermain())
+		return (ERROR);
+	if (render_read_gpu_buffer())
+		return (ERROR);
+	return (OK);
 }

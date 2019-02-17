@@ -118,7 +118,6 @@ char		*rt_read_arg_color(t_rtparser *p, t_u32 *result);
 /*
 **	render.c
 */
-int		render_init();
-void	render();
+int		render();
 
 #endif

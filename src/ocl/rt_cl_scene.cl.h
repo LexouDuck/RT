@@ -219,4 +219,5 @@ typedef struct	s_scene
 	t_bbox		bbox;
 	uint		max_ray_depth;
 	uint		mc_raysamp_size;
+	uint		random_seed_time;
 }				t_scene;

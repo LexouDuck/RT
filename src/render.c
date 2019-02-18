@@ -211,7 +211,7 @@ int		render()
 //rt.scene.objects[0].material = !lightsrc;
 //float intensity = 1. / 255.;
 //rt.scene.objects[0].rgb = (cl_float3){255., 255., 255.};//((BG_COLOR & 0xFF0000) >> 16) * intensity, ((BG_COLOR & 0xFF00) >> 8) * intensity, (BG_COLOR & 0xFF) * intensity};
-
+	rt.scene.random_seed_time = rt.sdl.current_frame;
 	if (render_launch_kernel0_build_scene())
 		return (ERROR);
 	if (render_launch_kernel1_rendermain())

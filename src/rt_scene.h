@@ -31,7 +31,7 @@
 # define DEFAULT_CAM_ANCHOR		((cl_float3){{ 0., 0., 0. }})
 # define DEFAULT_CAM_TILT		0.
 # define DEFAULT_CAM_FOV		0.8
-# define DEFAULT_CAM_APERTURE	1.
+# define DEFAULT_CAM_APERTURE	0.05
 
 # define DEFAULT_RENDER_DIST	100000.
 # define EPS					0.001
@@ -266,6 +266,7 @@ typedef struct	s_scene
 	t_bbox		bbox;
 	cl_uint		max_ray_depth;
 	cl_uint		mc_raysamp_size;
+	cl_uint		random_seed_time;
 }				t_scene;
 
 #endif

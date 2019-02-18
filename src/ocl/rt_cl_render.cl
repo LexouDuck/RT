@@ -238,7 +238,8 @@ float3			get_pixel_color_from_mc_sampling
 		ray_i.hit_obj_id = -1;
 		ray_i.inter_type = INTER_NONE;
 //		ray_i.pos = (float3)(0., 0., 0.);
-		ray_i.pos = (float3)(rt_cl_frand_neg1half_to_pos1half(random_seed) * 0.1, rt_cl_frand_neg1half_to_pos1half(random_seed) * 0.1, 0.); //add and fix with camera.aperture for depth of field
+		ray_i.pos = (float3)(rt_cl_frand_neg1half_to_pos1half(random_seed), rt_cl_frand_neg1half_to_pos1half(random_seed), 0.); //add and fix with camera.aperture for depth of field
+		ray_i.pos *= (float3)(scene->camera.aperture);
 		ray_i.pos = rt_cl_apply_homogeneous_matrix(cam_mat44, ray_i.pos);
 //		if (i = 0) printf("%f %f %f\n", ray_i.pos.x, ray_i.pos.y, ray_i.pos.z);
 		ray_i.dir = (float3)(x_id - width / 2, y_id - height / 2, fov_val);
@@ -290,8 +291,8 @@ __kernel void	rt_cl_render
 //				uint		random_seed[1];
 	uint				random_seed;
 
-	uint seed0 = x_id;
-	uint seed1 = y_id;
+	uint seed0 = x_id ^ scene->random_seed_time;
+	uint seed1 = y_id + rt_cl_rand_bit_shuffle(scene->random_seed_time);
 
 if (work_item_id == 0) debug_print_scene(scene);
 

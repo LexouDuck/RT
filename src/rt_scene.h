@@ -128,14 +128,15 @@ void		init_scene(void);
 */
 typedef struct	s_ray
 {
-	cl_float3	pos;
-	cl_float3	dir;
-	cl_float	t;
-	cl_bool		complete;
-	cl_int		hit_obj_id;
-//	cl_uint		depth;
-	cl_float3	lum_mask;
-	cl_float3	lum_acc;
+	cl_float3		pos;
+	cl_float3		dir;
+	cl_float		t;
+	cl_bool			complete;
+	cl_int			hit_obj_id;
+//	cl_uint			depth;
+	cl_float3		lum_mask;
+	cl_float3		lum_acc;
+	t_intersection	inter_type;
 }				t_ray;
 
 /*
@@ -239,7 +240,7 @@ typedef struct	s_object
 {
 	t_primitive		type;
 	t_material		material;
-	char			*name;
+//	char			*name;
 	cl_float3		pos;
 	cl_float3		rot;
 	cl_float3		scale;

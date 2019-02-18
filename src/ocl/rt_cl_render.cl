@@ -1,4 +1,4 @@
-bool			get_realroots_quadpoly
+static bool			get_realroots_quadpoly
 (
 							float2 *	roots,
 							float3		quadpoly
@@ -20,7 +20,7 @@ bool			get_realroots_quadpoly
 	return (true);
 }
 
-bool			ray_intersect_bbox
+static bool			ray_intersect_bbox
 (
 					t_ray		ray,
 					t_bbox		aabb,
@@ -47,7 +47,7 @@ bool			ray_intersect_bbox
 	return (tmin < tmax);
 }
 
-t_intersection			ray_intersect_sphere
+static t_intersection			ray_intersect_sphere
 (
 							float *		res,
 							t_ray		ray
@@ -82,13 +82,13 @@ t_intersection			ray_intersect_sphere
 }
 
 
-t_ray			trace_ray_to_scene
+static t_ray			trace_ray_to_scene
 (
 					__constant		t_scene	*	scene,
 									t_ray		ray
 )
 {
-	bool			inter;
+//	bool			inter;
 	float			new_t;
 	t_ray			ray_os;
 	t_ray			result_ray_os;
@@ -115,7 +115,7 @@ t_ray			trace_ray_to_scene
 }
 
 
-t_ray			accumulate_lum_and_bounce_ray
+static t_ray			accumulate_lum_and_bounce_ray
 (
 						__constant	t_scene	*	scene,
 									uint *		random_seed,
@@ -213,7 +213,7 @@ t_ray			accumulate_lum_and_bounce_ray
 
 
 
-float3			get_pixel_color_from_mc_sampling
+static float3			get_pixel_color_from_mc_sampling
 (
 					__constant		t_scene	*	scene,	
 									uint *		random_seed,
@@ -282,8 +282,8 @@ __kernel void	rt_cl_render
 //										uint		random_seed[1]
 )
 {	
-	int const			width = get_global_size(0);
-	int const			height = get_global_size(1);
+//	int const			width = get_global_size(0);
+//	int const			height = get_global_size(1);
 	int const			x_id = get_global_id(0); /* x-coordinate of the current pixel */
 	int const			y_id = get_global_id(1); /* y-coordinate of the current pixel */
 //	int const			sample_id = get_global_id(2); /* id of the current ray thread amongst the MC simulation for the current pixel*/
@@ -294,11 +294,11 @@ __kernel void	rt_cl_render
 	uint seed0 = x_id ^ scene->random_seed_time;
 	uint seed1 = y_id + rt_cl_rand_bit_shuffle(scene->random_seed_time);
 
-if (work_item_id == 0)
+/*if (work_item_id == 0)
 {
 	debug_print_scene(scene);
 	debug_print_camera(&(scene->camera));
-}
+}*/
 	random_seed = rt_cl_rand_bit_entropy(seed0, seed1);
 	float3 vcolor3 = (float3)(255.) * get_pixel_color_from_mc_sampling(scene, &random_seed, x_id, y_id);//rt_cl_f3rand_neg1half_to_pos1half(random_seed) * (float3)(255.);//
 //	printf((__constant char *)"kernel %10g %10g %10g\n", vcolor3.x, vcolor3.y, vcolor3.z);

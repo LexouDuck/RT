@@ -24,7 +24,7 @@
 # define CEIL_SQRT_MOD	46341
 # define OFFSET			2835
 
-uint		rt_cl_rand_bit_shuffle
+static uint		rt_cl_rand_bit_shuffle
 (
 							uint	n
 )
@@ -34,7 +34,7 @@ uint		rt_cl_rand_bit_shuffle
 	return ((n << (32 - offset)) ^ (n >> offset));
 }
 
-uint		rt_cl_rand_bit_entropy
+static uint		rt_cl_rand_bit_entropy
 (
 						uint	seed0,
 						uint	seed1
@@ -59,7 +59,7 @@ uint		rt_cl_rand_bit_entropy
 	return (res.u);
 }
 
-uint		rt_cl_rand
+static uint		rt_cl_rand
 (
 							uint *			random_seed
 )
@@ -71,7 +71,7 @@ uint		rt_cl_rand
 }
 
 
-uint		rt_cl_rand_0_to_pow2n
+static uint		rt_cl_rand_0_to_pow2n
 (
 						 	uint *	random_seed,
 							uint	n
@@ -81,7 +81,7 @@ uint		rt_cl_rand_0_to_pow2n
 }
 
 
-uint		rt_cl_rand_0_to_n
+static uint		rt_cl_rand_0_to_n
 (
 							uint *			random_seed,
 							uint	n
@@ -91,7 +91,7 @@ uint		rt_cl_rand_0_to_n
 }
 
 
-int			rt_cl_rand_a_to_b
+static int			rt_cl_rand_a_to_b
 (
 							uint *			random_seed,
 							int		a,
@@ -107,7 +107,7 @@ int			rt_cl_rand_a_to_b
 }
 
 
-float		rt_cl_frand_0_to_1
+static float		rt_cl_frand_0_to_1
 (
 							uint *			random_seed
 )
@@ -115,7 +115,7 @@ float		rt_cl_frand_0_to_1
 	return ((float)rt_cl_rand(random_seed) / (float)MODULUS);
 }
 
-float		rt_cl_frand_neg1half_to_pos1half
+static float		rt_cl_frand_neg1half_to_pos1half
 (
 							uint *			random_seed
 )
@@ -123,7 +123,7 @@ float		rt_cl_frand_neg1half_to_pos1half
 	return (rt_cl_frand_0_to_1(random_seed) - 1);
 }
 
-float		rt_cl_frand_neg1_to_pos1
+static float		rt_cl_frand_neg1_to_pos1
 (
 							uint *			random_seed
 )
@@ -132,7 +132,7 @@ float		rt_cl_frand_neg1_to_pos1
 }
 
 
-float		rt_cl_frand_a_to_b
+static float		rt_cl_frand_a_to_b
 (
 							uint *	random_seed,
 							float	a,
@@ -149,7 +149,7 @@ float		rt_cl_frand_a_to_b
 
 
 
-float3			rt_cl_f3rand_0_to_1
+static float3			rt_cl_f3rand_0_to_1
 (
 							uint *			random_seed	
 )
@@ -159,7 +159,7 @@ float3			rt_cl_f3rand_0_to_1
 					rt_cl_frand_0_to_1(random_seed));
 }
 
-float3			rt_cl_f3rand_neg1half_to_pos1half
+static float3			rt_cl_f3rand_neg1half_to_pos1half
 (
 							uint *			random_seed	
 )
@@ -176,7 +176,7 @@ float3			rt_cl_f3rand_neg1half_to_pos1half
 //TODO add vectorial cos/phong sampling etc
 //TODO Add random points on algebraic curves
 
-float3			rt_cl_rand_dir_sphere
+static float3			rt_cl_rand_dir_sphere
 (
 							uint *			random_seed
 )
@@ -193,7 +193,7 @@ float3			rt_cl_rand_dir_sphere
 ** Returns a random vector in a hemisphere defined by 'axis'.
 ** Axis should already be normalized when this function is called.
 */
-float3			rt_cl_rand_dir_hemi
+static float3			rt_cl_rand_dir_hemi
 (
 							uint *			random_seed,
 							float3 const	axis

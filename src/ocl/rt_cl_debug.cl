@@ -1,4 +1,4 @@
-void			debug_print_scene
+static void			debug_print_scene
 (
 				__constant		t_scene *		scene
 )
@@ -23,7 +23,7 @@ void			debug_print_scene
 /*
 ** Use only the lines you need, memory is limited and you might get weird results otherwise
 */
-void			debug_print_object
+static void			debug_print_object
 (
 				__global		t_object *		obj
 )
@@ -53,7 +53,7 @@ void			debug_print_object
 	);
 }
 
-void			debug_print_camera
+static void			debug_print_camera
 (
 				__constant		t_camera *		camera
 )

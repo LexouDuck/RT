@@ -1,4 +1,4 @@
-float16			rt_cl_build_cam_matrix
+static float16			rt_cl_build_cam_matrix
 (
 				t_camera	camera
 )
@@ -43,7 +43,7 @@ float16			rt_cl_build_cam_matrix
 **	the top left 3*3 block.
 */
 
-void			rt_cl_build_object_matrices
+static void			rt_cl_build_object_matrices
 (
 					__global	t_object *	obj
 )
@@ -71,7 +71,7 @@ void			rt_cl_build_object_matrices
 
 
 
-void			rt_cl_get_vertices_for_bbox
+static void			rt_cl_get_vertices_for_bbox
 (
 					float3 *	vertices,
 					t_bbox		aabb
@@ -89,7 +89,7 @@ void			rt_cl_get_vertices_for_bbox
 
 
 
-t_bbox			rt_cl_build_object_bbox
+static t_bbox			rt_cl_build_object_bbox
 (
 							t_primitive		type,
 							float16			o_to_w,
@@ -142,5 +142,5 @@ __kernel void	rt_cl_build_scene
 	rt_cl_build_object_matrices(obj);
 	obj->bbox = rt_cl_build_object_bbox(obj->type, obj->o_to_w, scene->render_dist);
 
-debug_print_object(obj);
+//debug_print_object(obj);
 }

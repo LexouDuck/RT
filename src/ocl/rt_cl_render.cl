@@ -293,7 +293,7 @@ __kernel void	rt_cl_render
 	uint seed0 = x_id;
 	uint seed1 = y_id;
 
-debug_print_scene(scene);
+//debug_print_scene(scene);
 //if (work_item_id == 0) debug_print_camera(&(scene->camera));
 	random_seed = rt_cl_rand_bit_entropy(seed0, seed1);
 //if (x_id == 0 && y_id == 0) {debug_print_scene(scene); debug_print_camera(&(scene->camera));} printf("sizes %u in %u and %u in %u \n", x_id, width, y_id, height);

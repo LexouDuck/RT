@@ -57,7 +57,7 @@
 # define RT_CL_HOST_PLATFORM_AMOUNT	1
 //# define RT_CL_PROGRAM_SOURCE		"src/rt_cl_build_scene"//"tmp_srcs/opencl_sandbox/qjulia_kernel.cl"//
 # define RT_CL_PROGRAM_SOURCE		"concat.cl"//"src/rt_cl_render.cl"
-# define RT_CL_PROGRAM_OPTIONS		"-Werror"//-cl-opt-disable"//-Werror"// -g" //-cl-nv-verbose" //-cl-kernel-arg-info" //-cl-fast-relaxed-math" //-cl-unsafe-math-optimizations //-cl-mad-enable
+# define RT_CL_PROGRAM_OPTIONS		""//-Werror"//-cl-opt-disable"//-Werror"// -g" //-cl-nv-verbose" //-cl-kernel-arg-info" //-cl-fast-relaxed-math" //-cl-unsafe-math-optimizations //-cl-mad-enable
 # define RT_CL_KERNEL_AMOUNT		2
 # define RT_CL_KERNEL_0				"rt_cl_build_scene"
 # define RT_CL_KERNEL_1				"rt_cl_render"//"QJuliaKernel"//

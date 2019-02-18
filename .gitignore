@@ -10,6 +10,7 @@ RT
 RT.exe
 log.txt
 config.ini
+concat.cl
 
 # Macintosh files
 *.DS_Store

@@ -14,6 +14,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <string.h>
+#include <math.h>
 
 #include "libft_char.h"
 #include "libft_color.h"

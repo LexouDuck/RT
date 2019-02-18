@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_opencl.c                                      :+:      :+:    :+:   */
+/*   opencl_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -15,6 +15,8 @@
 #include <sys/stat.h>
 // TODO remove stdio include
 #include <stdio.h>
+
+#include "libft_convert.h"
 
 #include "../rt.h"
 #include "debug.h"
@@ -71,17 +73,14 @@ int				print_device_info()
 	char	platform_name[256];
 	char	gpu_ocl_version[16];
 
-	//mem size
+	clGetPlatformInfo(rt.ocl.platforms[rt.ocl.gpu_platform_index],
+						CL_PLATFORM_NAME, 256, platform_name, NULL);
 	clGetDeviceInfo(rt.ocl.gpu.id, CL_DEVICE_GLOBAL_MEM_SIZE, sizeof(cl_ulong),
 						&(rt.ocl.gpu.global_mem_size), NULL);
-	//compute units
 	clGetDeviceInfo(rt.ocl.gpu.id, CL_DEVICE_MAX_COMPUTE_UNITS, sizeof(cl_ulong),
 						&(rt.ocl.gpu.comp_unit_nb), NULL);
-	//check for availability ? for cache info ?
 	clGetDeviceInfo(rt.ocl.gpu.id, CL_DEVICE_NAME, 256, gpu_name, NULL);
 	clGetDeviceInfo(rt.ocl.gpu.id, CL_DEVICE_VERSION, 16, gpu_ocl_version, NULL);
-
-
 	clGetDeviceInfo(rt.ocl.gpu.id, CL_DEVICE_MAX_PARAMETER_SIZE, sizeof(size_t),
 						&(rt.ocl.gpu.max_kernel_args_size), NULL);
 	clGetDeviceInfo(rt.ocl.gpu.id, CL_DEVICE_MAX_WORK_GROUP_SIZE, sizeof(size_t),
@@ -91,19 +90,14 @@ int				print_device_info()
 	clGetDeviceInfo(rt.ocl.gpu.id, CL_DEVICE_MAX_WORK_ITEM_SIZES,
 						sizeof(size_t) * rt.ocl.gpu.max_nd_range,
 						&(rt.ocl.gpu.max_witems_per_dim), NULL);
-
-
-	clGetPlatformInfo(rt.ocl.platform[0], CL_PLATFORM_NAME, 256, platform_name, NULL);
-
-
-printf("Platform: %s | Device: %s | Version: %s\n\t"
+printf("Platform chosen: %s (index %d) | Device: %s | Version: %s\n\t"
 		"- global mem size (nb of bytes): "OPENCL_LLU64"\n\t"//"- global mem size (nb of bytes): %#lx\n\t"
 		"- compute unit nb: %u\n\t"
 		"- max kernel args size: "OPENCL_LU64"\n\t"
 		"- max work items per group: "OPENCL_LU64"\n\t"
 		"- max nD range: %u\n\t"
 		"- max_witems_per_dim: ("OPENCL_LU64", "OPENCL_LU64", "OPENCL_LU64")\n",
-		platform_name, gpu_name, gpu_ocl_version,
+		platform_name, rt.ocl.gpu_platform_index, gpu_name, gpu_ocl_version,
 		rt.ocl.gpu.global_mem_size,
 		rt.ocl.gpu.comp_unit_nb,
 		rt.ocl.gpu.max_kernel_args_size,
@@ -114,22 +108,40 @@ printf("Platform: %s | Device: %s | Version: %s\n\t"
 	return (OK);
 }
 
+int				opencl_get_platform_and_gpu()
+{
+	int			err;
+	int			has_gpu;
+
+	if ((err = clGetPlatformIDs(RT_CL_MAX_PLATFORM_AMOUNT, rt.ocl.platforms, &(rt.ocl.platform_amount))) != CL_SUCCESS)
+		return (debug_perror("OpenCL: could not get platform IDs."));
+	debug_output_value("Platform amount found: ", ft_u64_to_str(rt.ocl.platform_amount), TRUE);
+//	if (clGetDeviceIDs(rt.ocl.platform, CL_DEVICE_TYPE_CPU, 1, &(rt.ocl.cpu), NULL))
+//		return (ERROR);
+	has_gpu = FALSE;
+	rt.ocl.gpu_platform_index = 0;
+	while (rt.ocl.gpu_platform_index < rt.ocl.platform_amount)
+	{
+		if ((err = clGetDeviceIDs(rt.ocl.platforms[rt.ocl.gpu_platform_index],
+			CL_DEVICE_TYPE_GPU, 1, &(rt.ocl.gpu.id), NULL)) == CL_SUCCESS)
+		{
+			has_gpu = TRUE;
+			break ;
+		}
+		++rt.ocl.gpu_platform_index;
+	}
+	if (!has_gpu)
+		return (debug_perror("OpenCL: no GPU device found."));
+	print_device_info();
+	return (OK);
+
+}
+
 //TODO: more precise error handling for OpenCL with flags etc.
-int				create_device_context_and_queue()
+int				opencl_create_context_and_queue()
 {
 	int			err;
 
-	if ((err = clGetPlatformIDs(RT_CL_HOST_PLATFORM_AMOUNT, rt.ocl.platform, NULL)) != CL_SUCCESS)
-	{
-		printf("%d\n", err);
-		return (debug_perror("OpenCL: could not get a platform ID."));
-	}
-//	if (clGetDeviceIDs(rt.ocl.platform, CL_DEVICE_TYPE_CPU, 1, &(rt.ocl.cpu), NULL))
-//		return (ERROR);
-	if ((err = clGetDeviceIDs(rt.ocl.platform[0], CL_DEVICE_TYPE_GPU, 1, &(rt.ocl.gpu.id), NULL)))
-		return (debug_perror("OpenCL: no GPU device found."));
-	
-	print_device_info();
 	rt.ocl.context = clCreateContext(NULL, 1, &(rt.ocl.gpu.id), NULL, NULL, &err);
 	if (err < 0)
 		return (debug_perror("OpenCL: could not create context."));
@@ -156,7 +168,7 @@ cl_int clBuildProgram (cl_program program,
 
 also see clGetProgramInfo and clGetProgramBuildInfo
  */
-int				read_and_build_program()
+int				opencl_read_and_build_program()
 {
 	int			fd;
 	cl_int		err;
@@ -178,7 +190,8 @@ int				read_and_build_program()
 		/* Find size of log and print to std output */
 		clGetProgramBuildInfo(rt.ocl.program, rt.ocl.gpu.id, CL_PROGRAM_BUILD_LOG, 
 				0, NULL, &file_len);
-		file_buf = (char *)malloc(file_len + 1);
+		if (!(file_buf = (char *)malloc(file_len + 1)))
+			return (ERROR);
 		file_buf[file_len] = '\0';
 		clGetProgramBuildInfo(rt.ocl.program, rt.ocl.gpu.id, CL_PROGRAM_BUILD_LOG, 
 				file_len + 1, file_buf, NULL);
@@ -191,15 +204,17 @@ int				read_and_build_program()
 	return (OK);
 }
 
-int				init_opencl()
+int				opencl_init()
 {
 	int		err;
 
-	if (create_device_context_and_queue())
-		return (debug_perror("init_opencl: could not create device, context or queue."));
-	if (read_and_build_program())
-		return (debug_perror("init_opencl: could not build program."));
+	if (opencl_get_platform_and_gpu())
+		return (debug_perror("opencl_init: could not find an appropriate GPU/platform."));
+	if (opencl_create_context_and_queue())
+		return (debug_perror("opencl_init: could not create device, context or queue."));
+	if (opencl_read_and_build_program())
+		return (debug_perror("opencl_init: could not build program."));
 	if ((err = clCreateKernelsInProgram (rt.ocl.program, RT_CL_KERNEL_AMOUNT, rt.ocl.kernels, NULL)) < 0)
-		return (debug_perror("init_opencl: could not init kernels."));
+		return (debug_perror("opencl_init: could not init kernels."));
 	return (OK);
 }

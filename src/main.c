@@ -68,6 +68,7 @@ static int	main_loop()
 	t_u32			frame_wait = 0;
 
 	rt.sdl.current_frame = 0;
+	rt.must_render = TRUE;
 	while (loop)
 	{
 		while (!SDL_TICKS_PASSED(SDL_GetTicks(), frame_wait))

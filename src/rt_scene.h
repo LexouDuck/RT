@@ -38,6 +38,7 @@
 
 # define BG_COLOR				0xFF00BB88 //0xFF000000
 
+# define OBJECT_NAME_MAXLENGTH	24
 # define OBJECT_MAX_AMOUNT		32
 # define DEFAULT_RAYSAMP_SIZE	4
 # define DEFAULT_MAX_RAY_DEPTH	4
@@ -240,7 +241,7 @@ typedef struct	s_object
 {
 	t_primitive		type;
 	t_material		material;
-//	char			*name;
+	char			name[OBJECT_NAME_MAXLENGTH];
 	cl_float3		pos;
 	cl_float3		rot;
 	cl_float3		scale;

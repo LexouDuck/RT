@@ -44,6 +44,47 @@ void	render_ui_icon_object(t_object* object, t_s32 y)
 	ui_set_palette(rt.ui.tileset, rt.ui.pal);
 }
 
+void	render_ui_expandedproperties(t_object *object, t_s32 y)
+{
+	char		*tmp;
+
+	if ((tmp = ft_u32_to_hex(object->color)))
+	{
+		render_ui_text("Color: #", 1, y + 2, FALSE);
+		render_ui_text(       tmp, 9, y + 2, FALSE);
+		free(tmp);
+	}
+	if ((tmp = cl_float3_to_str(&object->rgb, 4)))
+	{
+		render_ui_text(tmp, 4, y + 3, FALSE);
+		free(tmp);
+	}
+	if ((tmp = cl_float3_to_str(&object->light, 4)))
+	{
+		render_ui_text("Light:", 1, y + 5, FALSE);
+		render_ui_text(     tmp, 4, y + 6, FALSE);
+		free(tmp);
+	}
+	if ((tmp = cl_float3_to_str(&object->pos, 2)))
+	{
+		render_ui_text("Pos:", 1, y + 8, FALSE);
+		render_ui_text(   tmp, 4, y + 9, FALSE);
+		free(tmp);
+	}
+	if ((tmp = cl_float3_to_str(&object->rot, 2)))
+	{
+		render_ui_text("Rot:", 1, y + 11, FALSE);
+		render_ui_text(   tmp, 4, y + 12, FALSE);
+		free(tmp);
+	}
+	if ((tmp = cl_float3_to_str(&object->scale, 2)))
+	{
+		render_ui_text("Scale:", 1, y + 14, FALSE);
+		render_ui_text(     tmp, 4, y + 15, FALSE);
+		free(tmp);
+	}
+}
+
 void	render_ui_objects()
 {
 	t_bool		hover;
@@ -70,7 +111,9 @@ void	render_ui_objects()
 		render_ui_text(rt.scene.objects[i].name, 4, rect.y + 1, TRUE);
 		render_ui_text((rt.ui.objects_expanded[i] ? "\xFE" : "\xFF"),
 			UI_WIDTH_TILES - 3, rect.y + 1, TRUE);
-		rect.y += 2;
+		if (rt.ui.objects_expanded[i])
+			render_ui_expandedproperties(&rt.scene.objects[i], rect.y);
+		rect.y += 2 + (rt.ui.objects_expanded[i] ? 3 * OBJECT_PROPERTIES : 0);
 	}
 }
 

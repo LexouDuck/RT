@@ -143,7 +143,7 @@ char		*rt_read_arg_light(t_rtparser *p, cl_float3 *result)
 	return (NULL);
 }
 
-char		*rt_read_arg_name(t_rtparser *p, char **result)
+char		*rt_read_arg_name(t_rtparser *p, char *result)
 {
 	t_bool	has_arg;
 	char	symbol;
@@ -158,20 +158,17 @@ char		*rt_read_arg_name(t_rtparser *p, char **result)
 	if (symbol != '\"' && symbol != '\'' && symbol != '<')
 		return (has_arg ? rt_read_error('\"',
 			"or '\'' or '<' => name argument", symbol) : NULL);
-	++(p->index);
 	symbol = (symbol == '<') ? '>' : symbol;
-	offset = p->index;
-	while (p->file[p->index])
+	offset = p->index + 1;
+	while (p->file[++p->index])
 	{
+		if ((p->index - offset) == OBJECT_NAME_MAXLENGTH)
+			return ("Name argument is too long, max is 24 characters");
 		if (p->file[p->index] == '\n')
 			++p->line;
-		else if (p->file[p->index] == symbol)
-		{
-			p->file[p->index++] = '\0';
-			*result = ft_strdup(p->file + offset);
+		else if (p->file[p->index] == symbol && ++p->index)
 			return (NULL);
-		}
-		++p->index;
+		result[p->index - offset] = p->file[p->index];
 	}
 	return (rt_read_error(symbol, "name arg terminating char", p->file[p->index]));
 }

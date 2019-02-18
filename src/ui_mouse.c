@@ -20,15 +20,15 @@ void	ui_mouse_objectlist()
 	SDL_Rect	rect;
 	t_s8		i;
 
-	rect.x = 0;
 	rect.y = 4;
-	rect.w = UI_WIDTH_TILES - 1;
 	rect.h = 2;
 	i = -1;
 	while (++i < OBJECT_MAX_AMOUNT)
 	{
 		if (rt.scene.objects[i].type == none)
 			continue ;
+		rect.x = 0;
+		rect.w = UI_WIDTH_TILES - 1;
 		if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
 		{
 			if (!(rt.input.keys & KEY_CTRL))
@@ -36,7 +36,13 @@ void	ui_mouse_objectlist()
 					OBJECT_MAX_AMOUNT * sizeof(t_bool));
 			rt.ui.objects_selected[i] = TRUE;
 		}
-		rect.y += 2;
+		rect.x = UI_WIDTH_TILES - 4;
+		rect.w = 2;
+		if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+		{
+			rt.ui.objects_expanded[i] = !rt.ui.objects_expanded[i];
+		}
+		rect.y += 2 + (rt.ui.objects_expanded[i] ? 3 * OBJECT_PROPERTIES : 0);
 	}
 }
 

@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+# define OBJECT_NAME_MAXLENGTH	24
 # define OBJECT_MAX_AMOUNT		32
 # define EPS					0.001
 
@@ -192,7 +193,7 @@ typedef struct	s_object
 {
 	t_primitive	type;
 	t_material	material;
-	char		*name;
+	char		name[OBJECT_NAME_MAXLENGTH];
 	float3		pos;
 	float3		rot;
 	float3		scale;

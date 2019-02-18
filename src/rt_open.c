@@ -18,6 +18,7 @@
 
 #include "libft_char.h"
 #include "libft_color.h"
+#include "libft_memory.h"
 #include "libft_convert.h"
 
 #include "../rt.h"
@@ -64,14 +65,14 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 	t_object	object;
 
 	object.type = shape;
-	object.name = NULL;
+	ft_memclr(&object.name, OBJECT_NAME_MAXLENGTH);
 	object.light = (cl_float3){{ 0., 0., 0. }};
 	if ((error = rt_read_arg_color(p, &object.color)) ||
 		(error = rt_read_arg_vector(p, &object.pos)) ||
 		(error = rt_read_arg_vector(p, &object.rot)) ||
 		(error = rt_read_arg_vector(p, &object.scale)))
 		return (error);
-	if ((error = rt_read_arg_name(p, &object.name)) ||
+	if ((error = rt_read_arg_name(p, object.name)) ||
 		(error = rt_read_arg_light(p, &object.light)))
 		return (error);
 	object.light.x = fmax(0., fmin(object.light.x, 1.));

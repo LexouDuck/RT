@@ -104,6 +104,7 @@ char			*ft_f32_to_str(t_f32 number, t_u8 precision)
 	char	*result_exp;
 	char	*result_mant;
 
+	result = NULL;
 	result_exp = NULL;
 	result_mant = NULL;
 	if (ft_float_to_str_checkspecial(number, &result))

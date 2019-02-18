@@ -89,6 +89,7 @@ t_f32			ft_str_to_f32(char const *str)
 	char	*exponent;
 	int		mode;
 
+	result = 0. / 0.;
 	tmp = NULL;
 	if (ft_str_to_float_checkinvalid(str, &tmp))
 		return (NOT_A_NUMBER);

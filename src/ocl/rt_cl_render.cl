@@ -294,11 +294,12 @@ __kernel void	rt_cl_render
 	uint seed0 = x_id ^ scene->random_seed_time;
 	uint seed1 = y_id + rt_cl_rand_bit_shuffle(scene->random_seed_time);
 
-if (work_item_id == 0) debug_print_scene(scene);
-
-//if (work_item_id == 0) debug_print_camera(&(scene->camera));
+if (work_item_id == 0)
+{
+	debug_print_scene(scene);
+	debug_print_camera(&(scene->camera));
+}
 	random_seed = rt_cl_rand_bit_entropy(seed0, seed1);
-//if (x_id == 0 && y_id == 0) {debug_print_scene(scene); debug_print_camera(&(scene->camera));} printf("sizes %u in %u and %u in %u \n", x_id, width, y_id, height);
 	float3 vcolor3 = (float3)(255.) * get_pixel_color_from_mc_sampling(scene, &random_seed, x_id, y_id);//rt_cl_f3rand_neg1half_to_pos1half(random_seed) * (float3)(255.);//
 //	printf((__constant char *)"kernel %10g %10g %10g\n", vcolor3.x, vcolor3.y, vcolor3.z);
 	uint3 color3 = (uint3)(floor(vcolor3.x), floor(vcolor3.y), floor(vcolor3.z));

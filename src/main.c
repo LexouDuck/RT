@@ -67,12 +67,13 @@ static int	main_loop()
 	t_bool			loop = TRUE;
 	t_u32			frame_wait = 0;
 
+	rt.sdl.current_frame = 0;
 	while (loop)
 	{
 		while (!SDL_TICKS_PASSED(SDL_GetTicks(), frame_wait))
 			SDL_Delay(1);
 		frame_wait = SDL_GetTicks() + FRAME_MS;
-
+		++rt.sdl.current_frame;
 		loop = event_checkevents(rt.sdl.window);
 
 		// TODO do stuff here

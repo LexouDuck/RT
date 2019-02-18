@@ -55,6 +55,8 @@ void	event_mouse_release(SDL_Event *event)
 	t_camera	*camera;
 
 	camera = &rt.scene.camera;
+	if (camera->mode)
+		rt.must_render = TRUE;
 	camera->mode = CAMERA_MODE_NONE;
 	if (event->button.button == SDL_BUTTON_LEFT)
 	{
@@ -85,6 +87,6 @@ void	event_mouse_motion(SDL_Event *event)
 		else if (camera->mode == CAMERA_MODE_PAN)
 			camera_pan(camera, motion.x, motion.y);
 		camera_update(camera);
-		rt.must_render = TRUE;
+	//	rt.must_render = TRUE;
 	}
 }

@@ -190,15 +190,16 @@ typedef enum	e_material
 
 typedef struct	s_object
 {
-	t_primitive		type;
-	t_material		material;
-	char			*name;
+	t_primitive	type;
+	t_material	material;
+	char		*name;
 	float3		pos;
 	float3		rot;
 	float3		scale;
-	uint			color; 
+	uint		color; 
 	float3		rgb;
-	t_bbox			bbox;
+	float3		light;
+	t_bbox		bbox;
 //	cl_float3		specul;
 //	t_float			refrac;//refraction index for snell-descartes
 //	t_float			intensity;//intensity for lightsrc objects, 1. for other objects //or reflectivity ??

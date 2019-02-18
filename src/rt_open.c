@@ -48,11 +48,11 @@ static void	rt_output_readfile()
 		object = &rt.scene.objects[i];
 		debug_output(primitive_types[(int)object->type]);
 		debug_output_value("-> #",	ft_u32_to_hex(object->color), TRUE);
-		debug_output_value("NAME: ",	object->name, FALSE);
+		debug_output_value("NAME: ", (object->name ? object->name : "NULL"), FALSE);
 		debug_output_value(" -   pos:",	cl_float3_to_str(&object->pos, 3), TRUE);
 		debug_output_value(" -   rot:",	cl_float3_to_str(&object->rot, 3), TRUE);
 		debug_output_value(" - scale:",	cl_float3_to_str(&object->scale, 3), TRUE);
-		debug_output_value(" - light:",	cl_float3_to_str(&object->rgb, 3), TRUE);
+		debug_output_value(" - light:",	cl_float3_to_str(&object->light, 3), TRUE);
 		++i;
 	}
 }
@@ -63,18 +63,26 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 	t_object	object;
 
 	object.type = shape;
-	object.rgb = (cl_float3){{ 1., 1., 1. }};
+	object.name = NULL;
+	object.light = (cl_float3){{ 0., 0., 0. }};
 	if ((error = rt_read_arg_color(p, &object.color)) ||
 		(error = rt_read_arg_vector(p, &object.pos)) ||
 		(error = rt_read_arg_vector(p, &object.rot)) ||
 		(error = rt_read_arg_vector(p, &object.scale)))
 		return (error);
 	if ((error = rt_read_arg_name(p, &object.name)) ||
-		(error = rt_read_arg_light(p, &object.rgb)))
+		(error = rt_read_arg_light(p, &object.light)))
 		return (error);
-	object.rgb.x *= ft_color_argb32_get_r(object.color);
-	object.rgb.y *= ft_color_argb32_get_g(object.color);
-	object.rgb.z *= ft_color_argb32_get_b(object.color);
+	object.light.x = fmax(0., fmin(object.light.x, 1.));
+	object.light.y = fmax(0., fmin(object.light.y, 1.));
+	object.light.z = fmax(0., fmin(object.light.z, 1.));
+	if (object.light.x + object.light.y + object.light.z > 0.)
+		object.material = lightsrc;
+	else
+		object.material = diffuse;
+	object.rgb.x = ft_color_argb32_get_r(object.color) / 255.;
+	object.rgb.y = ft_color_argb32_get_g(object.color) / 255.;
+	object.rgb.z = ft_color_argb32_get_b(object.color) / 255.;
 	rt.scene.objects[p->current_object] = object;
 	++(p->current_object);
 	return (NULL);
@@ -136,9 +144,9 @@ static char	*rt_read_file(t_rtparser *p)
 			return (error);
 	}
 	free(p->file);
-	rt.scene.bg_rgb.x = ft_color_argb32_get_r(rt.scene.bg_color);
-	rt.scene.bg_rgb.y = ft_color_argb32_get_g(rt.scene.bg_color);
-	rt.scene.bg_rgb.z = ft_color_argb32_get_b(rt.scene.bg_color);
+	rt.scene.bg_rgb.x = ft_color_argb32_get_r(rt.scene.bg_color) / 255.;
+	rt.scene.bg_rgb.y = ft_color_argb32_get_g(rt.scene.bg_color) / 255.;
+	rt.scene.bg_rgb.z = ft_color_argb32_get_b(rt.scene.bg_color) / 255.;
 	rt.scene.object_amount = p->current_object;
 	return (NULL);
 }

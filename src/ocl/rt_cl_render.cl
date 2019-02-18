@@ -146,11 +146,11 @@ t_ray			accumulate_lum_and_bounce_ray
 	new_ray.hit_obj_id = -1;
 	new_ray.inter_type = INTER_NONE;
 	new_ray.t = scene->render_dist;
-	if (obj->material == !lightsrc)
+	if (obj->material == lightsrc)
 	{
 		new_ray.complete = true;
 		new_ray.lum_mask = ray.lum_mask;
-		new_ray.lum_acc = ray.lum_acc + ray.lum_mask * obj->rgb;
+		new_ray.lum_acc = ray.lum_acc + ray.lum_mask * obj->light;//obj->rgb;
 //	if(sampid == 0 && depth == 0)	
 //		printf("acc %f %f %f\n", obj->rgb.x, obj->rgb.y, obj->rgb.z);//ray->lum_mask.x, ray->lum_mask.y, ray->lum_mask.z);//new_ray.lum_acc.x, new_ray.lum_acc.y, new_ray.lum_acc.z);
 	}
@@ -293,6 +293,7 @@ __kernel void	rt_cl_render
 	uint seed0 = x_id;
 	uint seed1 = y_id;
 
+debug_print_scene(scene);
 //if (work_item_id == 0) debug_print_camera(&(scene->camera));
 	random_seed = rt_cl_rand_bit_entropy(seed0, seed1);
 //if (x_id == 0 && y_id == 0) {debug_print_scene(scene); debug_print_camera(&(scene->camera));} printf("sizes %u in %u and %u in %u \n", x_id, width, y_id, height);

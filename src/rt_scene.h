@@ -247,6 +247,7 @@ typedef struct	s_object
 	cl_float3		scale;
 	cl_uint			color;
 	cl_float3		rgb;
+	cl_float3		light;
 	t_bbox			bbox;
 //	cl_float3		specul;
 //	t_float			refrac;//refraction index for snell-descartes

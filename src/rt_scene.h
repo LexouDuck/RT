@@ -41,7 +41,7 @@
 # define BG_COLOR				0xFF00BB88 //0xFF000000
 
 # define OBJECT_MAX_AMOUNT		32
-# define DEFAULT_RAYSAMP_SIZE	256
+# define DEFAULT_RAYSAMP_SIZE	1024
 # define DEFAULT_MAX_RAY_DEPTH	4
 
 typedef enum		e_intersection

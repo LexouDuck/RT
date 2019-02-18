@@ -132,7 +132,7 @@ int			main(int argc, char* argv[])
 	if (ui_init())
 		return (ERROR);
 //printf("debug init opencl\n");
-	if (init_opencl())
+	if (opencl_init())
 		return (ERROR);
 	return (main_loop());
 }

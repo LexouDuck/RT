@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"cam",
+				"camera"
+			],
+			[
 				"debug",
 				"debug_print_camera"
 			],
@@ -63,25 +67,7 @@
 			"file": "src/main.c",
 			"settings":
 			{
-				"buffer_size": 4056,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/rt_cl_render.cl",
-			"settings":
-			{
-				"buffer_size": 10028,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/rt_cl_build_scene.cl",
-			"settings":
-			{
-				"buffer_size": 8569,
+				"buffer_size": 4052,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -90,25 +76,16 @@
 			"file": "src/render.c",
 			"settings":
 			{
-				"buffer_size": 9299,
+				"buffer_size": 8500,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "src/init_opencl.c",
+			"file": "src/opencl_init.c",
 			"settings":
 			{
-				"buffer_size": 7484,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "tmp_srcs/render_old.c",
-			"settings":
-			{
-				"buffer_size": 9587,
+				"buffer_size": 8080,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -117,7 +94,7 @@
 			"file": "rt.h",
 			"settings":
 			{
-				"buffer_size": 3412,
+				"buffer_size": 3597,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -126,16 +103,43 @@
 			"file": "src/rt_cl.h",
 			"settings":
 			{
-				"buffer_size": 3446,
+				"buffer_size": 3496,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "tmp_srcs/fixing.cl",
+			"file": "src/ocl/rt_cl_render.cl",
 			"settings":
 			{
-				"buffer_size": 27659,
+				"buffer_size": 10526,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/ocl/rt_cl_build_scene.cl",
+			"settings":
+			{
+				"buffer_size": 4285,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/ocl/rt_cl_debug.cl",
+			"settings":
+			{
+				"buffer_size": 2664,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/ocl/rt_cl_random.cl",
+			"settings":
+			{
+				"buffer_size": 4603,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -144,7 +148,16 @@
 			"file": "tests/ex1.rt",
 			"settings":
 			{
-				"buffer_size": 784,
+				"buffer_size": 822,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "tests/ex2.rt",
+			"settings":
+			{
+				"buffer_size": 340,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -153,43 +166,16 @@
 			"file": "src/rt_scene.h",
 			"settings":
 			{
-				"buffer_size": 8314,
+				"buffer_size": 8356,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/camera.c",
+			"file": "src/ocl/rt_cl_scene.cl.h",
 			"settings":
 			{
-				"buffer_size": 3793,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/event_mouse.c",
-			"settings":
-			{
-				"buffer_size": 2613,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/rt_cl_scene.cl.h",
-			"settings":
-			{
-				"buffer_size": 9788,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/rt_cl_random.cl",
-			"settings":
-			{
-				"buffer_size": 3908,
+				"buffer_size": 6152,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -230,24 +216,38 @@
 		"/home/fulguritude/Desktop/42/Workspace/08-rt",
 		"/home/fulguritude/Desktop/42/Workspace/08-rt/rtv1_tduquesn",
 		"/home/fulguritude/Desktop/42/Workspace/08-rt/src",
+		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/ocl",
 		"/home/fulguritude/Desktop/42/Workspace/08-rt/tests",
 		"/home/fulguritude/Desktop/42/Workspace/08-rt/tmp_srcs"
 	],
 	"file_history":
 	[
-		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/camera.c",
 		"/home/fulguritude/Desktop/42/Workspace/08-rt/Makefile",
+		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/init_opencl.c",
+		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/event_mouse.c",
+		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/camera.c",
+		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/rt_open.c",
+		"/home/fulguritude/Desktop/42/Workspace/08-rt/tests/ex3.rt",
+		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/rt_cl_random.cl",
+		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/rt_cl_render.cl",
+		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/rt_cl_build_scene.cl",
+		"/home/fulguritude/Desktop/42/Workspace/08-rt/tmp_srcs/fixing.cl",
+		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/ocl/rt_cl_scene.cl.h",
+		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/ocl/rt_cl_render.cl",
+		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/ocl/rt_cl_random.cl",
+		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/ocl/rt_cl_build_scene.cl",
+		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/ocl/rt_cl_linear_algebra.cl",
+		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/ocl/rt_cl_debug.cl",
+		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/rt_cl_scene.cl.h",
+		"/home/fulguritude/Desktop/42/Workspace/08-rt/tmp_srcs/render_old.c",
 		"/home/fulguritude/Desktop/42/Workspace/08-rt/tmp_srcs/fixing_2.cl",
 		"/home/fulguritude/Desktop/42/Workspace/08-rt/log.txt",
-		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/init_opencl.c",
 		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/init_scene.c",
-		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/rt_open.c",
 		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/config.c",
 		"/home/fulguritude/Desktop/42/Workspace/08-rt/rt.h",
 		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/event.c",
 		"/home/fulguritude/Desktop/42/Workspace/08-rt/tests/ex1.rt",
 		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/init_sdl.c",
-		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/rt_cl_random.cl",
 		"/home/fulguritude/Desktop/42/Workspace/08-rt/tmp_srcs/ft_atolf.c",
 		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/config.h",
 		"/home/fulguritude/Desktop/42/Workspace/08-rt/src/debug.c",
@@ -272,7 +272,7 @@
 	],
 	"find":
 	{
-		"height": 39.0
+		"height": 26.0
 	},
 	"find_in_files":
 	{
@@ -291,6 +291,10 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"__local\\t\\tuint\\t",
+			"__local\\tuint\\trandom_seed\\[1\\]",
+			"__local\\t\\tuint\\t\\trandom_seed[1]",
+			"__local",
 			"->pos",
 			"tilt",
 			"__local",
@@ -323,6 +327,10 @@
 		"regex": true,
 		"replace_history":
 		[
+			"\\t\\t\\tuint *\\t\\t",
+			"\\tuint *\\t\\t",
+			"\\tuint *\\t\\trandom_seed",
+			"\\t\\t",
 			"->relative_pos",
 			"__global",
 			"22",
@@ -347,7 +355,7 @@
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 9,
 			"sheets":
 			[
 				{
@@ -356,15 +364,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4056,
+						"buffer_size": 4052,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2855,
-								2855
+								4005,
+								4005
 							]
 						],
 						"settings":
@@ -373,7 +381,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 867.0,
+						"translation.y": 1734.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 2,
@@ -381,77 +389,19 @@
 				},
 				{
 					"buffer": 1,
-					"file": "src/rt_cl_render.cl",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 10028,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								47,
-								47
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 12,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "src/rt_cl_build_scene.cl",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 8569,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								7158,
-								7158
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 4142.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 14,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
 					"file": "src/render.c",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 9299,
+						"buffer_size": 8500,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								8860,
-								8860
+								8019,
+								8019
 							]
 						],
 						"settings":
@@ -460,77 +410,48 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2200.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "src/init_opencl.c",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 7484,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								7073,
-								7073
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 2907.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "tmp_srcs/render_old.c",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 9587,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								9244,
-								9244
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 3392.0,
+						"translation.y": 2856.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 2,
+					"file": "src/opencl_init.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8080,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3672,
+								3672
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1299.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
 					"file": "rt.h",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3412,
+						"buffer_size": 3597,
 						"regions":
 						{
 						},
@@ -547,27 +468,27 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1428.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 4,
 					"file": "src/rt_cl.h",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3446,
+						"buffer_size": 3496,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3336,
-								3336
+								3462,
+								3462
 							]
 						],
 						"settings":
@@ -576,38 +497,126 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 969.0,
+						"translation.y": 1173.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 4,
 					"type": "text"
 				},
 				{
-					"buffer": 8,
-					"file": "tmp_srcs/fixing.cl",
+					"buffer": 5,
+					"file": "src/ocl/rt_cl_render.cl",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 27659,
+						"buffer_size": 10526,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								23716,
-								23716
+								9519,
+								9519
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/C++/C.sublime-syntax"
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 14699.0,
+						"translation.y": 4761.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "src/ocl/rt_cl_build_scene.cl",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4285,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4282,
+								4282
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2142.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "src/ocl/rt_cl_debug.cl",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2664,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 561.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "src/ocl/rt_cl_random.cl",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4603,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2746,
+								2746
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2346.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
 					"type": "text"
 				},
 				{
@@ -616,15 +625,43 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 784,
+						"buffer_size": 822,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								571,
-								571
+								473,
+								473
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 306.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "tests/ex2.rt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 340,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								234,
+								234
 							]
 						],
 						"settings":
@@ -635,24 +672,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 13,
+					"stack_index": 11,
 					"type": "text"
 				},
 				{
-					"buffer": 10,
+					"buffer": 11,
 					"file": "src/rt_scene.h",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 8314,
+						"buffer_size": 8356,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1886,
-								1886
+								1861,
+								1861
 							]
 						],
 						"settings":
@@ -661,85 +698,27 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 153.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 11,
-					"file": "src/camera.c",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3793,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3648,
-								3648
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 12,
-					"file": "src/event_mouse.c",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2613,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2610,
-								2610
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 527.0,
+						"translation.y": 51.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 9,
 					"type": "text"
 				},
 				{
-					"buffer": 13,
-					"file": "src/rt_cl_scene.cl.h",
+					"buffer": 12,
+					"file": "src/ocl/rt_cl_scene.cl.h",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 9788,
+						"buffer_size": 6152,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1130,
-								1130
+								5857,
+								5857
 							]
 						],
 						"settings":
@@ -748,39 +727,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 3213.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 10,
-					"type": "text"
-				},
-				{
-					"buffer": 14,
-					"file": "src/rt_cl_random.cl",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3908,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2356,
-								2356
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1785.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 11,
+					"stack_index": 12,
 					"type": "text"
 				}
 			]
@@ -792,7 +742,7 @@
 	},
 	"input":
 	{
-		"height": 36.0
+		"height": 38.0
 	},
 	"layout":
 	{

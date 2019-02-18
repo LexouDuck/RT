@@ -54,7 +54,7 @@
 ** see clBuildProgram in OpenCL API for details
 // TODO experiment with optimization options
 */
-# define RT_CL_HOST_PLATFORM_AMOUNT	1
+# define RT_CL_MAX_PLATFORM_AMOUNT	2
 //# define RT_CL_PROGRAM_SOURCE		"src/rt_cl_build_scene"//"tmp_srcs/opencl_sandbox/qjulia_kernel.cl"//
 # define RT_CL_PROGRAM_SOURCE		"concat.cl"//"src/rt_cl_render.cl"
 # define RT_CL_PROGRAM_OPTIONS		"-Werror"//-cl-opt-disable"//-Werror"// -g" //-cl-nv-verbose" //-cl-kernel-arg-info" //-cl-fast-relaxed-math" //-cl-unsafe-math-optimizations //-cl-mad-enable
@@ -87,7 +87,9 @@ typedef	struct	s_gpu_buffers
 
 typedef struct	s_cl
 {
-	cl_platform_id		platform[RT_CL_HOST_PLATFORM_AMOUNT];
+	cl_platform_id		platforms[RT_CL_MAX_PLATFORM_AMOUNT];
+	cl_uint				platform_amount;
+	cl_uint				gpu_platform_index;
 	t_gpu				gpu;
 	cl_context			context;
 	cl_program			program;
@@ -98,8 +100,8 @@ typedef struct	s_cl
 }				t_cl;
 
 /*
-** init_opencl.c
+** opencl_init.c
 */
-int		init_opencl();
+int		opencl_init();
 
 #endif

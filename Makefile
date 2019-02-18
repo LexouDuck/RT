@@ -102,7 +102,7 @@ HDRS	=	$(LFTDIR)libft.h 	\
 # List of C source code files
 SRCS	= 	main.c				\
 			init_sdl.c			\
-			init_opencl.c		\
+			opencl_init.c		\
 			init_scene.c		\
 			debug.c				\
 			config.c			\

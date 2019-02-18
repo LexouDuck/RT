@@ -71,21 +71,22 @@ void	event_mouse_release(SDL_Event *event)
 
 void	event_mouse_motion(SDL_Event *event)
 {
-	SDL_Point	motion;
+	float		motion_x;
+	float		motion_y;
 	t_camera	*camera;
 
 	camera = &rt.scene.camera;
 	if (camera->mode != CAMERA_MODE_NONE &&
 		(event->motion.xrel || event->motion.yrel))
 	{
-		motion.x = (float)(event->motion.xrel) * 0.1;
-		motion.y = (float)(event->motion.yrel) * 0.1;
+		motion_x = (float)(event->motion.xrel) * 0.1;
+		motion_y = (float)(event->motion.yrel) * 0.1;
 		if (camera->mode == CAMERA_MODE_TILT)
-			camera_zoom_tilt(camera, motion.x, motion.y);
+			camera_zoom_tilt(camera, motion_x, motion_y);
 		else if (camera->mode == CAMERA_MODE_ROTATE)
-			camera_rotate(camera, motion.x, motion.y);
+			camera_rotate(camera, motion_x, motion_y);
 		else if (camera->mode == CAMERA_MODE_PAN)
-			camera_pan(camera, motion.x, motion.y);
+			camera_pan(camera, motion_x, motion_y);
 		camera_update(camera);
 		rt.must_render = TRUE;
 	}

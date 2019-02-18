@@ -66,6 +66,8 @@
 # define DROPDOWN_VIEW_GLOBAL_I		3
 # define DROPDOWN_ITEMS_VIEW		4
 
+# define OBJECT_PROPERTIES		5
+
 typedef struct	s_menu
 {
 	t_s8		item_amount;

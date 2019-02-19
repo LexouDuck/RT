@@ -60,10 +60,11 @@ void	event_mouse_release(SDL_Event *event)
 	camera->mode = CAMERA_MODE_NONE;
 	if (event->button.button == SDL_BUTTON_LEFT)
 	{
-		ui_mouse_objectlist();
-		ui_mouse_menubar();
-		if (rt.ui.menubar.selection != -1)
+		if (rt.ui.menubar.selection == -1)
+			ui_mouse_objectlist();
+		else
 			ui_mouse_dropdown(&rt.ui.dropdowns[rt.ui.menubar.selection]);
+		ui_mouse_menubar();
 	}
 	if (camera->mode && SDL_CaptureMouse(FALSE))
 		debug_output_error("Unable to release the mouse cursor input.", TRUE);

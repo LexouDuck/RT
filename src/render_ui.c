@@ -109,8 +109,8 @@ void	render_ui_objects()
 			render_ui_fill((rt.ui.objects_selected[i] ? 2 : 1), rect, FALSE);
 		render_ui_icon_object(&rt.scene.objects[i], rect.y);
 		render_ui_text(rt.scene.objects[i].name, 4, rect.y + 1, TRUE);
-		render_ui_text((rt.ui.objects_expanded[i] ? "\xFE" : "\xFF"),
-			UI_WIDTH_TILES - 3, rect.y + 1, TRUE);
+		render_ui_icon((rt.ui.objects_expanded[i] ? 29 : 30),
+			UI_WIDTH_TILES - 4, rect.y, TRUE);
 		if (rt.ui.objects_expanded[i])
 			render_ui_expandedproperties(&rt.scene.objects[i], rect.y);
 		rect.y += 2 + (rt.ui.objects_expanded[i] ? 3 * OBJECT_PROPERTIES : 0);

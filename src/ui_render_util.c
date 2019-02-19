@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render_ui_util.c                                   :+:      :+:    :+:   */
+/*   ui_render_util.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -17,7 +17,7 @@
 /*
 **	Displays a rectangle of the given tile on the given tile region onscreen
 */
-void	render_ui_fill(t_u8 tile_index,
+void	ui_render_fill(t_u8 tile_index,
 	SDL_Rect dest_region, t_bool transparent)
 {
 	static SDL_Rect	dest = {0, 0, TILE, TILE};
@@ -49,7 +49,7 @@ void	render_ui_fill(t_u8 tile_index,
 /*
 **	Displays a 16x16 icon at the given tile coordinates
 */
-void	render_ui_icon(t_u8 icon_index,
+void	ui_render_icon(t_u8 icon_index,
 	t_s32 x, t_s32 y, t_bool transparent)
 {
 	static SDL_Rect	dest = {0, 0, TILE * 2, TILE * 2};
@@ -70,7 +70,7 @@ void	render_ui_icon(t_u8 icon_index,
 /*
 **	Displays the given string in 8x8 monospace font at the given tile coords
 */
-void		render_ui_text(char const* str,
+void		ui_render_text(char const* str,
 	t_s32 x, t_s32 y, t_bool transparent)
 {
 	static SDL_Rect	dest = {0, 0, TILE, TILE};
@@ -97,7 +97,7 @@ void		render_ui_text(char const* str,
 		SDL_SetColorKey(rt.ui.tileset, SDL_FALSE, rt.ui.pal[0]);
 }
 
-static void	render_ui_rect_corners(SDL_Rect *rect, t_bool filled)
+static void	ui_render_rect_corners(SDL_Rect *rect, t_bool filled)
 {
 	static SDL_Rect rect_UL = { 0, TILE * 0, TILE, TILE };
 	static SDL_Rect rect_UR = { 0, TILE * 0, TILE, TILE };
@@ -130,7 +130,7 @@ static void	render_ui_rect_corners(SDL_Rect *rect, t_bool filled)
 		debug_output_error("Error during render_rect() -> DR corner: ", TRUE);
 }
 
-static void	render_ui_rect_edges_h(SDL_Rect *rect, t_bool filled)
+static void	ui_render_rect_edges_h(SDL_Rect *rect, t_bool filled)
 {
 	static SDL_Rect	rect_U = { 0, TILE * 0, TILE, TILE };
 	static SDL_Rect	rect_D = { 0, TILE * 1, TILE, TILE };
@@ -159,7 +159,7 @@ static void	render_ui_rect_edges_h(SDL_Rect *rect, t_bool filled)
 	}
 }
 
-static void	render_ui_rect_edges_v(SDL_Rect *rect, t_bool filled)
+static void	ui_render_rect_edges_v(SDL_Rect *rect, t_bool filled)
 {
 	static SDL_Rect	rect_R = { 0, TILE * 0, TILE, TILE };
 	static SDL_Rect	rect_L = { 0, TILE * 1, TILE, TILE };
@@ -192,15 +192,15 @@ static void	render_ui_rect_edges_v(SDL_Rect *rect, t_bool filled)
 **	Displays a HUD border rectangle of the given w,h (in tiles)
 **	at the given tile x and y coordinates
 */
-void	render_ui_rect(SDL_Rect rect, t_bool filled)
+void	ui_render_rect(SDL_Rect rect, t_bool filled)
 {
 	static SDL_Rect	tile = {0, 0, TILE, TILE};
 	static SDL_Rect	dest = {0, 0, TILE, TILE};
 	SDL_Point		i;
 
-	render_ui_rect_corners(&rect, filled);
-	render_ui_rect_edges_h(&rect, filled);
-	render_ui_rect_edges_v(&rect, filled);
+	ui_render_rect_corners(&rect, filled);
+	ui_render_rect_edges_h(&rect, filled);
+	ui_render_rect_edges_v(&rect, filled);
 	i.x = 0;
 	i.y = 0;
 	tile.x = TILE * (filled ? 2 : 0);

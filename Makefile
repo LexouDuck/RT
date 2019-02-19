@@ -121,10 +121,11 @@ SRCS	= 	main.c				\
 			ui_menu_file.c		\
 			ui_menu_edit.c		\
 			ui_menu_view.c		\
+			ui_control_numberbox.c	\
+			ui_render_util.c	\
+			ui_render.c			\
 			camera.c			\
 			cl_float3_util.c	\
-			render_ui_util.c	\
-			render_ui.c			\
 			render.c
 
 SRCDIR_CL	= $(SRCDIR)ocl/

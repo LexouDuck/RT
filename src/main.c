@@ -30,10 +30,10 @@ static void	update_window()
 			"Error during update_window() -> Screen clear: ", TRUE);
 
 	// display the UI
-	render_ui_objects();
-	render_ui_menubar();
+	ui_render_objects();
+	ui_render_menubar();
 	if (rt.ui.menubar.selection != -1)
-		render_ui_dropdown(&rt.ui.dropdowns[rt.ui.menubar.selection]);
+		ui_render_dropdown(&rt.ui.dropdowns[rt.ui.menubar.selection]);
 
 	// Do the 3d render if needed
 	if (rt.must_render)
@@ -44,7 +44,7 @@ static void	update_window()
 	if (SDL_BlitSurface(rt.canvas, &rt.canvas->clip_rect, rt.sdl.window_surface, &dest))
 		debug_output_error("Error during update_window() -> render blit: ", TRUE);
 
-	render_ui_caminfo(&rt.scene.camera);
+	ui_render_caminfo(&rt.scene.camera);
 
 	// and update the window display
 	if (SDL_UpdateTexture(rt.sdl.window_texture, NULL,

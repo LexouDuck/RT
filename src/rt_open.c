@@ -138,8 +138,7 @@ char		*rt_read_file(t_rtparser *p)
 		if (!p->file[p->index])
 			break ;
 		label = p->file + p->index;
-		while (p->file[p->index] &&
-			ft_isalpha(p->file[p->index]))
+		while (p->file[p->index] && ft_isalpha(p->file[p->index]))
 			++(p->index);
 		if (!p->file[p->index])
 			return ("Unexpected end of file after label");
@@ -147,7 +146,6 @@ char		*rt_read_file(t_rtparser *p)
 		if ((error = rt_read_command(p, label)))
 			return (error);
 	}
-	free(p->file);
 	rt.scene.bg_rgb.x = ft_color_argb32_get_r(rt.scene.bg_color) / 255.;
 	rt.scene.bg_rgb.y = ft_color_argb32_get_g(rt.scene.bg_color) / 255.;
 	rt.scene.bg_rgb.z = ft_color_argb32_get_b(rt.scene.bg_color) / 255.;

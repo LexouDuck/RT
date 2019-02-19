@@ -23,17 +23,21 @@ int			ui_menu_file_open(char *filepath)
 
 	if (rt_open_file(filepath, &parser))
 		return (ERROR);
-	ft_memclr(rt.scene.objects, OBJECT_MAX_AMOUNT * sizeof(t_object));
-	rt.scene.object_amount = 0;
-	if ((error = rt_read_file(&parser)))
+	if (parser.file)
 	{
-		debug_output_value("Error: while reading rt file -> at line ",
-			ft_s32_to_str(parser.line), TRUE);
-		debug_output_error(error, FALSE);
-		return (ERROR);
+		ft_memclr(rt.scene.objects, OBJECT_MAX_AMOUNT * sizeof(t_object));
+		rt.scene.object_amount = 0;
+		if ((error = rt_read_file(&parser)))
+		{
+			debug_output_value("Error: while reading rt file -> at line ",
+				ft_s32_to_str(parser.line), TRUE);
+			debug_output_error(error, FALSE);
+			return (ERROR);
+		}
+		debug_output_value("Successfully opened file: ", filepath, FALSE);
+		rt_output_readfile();
+		free(parser.file);
 	}
-	debug_output_value("Successfully opened file: ", filepath, FALSE);
-	rt_output_readfile();
 	return (OK);
 }
 
@@ -44,14 +48,18 @@ int			ui_menu_file_import(char *filepath)
 
 	if (rt_open_file(filepath, &parser))
 		return (ERROR);
-	if ((error = rt_read_file(&parser)))
+	if (parser.file)
 	{
-		debug_output_value("Error: while reading rt file -> at line ",
-			ft_s32_to_str(parser.line), TRUE);
-		debug_output_error(error, FALSE);
-		return (ERROR);
+		if ((error = rt_read_file(&parser)))
+		{
+			debug_output_value("Error: while reading rt file -> at line ",
+				ft_s32_to_str(parser.line), TRUE);
+			debug_output_error(error, FALSE);
+			return (ERROR);
+		}
+		debug_output_value("Successfully imported file: ", filepath, FALSE);
+		rt_output_readfile();
+		free(parser.file);
 	}
-	debug_output_value("Successfully imported file: ", filepath, FALSE);
-	rt_output_readfile();
 	return (OK);
 }

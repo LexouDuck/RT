@@ -99,7 +99,32 @@ typedef struct	s_rtparser
 	int			current_object;
 }				t_rtparser;
 
-int			rt_open_file(char *filepath);
+/*
+**	ui_menu_file.c
+*/
+int			ui_menu_file_open(char *filepath);
+int			ui_menu_file_import(char *filepath);
+/*
+**	ui_menu_edit.c
+*/
+void		ui_menu_edit_undo();
+void		ui_menu_edit_redo();
+void		ui_menu_edit_cut();
+void		ui_menu_edit_copy();
+void		ui_menu_edit_paste();
+/*
+**	ui_menu_view.c
+*/
+void		ui_menu_view_orthogonal();
+
+/*
+**	rt_open.c
+**	rt_open_util.c
+**	rt_open_read.c
+*/
+int			rt_open_file(char *filepath, t_rtparser *p);
+char		*rt_read_file(t_rtparser *p);
+void		rt_output_readfile();
 void		rt_read_whitespace(t_rtparser *p);
 char		*rt_read_error(char expected, char *description, char instead);
 char		*rt_read_arg_color(t_rtparser *p, t_u32 *result);

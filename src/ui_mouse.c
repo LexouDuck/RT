@@ -18,7 +18,7 @@
 void	ui_mouse_objectlist()
 {
 	SDL_Rect	rect;
-	t_s8		i;
+	t_s32		i;
 
 	rect.y = 4;
 	rect.h = 2;

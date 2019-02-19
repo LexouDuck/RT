@@ -105,35 +105,36 @@ static int	main_loop()
 
 int			main(int argc, char* argv[])
 {
-	init_scene();
-	init_camera(&rt.scene.camera);
-
-	// TODO open all files given as args
-	if (argc > 1)
-	{
-		rt_open_file(argv[1]);
-	}
-
-//TODO put in the right place
+//printf("debug: init debug\n");
 	if (debug_init())
 		return (ERROR);
-
-//printf("debug init config\n");
+//printf("debug: init config\n");
 	if (config_init())
 		return (ERROR);
-//printf("debug init sdl\n");
+//printf("debug: init sdl\n");
 	if (init_sdl())
 		return (ERROR);
-
-//printf("debug init window\n");
+//printf("debug: init window\n");
 	if (init_window())
 		return (ERROR);
 	if (init_window_display())
 		return (ERROR);
-//printf("debug init ui\n");
+
+	init_scene();
+	init_camera(&rt.scene.camera);
+
+	if (argc > 1)
+	{
+		int i = 1;
+		ui_menu_file_open(argv[i]);
+		while (++i < argc)
+			ui_menu_file_import(argv[i]);
+	}
+
+//printf("debug: init ui\n");
 	if (ui_init())
 		return (ERROR);
-//printf("debug init opencl\n");
+//printf("debug: init opencl\n");
 	if (opencl_init())
 		return (ERROR);
 	return (main_loop());

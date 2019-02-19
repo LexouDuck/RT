@@ -118,6 +118,9 @@ SRCS	= 	main.c				\
 			ui.c				\
 			ui_init.c			\
 			ui_mouse.c			\
+			ui_menu_file.c		\
+			ui_menu_edit.c		\
+			ui_menu_view.c		\
 			camera.c			\
 			cl_float3_util.c	\
 			render_ui_util.c	\

@@ -93,18 +93,14 @@ void	render_ui_objects()
 
 	rect.x = 0;
 	rect.y = 4;
-	rect.w = UI_WIDTH_TILES - 1;
+	rect.w = UI_WIDTH_TILES - 2;
 	rect.h = 2;
 	i = -1;
 	while (++i < OBJECT_MAX_AMOUNT)
 	{
-		hover = FALSE;
 		if (rt.scene.objects[i].type == none)
 			continue ;
-		if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
-		{
-			hover = TRUE;
-		}
+		hover = SDL_PointInRect(&rt.input.mouse_tile, &rect);
 		if (hover || rt.ui.objects_selected[i])
 			render_ui_fill((rt.ui.objects_selected[i] ? 2 : 1), rect, FALSE);
 		render_ui_icon_object(&rt.scene.objects[i], rect.y);
@@ -126,12 +122,8 @@ void	render_ui_menubar()
 	i = -1;
 	while (++i < MENUBAR_ITEMS)
 	{
-		hover = FALSE;
 		rect = rt.ui.menubar.item_hitbox[i];
-		if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
-		{
-			hover = TRUE;
-		}
+		hover = SDL_PointInRect(&rt.input.mouse_tile, &rect);
 		render_ui_rect(rect, hover);
 		render_ui_text(rt.ui.menubar.item_labels[i],
 			rt.ui.menubar.item_hitbox[i].x + 2, 1, TRUE);
@@ -147,12 +139,8 @@ void	render_ui_dropdown(t_menu *dropdown)
 	i = -1;
 	while (++i < dropdown->item_amount)
 	{
-		hover = FALSE;
 		rect = dropdown->item_hitbox[i];
-		if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
-		{
-			hover = TRUE;
-		}
+		hover = SDL_PointInRect(&rt.input.mouse_tile, &rect);
 		render_ui_rect(rect, hover);
 		render_ui_text(dropdown->item_labels[i],
 			2, 3 + 2 * i, TRUE);

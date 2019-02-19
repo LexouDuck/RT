@@ -25,7 +25,7 @@
 #include "debug.h"
 #include "rt_scene.h"
 
-static void	rt_output_readfile()
+void	rt_output_readfile()
 {
 	static const char *primitive_types[9] = {
 		"N/A",
@@ -114,22 +114,24 @@ static char	*rt_read_command(t_rtparser *p, char *label)
 		shape = cone;
 	else if (ft_strequ(label, "OBJ") || ft_strequ(label, "MESH"))
 		shape = obj_mesh;
+
 	if (shape)
-		return (rt_read_object(p, shape));
+		return (p->current_object < OBJECT_MAX_AMOUNT ? rt_read_object(p, shape)
+			: "Import error: Maximum object amount limit has been reached.");
 	else if (ft_strequ(label, "BG"))
 		return (rt_read_arg_color(p, &rt.scene.bg_color));
 	else
 		return (ft_strjoin("Could not resolve label -> ", label));
 }
 
-static char	*rt_read_file(t_rtparser *p)
+char		*rt_read_file(t_rtparser *p)
 {
 	char	*label;
 	char	*error;
 
 	p->line = 1;
 	p->index = 0;
-	p->current_object = 0;
+	p->current_object = rt.scene.object_amount;
 	while (p->file[p->index])
 	{
 		rt_read_whitespace(p);
@@ -154,11 +156,9 @@ static char	*rt_read_file(t_rtparser *p)
 }
 
 
-int			rt_open_file(char *filepath)
+int			rt_open_file(char *filepath, t_rtparser *p)
 {
 	int			fd;
-	t_rtparser	parser;
-	char		*error;
 
 	fd = open(filepath, O_RDONLY);
 	if (fd < 0)
@@ -167,7 +167,7 @@ int			rt_open_file(char *filepath)
 		debug_output_value("open() -> ", strerror(errno), FALSE);
 		return (ERROR);
 	}
-	if (ft_readfile(fd, &parser.file))
+	if (ft_readfile(fd, &p->file))
 	{
 		debug_output_value("Error: Could not read RT file: ", filepath, FALSE);
 		return (ERROR);
@@ -178,13 +178,5 @@ int			rt_open_file(char *filepath)
 		debug_output_value("close() -> ", strerror(errno), FALSE);
 		return (ERROR);
 	}
-	if ((error = rt_read_file(&parser)))
-	{
-		debug_output_value("Error: while reading rt file -> at line ",
-			ft_s32_to_str(parser.line), TRUE);
-		debug_output_error(error, FALSE);
-		return (ERROR);
-	}
-	rt_output_readfile();
 	return (OK);
 }

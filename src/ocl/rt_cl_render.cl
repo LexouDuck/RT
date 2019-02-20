@@ -131,35 +131,27 @@ static t_ray			accumulate_lum_and_bounce_ray
 				float3		normal;
 
 
-
-//	ray->lum_mask *= obj->rgb;
-
-
-//if (sampid == 0 && depth == 0) printf("%g %g %g   %g %g %g   %g  %d  %d \n", ray.pos.x, ray.pos.y, ray.pos.z, ray.dir.x, ray.dir.y, ray.dir.z, ray.t, ray.hit_obj_id, ray.inter_type);
 	hitpos = ray.pos + ((float3)(ray.t)) * ray.dir;
-//if (sampid == 0 && depth == 0) printf("hitpos %g %g %g\n", hitpos.x, hitpos.y, hitpos.z);
-//if (sampid == 0 && depth == 0) printf("%g %g %g   %g %g %g   %g  %d  %d | %g %g %g\n", ray.pos.x, ray.pos.y, ray.pos.z, ray.dir.x, ray.dir.y, ray.dir.z, ray.t, ray.hit_obj_id, ray.inter_type, hitpos.x, hitpos.y, hitpos.z);
-//if (sampid == 0 && depth == 0){float16 nw = obj->n_to_w; printf("\tobj->n_to_w: \n%10g %10g %10g %10g\n%10g %10g %10g %10g\n%10g %10g %10g %10g\n%10g %10g %10g %10g\n", nw.s0, nw.s1, nw.s2, nw.s3, nw.s4, nw.s5, nw.s6, nw.s7, nw.s8, nw.s9, nw.sA, nw.sB, nw.sC, nw.sD, nw.sE, nw.sF);}
-	normal = rt_cl_apply_linear_matrix(obj->n_to_w, hitpos);// * (float3)(ray.inter_type);
-//if (sampid == 0 && depth == 0) printf("normal %f %f %f | %g\n", normal.x, normal.y, normal.z, (float)dot(normal, normal));
-	normal = normalize(normal); //sphere formula, normal == hitpos
-//if (depth == 0) printf("normal %f %f %f\n", normal.x, normal.y, normal.z);
+	normal = rt_cl_apply_linear_matrix(obj->n_to_w, hitpos) * (float3)(ray.inter_type); //sphere formula, normal == hitpos
+	normal = normalize(normal);
 	new_ray.pos = rt_cl_apply_homogeneous_matrix(obj->o_to_w, hitpos) + normal * (float3)(EPS);
 	new_ray.dir = rt_cl_rand_dir_coshemi(random_seeds, normal);
-//if (sampid == 0 && depth == 1) printf("normal %f %f %f => %f | hitpos %f %f %f \n", normal.x, normal.y, normal.z, (float)dot(normal, normal), new_ray.pos.x, new_ray.pos.y, new_ray.pos.z);
-
-//if (sampid == 0 && depth == 0) printf("dir %f %f %f => %f | mask %f %f %f \n", new_ray.dir.x, new_ray.dir.y, new_ray.dir.z, (float)dot(new_ray.dir, new_ray.dir), new_ray.lum_mask.x, new_ray.lum_mask.y, new_ray.lum_mask.z);
-//	new_ray.dir = normalize(rt_cl_f3rand_neg1half_to_pos1half(random_seed));
 	new_ray.hit_obj_id = -1;
 	new_ray.inter_type = INTER_NONE;
 	new_ray.t = scene->render_dist;
+
+#if 0
+	new_ray.complete = obj->material == lightsrc;
+	new_ray.lum_mask = ray.lum_mask * obj->rgb;
+	new_ray.lum_mask *= (float3)(1. - new_ray.complete) * (float3)(dot(normal, new_ray.dir));
+	new_ray.lum_acc = ray.lum_acc + (float3)(new_ray.complete) * new_ray.lum_mask;
+#endif
+
 	if (obj->material == lightsrc)
 	{
 		new_ray.complete = true;
 		new_ray.lum_mask = ray.lum_mask;
 		new_ray.lum_acc = ray.lum_acc + ray.lum_mask * obj->light;//obj->rgb;
-//	if(sampid == 0 && depth == 0)	
-//		printf("acc %f %f %f\n", obj->rgb.x, obj->rgb.y, obj->rgb.z);//ray->lum_mask.x, ray->lum_mask.y, ray->lum_mask.z);//new_ray.lum_acc.x, new_ray.lum_acc.y, new_ray.lum_acc.z);
 	}
 	else
 	{
@@ -168,70 +160,70 @@ static t_ray			accumulate_lum_and_bounce_ray
 		new_ray.lum_acc = ray.lum_acc;// + ray.lum_mask;
 	}
 
-//	if (sampid == 0 && depth == 0) printf("normal %f %f %f => %f | hitpos %f %f %f \n", normal.x, normal.y, normal.z, (float)dot(normal, normal), new_ray.pos.x, new_ray.pos.y, new_ray.pos.z);
-//	if (sampid == 0 && depth == 0) printf("dir %f %f %f => %f | mask %f %f %f \n", new_ray.dir.x, new_ray.dir.y, new_ray.dir.z, (float)dot(new_ray.dir, new_ray.dir), new_ray.lum_mask.x, new_ray.lum_mask.y, new_ray.lum_mask.z);
 	return (new_ray);
 }
 
-
-
-static float3			get_pixel_color_from_mc_sampling
+static t_ray			create_camray
 (
-					__constant		t_scene	*	scene,	
-									uint2 *		random_seeds,
-									int			x_id,
-									int			y_id
+					__constant		t_scene	*	scene,
+									uint2 *		random_seeds
 )
 {
-	float3				pixel_rgb = (float3)(0.);
+	int const			x_id = get_global_id(0);
+	int const			y_id = get_global_id(1);
 	int const			width = get_global_size(0);
 	int const			height = get_global_size(1);
 	float16	const		cam_mat44 = scene->camera.c_to_w;
 	float const			fov_val = -width / (2 * tan(scene->camera.hrz_fov));
+	t_ray				camray;
+
+	camray.lum_acc = (float3)(0.);
+	camray.lum_mask = (float3)(1.);
+	camray.t = scene->render_dist;
+	camray.complete = false;
+	camray.hit_obj_id = -1;
+	camray.inter_type = INTER_NONE;
+//	camray.pos = (float3)(0., 0., 0.);
+	camray.pos = (float3)(rt_cl_frand_neg1half_to_pos1half(random_seeds), rt_cl_frand_neg1half_to_pos1half(random_seeds), 0.);
+	camray.pos *= (float3)(scene->camera.aperture);
+	camray.pos = rt_cl_apply_homogeneous_matrix(cam_mat44, camray.pos);
+	camray.dir = (float3)(x_id - width / 2, y_id - height / 2, fov_val);
+	camray.dir += (float3)(rt_cl_frand_neg1half_to_pos1half(random_seeds) * 0.1, rt_cl_frand_neg1half_to_pos1half(random_seeds) * 0.1, 0.); //add and fix for depth of field
+	camray.dir = rt_cl_apply_linear_matrix(cam_mat44, camray.dir);
+	camray.dir = normalize(camray.dir);
+
+	return (camray);
+}
+
+static float3			get_pixel_color_from_mc_sampling
+(
+					__constant		t_scene	*	scene,
+									uint2 *		random_seeds
+)
+{
+	float3				pixel_rgb = (float3)(0.);
 	float const			inv_samp_size = 1. / scene->mc_raysamp_size;
 	t_ray				ray_i;
 
 	for (uint i = 0; i < scene->mc_raysamp_size; ++i)
 	{
-		ray_i.lum_acc = (float3)(0.);
-		ray_i.lum_mask = (float3)(1.);
-		ray_i.t = scene->render_dist;
-		ray_i.complete = false;
-		ray_i.hit_obj_id = -1;
-		ray_i.inter_type = INTER_NONE;
-		ray_i.pos = (float3)(0., 0., 0.);
-//		ray_i.pos = (float3)(rt_cl_frand_neg1half_to_pos1half(random_seeds), rt_cl_frand_neg1half_to_pos1half(random_seeds), 0.); //add and fix with camera.aperture for depth of field
-//		ray_i.pos *= (float3)(scene->camera.aperture);
-		ray_i.pos = rt_cl_apply_homogeneous_matrix(cam_mat44, ray_i.pos);
-//		if (i = 0) printf("%f %f %f\n", ray_i.pos.x, ray_i.pos.y, ray_i.pos.z);
-		ray_i.dir = (float3)(x_id - width / 2, y_id - height / 2, fov_val);
-//		ray_i.dir += (float3)(rt_cl_frand_neg1half_to_pos1half(random_seed) * 0.1, rt_cl_frand_neg1half_to_pos1half(random_seed) * 0.1, 0.); //add and fix for anti-aliasing
-		ray_i.dir = rt_cl_apply_linear_matrix(cam_mat44, ray_i.dir);
-		ray_i.dir = normalize(ray_i.dir);
-
+		ray_i = create_camray(scene, random_seeds);
 		for (uint depth = 0; !ray_i.complete && depth < scene->max_ray_depth; ++depth)
 		{
-
-		//	trace_ray_to_bboxes(ray, scene);
-		//	trace_ray_to_primitives(ray, scene, index_list);
 			ray_i = trace_ray_to_scene(scene, ray_i);
 			if (ray_i.inter_type)
 			{
 //				return scene->objects[ray_i.hit_obj_id].rgb;
 				ray_i = accumulate_lum_and_bounce_ray(scene, random_seeds, ray_i, i, depth);
-//				if (ray_i.complete)
-//					break ;
 			}
 			else
 			{
 //				return (0xFF000000);
 				ray_i.complete = true;
 				ray_i.lum_acc += ray_i.lum_mask * scene->bg_rgb;
-				//break;
 			}
 		}
 		pixel_rgb += ray_i.lum_acc;
-//		if (i = 0) printf("%f %f %f\n", ray_i.pos.x, ray_i.pos.y, ray_i.pos.z);//ray_i.lum_acc.x, ray_i.lum_acc.y, ray_i.lum_acc.z);//res_pixel_color.x, res_pixel_color.y, res_pixel_color.z);
 	}
 	pixel_rgb *= (float3)(inv_samp_size); 
 	return (pixel_rgb);
@@ -241,17 +233,13 @@ static float3			get_pixel_color_from_mc_sampling
 __kernel void	rt_cl_render
 (
 					__global		uint *		result_imgbuf,
-					__constant		t_scene	*	scene//,
-//										uint		random_seed[1]
+					__constant		t_scene	*	scene
 )
-{	
-//	int const			width = get_global_size(0);
-//	int const			height = get_global_size(1);
+{
 	int const			x_id = get_global_id(0); /* x-coordinate of the current pixel */
 	int const			y_id = get_global_id(1); /* y-coordinate of the current pixel */
 //	int const			sample_id = get_global_id(2); /* id of the current ray thread amongst the MC simulation for the current pixel*/
 	int const			work_item_id = y_id * get_global_size(0) + x_id;
-//				uint		random_seed[1];
 	uint2				random_seeds;
 
 	random_seeds.x = x_id;// ^ scene->random_seed_time;
@@ -263,7 +251,7 @@ __kernel void	rt_cl_render
 	debug_print_camera(&(scene->camera));
 }*/
 	rt_cl_rand(&random_seeds);
-	float3 vcolor3 = (float3)(255.) * get_pixel_color_from_mc_sampling(scene, &random_seeds, x_id, y_id);//rt_cl_f3rand_neg1half_to_pos1half(random_seed) * (float3)(255.);//
+	float3 vcolor3 = (float3)(255.) * get_pixel_color_from_mc_sampling(scene, &random_seeds);//rt_cl_f3rand_neg1half_to_pos1half(random_seed) * (float3)(255.);//
 //	printf((__constant char *)"kernel %10g %10g %10g\n", vcolor3.x, vcolor3.y, vcolor3.z);
 	uint3 color3 = (uint3)(floor(vcolor3.x), floor(vcolor3.y), floor(vcolor3.z));
 //	printf((__constant char *)"kernel %u %u %u\n", color3.x, color3.y, color3.z);

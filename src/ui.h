@@ -66,7 +66,9 @@
 # define DROPDOWN_VIEW_GLOBAL_I		3
 # define DROPDOWN_ITEMS_VIEW		4
 
+# define OBJECT_PROPERTY_H		4
 # define OBJECT_PROPERTIES		5
+# define OBJECT_PROPERTIES_H	OBJECT_PROPERTY_H * OBJECT_PROPERTIES
 
 typedef struct	s_menu
 {
@@ -99,12 +101,12 @@ SDL_Palette*	ui_set_palette(SDL_Surface *surface, t_u32 const *palette);
 SDL_Surface*	ui_set_tileset(t_u8 const *chr, size_t length);
 
 /*
-**	render_ui.c
+**	ui_render.c
 */
-void	render_ui_objects();
-void	render_ui_menubar();
-void	render_ui_dropdown(t_menu *dropdown);
-void	render_ui_caminfo(t_camera *camera);
+void	ui_render_objects();
+void	ui_render_menubar();
+void	ui_render_dropdown(t_menu *dropdown);
+void	ui_render_caminfo(t_camera *camera);
 
 /*
 **	ui_mouse.c
@@ -114,14 +116,21 @@ void	ui_mouse_menubar();
 void	ui_mouse_dropdown(t_menu *dropdown);
 
 /*
-**	render_ui_util.c
+**	ui_render_util.c
 */
-void	render_ui_fill(t_u8 tile_index,
+void	ui_render_fill(t_u8 tile_index,
 	SDL_Rect dest_region, t_bool transparent);
-void	render_ui_icon(t_u8 icon_index,
+void	ui_render_icon(t_u8 icon_index,
 	t_s32 x, t_s32 y, t_bool transparent);
-void	render_ui_text(char const *str,
+void	ui_render_text(char const *str,
 	t_s32 x, t_s32 y, t_bool transparent);
-void	render_ui_rect(SDL_Rect rect, t_bool filled);
+void	ui_render_rect(SDL_Rect rect, t_bool filled);
+
+/*
+**	ui_control_numberbox.c
+**	ui_control_colorbox.c
+**	ui_control_textbox.c
+*/
+void	ui_render_control_numberbox(int x, int y, cl_float value);
 
 #endif

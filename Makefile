@@ -118,10 +118,14 @@ SRCS	= 	main.c				\
 			ui.c				\
 			ui_init.c			\
 			ui_mouse.c			\
+			ui_menu_file.c		\
+			ui_menu_edit.c		\
+			ui_menu_view.c		\
+			ui_control_numberbox.c	\
+			ui_render_util.c	\
+			ui_render.c			\
 			camera.c			\
 			cl_float3_util.c	\
-			render_ui_util.c	\
-			render_ui.c			\
 			render.c
 
 SRCDIR_CL	= $(SRCDIR)ocl/
@@ -171,8 +175,9 @@ $(OBJDIR)%.o : $(SRCDIR)%.c $(HDRS)
 CL_FILES	=	$(addprefix $(SRCDIR_CL), $(SRCS_CL))
 
 concat.cl: $(CL_FILES)
+	@printf "Concatenating .cl files: "$@" -> "
 	@cat $(CL_FILES) > $@
-
+	@printf $(GREEN)"OK!"$(RESET)"\n"
 
 ASSET_FILES	=	$(addprefix $(INCDIR),$(INCS))
 

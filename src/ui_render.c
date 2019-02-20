@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render_ui.c                                        :+:      :+:    :+:   */
+/*   ui_render.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -20,7 +20,7 @@
 #include "debug.h"
 #include "event.h"
 
-void	render_ui_icon_object(t_object* object, t_s32 y)
+void	ui_render_icon_object(t_object* object, t_s32 y)
 {
 	static const t_u8	light = 0x50;
 	static const t_u8	shade = 0x50;
@@ -40,52 +40,42 @@ void	render_ui_icon_object(t_object* object, t_s32 y)
 	palette[2] = object->color;
 	if (!ui_set_palette(rt.ui.tileset, palette))
 		return ;
-	render_ui_icon((int)object->type - 1, 1, y, TRUE);
+	ui_render_icon((int)object->type - 1, 1, y, TRUE);
 	ui_set_palette(rt.ui.tileset, rt.ui.pal);
 }
 
-void	render_ui_expandedproperties(t_object *object, t_s32 y)
+void	ui_render_expandedproperties(t_object *object, t_s32 y)
 {
 	char		*tmp;
 
 	if ((tmp = ft_u32_to_hex(object->color)))
 	{
-		render_ui_text("Color: #", 1, y + 2, FALSE);
-		render_ui_text(       tmp, 9, y + 2, FALSE);
+		ui_render_text("Color: #", 1, y + 2, FALSE);
+		ui_render_text(       tmp, 9, y + 2, FALSE);
 		free(tmp);
 	}
-	if ((tmp = cl_float3_to_str(&object->rgb, 4)))
-	{
-		render_ui_text(tmp, 4, y + 3, FALSE);
-		free(tmp);
-	}
-	if ((tmp = cl_float3_to_str(&object->light, 4)))
-	{
-		render_ui_text("Light:", 1, y + 5, FALSE);
-		render_ui_text(     tmp, 4, y + 6, FALSE);
-		free(tmp);
-	}
-	if ((tmp = cl_float3_to_str(&object->pos, 2)))
-	{
-		render_ui_text("Pos:", 1, y + 8, FALSE);
-		render_ui_text(   tmp, 4, y + 9, FALSE);
-		free(tmp);
-	}
-	if ((tmp = cl_float3_to_str(&object->rot, 2)))
-	{
-		render_ui_text("Rot:", 1, y + 11, FALSE);
-		render_ui_text(   tmp, 4, y + 12, FALSE);
-		free(tmp);
-	}
-	if ((tmp = cl_float3_to_str(&object->scale, 2)))
-	{
-		render_ui_text("Scale:", 1, y + 14, FALSE);
-		render_ui_text(     tmp, 4, y + 15, FALSE);
-		free(tmp);
-	}
+	ui_render_control_numberbox( 1, y + 3, object->rgb.x);
+	ui_render_control_numberbox(10, y + 3, object->rgb.y);
+	ui_render_control_numberbox(19, y + 3, object->rgb.z);
+	ui_render_text("Light:", 1, y + 6, FALSE);
+	ui_render_control_numberbox( 1, y + 7, object->light.x);
+	ui_render_control_numberbox(10, y + 7, object->light.y);
+	ui_render_control_numberbox(19, y + 7, object->light.z);
+	ui_render_text("Pos:", 1, y + 10, FALSE);
+	ui_render_control_numberbox( 1, y + 11, object->pos.x);
+	ui_render_control_numberbox(10, y + 11, object->pos.y);
+	ui_render_control_numberbox(19, y + 11, object->pos.z);
+	ui_render_text("Rot:", 1, y + 14, FALSE);
+	ui_render_control_numberbox( 1, y + 15, object->rot.x);
+	ui_render_control_numberbox(10, y + 15, object->rot.y);
+	ui_render_control_numberbox(19, y + 15, object->rot.z);
+	ui_render_text("Scale:", 1, y + 18, FALSE);
+	ui_render_control_numberbox( 1, y + 19, object->scale.x);
+	ui_render_control_numberbox(10, y + 19, object->scale.y);
+	ui_render_control_numberbox(19, y + 19, object->scale.z);
 }
 
-void	render_ui_objects()
+void	ui_render_objects()
 {
 	t_bool		hover;
 	SDL_Rect	rect;
@@ -93,31 +83,27 @@ void	render_ui_objects()
 
 	rect.x = 0;
 	rect.y = 4;
-	rect.w = UI_WIDTH_TILES - 1;
+	rect.w = UI_WIDTH_TILES - 2;
 	rect.h = 2;
 	i = -1;
 	while (++i < OBJECT_MAX_AMOUNT)
 	{
-		hover = FALSE;
 		if (rt.scene.objects[i].type == none)
 			continue ;
-		if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
-		{
-			hover = TRUE;
-		}
+		hover = SDL_PointInRect(&rt.input.mouse_tile, &rect);
 		if (hover || rt.ui.objects_selected[i])
-			render_ui_fill((rt.ui.objects_selected[i] ? 2 : 1), rect, FALSE);
-		render_ui_icon_object(&rt.scene.objects[i], rect.y);
-		render_ui_text(rt.scene.objects[i].name, 4, rect.y + 1, TRUE);
-		render_ui_icon((rt.ui.objects_expanded[i] ? 29 : 30),
+			ui_render_fill((rt.ui.objects_selected[i] ? 2 : 1), rect, FALSE);
+		ui_render_icon_object(&rt.scene.objects[i], rect.y);
+		ui_render_text(rt.scene.objects[i].name, 4, rect.y + 1, TRUE);
+		ui_render_icon((rt.ui.objects_expanded[i] ? 29 : 30),
 			UI_WIDTH_TILES - 4, rect.y, TRUE);
 		if (rt.ui.objects_expanded[i])
-			render_ui_expandedproperties(&rt.scene.objects[i], rect.y);
-		rect.y += 2 + (rt.ui.objects_expanded[i] ? 3 * OBJECT_PROPERTIES : 0);
+			ui_render_expandedproperties(&rt.scene.objects[i], rect.y);
+		rect.y += 2 + (rt.ui.objects_expanded[i] ? OBJECT_PROPERTIES_H : 0);
 	}
 }
 
-void	render_ui_menubar()
+void	ui_render_menubar()
 {
 	t_bool		hover;
 	SDL_Rect	rect;
@@ -126,19 +112,15 @@ void	render_ui_menubar()
 	i = -1;
 	while (++i < MENUBAR_ITEMS)
 	{
-		hover = FALSE;
 		rect = rt.ui.menubar.item_hitbox[i];
-		if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
-		{
-			hover = TRUE;
-		}
-		render_ui_rect(rect, hover);
-		render_ui_text(rt.ui.menubar.item_labels[i],
+		hover = SDL_PointInRect(&rt.input.mouse_tile, &rect);
+		ui_render_rect(rect, hover);
+		ui_render_text(rt.ui.menubar.item_labels[i],
 			rt.ui.menubar.item_hitbox[i].x + 2, 1, TRUE);
 	}
 }
 
-void	render_ui_dropdown(t_menu *dropdown)
+void	ui_render_dropdown(t_menu *dropdown)
 {
 	t_bool		hover;
 	SDL_Rect	rect;
@@ -147,56 +129,52 @@ void	render_ui_dropdown(t_menu *dropdown)
 	i = -1;
 	while (++i < dropdown->item_amount)
 	{
-		hover = FALSE;
 		rect = dropdown->item_hitbox[i];
-		if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
-		{
-			hover = TRUE;
-		}
-		render_ui_rect(rect, hover);
-		render_ui_text(dropdown->item_labels[i],
+		hover = SDL_PointInRect(&rt.input.mouse_tile, &rect);
+		ui_render_rect(rect, hover);
+		ui_render_text(dropdown->item_labels[i],
 			2, 3 + 2 * i, TRUE);
 	}
 }
 
-void		render_ui_caminfo(t_camera *camera)
+void		ui_render_caminfo(t_camera *camera)
 {
 	char	*tmp;
 
-	render_ui_text("Camera", UI_WIDTH_TILES + 2, 1, FALSE);
+	ui_render_text("Camera", UI_WIDTH_TILES + 2, 1, FALSE);
 
 	tmp = ft_u32_to_str(camera->mode);		
-	render_ui_text("Mode: ", UI_WIDTH_TILES + 2, 2, FALSE);
-	render_ui_text(		tmp, UI_WIDTH_TILES + 8, 2, FALSE);
+	ui_render_text("Mode: ", UI_WIDTH_TILES + 2, 2, FALSE);
+	ui_render_text(		tmp, UI_WIDTH_TILES + 8, 2, FALSE);
 	if (tmp) free(tmp);
 
 	tmp = ft_f32_to_str(camera->lat, 3);
-	render_ui_text("LAT-> ", UI_WIDTH_TILES + 2, 4, FALSE);
-	render_ui_text(		tmp, UI_WIDTH_TILES + 8, 4, FALSE);
+	ui_render_text("LAT-> ", UI_WIDTH_TILES + 2, 4, FALSE);
+	ui_render_text(		tmp, UI_WIDTH_TILES + 8, 4, FALSE);
 	if (tmp) free(tmp);
 
 	tmp = ft_f32_to_str(camera->lon, 3);
-	render_ui_text("LON-> ", UI_WIDTH_TILES + 2, 5, FALSE);
-	render_ui_text(		tmp, UI_WIDTH_TILES + 8, 5, FALSE);
+	ui_render_text("LON-> ", UI_WIDTH_TILES + 2, 5, FALSE);
+	ui_render_text(		tmp, UI_WIDTH_TILES + 8, 5, FALSE);
 	if (tmp) free(tmp);
 
 	tmp = ft_f32_to_str(camera->zoom, 3);
-	render_ui_text("Zoom: ", UI_WIDTH_TILES + 2, 6, FALSE);
-	render_ui_text(		tmp, UI_WIDTH_TILES + 8, 6, FALSE);
+	ui_render_text("Zoom: ", UI_WIDTH_TILES + 2, 6, FALSE);
+	ui_render_text(		tmp, UI_WIDTH_TILES + 8, 6, FALSE);
 	if (tmp) free(tmp);
 
 	tmp = ft_f32_to_str(camera->tilt_angle, 3);
-	render_ui_text("Tilt: ", UI_WIDTH_TILES + 2, 7, FALSE);
-	render_ui_text(		tmp, UI_WIDTH_TILES + 8, 7, FALSE);
+	ui_render_text("Tilt: ", UI_WIDTH_TILES + 2, 7, FALSE);
+	ui_render_text(		tmp, UI_WIDTH_TILES + 8, 7, FALSE);
 	if (tmp) free(tmp);
 
 	tmp = cl_float3_to_str(&camera->anchor, 3);
-	render_ui_text("Anchor", UI_WIDTH_TILES + 2, 9, FALSE);
-	render_ui_text(		tmp, UI_WIDTH_TILES + 8, 9, FALSE);
+	ui_render_text("Anchor", UI_WIDTH_TILES + 2, 9, FALSE);
+	ui_render_text(		tmp, UI_WIDTH_TILES + 8, 9, FALSE);
 	if (tmp) free(tmp);
 
 	tmp = cl_float3_to_str(&camera->relative_pos, 3);
-	render_ui_text("CamPos", UI_WIDTH_TILES + 2, 10, FALSE);
-	render_ui_text(		tmp, UI_WIDTH_TILES + 8, 10, FALSE);
+	ui_render_text("CamPos", UI_WIDTH_TILES + 2, 10, FALSE);
+	ui_render_text(		tmp, UI_WIDTH_TILES + 8, 10, FALSE);
 	if (tmp) free(tmp);
 }

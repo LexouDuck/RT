@@ -175,8 +175,9 @@ $(OBJDIR)%.o : $(SRCDIR)%.c $(HDRS)
 CL_FILES	=	$(addprefix $(SRCDIR_CL), $(SRCS_CL))
 
 concat.cl: $(CL_FILES)
+	@printf "Concatenating .cl files: "$@" -> "
 	@cat $(CL_FILES) > $@
-
+	@printf $(GREEN)"OK!"$(RESET)"\n"
 
 ASSET_FILES	=	$(addprefix $(INCDIR),$(INCS))
 

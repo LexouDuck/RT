@@ -67,6 +67,26 @@ static void			rt_cl_build_object_matrices
 	obj->w_to_o = tmp_mat;
 	obj->w_to_o.sCDE = rt_cl_apply_linear_matrix(tmp_mat, -pos); //note that this value is the corrected inverse translation considering scaling and rotation
 	obj->n_to_w = rt_cl_mat44_transpose(tmp_mat);
+
+	//boolean matrices to round approximate 0s to 0. //TODO make a MAT44ROUND0 function ?
+	#if 0
+	int16		bool_mat;
+
+	bool_mat = fabs(obj->o_to_w) < (float16)(EPS);
+	bool_mat = (int16)(1) - bool_mat;
+	tmp_mat = convert_float16(bool_mat);
+	obj->o_to_w = obj->o_to_w * tmp_mat;
+
+	bool_mat = fabs(obj->w_to_o) < (float16)(EPS);
+	bool_mat = (int16)(1) - bool_mat;
+	tmp_mat = convert_float16(bool_mat);
+	obj->w_to_o = obj->w_to_o * tmp_mat;
+
+	bool_mat = fabs(obj->n_to_w) < (float16)(EPS);
+	bool_mat = (int16)(1) - bool_mat;
+	tmp_mat = convert_float16(bool_mat);
+	obj->n_to_w = obj->n_to_w * tmp_mat;
+	#endif
 }
 
 

@@ -101,7 +101,7 @@ static float16			rt_cl_mat33in44_inv(float16 const mat33)
 	float		det;
 	float16		result;
 
-	if ((det = rt_cl_mat33in44_det(mat33)) == 0.)
+	if (fabs((det = rt_cl_mat33in44_det(mat33))) < EPS)
 		return ((float16)(0. / 0.));
 	result.s0 = mat33.s5 * mat33.sA - mat33.s6 * mat33.s9;
 	result.s4 = mat33.s6 * mat33.s8 - mat33.s4 * mat33.sA;

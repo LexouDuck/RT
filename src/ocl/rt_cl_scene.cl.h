@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 # define OBJECT_NAME_MAXLENGTH	24
-# define OBJECT_MAX_AMOUNT		256
+# define OBJECT_MAX_AMOUNT		32
 # define EPS					0.001
 
 # define TAU 					0x1.921fb54442d18p2

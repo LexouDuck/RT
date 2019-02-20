@@ -279,7 +279,7 @@ static float3			rt_cl_rand_dir_coshemi
 
 	seed.x = TAU * rt_cl_frand_0_to_1(random_seeds);
 	seed.y = rt_cl_frand_0_to_1(random_seeds);
-	tmp = sqrt(1. - seed.y);
+	tmp = sqrt((float)(1. - seed.y));
 	randdir = (float3)(cos(seed.x) * tmp, sin(seed.x) * tmp, sqrt(seed.y));
 	vtan1 = rt_cl_f3rand_neg1half_to_pos1half(random_seeds);
 	vtan1 = cross(axis, vtan1);

@@ -93,6 +93,8 @@ typedef struct	s_camera
 	cl_float		aperture;
 	cl_float16		c_to_w;
 //	cl_float16		w_to_c;
+	cl_uint2		target_pos;
+	cl_uint			target_id;
 }				t_camera;
 /*
 ** c_to_w.s012 is axis_x, .s456 is axis_y, .s89A is axis_z and .sCDE is world_pos

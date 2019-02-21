@@ -40,6 +40,13 @@ void	event_mouse_press(SDL_Event *event)
 	camera = &rt.scene.camera;
 	if (event->button.x < UI_WIDTH)
 		return ;
+	//TODO Ask aduquesn how to refresh render at click 
+	else if (event->button.button == SDL_BUTTON_LEFT && rt.input.keys == KEY_CTRL_L)
+	{
+		camera->target_pos.x = event->button.x - UI_WIDTH;
+		camera->target_pos.y = event->button.y;
+		rt.must_render = TRUE;
+	}
 	else if (event->button.button == SDL_BUTTON_LEFT)
 		camera->mode = CAMERA_MODE_PAN;
 	else if (event->button.button == SDL_BUTTON_MIDDLE)

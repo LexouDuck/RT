@@ -242,16 +242,28 @@ __kernel void	rt_cl_render
 //	int const			sample_id = get_global_id(2); /* id of the current ray thread amongst the MC simulation for the current pixel*/
 	int const			work_item_id = y_id * get_global_size(0) + x_id;
 	uint2				random_seeds;
+	t_ray				ray_i;
 
 	random_seeds.x = x_id;// ^ scene->random_seed_time;
 	random_seeds.y = y_id;
-
+	rt_cl_rand(&random_seeds);
+	if(scene->camera.target_pos.x == (uint)x_id)
+	{
+		if(scene->camera.target_pos.y == (uint)y_id)
+		{
+			ray_i = create_camray(scene, &random_seeds);
+		//	printf("ray.pos.x = %f, ray.pos.y = %f, ray.pos.z = %f\n;", ray_i.pos.x, ray_i.pos.y, ray_i.pos.z);
+		//	printf("ray.dir.x = %f, ray.dir.y = %f, ray.dir.z = %f\n;", ray_i.dir.x, ray_i.dir.y, ray_i.dir.z);
+			ray_i = trace_ray_to_scene(scene, ray_i);
+			printf("target_pos.x = %u, target_pos.y = %u;\n", scene->camera.target_pos.x, scene->camera.target_pos.y);
+			printf("ray.hit_obj_id = %u;\n", ray_i.hit_obj_id);
+		//	scene->camera.target_id = ray_i.hit_obj_id;
+	}
 /*if (work_item_id == 0)
 {
 	debug_print_scene(scene);
 	debug_print_camera(&(scene->camera));
 }*/
-	rt_cl_rand(&random_seeds);
 	float3 vcolor3 = (float3)(255.) * get_pixel_color_from_mc_sampling(scene, &random_seeds);//rt_cl_f3rand_neg1half_to_pos1half(random_seed) * (float3)(255.);//
 //	printf((__constant char *)"kernel %10g %10g %10g\n", vcolor3.x, vcolor3.y, vcolor3.z);
 	uint3 color3 = (uint3)(floor(vcolor3.x), floor(vcolor3.y), floor(vcolor3.z));

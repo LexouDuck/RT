@@ -69,6 +69,9 @@ typedef struct	s_camera
 	float			aperture;
 	float16			c_to_w;
 //	float16			w_to_c;
+//TODO	Ask aduquesn about double s_camera structure
+	uint2			target_pos;
+	uint			target_id;
 }				t_camera;
 
 

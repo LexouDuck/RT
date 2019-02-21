@@ -29,7 +29,8 @@ static bool			ray_intersect_bbox
 					float *		tres*/
 )
 {
-//	bool	inter;
+	//TODO add aabb.vi.x < ray.pos.x < aabb.vf.x: if true for every coordinate, return INTER_INSIDE
+
 	float3	inv_dir = native_recip(ray.dir);
 	//get all plane intersections
 	float3	ti = (aabb.vi - ray.pos) * inv_dir;
@@ -188,7 +189,7 @@ static t_ray			create_camray
 	camray.pos *= (float3)(scene->camera.aperture);
 	camray.pos = rt_cl_apply_homogeneous_matrix(cam_mat44, camray.pos);
 	camray.dir = (float3)(x_id - width / 2, y_id - height / 2, fov_val);
-	camray.dir += (float3)(rt_cl_frand_neg1half_to_pos1half(random_seeds) * 0.1, rt_cl_frand_neg1half_to_pos1half(random_seeds) * 0.1, 0.); //add and fix for depth of field
+	camray.dir += (float3)(rt_cl_frand_neg1half_to_pos1half(random_seeds) * 0.1, rt_cl_frand_neg1half_to_pos1half(random_seeds) * 0.1, 0.); //TODO, replace 0.1 by appropriate value; add and fix for depth of field
 	camray.dir = rt_cl_apply_linear_matrix(cam_mat44, camray.dir);
 	camray.dir = normalize(camray.dir);
 
@@ -257,5 +258,5 @@ __kernel void	rt_cl_render
 //	printf((__constant char *)"kernel %u %u %u\n", color3.x, color3.y, color3.z);
 	uint color = 0xFF000000 | (color3.x << 16) | (color3.y << 8) | (color3.z);
 //	printf("kernel %x %x %x color %x\n", (color3.x << 16), (color3.y << 8), (color3.z), color);
-	result_imgbuf[work_item_id] = color; /* simple interpolated colour gradient based on pixel coordinates */
+	result_imgbuf[work_item_id] = color;
 }

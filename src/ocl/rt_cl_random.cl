@@ -238,7 +238,7 @@ static float3			rt_cl_rand_dir_sphere
 static float3			rt_cl_rand_dir_hemi
 (
 							uint2 *			random_seeds,
-							float3 const	axis
+							float3			axis
 )
 {
 	float3		randdir;
@@ -260,13 +260,14 @@ static float3			rt_cl_rand_dir_hemi
 	lin_mat.s456 = vtan2;
 	lin_mat.s89A = axis;
 	randdir = rt_cl_apply_linear_matrix(lin_mat, randdir);
+//	randdir = normalize(randdir); //useless because of orthonormality of lin_mat
 	return (randdir);
 }
 
 static float3			rt_cl_rand_dir_coshemi
 (
 							uint2 *			random_seeds,
-							float3 const	axis
+							float3			axis
 )
 {
 	float3		randdir;
@@ -278,7 +279,7 @@ static float3			rt_cl_rand_dir_coshemi
 
 	seed.x = TAU * rt_cl_frand_0_to_1(random_seeds);
 	seed.y = rt_cl_frand_0_to_1(random_seeds);
-	tmp = sqrt(1. - seed.y);
+	tmp = sqrt((float)(1. - seed.y));
 	randdir = (float3)(cos(seed.x) * tmp, sin(seed.x) * tmp, sqrt(seed.y));
 	vtan1 = rt_cl_f3rand_neg1half_to_pos1half(random_seeds);
 	vtan1 = cross(axis, vtan1);
@@ -288,5 +289,6 @@ static float3			rt_cl_rand_dir_coshemi
 	lin_mat.s456 = vtan2;
 	lin_mat.s89A = axis;
 	randdir = rt_cl_apply_linear_matrix(lin_mat, randdir);
+//	randdir = normalize(randdir); //useless because of orthonormality of lin_mat
 	return (randdir);
 }

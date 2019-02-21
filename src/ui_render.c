@@ -20,6 +20,38 @@
 #include "debug.h"
 #include "event.h"
 
+void	ui_render_scrollbar(t_menulist *list)
+{
+	static SDL_Rect	dest = { 0, 0, TILE * 2, TILE * 2 };
+	static SDL_Rect	tile = { 0, 0, TILE * 2, TILE };
+
+	ui_render_icon(20, list->scrollbutton_up.x / TILE, list->scrollbutton_up.y / TILE, FALSE);
+	ui_render_icon(28, list->scrollbutton_down.x / TILE, list->scrollbutton_down.y / TILE, FALSE);
+	tile.x = TILE * 12;
+	tile.y = TILE * 12;
+	dest.x = list->scrollbar.x;
+	dest.y = list->scrollbar.y;
+	dest.y += TILE * (int)(list->scrollbar.h * ((t_f32)list->scroll / (t_f32)list->scroll_max));
+	if (SDL_BlitSurface(rt.ui.tileset, &tile, rt.sdl.window_surface, &dest))
+		debug_output_error("Error during ui_render_scrollbar(): ", TRUE);
+	tile.y = TILE * 13;
+	dest.y += TILE;
+	if (SDL_BlitSurface(rt.ui.tileset, &tile, rt.sdl.window_surface, &dest))
+		debug_output_error("Error during ui_render_scrollbar(): ", TRUE);
+	tile.y = TILE * 14;
+	dest.y += TILE;
+	if (SDL_BlitSurface(rt.ui.tileset, &tile, rt.sdl.window_surface, &dest))
+		debug_output_error("Error during ui_render_scrollbar(): ", TRUE);
+	tile.y = TILE * 13;
+	dest.y += TILE;
+	if (SDL_BlitSurface(rt.ui.tileset, &tile, rt.sdl.window_surface, &dest))
+		debug_output_error("Error during ui_render_scrollbar(): ", TRUE);
+	tile.y = TILE * 15;
+	dest.y += TILE;
+	if (SDL_BlitSurface(rt.ui.tileset, &tile, rt.sdl.window_surface, &dest))
+		debug_output_error("Error during ui_render_scrollbar(): ", TRUE);
+}
+
 void	ui_render_icon_object(t_object* object, t_s32 y)
 {
 	static const t_u8	light = 0x50;
@@ -79,28 +111,29 @@ void	ui_render_objects()
 {
 	t_bool		hover;
 	SDL_Rect	rect;
-	t_s32		i;
+	t_u32		i;
 
-	rect.x = 0;
-	rect.y = 4;
-	rect.w = UI_WIDTH_TILES - 2;
+	rect = rt.ui.objects.rect;
 	rect.h = 2;
-	i = -1;
-	while (++i < OBJECT_MAX_AMOUNT)
+	i = 0;
+	while (i < rt.scene.object_amount)
 	{
 		if (rt.scene.objects[i].type == none)
 			continue ;
 		hover = SDL_PointInRect(&rt.input.mouse_tile, &rect);
-		if (hover || rt.ui.objects_selected[i])
-			ui_render_fill((rt.ui.objects_selected[i] ? 2 : 1), rect, FALSE);
+		if (hover || rt.ui.objects.selected[i])
+			ui_render_fill((rt.ui.objects.selected[i] ? 2 : 1), rect, FALSE);
 		ui_render_icon_object(&rt.scene.objects[i], rect.y);
 		ui_render_text(rt.scene.objects[i].name, 4, rect.y + 1, TRUE);
-		ui_render_icon((rt.ui.objects_expanded[i] ? 29 : 30),
+		ui_render_icon((rt.ui.objects.expanded[i] ? 26 : 27),
 			UI_WIDTH_TILES - 4, rect.y, TRUE);
-		if (rt.ui.objects_expanded[i])
+		if (rt.ui.objects.expanded[i])
 			ui_render_expandedproperties(&rt.scene.objects[i], rect.y);
-		rect.y += 2 + (rt.ui.objects_expanded[i] ? OBJECT_PROPERTIES_H : 0);
+		rect.y += 2 + (rt.ui.objects.expanded[i] ? OBJECT_PROPERTIES_H : 0);
+		++i;
 	}
+	if (rt.ui.objects.scroll_max > rt.ui.objects.scroll_view)
+		ui_render_scrollbar(&rt.ui.objects);
 }
 
 void	ui_render_menubar()

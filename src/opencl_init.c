@@ -120,7 +120,7 @@ int				opencl_get_platform_and_gpu()
 //	if (clGetDeviceIDs(rt.ocl.platform, CL_DEVICE_TYPE_CPU, 1, &(rt.ocl.cpu), NULL))
 //		return (ERROR);
 	has_gpu = FALSE;
-//	rt.ocl.gpu_platform_index = rt.ocl.platform_amount ? rt.ocl.platform_amount - 1 : 0; //@Alexis: this line breaks my opencl on Linux: platform 0 is my GPU
+	rt.ocl.gpu_platform_index = rt.ocl.platform_amount ? rt.ocl.platform_amount - 1 : 0; //@Alexis: this line breaks my opencl on Linux: platform 0 is my GPU
 	while (rt.ocl.gpu_platform_index < rt.ocl.platform_amount)
 	{
 		if ((err = clGetDeviceIDs(rt.ocl.platforms[rt.ocl.gpu_platform_index],

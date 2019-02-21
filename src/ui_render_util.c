@@ -39,7 +39,7 @@ void	ui_render_fill(t_u8 tile_index,
 			dest.y = TILE * (dest_region.y + y);
 			if (SDL_BlitSurface(rt.ui.tileset, &tile,
 				rt.sdl.window_surface, &dest))
-				debug_output_error("Error during render_text(): ", TRUE);
+				debug_output_error("Error during ui_render_fill(): ", TRUE);
 		}
 	}
 	if (transparent)
@@ -62,7 +62,7 @@ void	ui_render_icon(t_u8 icon_index,
 	dest.x = TILE * x;
 	dest.y = TILE * y;
 	if (SDL_BlitSurface(rt.ui.tileset, &tile, rt.sdl.window_surface, &dest))
-		debug_output_error("Error during render_text(): ", TRUE);
+		debug_output_error("Error during ui_render_icon(): ", TRUE);
 	if (transparent)
 		SDL_SetColorKey(rt.ui.tileset, SDL_FALSE, rt.ui.pal[0]);
 }
@@ -89,7 +89,7 @@ void		ui_render_text(char const* str,
 		tile.x = ((t_u8)str[i] % 16) * TILE;
 		tile.y = ((t_u8)str[i] / 16) * TILE;
 		if (SDL_BlitSurface(rt.ui.tileset, &tile, rt.sdl.window_surface, &dest))
-			debug_output_error("Error during render_text(): ", TRUE);
+			debug_output_error("Error during ui_render_text(): ", TRUE);
 		dest.x += TILE;
 		++i;
 	}
@@ -211,6 +211,6 @@ void	ui_render_rect(SDL_Rect rect, t_bool filled)
 			dest.y = TILE * (rect.y + i.y);
 			if (SDL_BlitSurface(rt.ui.tileset, &tile, rt.sdl.window_surface, &dest))
 				debug_output_error(
-					"Error during render_rect() -> center: ", TRUE);
+					"Error during ui_render_rect() -> center: ", TRUE);
 		}
 }

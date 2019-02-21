@@ -32,7 +32,7 @@
 */
 
 # define UI_WIDTH_TILES	30
-# define UI_WIDTH		UI_WIDTH_TILES * TILE
+# define UI_WIDTH		TILE * UI_WIDTH_TILES
 
 # define MENU_MAX_ITEMS	8
 
@@ -80,6 +80,19 @@ typedef struct	s_menu
 	t_s8		selection;
 }				t_menu;
 
+typedef struct	s_menulist
+{
+	SDL_Rect	rect;
+	t_bool		selected[OBJECT_MAX_AMOUNT];
+	t_bool		expanded[OBJECT_MAX_AMOUNT];
+	SDL_Rect	scrollbutton_up;
+	SDL_Rect	scrollbutton_down;
+	SDL_Rect	scrollbar;
+	t_u32		scroll;			// the current pixel y value
+	t_u32		scroll_max;		// the maximum pixel y value for the scroll bar
+	t_u32		scroll_view;	// the amount of pixels visible in the window, vertically
+}				t_menulist;
+
 typedef struct	s_ui
 {
 	t_u8 const	*chr;
@@ -89,8 +102,7 @@ typedef struct	s_ui
 
 	t_menu		menubar;
 	t_menu		dropdowns[MENUBAR_ITEMS];
-	t_bool		objects_selected[OBJECT_MAX_AMOUNT];
-	t_bool		objects_expanded[OBJECT_MAX_AMOUNT];
+	t_menulist	objects;
 }				t_ui;
 
 /*

@@ -34,6 +34,7 @@ inline void	event_window_resize(SDL_Window *window, t_s32 window_w, t_s32 window
 		SDL_DestroyTexture(rt.sdl.window_texture);
 		SDL_FreeSurface(rt.sdl.window_surface);
 		init_window_display();
+		rt.ui.objects.scroll_view = (rt.sdl.window_h - MENUBAR_ITEMS_H);
 	}
 }
 

@@ -18,32 +18,33 @@
 void	ui_mouse_objectlist()
 {
 	SDL_Rect	rect;
-	t_s32		i;
+	t_u32		i;
 
-	rect.y = 4;
+	rect = rt.ui.objects.rect;
 	rect.h = 2;
-	i = -1;
-	while (++i < OBJECT_MAX_AMOUNT)
+	i = 0;
+	while (i < rt.scene.object_amount)
 	{
-		if (rt.scene.objects[i].type == none)
-			continue ;
-		rect.x = 0;
-		rect.w = UI_WIDTH_TILES - 1;
-		if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+		if (rt.scene.objects[i].type && rect.y < rt.sdl.window_h)
 		{
-			if (!(rt.input.keys & KEY_CTRL))
-				ft_memclr(rt.ui.objects_selected,
-					OBJECT_MAX_AMOUNT * sizeof(t_bool));
-			rt.ui.objects_selected[i] = TRUE;
+			rect.x = 0;
+			rect.w = UI_WIDTH_TILES - 1;
+			if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+			{
+				if (!(rt.input.keys & KEY_CTRL))
+					ft_memclr(rt.ui.objects.selected,
+						OBJECT_MAX_AMOUNT * sizeof(t_bool));
+				rt.ui.objects.selected[i] = TRUE;
+			}
+			rect.x = UI_WIDTH_TILES - 4;
+			rect.w = 2;
+			if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+				rt.ui.objects.expanded[i] = !rt.ui.objects.expanded[i];
 		}
-		rect.x = UI_WIDTH_TILES - 4;
-		rect.w = 2;
-		if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
-		{
-			rt.ui.objects_expanded[i] = !rt.ui.objects_expanded[i];
-		}
-		rect.y += 2 + (rt.ui.objects_expanded[i] ? OBJECT_PROPERTIES_H : 0);
+		rect.y += 2 + (rt.ui.objects.expanded[i] ? OBJECT_PROPERTIES_H : 0);
+		++i;
 	}
+	rt.ui.objects.scroll_max = TILE * rect.y;
 }
 
 void	ui_mouse_menubar()

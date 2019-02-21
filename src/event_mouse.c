@@ -22,14 +22,17 @@ void	event_mouse_wheel(SDL_Event *event)
 	camera = &rt.scene.camera;
 	if (event->wheel.y)
 	{
-		if (event->wheel.y > 0)
-			camera->zoom *= 0.9;
-		if (event->wheel.y < 0)
-			camera->zoom *= 1.1;
-		if (camera->zoom < EPS)
-			camera->zoom = EPS;
-		camera_update(camera);
-		rt.must_render = TRUE;
+		if (SDL_PointInRect(&rt.input.mouse, &rt.canvas->clip_rect))
+		{
+			if (event->wheel.y > 0)
+				camera->zoom *= 0.9;
+			if (event->wheel.y < 0)
+				camera->zoom *= 1.1;
+			if (camera->zoom < EPS)
+				camera->zoom = EPS;
+			camera_update(camera);
+			rt.must_render = TRUE;
+		}
 	}
 }
 

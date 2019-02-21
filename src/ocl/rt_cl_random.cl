@@ -260,7 +260,6 @@ static float3			rt_cl_rand_dir_hemi
 	lin_mat.s456 = vtan2;
 	lin_mat.s89A = axis;
 	randdir = rt_cl_apply_linear_matrix(lin_mat, randdir);
-	normalize(randdir);
 	return (randdir);
 }
 
@@ -289,6 +288,5 @@ static float3			rt_cl_rand_dir_coshemi
 	lin_mat.s456 = vtan2;
 	lin_mat.s89A = axis;
 	randdir = rt_cl_apply_linear_matrix(lin_mat, randdir);
-	normalize(randdir);
 	return (randdir);
 }

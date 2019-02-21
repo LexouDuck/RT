@@ -107,6 +107,22 @@ static void	ui_init_dropdown_view()
 	}
 }
 
+static void	ui_init_objectlist()
+{
+	rt.ui.objects.rect.x = 0;
+	rt.ui.objects.rect.y = 4;
+	rt.ui.objects.rect.w = UI_WIDTH_TILES - 2;
+	rt.ui.objects.scrollbutton_up = (SDL_Rect)
+		{ UI_WIDTH - TILE * 2, TILE * MENUBAR_ITEMS_H, TILE * 2, TILE * 2 };
+	rt.ui.objects.scrollbutton_down = (SDL_Rect)
+		{ UI_WIDTH - TILE * 2, rt.sdl.window_h - TILE * 2, TILE * 2, TILE * 2 };
+	rt.ui.objects.scrollbar = (SDL_Rect)
+		{ UI_WIDTH - TILE * 2, TILE * (MENUBAR_ITEMS_H + 2), TILE * 2, rt.ui.objects.scrollbutton_down.y - (TILE * (MENUBAR_ITEMS_H + 2)) };
+	rt.ui.objects.scroll = 0;
+	rt.ui.objects.scroll_max = 0;
+	rt.ui.objects.scroll_view = (rt.sdl.window_h - MENUBAR_ITEMS_H);
+}
+
 int			ui_init()
 {
 	static const t_u32	palette[PALETTE] = {
@@ -135,5 +151,6 @@ int			ui_init()
 	ui_init_dropdown_file();
 	ui_init_dropdown_edit();
 	ui_init_dropdown_view();
+	ui_init_objectlist();
 	return (OK);
 }

@@ -25,29 +25,43 @@ void	ui_render_scrollbar(t_menulist *list)
 	static SDL_Rect	dest = { 0, 0, TILE * 2, TILE * 2 };
 	static SDL_Rect	tile = { 0, 0, TILE * 2, TILE };
 
-	ui_render_icon(20, list->scrollbutton_up.x / TILE, list->scrollbutton_up.y / TILE, FALSE);
-	ui_render_icon(28, list->scrollbutton_down.x / TILE, list->scrollbutton_down.y / TILE, FALSE);
-	tile.x = TILE * 12;
+	if (list->scrollbutton_up_clicked)
+		list->scroll -= (list->scroll <= 0) ? 0 : 1;
+	if (list->scrollbutton_down_clicked)
+		list->scroll += (list->scroll >= list->scroll_max - list->scroll_view + TILE) ? 0 : 1;
+
+	dest.h = TILE * 2;
+	ui_render_icon((list->scrollbutton_up_clicked ? 21 : 20),
+		list->scrollbutton_up.x,
+		list->scrollbutton_up.y, FALSE);
+	ui_render_icon((list->scrollbutton_down_clicked ? 29 : 28),
+		list->scrollbutton_down.x,
+		list->scrollbutton_down.y, FALSE);
+	tile.x = TILE * (rt.ui.objects.scrollbar_clicked ? 14 : 12);
 	tile.y = TILE * 12;
 	dest.x = list->scrollbar.x;
 	dest.y = list->scrollbar.y;
-	dest.y += TILE * (int)(list->scrollbar.h * ((t_f32)list->scroll / (t_f32)list->scroll_max));
+	t_f32 ratio;
+	t_s32 height;
+	ratio = (list->scrollbar.h / (t_f32)list->scroll_max);
+	dest.y += (int)(list->scroll * ratio);
 	if (SDL_BlitSurface(rt.ui.tileset, &tile, rt.sdl.window_surface, &dest))
 		debug_output_error("Error during ui_render_scrollbar(): ", TRUE);
+	dest.y += TILE;
 	tile.y = TILE * 13;
-	dest.y += TILE;
-	if (SDL_BlitSurface(rt.ui.tileset, &tile, rt.sdl.window_surface, &dest))
-		debug_output_error("Error during ui_render_scrollbar(): ", TRUE);
-	tile.y = TILE * 14;
-	dest.y += TILE;
-	if (SDL_BlitSurface(rt.ui.tileset, &tile, rt.sdl.window_surface, &dest))
-		debug_output_error("Error during ui_render_scrollbar(): ", TRUE);
-	tile.y = TILE * 13;
-	dest.y += TILE;
-	if (SDL_BlitSurface(rt.ui.tileset, &tile, rt.sdl.window_surface, &dest))
-		debug_output_error("Error during ui_render_scrollbar(): ", TRUE);
+	height = (list->scroll_view * ratio) / TILE - 2;
+	for (int i = 0; i < height; ++i)
+	{
+		if (SDL_BlitSurface(rt.ui.tileset, &tile, rt.sdl.window_surface, &dest))
+			debug_output_error("Error during ui_render_scrollbar(): ", TRUE);
+		dest.y += TILE;
+	}
 	tile.y = TILE * 15;
-	dest.y += TILE;
+	if (SDL_BlitSurface(rt.ui.tileset, &tile, rt.sdl.window_surface, &dest))
+		debug_output_error("Error during ui_render_scrollbar(): ", TRUE);
+	height = (list->scroll_view * ratio) / 2 - TILE / 2;
+	dest.y = list->scrollbar.y + (int)(list->scroll * ratio) + height;
+	tile.y = TILE * 14;
 	if (SDL_BlitSurface(rt.ui.tileset, &tile, rt.sdl.window_surface, &dest))
 		debug_output_error("Error during ui_render_scrollbar(): ", TRUE);
 }
@@ -72,7 +86,7 @@ void	ui_render_icon_object(t_object* object, t_s32 y)
 	palette[2] = object->color;
 	if (!ui_set_palette(rt.ui.tileset, palette))
 		return ;
-	ui_render_icon((int)object->type - 1, 1, y, TRUE);
+	ui_render_icon((int)object->type - 1, 1, y * TILE, TRUE);
 	ui_set_palette(rt.ui.tileset, rt.ui.pal);
 }
 
@@ -109,6 +123,8 @@ void	ui_render_expandedproperties(t_object *object, t_s32 y)
 
 void	ui_render_objects()
 {
+	t_s32		tmp;
+	t_s32		add_height;
 	t_bool		hover;
 	SDL_Rect	rect;
 	t_u32		i;
@@ -118,20 +134,30 @@ void	ui_render_objects()
 	i = 0;
 	while (i < rt.scene.object_amount)
 	{
-		if (rt.scene.objects[i].type == none)
-			continue ;
-		hover = SDL_PointInRect(&rt.input.mouse_tile, &rect);
-		if (hover || rt.ui.objects.selected[i])
-			ui_render_fill((rt.ui.objects.selected[i] ? 2 : 1), rect, FALSE);
-		ui_render_icon_object(&rt.scene.objects[i], rect.y);
-		ui_render_text(rt.scene.objects[i].name, 4, rect.y + 1, TRUE);
-		ui_render_icon((rt.ui.objects.expanded[i] ? 26 : 27),
-			UI_WIDTH_TILES - 4, rect.y, TRUE);
-		if (rt.ui.objects.expanded[i])
-			ui_render_expandedproperties(&rt.scene.objects[i], rect.y);
-		rect.y += 2 + (rt.ui.objects.expanded[i] ? OBJECT_PROPERTIES_H : 0);
+		tmp = rect.y;
+		rect.y -= rt.ui.objects.scroll / TILE;
+		add_height = (rt.ui.objects.expanded[i] ? OBJECT_PROPERTIES_H : 0);
+		if (rt.scene.objects[i].type &&
+			rect.y + add_height >= rt.ui.objects.rect.y - TILE &&
+			rect.y < rt.ui.objects.rect.y + rt.ui.objects.rect.h)
+		{
+			hover = SDL_PointInRect(&rt.input.mouse_tile, &rect);
+			if (hover || rt.ui.objects.selected[i])
+				ui_render_fill((rt.ui.objects.selected[i] ? 2 : 1), rect, FALSE);
+			ui_render_icon_object(&rt.scene.objects[i], rect.y);
+			ui_render_text(rt.scene.objects[i].name, 4, rect.y + 1, TRUE);
+			ui_render_icon((rt.ui.objects.expanded[i] ? 26 : 27),
+				TILE * (UI_WIDTH_TILES - 4), TILE * rect.y, TRUE);
+			if (rt.ui.objects.expanded[i])
+				ui_render_expandedproperties(&rt.scene.objects[i], rect.y);
+		}
+		rect.y = tmp;
+		rect.y += 2 + add_height;
 		++i;
 	}
+	rt.ui.objects.scroll_max = TILE * rect.y;
+	if (rt.ui.objects.scroll > rt.ui.objects.scroll_max)
+		rt.ui.objects.scroll = rt.ui.objects.scroll_max;
 	if (rt.ui.objects.scroll_max > rt.ui.objects.scroll_view)
 		ui_render_scrollbar(&rt.ui.objects);
 }

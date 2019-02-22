@@ -112,10 +112,14 @@ static void	ui_init_objectlist()
 	rt.ui.objects.rect.x = 0;
 	rt.ui.objects.rect.y = 4;
 	rt.ui.objects.rect.w = UI_WIDTH_TILES - 2;
+	rt.ui.objects.rect.h = rt.sdl.window_h - rt.ui.objects.rect.y;
+	rt.ui.objects.scrollbutton_up_clicked = FALSE;
 	rt.ui.objects.scrollbutton_up = (SDL_Rect)
 		{ UI_WIDTH - TILE * 2, TILE * MENUBAR_ITEMS_H, TILE * 2, TILE * 2 };
+	rt.ui.objects.scrollbutton_down_clicked = FALSE;
 	rt.ui.objects.scrollbutton_down = (SDL_Rect)
 		{ UI_WIDTH - TILE * 2, rt.sdl.window_h - TILE * 2, TILE * 2, TILE * 2 };
+	rt.ui.objects.scrollbar_clicked = FALSE;
 	rt.ui.objects.scrollbar = (SDL_Rect)
 		{ UI_WIDTH - TILE * 2, TILE * (MENUBAR_ITEMS_H + 2), TILE * 2, rt.ui.objects.scrollbutton_down.y - (TILE * (MENUBAR_ITEMS_H + 2)) };
 	rt.ui.objects.scroll = 0;

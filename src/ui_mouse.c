@@ -15,8 +15,22 @@
 #include "../rt.h"
 #include "debug.h"
 
+void	ui_mouse_scrollbar()
+{
+	if (SDL_PointInRect(&rt.input.mouse, &rt.ui.objects.scrollbar))
+	{
+
+	}
+	else if (SDL_PointInRect(&rt.input.mouse, &rt.ui.objects.scrollbutton_up))
+		rt.ui.objects.scrollbutton_up_clicked = TRUE;
+	else if (SDL_PointInRect(&rt.input.mouse, &rt.ui.objects.scrollbutton_down))
+		rt.ui.objects.scrollbutton_down_clicked = TRUE;
+}
+
 void	ui_mouse_objectlist()
 {
+	t_s32		tmp;
+	t_s32		add_height;
 	SDL_Rect	rect;
 	t_u32		i;
 
@@ -25,7 +39,12 @@ void	ui_mouse_objectlist()
 	i = 0;
 	while (i < rt.scene.object_amount)
 	{
-		if (rt.scene.objects[i].type && rect.y < rt.sdl.window_h)
+		tmp = rect.y;
+		rect.y -= rt.ui.objects.scroll / TILE;
+		add_height = (rt.ui.objects.expanded[i] ? OBJECT_PROPERTIES_H : 0);
+		if (rt.scene.objects[i].type &&
+			rect.y + add_height >= rt.ui.objects.rect.y - TILE &&
+			rect.y < rt.ui.objects.rect.y + rt.ui.objects.rect.h)
 		{
 			rect.x = 0;
 			rect.w = UI_WIDTH_TILES - 1;
@@ -41,10 +60,10 @@ void	ui_mouse_objectlist()
 			if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
 				rt.ui.objects.expanded[i] = !rt.ui.objects.expanded[i];
 		}
-		rect.y += 2 + (rt.ui.objects.expanded[i] ? OBJECT_PROPERTIES_H : 0);
+		rect.y = tmp;
+		rect.y += 2 + add_height;
 		++i;
 	}
-	rt.ui.objects.scroll_max = TILE * rect.y;
 }
 
 void	ui_mouse_menubar()

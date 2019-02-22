@@ -18,14 +18,12 @@ void	event_check_keydown(SDL_Event *event)
 	if (event->key.keysym.sym == SDLK_ESCAPE)
 		if (rt.sdl.fullscreen)
 		{
-			rt.sdl.fullscreen = FALSE;
-			event_window_fullscreen(rt.sdl.window, FALSE);
+			event_window_fullscreen(FALSE);
 		}
 	if (event->key.keysym.sym == SDLK_RETURN)
 		if (!(rt.sdl.fullscreen) && (rt.input.keys & KEY_ALT))
 		{
-			rt.sdl.fullscreen = TRUE;
-			event_window_fullscreen(rt.sdl.window, TRUE);
+			event_window_fullscreen(TRUE);
 		}
 	// press space to refresh render
 	if (event->key.keysym.sym == SDLK_SPACE)

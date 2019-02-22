@@ -45,12 +45,12 @@ static void	config_init_settings()
 {
 	FT_MemoryClear(rt.config.names, CONFIG_AMOUNT * sizeof(char *));
 	rt.config.names[CONFIG_INDEX_FULLSCREEN]	= CONFIG_LABEL_FULLSCREEN;
-	rt.config.names[CONFIG_INDEX_MAXIMIZED]	= CONFIG_LABEL_MAXIMIZED;
+	rt.config.names[CONFIG_INDEX_MAXIMIZED]		= CONFIG_LABEL_MAXIMIZED;
 	rt.config.names[CONFIG_INDEX_WINDOW_W]		= CONFIG_LABEL_WINDOW_W;
 	rt.config.names[CONFIG_INDEX_WINDOW_H]		= CONFIG_LABEL_WINDOW_H;
 	FT_MemoryClear(rt.config.values, CONFIG_AMOUNT * sizeof(char *));
 	FT_MemoryClear(rt.config.defaults, CONFIG_AMOUNT * sizeof(char *));
-	rt.config.defaults[CONFIG_INDEX_FULLSCREEN]	= CONFIG_VALUE_FULLSCREEN;
+	rt.config.defaults[CONFIG_INDEX_FULLSCREEN]		= CONFIG_VALUE_FULLSCREEN;
 	rt.config.defaults[CONFIG_INDEX_MAXIMIZED]		= CONFIG_VALUE_MAXIMIZED;
 	rt.config.defaults[CONFIG_INDEX_WINDOW_W]		= CONFIG_VALUE_WINDOW_W;
 	rt.config.defaults[CONFIG_INDEX_WINDOW_H]		= CONFIG_VALUE_WINDOW_H;

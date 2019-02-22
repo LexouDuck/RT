@@ -82,7 +82,10 @@ static t_intersection			ray_intersect_sphere
 	}
 }
 
-
+/*
+** If BBoxes have a non-empty intersection, you can't use new_t as tmax
+** for ray_intersect_bbox.
+*/
 static t_ray			trace_ray_to_scene
 (
 					__constant		t_scene	*	scene,
@@ -90,14 +93,18 @@ static t_ray			trace_ray_to_scene
 )
 {
 //	bool			inter;
+	float			tmax;
 	float			new_t;
 	t_ray			ray_os;
 	t_ray			result_ray_os;
 
+	tmax = ray.t;
 	for (uint i = 0; i < scene->object_amount; ++i)
 	{
-		if (ray_intersect_bbox(ray, scene->objects[i].bbox, 0, ray.t))
+		if (ray_intersect_bbox(ray, scene->objects[i].bbox, 0, tmax))
 		{
+//			if (scene->render_mode == RENDERMODE_BBOX)
+//				return 
 			ray_os = ray;
 			ray_os.inter_type = INTER_NONE;
 			ray_os.pos = rt_cl_apply_homogeneous_matrix(scene->objects[i].w_to_o, ray_os.pos);

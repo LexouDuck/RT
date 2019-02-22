@@ -43,20 +43,20 @@
 # define DEFAULT_RAYSAMP_SIZE	128
 # define DEFAULT_MAX_RAY_DEPTH	4
 
-typedef enum		e_intersection
+typedef enum		e_rendermode
 {
-	INTER_INSIDE = -1,
-	INTER_OUTSIDE = 1,
-	INTER_NONE = 0
-}					t_intersection;
+	RENDERMODE_BBOX,
+	RENDERMODE_SOLIDCOLOR,
+	RENDERMODE_MCPT
+}					t_rendermode;
 
-typedef enum	e_cameramode
+typedef enum		e_cameramode
 {
 	CAMERA_MODE_NONE,
 	CAMERA_MODE_ROTATE,
 	CAMERA_MODE_TILT,
 	CAMERA_MODE_PAN,
-}				t_cameramode;
+}					t_cameramode;
 
 /*
 ** CAMERA
@@ -127,6 +127,14 @@ void		init_scene(void);
 **			- t is init at MAX_RENDER_DIST.
 **			- depth is the recursion depth of the ray being cast;
 */
+
+typedef enum		e_intersection
+{
+	INTER_INSIDE = -1,
+	INTER_OUTSIDE = 1,
+	INTER_NONE = 0
+}					t_intersection;
+
 typedef struct	s_ray
 {
 	cl_float3		pos;
@@ -259,16 +267,17 @@ typedef struct	s_object
 
 typedef struct	s_scene
 {
-	cl_uint		bg_color;
-	cl_float3	bg_rgb;
-	t_camera	camera;
-	t_object	objects[OBJECT_MAX_AMOUNT];
-	size_t		object_amount;
-	cl_float	render_dist;
-	t_bbox		bbox;
-	cl_uint		max_ray_depth;
-	cl_uint		mc_raysamp_size;
-	cl_uint		random_seed_time;
+	cl_uint			bg_color;
+	cl_float3		bg_rgb;
+	t_camera		camera;
+	t_object		objects[OBJECT_MAX_AMOUNT];
+	size_t			object_amount;
+	cl_float		render_dist;
+	t_bbox			bbox;
+	cl_uint			max_ray_depth;
+	cl_uint			mc_raysamp_size;
+	cl_uint			random_seed_time;
+	t_rendermode	render_mode;
 }				t_scene;
 
 #endif

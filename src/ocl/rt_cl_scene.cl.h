@@ -17,12 +17,12 @@
 # define TAU 					0x1.921fb54442d18p2
 //# define INV_PI				0x1.45f306dc9c883p-2
 
-typedef enum		e_intersection
+typedef enum		e_rendermode
 {
-	INTER_INSIDE = -1,
-	INTER_OUTSIDE = 1,
-	INTER_NONE = 0
-}					t_intersection;
+	RENDERMODE_BBOX,
+	RENDERMODE_SOLIDCOLOR,
+	RENDERMODE_MCPT
+}					t_rendermode;
 
 /*
 ** CAMERA
@@ -80,6 +80,13 @@ typedef struct	s_camera
 **			- t is init at MAX_RENDER_DIST.
 **			- depth is the recursion depth of the ray being cast;
 */
+typedef enum		e_intersection
+{
+	INTER_INSIDE = -1,
+	INTER_OUTSIDE = 1,
+	INTER_NONE = 0
+}					t_intersection;
+
 typedef struct	s_ray
 {
 	float3			pos;
@@ -191,34 +198,35 @@ typedef enum	e_material
 
 typedef struct	s_object
 {
-	t_primitive	type;
-	t_material	material;
-	char		name[OBJECT_NAME_MAXLENGTH];
-	float3		pos;
-	float3		rot;
-	float3		scale;
-	uint		color; 
-	float3		rgb;
-	float3		light;
-	t_bbox		bbox;
+	t_primitive		type;
+	t_material		material;
+	char			name[OBJECT_NAME_MAXLENGTH];
+	float3			pos;
+	float3			rot;
+	float3			scale;
+	uint			color; 
+	float3			rgb;
+	float3			light;
+	t_bbox			bbox;
 //	cl_float3		specul;
 //	t_float			refrac;//refraction index for snell-descartes
 //	t_float			intensity;//intensity for lightsrc objects, 1. for other objects //or reflectivity ??
-	float16		o_to_w;
-	float16		w_to_o;
-	float16		n_to_w;
+	float16			o_to_w;
+	float16			w_to_o;
+	float16			n_to_w;
 }				t_object;
 
 typedef struct	s_scene
 {
-	uint		bg_color;
-	float3		bg_rgb;
-	t_camera	camera;
-	t_object	objects[OBJECT_MAX_AMOUNT];
-	size_t		object_amount;
-	float		render_dist;
-	t_bbox		bbox;
-	uint		max_ray_depth;
-	uint		mc_raysamp_size;
-	uint		random_seed_time;
+	uint			bg_color;
+	float3			bg_rgb;
+	t_camera		camera;
+	t_object		objects[OBJECT_MAX_AMOUNT];
+	size_t			object_amount;
+	float			render_dist;
+	t_bbox			bbox;
+	uint			max_ray_depth;
+	uint			mc_raysamp_size;
+	uint			random_seed_time;
+	t_rendermode	render_mode;
 }				t_scene;

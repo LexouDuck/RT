@@ -34,6 +34,8 @@ static void	rt_output_readfile()
 		"CUBE     ",
 		"SPHERE   ",
 		"CYLINDER ",
+//HUGO
+		"INFCYLINDER",
 		"CONE     ",
 		"OBJ MESH "
 	};
@@ -109,6 +111,9 @@ static char	*rt_read_command(t_rtparser *p, char *label)
 		shape = sphere;
 	else if (ft_strequ(label, "CYLINDER"))
 		shape = cylinder;
+//HUGO
+	else if (ft_strequ(label, "INFCYLINDER"))
+		shape = infcylinder;
 	else if (ft_strequ(label, "CONE"))
 		shape = cone;
 	else if (ft_strequ(label, "OBJ") || ft_strequ(label, "MESH"))

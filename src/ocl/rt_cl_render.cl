@@ -47,6 +47,30 @@ bool			ray_intersect_bbox
 	return (tmin < tmax);
 }
 
+/*
+t_bool		intersect_ray_sphere(t_ray *objray)
+{
+	t_vec_3d	quadpoly;
+	t_float		root1;
+	t_float		root2;
+
+	quadpoly[0] = vec3_eucl_quadnorm(objray->dir);
+	quadpoly[1] = 2 * vec3_dot(objray->dir, objray->pos);
+	quadpoly[2] = vec3_eucl_quadnorm(objray->pos) - 1.;
+	if (!(get_realroots_quadpoly(&root1, &root2, quadpoly)))
+		return (FALSE);
+	if ((root1 <= 0. && root2 <= 0.) ||
+		(root1 > objray->t && root2 > objray->t))
+		return (FALSE);
+	if (root1 <= 0.)
+		root1 = root2;
+	if (root2 <= 0.)
+		root2 = root1;
+	objray->t = ft_fmin(root1, root2);
+	return (TRUE);
+}
+*/
+
 t_intersection			ray_intersect_sphere
 (
 							float *		res,
@@ -81,6 +105,68 @@ t_intersection			ray_intersect_sphere
 	}
 }
 
+/*
+t_bool						intersect_ray_infcylinder(t_ray *objray)
+{
+	t_vec_3d	quadpoly;
+	t_float		root1;
+	t_float		root2;
+
+	quadpoly[0] = vec3_ynull_dot(objray->dir, objray->dir);
+	quadpoly[1] = 2 * vec3_ynull_dot(objray->dir, objray->pos);
+	quadpoly[2] = vec3_ynull_dot(objray->pos, objray->pos) - 1.;
+	if (!(get_realroots_quadpoly(&root1, &root2, quadpoly)))
+		return (FALSE);
+	if (root1 <= 0. || root2 <= 0. || (root1 > objray->t && root2 > objray->t))
+		return (FALSE);
+	objray->t = ft_fmin(root1, root2);
+	return (TRUE);
+}
+*/
+
+float				float3_ynull_dot
+(
+							float3 v1,
+							float3 v2
+)
+{
+//	return (v1[0] * v2[0] + v1[2] * v2[2]);
+	return (v1.x * v2.x + v1.z * v2.z);
+}
+
+t_intersection			ray_intersect_infcylinder
+(
+							float *		res,
+							t_ray		ray
+)
+{
+	float3		quadpoly;
+	float2		roots;
+
+	quadpoly.x = float3_ynull_dot(ray.dir, ray.dir);
+	quadpoly.y = 2 * float3_ynull_dot(ray.dir, ray.pos);
+	quadpoly.z = float3_ynull_dot(ray.pos, ray.pos) - 1.;
+	if (!(get_realroots_quadpoly(&roots, quadpoly)))
+		return (INTER_NONE);
+	if ((roots.x <= 0. && roots.y <= 0.) ||
+		(roots.x > ray.t && roots.y > ray.t))
+		return (INTER_NONE);
+	else if (roots.x <= 0.)
+	{
+		*res = roots.y;
+		return (INTER_INSIDE);
+	}
+	else if (roots.y <= 0.)
+	{
+		*res = roots.x;
+		return (INTER_INSIDE);
+	}
+	else
+	{
+		*res = fmin(roots.x, roots.y);
+		return (INTER_OUTSIDE);
+	}
+}
 
 t_ray			trace_ray_to_scene
 (
@@ -100,7 +186,13 @@ t_ray			trace_ray_to_scene
 			ray_os = ray;
 			ray_os.pos = rt_cl_apply_homogeneous_matrix(scene->objects[i].w_to_o, ray_os.pos);
 			ray_os.dir = rt_cl_apply_linear_matrix(scene->objects[i].w_to_o, ray_os.dir);//DO NOT NORMALIZE: YOU NEED TO KEEP ray.t CONSISTENT
-			ray_os.inter_type = ray_intersect_sphere(&new_t, ray_os);
+//HUGO
+			if (scene->objects[i].type == sphere)
+				ray_os.inter_type = ray_intersect_sphere(&new_t, ray_os);
+			else if (scene->objects[i].type == infcylinder)
+				ray_os.inter_type = ray_intersect_infcylinder(&new_t, ray_os);
+			else
+				ray_os.inter_type = ray_intersect_sphere(&new_t, ray_os);
 			if (ray_os.inter_type)
 			{	
 				ray.inter_type = ray_os.inter_type;
@@ -114,6 +206,16 @@ t_ray			trace_ray_to_scene
 	return (ray.inter_type ? result_ray_os : ray);
 }
 
+float3			rt_cl_sphere_get_normal(float3 hitpos)
+{
+	return (hitpos);
+}
+
+float3			rt_cl_infcylinder_get_normal(float3 hitpos)
+{
+	hitpos.y = 0;
+	return (hitpos);
+}
 
 t_ray			accumulate_lum_and_bounce_ray
 (
@@ -135,7 +237,14 @@ t_ray			accumulate_lum_and_bounce_ray
 
 
 	hitpos = ray.pos + ((float3)ray.t) * ray.dir;
-	normal = normalize(rt_cl_apply_linear_matrix(obj->n_to_w, hitpos)) * ray.inter_type; //sphere formula, normal == hitpos
+//HUGO
+	if (obj->type == sphere)
+		normal = rt_cl_sphere_get_normal(hitpos);
+	else if (obj->type == infcylinder)
+		normal = rt_cl_infcylinder_get_normal(hitpos);
+	else
+		normal = rt_cl_sphere_get_normal(hitpos);
+	normal = normalize(rt_cl_apply_linear_matrix(obj->n_to_w, normal)) * ray.inter_type; //sphere formula, normal == hitpos
 	new_ray.pos = rt_cl_apply_homogeneous_matrix(obj->o_to_w, hitpos) + normal * (float3)(EPS);
 	new_ray.dir = rt_cl_rand_dir_hemi(random_seed, normal);
 //if (sampid == 0 && depth == 1) printf("normal %f %f %f => %f | hitpos %f %f %f \n", normal.x, normal.y, normal.z, (float)dot(normal, normal), new_ray.pos.x, new_ray.pos.y, new_ray.pos.z);

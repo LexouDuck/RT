@@ -1,6 +1,6 @@
 BG #FFFFFF
 
-SPHERE #FF4444
+CYLINDER #FF4444
 (2, 10, 0)
 {0, 0, 0}
 [0, 0, 0]

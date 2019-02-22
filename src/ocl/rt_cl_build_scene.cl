@@ -99,11 +99,16 @@ t_bbox			rt_cl_build_object_bbox
 	t_bbox		objspace_bbox;
 	float3		objspace_bbox_vertices[8];
 	t_bbox		result;
-
+//HUGO
 	if (type == sphere || type == cube)
 	{
 		objspace_bbox = (t_bbox){(float3)(-1., -1., -1.),
 									(float3)(1., 1., 1.)};
+	}
+	else if (type == infcylinder)
+	{
+		objspace_bbox = (t_bbox){(float3)(-1., -render_dist, -1.),
+									(float3)(1., render_dist, 1.)};
 	}
 	else
 	{

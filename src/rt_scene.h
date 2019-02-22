@@ -171,7 +171,8 @@ typedef enum	e_primitive
 	sphere,
 	cylinder,
 	cone,
-//	infcylinder,
+//HUGO
+	infcylinder,
 //	infcone,
 //	paraboloid,
 //	saddle,

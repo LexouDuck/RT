@@ -18,9 +18,13 @@ static void	event_check_window(SDL_Event *event)
 	if (event->window.event == SDL_WINDOWEVENT_RESIZED)
 	{
 		if (!rt.sdl.fullscreen)
-			event_window_resize(rt.sdl.window, 0, 0);
+			event_window_resize(0, 0);
 		rt.must_render = TRUE;
 	}
+	else if (event->window.event == SDL_WINDOWEVENT_ENTER)
+		event_window_mouse_enter();
+	else if (event->window.event == SDL_WINDOWEVENT_LEAVE)
+		event_window_mouse_leave();
 }
 
 static void	event_check_mouse(SDL_Event *event)
@@ -37,7 +41,7 @@ static void	event_check_mouse(SDL_Event *event)
 		event_mouse_motion(event);
 }
 
-t_bool		event_checkevents(SDL_Window *window)
+t_bool		event_checkevents()
 {
 	SDL_Event	event;
 
@@ -45,8 +49,6 @@ t_bool		event_checkevents(SDL_Window *window)
 		SDL_GetMouseState(&rt.input.mouse.x, &rt.input.mouse.y);
 	rt.input.mouse_tile.x = (rt.input.mouse.x) / TILE;
 	rt.input.mouse_tile.y = (rt.input.mouse.y) / TILE;
-	rt.sdl.fullscreen =
-		(SDL_GetWindowFlags(window) & SDL_WINDOW_FULLSCREEN_DESKTOP);
 	while (SDL_PollEvent(&event))
 	{	// Handle events on queue
 		if (event.type == SDL_QUIT)

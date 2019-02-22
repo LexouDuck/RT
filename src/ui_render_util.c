@@ -59,8 +59,8 @@ void	ui_render_icon(t_u8 icon_index,
 		SDL_SetColorKey(rt.ui.tileset, SDL_TRUE, rt.ui.pal[0]);
 	tile.x = (TILE * 2) * (icon_index % 8);
 	tile.y = (TILE * 2) * (icon_index / 8) + TILE * 8;
-	dest.x = TILE * x;
-	dest.y = TILE * y;
+	dest.x = x;
+	dest.y = y;
 	if (SDL_BlitSurface(rt.ui.tileset, &tile, rt.sdl.window_surface, &dest))
 		debug_output_error("Error during ui_render_icon(): ", TRUE);
 	if (transparent)

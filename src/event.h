@@ -56,12 +56,14 @@ typedef struct	s_input
 /*
 **	event.c
 */
-t_bool	event_checkevents(SDL_Window *window);
+t_bool	event_checkevents();
 /*
 **	event_window.c
 */
-void	event_window_resize(SDL_Window *window, t_s32 window_w, t_s32 window_h);
-void	event_window_fullscreen(SDL_Window *window, t_bool fullscreen);
+void	event_window_resize(t_s32 window_w, t_s32 window_h);
+void	event_window_fullscreen(t_bool fullscreen);
+void	event_window_mouse_enter();
+void	event_window_mouse_leave();
 /*
 **	event_mouse.c
 */

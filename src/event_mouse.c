@@ -22,7 +22,26 @@ void	event_mouse_wheel(SDL_Event *event)
 	camera = &rt.scene.camera;
 	if (event->wheel.y)
 	{
-		if (SDL_PointInRect(&rt.input.mouse, &rt.canvas->clip_rect))
+		t_bool mouse_in_objectlist;
+		rt.ui.objects.rect.w += 2;
+		mouse_in_objectlist = SDL_PointInRect(&rt.input.mouse_tile, &rt.ui.objects.rect);
+		rt.ui.objects.rect.w -= 2;
+		if (mouse_in_objectlist)
+		{
+			if (event->wheel.y > 0)
+			{
+				rt.ui.objects.scroll -= event->wheel.y * 10;
+				if (rt.ui.objects.scroll < 0)
+					rt.ui.objects.scroll = 0;
+			}
+			if (event->wheel.y < 0)
+			{
+				rt.ui.objects.scroll -= event->wheel.y * 10;
+				if (rt.ui.objects.scroll > rt.ui.objects.scroll_max - rt.ui.objects.scroll_view + TILE)
+					rt.ui.objects.scroll = rt.ui.objects.scroll_max - rt.ui.objects.scroll_view + TILE;
+			}
+		}
+		else
 		{
 			if (event->wheel.y > 0)
 				camera->zoom *= 0.9;
@@ -42,14 +61,18 @@ void	event_mouse_press(SDL_Event *event)
 
 	camera = &rt.scene.camera;
 	if (event->button.x < UI_WIDTH)
+	{
+		if (event->button.button == SDL_BUTTON_LEFT)
+			ui_mouse_scrollbar();
 		return ;
+	}
 	else if (event->button.button == SDL_BUTTON_LEFT)
 		camera->mode = CAMERA_MODE_PAN;
 	else if (event->button.button == SDL_BUTTON_MIDDLE)
 		camera->mode = CAMERA_MODE_TILT;
 	else if (event->button.button == SDL_BUTTON_RIGHT)
 		camera->mode = CAMERA_MODE_ROTATE;
-	if (camera->mode && SDL_CaptureMouse(TRUE))
+	if (SDL_CaptureMouse(TRUE))
 		debug_output_error("Unable to capture the mouse cursor input.", TRUE);
 }
 
@@ -61,6 +84,9 @@ void	event_mouse_release(SDL_Event *event)
 	if (camera->mode)
 		rt.must_render = TRUE;
 	camera->mode = CAMERA_MODE_NONE;
+	rt.ui.objects.scrollbar_clicked = FALSE;
+	rt.ui.objects.scrollbutton_up_clicked = FALSE;
+	rt.ui.objects.scrollbutton_down_clicked = FALSE;
 	if (event->button.button == SDL_BUTTON_LEFT)
 	{
 		if (rt.ui.menubar.selection == -1)
@@ -69,7 +95,7 @@ void	event_mouse_release(SDL_Event *event)
 			ui_mouse_dropdown(&rt.ui.dropdowns[rt.ui.menubar.selection]);
 		ui_mouse_menubar();
 	}
-	if (camera->mode && SDL_CaptureMouse(FALSE))
+	if (SDL_CaptureMouse(FALSE))
 		debug_output_error("Unable to release the mouse cursor input.", TRUE);
 }
 

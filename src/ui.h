@@ -86,11 +86,14 @@ typedef struct	s_menulist
 	t_bool		selected[OBJECT_MAX_AMOUNT];
 	t_bool		expanded[OBJECT_MAX_AMOUNT];
 	SDL_Rect	scrollbutton_up;
+	t_bool		scrollbutton_up_clicked;
 	SDL_Rect	scrollbutton_down;
+	t_bool		scrollbutton_down_clicked;
 	SDL_Rect	scrollbar;
-	t_u32		scroll;			// the current pixel y value
-	t_u32		scroll_max;		// the maximum pixel y value for the scroll bar
-	t_u32		scroll_view;	// the amount of pixels visible in the window, vertically
+	t_bool		scrollbar_clicked;
+	t_s32		scroll;			// the current pixel y value
+	t_s32		scroll_max;		// the amount of pixels to fit the entire list (with expanded objects and all)
+	t_s32		scroll_view;	// the amount of pixels visible in the window, vertically
 }				t_menulist;
 
 typedef struct	s_ui
@@ -123,9 +126,10 @@ void	ui_render_caminfo(t_camera *camera);
 /*
 **	ui_mouse.c
 */
-void	ui_mouse_objectlist();
 void	ui_mouse_menubar();
 void	ui_mouse_dropdown(t_menu *dropdown);
+void	ui_mouse_objectlist();
+void	ui_mouse_scrollbar();
 
 /*
 **	ui_render_util.c

@@ -75,7 +75,7 @@ static int	main_loop()
 			SDL_Delay(1);
 		frame_wait = SDL_GetTicks() + FRAME_MS;
 		++rt.sdl.current_frame;
-		loop = event_checkevents(rt.sdl.window);
+		loop = event_checkevents();
 
 		// TODO do stuff here
 

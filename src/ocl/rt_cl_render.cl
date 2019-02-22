@@ -237,7 +237,6 @@ t_ray			accumulate_lum_and_bounce_ray
 
 
 	hitpos = ray.pos + ((float3)ray.t) * ray.dir;
-//HUGO
 	if (obj->type == sphere)
 		normal = rt_cl_sphere_get_normal(hitpos);
 	else if (obj->type == infcylinder)

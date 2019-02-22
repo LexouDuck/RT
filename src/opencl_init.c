@@ -67,6 +67,7 @@ CL_PLATFORM_VERSION
 CL_PLATFORM_NAME
 CL_PLATFORM_VENDOR
 */
+
 int				print_device_info()
 {
 	char	gpu_name[256];
@@ -119,7 +120,7 @@ int				opencl_get_platform_and_gpu()
 //	if (clGetDeviceIDs(rt.ocl.platform, CL_DEVICE_TYPE_CPU, 1, &(rt.ocl.cpu), NULL))
 //		return (ERROR);
 	has_gpu = FALSE;
-	rt.ocl.gpu_platform_index = 0;
+//	rt.ocl.gpu_platform_index = rt.ocl.platform_amount ? rt.ocl.platform_amount - 1 : 0; //@Alexis: this line breaks my opencl on Linux: platform 0 is my GPU
 	while (rt.ocl.gpu_platform_index < rt.ocl.platform_amount)
 	{
 		if ((err = clGetDeviceIDs(rt.ocl.platforms[rt.ocl.gpu_platform_index],
@@ -214,7 +215,14 @@ int				opencl_init()
 		return (debug_perror("opencl_init: could not create device, context or queue."));
 	if (opencl_read_and_build_program())
 		return (debug_perror("opencl_init: could not build program."));
-	if ((err = clCreateKernelsInProgram (rt.ocl.program, RT_CL_KERNEL_AMOUNT, rt.ocl.kernels, NULL)) < 0)
-		return (debug_perror("opencl_init: could not init kernels."));
+//WATCH OUT creates array in reverse order on mac.
+//	if ((err = clCreateKernelsInProgram(rt.ocl.program, RT_CL_KERNEL_AMOUNT, rt.ocl.kernels, NULL)) < 0)
+//		return (debug_perror("opencl_init: could not init kernels."));
+	rt.ocl.kernels[0] = clCreateKernel(rt.ocl.program, RT_CL_KERNEL_0, &err);
+	if (err < 0)
+		return (debug_perror("opencl_init: could not init kernel "RT_CL_KERNEL_0));
+	rt.ocl.kernels[1] = clCreateKernel(rt.ocl.program, RT_CL_KERNEL_1, &err);
+	if (err < 0)
+		return (debug_perror("opencl_init: could not init kernel "RT_CL_KERNEL_1));
 	return (OK);
 }

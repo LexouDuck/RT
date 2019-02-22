@@ -26,8 +26,8 @@ void	event_mouse_wheel(SDL_Event *event)
 			camera->zoom *= 0.9;
 		if (event->wheel.y < 0)
 			camera->zoom *= 1.1;
-		if (camera->zoom < 1)
-			camera->zoom = 1;
+		if (camera->zoom < EPS)
+			camera->zoom = EPS;
 		camera_update(camera);
 		rt.must_render = TRUE;
 	}
@@ -40,6 +40,13 @@ void	event_mouse_press(SDL_Event *event)
 	camera = &rt.scene.camera;
 	if (event->button.x < UI_WIDTH)
 		return ;
+	//TODO Ask aduquesn how to refresh render at click 
+	else if (event->button.button == SDL_BUTTON_LEFT && rt.input.keys == KEY_CTRL_L)
+	{
+		camera->target_pos.x = event->button.x - UI_WIDTH;
+		camera->target_pos.y = event->button.y;
+		rt.must_render = TRUE;
+	}
 	else if (event->button.button == SDL_BUTTON_LEFT)
 		camera->mode = CAMERA_MODE_PAN;
 	else if (event->button.button == SDL_BUTTON_MIDDLE)
@@ -60,10 +67,11 @@ void	event_mouse_release(SDL_Event *event)
 	camera->mode = CAMERA_MODE_NONE;
 	if (event->button.button == SDL_BUTTON_LEFT)
 	{
-		ui_mouse_objectlist();
-		ui_mouse_menubar();
-		if (rt.ui.menubar.selection != -1)
+		if (rt.ui.menubar.selection == -1)
+			ui_mouse_objectlist();
+		else
 			ui_mouse_dropdown(&rt.ui.dropdowns[rt.ui.menubar.selection]);
+		ui_mouse_menubar();
 	}
 	if (camera->mode && SDL_CaptureMouse(FALSE))
 		debug_output_error("Unable to release the mouse cursor input.", TRUE);

@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+# define OBJECT_NAME_MAXLENGTH	24
 # define OBJECT_MAX_AMOUNT		32
 # define EPS					0.001
 
@@ -68,6 +69,9 @@ typedef struct	s_camera
 	float			aperture;
 	float16			c_to_w;
 //	float16			w_to_c;
+//TODO	Ask aduquesn about double s_camera structure
+	uint2			target_pos;
+	uint			target_id;
 }				t_camera;
 
 
@@ -193,7 +197,7 @@ typedef struct	s_object
 {
 	t_primitive	type;
 	t_material	material;
-	char		*name;
+	char		name[OBJECT_NAME_MAXLENGTH];
 	float3		pos;
 	float3		rot;
 	float3		scale;

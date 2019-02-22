@@ -38,8 +38,9 @@
 
 # define BG_COLOR				0xFF00BB88 //0xFF000000
 
+# define OBJECT_NAME_MAXLENGTH	24
 # define OBJECT_MAX_AMOUNT		32
-# define DEFAULT_RAYSAMP_SIZE	4
+# define DEFAULT_RAYSAMP_SIZE	128
 # define DEFAULT_MAX_RAY_DEPTH	4
 
 typedef enum		e_intersection
@@ -92,6 +93,8 @@ typedef struct	s_camera
 	cl_float		aperture;
 	cl_float16		c_to_w;
 //	cl_float16		w_to_c;
+	cl_uint2		target_pos;
+	cl_uint			target_id;
 }				t_camera;
 /*
 ** c_to_w.s012 is axis_x, .s456 is axis_y, .s89A is axis_z and .sCDE is world_pos
@@ -128,14 +131,15 @@ void		init_scene(void);
 */
 typedef struct	s_ray
 {
-	cl_float3	pos;
-	cl_float3	dir;
-	cl_float	t;
-	cl_bool		complete;
-	cl_int		hit_obj_id;
-//	cl_uint		depth;
-	cl_float3	lum_mask;
-	cl_float3	lum_acc;
+	cl_float3		pos;
+	cl_float3		dir;
+	cl_float		t;
+	cl_bool			complete;
+	cl_int			hit_obj_id;
+//	cl_uint			depth;
+	cl_float3		lum_mask;
+	cl_float3		lum_acc;
+	t_intersection	inter_type;
 }				t_ray;
 
 /*
@@ -240,7 +244,7 @@ typedef struct	s_object
 {
 	t_primitive		type;
 	t_material		material;
-	char			*name;
+	char			name[OBJECT_NAME_MAXLENGTH];
 	cl_float3		pos;
 	cl_float3		rot;
 	cl_float3		scale;

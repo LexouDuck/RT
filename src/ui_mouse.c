@@ -18,7 +18,7 @@
 void	ui_mouse_objectlist()
 {
 	SDL_Rect	rect;
-	t_s8		i;
+	t_s32		i;
 
 	rect.y = 4;
 	rect.h = 2;
@@ -42,7 +42,7 @@ void	ui_mouse_objectlist()
 		{
 			rt.ui.objects_expanded[i] = !rt.ui.objects_expanded[i];
 		}
-		rect.y += 2 + (rt.ui.objects_expanded[i] ? 3 * OBJECT_PROPERTIES : 0);
+		rect.y += 2 + (rt.ui.objects_expanded[i] ? OBJECT_PROPERTIES_H : 0);
 	}
 }
 

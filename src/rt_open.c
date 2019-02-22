@@ -18,13 +18,14 @@
 
 #include "libft_char.h"
 #include "libft_color.h"
+#include "libft_memory.h"
 #include "libft_convert.h"
 
 #include "../rt.h"
 #include "debug.h"
 #include "rt_scene.h"
 
-static void	rt_output_readfile()
+void	rt_output_readfile()
 {
 	static const char *primitive_types[9] = {
 		"N/A",
@@ -66,14 +67,14 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 	t_object	object;
 
 	object.type = shape;
-	object.name = NULL;
+	ft_memclr(&object.name, OBJECT_NAME_MAXLENGTH);
 	object.light = (cl_float3){{ 0., 0., 0. }};
 	if ((error = rt_read_arg_color(p, &object.color)) ||
 		(error = rt_read_arg_vector(p, &object.pos)) ||
 		(error = rt_read_arg_vector(p, &object.rot)) ||
 		(error = rt_read_arg_vector(p, &object.scale)))
 		return (error);
-	if ((error = rt_read_arg_name(p, &object.name)) ||
+	if ((error = rt_read_arg_name(p, object.name)) ||
 		(error = rt_read_arg_light(p, &object.light)))
 		return (error);
 	object.light.x = fmax(0., fmin(object.light.x, 1.));
@@ -118,30 +119,31 @@ static char	*rt_read_command(t_rtparser *p, char *label)
 		shape = cone;
 	else if (ft_strequ(label, "OBJ") || ft_strequ(label, "MESH"))
 		shape = obj_mesh;
+
 	if (shape)
-		return (rt_read_object(p, shape));
+		return (p->current_object < OBJECT_MAX_AMOUNT ? rt_read_object(p, shape)
+			: "Import error: Maximum object amount limit has been reached.");
 	else if (ft_strequ(label, "BG"))
 		return (rt_read_arg_color(p, &rt.scene.bg_color));
 	else
 		return (ft_strjoin("Could not resolve label -> ", label));
 }
 
-static char	*rt_read_file(t_rtparser *p)
+char		*rt_read_file(t_rtparser *p)
 {
 	char	*label;
 	char	*error;
 
 	p->line = 1;
 	p->index = 0;
-	p->current_object = 0;
+	p->current_object = rt.scene.object_amount;
 	while (p->file[p->index])
 	{
 		rt_read_whitespace(p);
 		if (!p->file[p->index])
 			break ;
 		label = p->file + p->index;
-		while (p->file[p->index] &&
-			ft_isalpha(p->file[p->index]))
+		while (p->file[p->index] && ft_isalpha(p->file[p->index]))
 			++(p->index);
 		if (!p->file[p->index])
 			return ("Unexpected end of file after label");
@@ -149,7 +151,6 @@ static char	*rt_read_file(t_rtparser *p)
 		if ((error = rt_read_command(p, label)))
 			return (error);
 	}
-	free(p->file);
 	rt.scene.bg_rgb.x = ft_color_argb32_get_r(rt.scene.bg_color) / 255.;
 	rt.scene.bg_rgb.y = ft_color_argb32_get_g(rt.scene.bg_color) / 255.;
 	rt.scene.bg_rgb.z = ft_color_argb32_get_b(rt.scene.bg_color) / 255.;
@@ -158,11 +159,9 @@ static char	*rt_read_file(t_rtparser *p)
 }
 
 
-int			rt_open_file(char *filepath)
+int			rt_open_file(char *filepath, t_rtparser *p)
 {
 	int			fd;
-	t_rtparser	parser;
-	char		*error;
 
 	fd = open(filepath, O_RDONLY);
 	if (fd < 0)
@@ -171,7 +170,7 @@ int			rt_open_file(char *filepath)
 		debug_output_value("open() -> ", strerror(errno), FALSE);
 		return (ERROR);
 	}
-	if (ft_readfile(fd, &parser.file))
+	if (ft_readfile(fd, &p->file))
 	{
 		debug_output_value("Error: Could not read RT file: ", filepath, FALSE);
 		return (ERROR);
@@ -182,13 +181,5 @@ int			rt_open_file(char *filepath)
 		debug_output_value("close() -> ", strerror(errno), FALSE);
 		return (ERROR);
 	}
-	if ((error = rt_read_file(&parser)))
-	{
-		debug_output_value("Error: while reading rt file -> at line ",
-			ft_s32_to_str(parser.line), TRUE);
-		debug_output_error(error, FALSE);
-		return (ERROR);
-	}
-	rt_output_readfile();
 	return (OK);
 }

@@ -1,10 +1,10 @@
-float16			rt_cl_mat44_transpose(float16 mat44)
+static float16			rt_cl_mat44_transpose(float16 mat44)
 {
 	return (mat44.s048C159D26AE37BF);
 }
 
 
-float3			rt_cl_apply_linear_matrix(float16 mat44, float3 vec3)
+static float3			rt_cl_apply_linear_matrix(float16 mat44, float3 vec3)
 {
 	float3		res;
 
@@ -15,7 +15,7 @@ float3			rt_cl_apply_linear_matrix(float16 mat44, float3 vec3)
 }
 
 
-float3			rt_cl_apply_homogeneous_matrix(float16 mat44, float3 vec3)
+static float3			rt_cl_apply_homogeneous_matrix(float16 mat44, float3 vec3)
 {
 	float4		tmp;
 	float3		res;
@@ -29,7 +29,7 @@ float3			rt_cl_apply_homogeneous_matrix(float16 mat44, float3 vec3)
 }
 
 
-float16			rt_cl_build_diagonal_mat33in44(float3 diag)
+static float16			rt_cl_build_diagonal_mat33in44(float3 diag)
 {
 	float16		result = (float16)(0.);
 
@@ -38,7 +38,7 @@ float16			rt_cl_build_diagonal_mat33in44(float3 diag)
 }
 
 
-float16			rt_cl_build_rotation_mat33in44(float theta, int axis)
+static float16			rt_cl_build_rotation_mat33in44(float theta, int axis)
 {
 	float16		result;
 	float		c_th;
@@ -57,7 +57,7 @@ float16			rt_cl_build_rotation_mat33in44(float theta, int axis)
 }
 
 
-float16			rt_cl_mat44_mul(float16 const mat_A, float16 const mat_B)
+static float16			rt_cl_mat44_mul(float16 const mat_A, float16 const mat_B)
 {
 	float16		mat_C;
 
@@ -81,7 +81,7 @@ float16			rt_cl_mat44_mul(float16 const mat_A, float16 const mat_B)
 }
 
 
-float			rt_cl_mat33in44_det(float16 const mat33in44)
+static float			rt_cl_mat33in44_det(float16 const mat33in44)
 {
 	return (mat33in44.s0 * mat33in44.s5 * mat33in44.sA
 			+ mat33in44.s1 * mat33in44.s6 * mat33in44.s8
@@ -96,12 +96,12 @@ float			rt_cl_mat33in44_det(float16 const mat33in44)
 ** M^-1 = 1/det * adj(m) and adj(m) = comat(m^transpose)
 */
 
-float16			rt_cl_mat33in44_inv(float16 const mat33)
+static float16			rt_cl_mat33in44_inv(float16 const mat33)
 {
 	float		det;
 	float16		result;
 
-	if ((det = rt_cl_mat33in44_det(mat33)) == 0.)
+	if (fabs((det = rt_cl_mat33in44_det(mat33))) < EPS)
 		return ((float16)(0. / 0.));
 	result.s0 = mat33.s5 * mat33.sA - mat33.s6 * mat33.s9;
 	result.s4 = mat33.s6 * mat33.s8 - mat33.s4 * mat33.sA;

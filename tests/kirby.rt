@@ -4,6 +4,7 @@ BG #D3F9BC
 //LIGHT #FFFFFF 4	( 10, 10, 0.0)
 //LIGHT #FFFFFF 4	(0.0, 10, -10)
 //LIGHT #FFFFFF 4	(0.0, 10,  10)
+SPHERE #FFFFFF	(0, 10, 0)	{0, 0, 0}	[1, 1, 1]	"LIGHT" light:(1, 1, 1)
 
 // commentaires
 

@@ -25,11 +25,12 @@
 
 #if 0
 	//code to print program as is stored in memory
-	char str[20000];
+	char str[40000];
 
-	err = clGetProgramInfo(rt.ocl.program, CL_PROGRAM_SOURCE, 20000, str, NULL);
+	err = clGetProgramInfo(rt.ocl.program, CL_PROGRAM_SOURCE, 40000, str, NULL);
 	if (err < 0)
 		return (debug_perror("Couldn't create read source "RT_CL_PROGRAM_SOURCE));
+	printf("%s", str);
 #endif
 
 
@@ -125,6 +126,7 @@ int		render_launch_kernel0_build_scene(void)
 			sizeof(t_scene), &(rt.scene), 0, NULL, NULL);
 	if (err < 0)
 		return (debug_perror("Couldn't enqueue write to gpu for "RT_CL_KERNEL_0));
+
 	err = clSetKernelArg(rt.ocl.kernels[0], 0, sizeof(cl_mem), &(rt.ocl.gpu_buf.scene));
 	if (err < 0)
 		return (debug_perror("Couldn't create a kernel argument for "RT_CL_KERNEL_0));
@@ -137,6 +139,7 @@ int		render_launch_kernel0_build_scene(void)
 	}
 	if ((err = clFinish(rt.ocl.cmd_queue)) < 0)
 		return (debug_perror("Couldn't finish "RT_CL_KERNEL_0));
+
 	return (OK);
 }
 
@@ -159,7 +162,10 @@ int		render_launch_kernel1_rendermain(void)
 	err |= clSetKernelArg(rt.ocl.kernels[1], ++kernel_arg_nbr, sizeof(cl_mem), &(rt.ocl.gpu_buf.scene));
 //	err |= clSetKernelArg(rt.ocl.kernels[1], ++kernel_arg_nbr, sizeof(cl_uint), NULL); TODO: check if adding this fixes work group seed problem
 	if (err < 0)
+	{
+//		debug_perror(get_error_string(err));
 		return (debug_perror("Couldn't create a kernel argument for "RT_CL_KERNEL_1));
+	}
 	err = clEnqueueNDRangeKernel(rt.ocl.cmd_queue, rt.ocl.kernels[1], work_dim_amount, NULL /*dim_offsets*/, work_dim_array, 
 			NULL /*&local_size*/, 0, NULL, NULL); 
 	if (err < 0)

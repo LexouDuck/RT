@@ -1,4 +1,4 @@
-float16			rt_cl_build_cam_matrix
+static float16			rt_cl_build_cam_matrix
 (
 				t_camera	camera
 )
@@ -43,7 +43,7 @@ float16			rt_cl_build_cam_matrix
 **	the top left 3*3 block.
 */
 
-void			rt_cl_build_object_matrices
+static void			rt_cl_build_object_matrices
 (
 					__global	t_object *	obj
 )
@@ -67,11 +67,31 @@ void			rt_cl_build_object_matrices
 	obj->w_to_o = tmp_mat;
 	obj->w_to_o.sCDE = rt_cl_apply_linear_matrix(tmp_mat, -pos); //note that this value is the corrected inverse translation considering scaling and rotation
 	obj->n_to_w = rt_cl_mat44_transpose(tmp_mat);
+
+	//boolean matrices to round approximate 0s to 0. //TODO make a MAT44ROUND0 function ?
+	#if 0
+	int16		bool_mat;
+
+	bool_mat = fabs(obj->o_to_w) < (float16)(EPS);
+	bool_mat = (int16)(1) - bool_mat;
+	tmp_mat = convert_float16(bool_mat);
+	obj->o_to_w = obj->o_to_w * tmp_mat;
+
+	bool_mat = fabs(obj->w_to_o) < (float16)(EPS);
+	bool_mat = (int16)(1) - bool_mat;
+	tmp_mat = convert_float16(bool_mat);
+	obj->w_to_o = obj->w_to_o * tmp_mat;
+
+	bool_mat = fabs(obj->n_to_w) < (float16)(EPS);
+	bool_mat = (int16)(1) - bool_mat;
+	tmp_mat = convert_float16(bool_mat);
+	obj->n_to_w = obj->n_to_w * tmp_mat;
+	#endif
 }
 
 
 
-void			rt_cl_get_vertices_for_bbox
+static void			rt_cl_get_vertices_for_bbox
 (
 					float3 *	vertices,
 					t_bbox		aabb
@@ -89,7 +109,7 @@ void			rt_cl_get_vertices_for_bbox
 
 
 
-t_bbox			rt_cl_build_object_bbox
+static t_bbox			rt_cl_build_object_bbox
 (
 							t_primitive		type,
 							float16			o_to_w,
@@ -147,5 +167,5 @@ __kernel void	rt_cl_build_scene
 	rt_cl_build_object_matrices(obj);
 	obj->bbox = rt_cl_build_object_bbox(obj->type, obj->o_to_w, scene->render_dist);
 
-debug_print_object(obj);
+//debug_print_object(obj);
 }

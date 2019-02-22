@@ -25,6 +25,8 @@
 #include "debug.h"
 #include "rt_scene.h"
 
+
+//INTERSECTIONS
 void	rt_output_readfile()
 {
 	static const char *primitive_types[9] = {
@@ -35,6 +37,7 @@ void	rt_output_readfile()
 		"CUBE     ",
 		"SPHERE   ",
 		"CYLINDER ",
+		"INFCYLINDER",
 		"CONE     ",
 		"OBJ MESH "
 	};
@@ -90,6 +93,7 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 	return (NULL);
 }
 
+//INTERSECTIONS
 static char	*rt_read_command(t_rtparser *p, char *label)
 {
 	t_primitive	shape;
@@ -110,6 +114,8 @@ static char	*rt_read_command(t_rtparser *p, char *label)
 		shape = sphere;
 	else if (ft_strequ(label, "CYLINDER"))
 		shape = cylinder;
+	else if (ft_strequ(label, "INFCYLINDER"))
+		shape = infcylinder;
 	else if (ft_strequ(label, "CONE"))
 		shape = cone;
 	else if (ft_strequ(label, "OBJ") || ft_strequ(label, "MESH"))

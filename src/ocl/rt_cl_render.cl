@@ -82,7 +82,52 @@ static t_intersection			ray_intersect_sphere
 	}
 }
 
+//INTERSECTIONS
+float				float3_ynull_dot
+(
+							float3 v1,
+							float3 v2
+)
+{
+//	return (v1[0] * v2[0] + v1[2] * v2[2]);
+	return (v1.x * v2.x + v1.z * v2.z);
+}
 
+t_intersection			ray_intersect_infcylinder
+(
+							float *		res,
+							t_ray		ray
+)
+{
+	float3		quadpoly;
+	float2		roots;
+
+	quadpoly.x = float3_ynull_dot(ray.dir, ray.dir);
+	quadpoly.y = 2 * float3_ynull_dot(ray.dir, ray.pos);
+	quadpoly.z = float3_ynull_dot(ray.pos, ray.pos) - 1.;
+	if (!(get_realroots_quadpoly(&roots, quadpoly)))
+		return (INTER_NONE);
+	if ((roots.x <= 0. && roots.y <= 0.) ||
+		(roots.x > ray.t && roots.y > ray.t))
+		return (INTER_NONE);
+	else if (roots.x <= 0.)
+	{
+		*res = roots.y;
+		return (INTER_INSIDE);
+	}
+	else if (roots.y <= 0.)
+	{
+		*res = roots.x;
+		return (INTER_INSIDE);
+	}
+	else
+	{
+		*res = fmin(roots.x, roots.y);
+		return (INTER_OUTSIDE);
+	}
+}
+
+//INTERSECTIONS
 static t_ray			trace_ray_to_scene
 (
 					__constant		t_scene	*	scene,
@@ -103,6 +148,12 @@ static t_ray			trace_ray_to_scene
 			ray_os.pos = rt_cl_apply_homogeneous_matrix(scene->objects[i].w_to_o, ray_os.pos);
 			ray_os.dir = rt_cl_apply_linear_matrix(scene->objects[i].w_to_o, ray_os.dir);//DO NOT NORMALIZE: YOU NEED TO KEEP ray.t CONSISTENT
 			ray_os.inter_type = ray_intersect_sphere(&new_t, ray_os);
+			if (scene->objects[i].type == sphere)
+				ray_os.inter_type = ray_intersect_sphere(&new_t, ray_os);
+			else if (scene->objects[i].type == infcylinder)
+				ray_os.inter_type = ray_intersect_infcylinder(&new_t, ray_os);
+			else
+				ray_os.inter_type = ray_intersect_sphere(&new_t, ray_os);
 			if (ray_os.inter_type)
 			{	
 				ray.inter_type = ray_os.inter_type;
@@ -116,6 +167,17 @@ static t_ray			trace_ray_to_scene
 	return (ray.inter_type ? result_ray_os : ray);
 }
 
+//INTERSECTIONS
+float3			rt_cl_sphere_get_normal(float3 hitpos)
+{
+	return (hitpos);
+}
+
+float3			rt_cl_infcylinder_get_normal(float3 hitpos)
+{
+	hitpos.y = 0;
+	return (hitpos);
+}
 
 static t_ray			accumulate_lum_and_bounce_ray
 (
@@ -132,11 +194,16 @@ static t_ray			accumulate_lum_and_bounce_ray
 				float3		normal;
 
 
-	hitpos = ray.pos + ((float3)(ray.t)) * ray.dir;
-	normal = rt_cl_apply_linear_matrix(obj->n_to_w, hitpos) * (float3)(ray.inter_type); //sphere formula, normal == hitpos
-	normal = normalize(normal);
+	hitpos = ray.pos + ((float3)ray.t) * ray.dir;
+	if (obj->type == sphere)
+		normal = rt_cl_sphere_get_normal(hitpos);
+	else if (obj->type == infcylinder)
+		normal = rt_cl_infcylinder_get_normal(hitpos);
+	else
+		normal = rt_cl_sphere_get_normal(hitpos);
+	normal = normalize(rt_cl_apply_linear_matrix(obj->n_to_w, normal)) * ray.inter_type; //sphere formula, normal == hitpos
 	new_ray.pos = rt_cl_apply_homogeneous_matrix(obj->o_to_w, hitpos) + normal * (float3)(EPS);
-	new_ray.dir = rt_cl_rand_dir_coshemi(random_seeds, normal);
+	new_ray.dir = rt_cl_rand_dir_hemi(random_seeds, normal);
 	new_ray.hit_obj_id = -1;
 	new_ray.inter_type = INTER_NONE;
 	new_ray.t = scene->render_dist;

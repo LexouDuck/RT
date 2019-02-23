@@ -15,18 +15,6 @@
 #include "../rt.h"
 #include "debug.h"
 
-void	ui_mouse_scrollbar()
-{
-	if (SDL_PointInRect(&rt.input.mouse, &rt.ui.objects.scrollbar))
-	{
-
-	}
-	else if (SDL_PointInRect(&rt.input.mouse, &rt.ui.objects.scrollbutton_up))
-		rt.ui.objects.scrollbutton_up_clicked = TRUE;
-	else if (SDL_PointInRect(&rt.input.mouse, &rt.ui.objects.scrollbutton_down))
-		rt.ui.objects.scrollbutton_down_clicked = TRUE;
-}
-
 void	ui_mouse_objectlist()
 {
 	t_s32		tmp;
@@ -40,7 +28,7 @@ void	ui_mouse_objectlist()
 	while (i < rt.scene.object_amount)
 	{
 		tmp = rect.y;
-		rect.y -= rt.ui.objects.scroll / TILE;
+		rect.y -= rt.ui.objects.scrollbar.scroll / TILE;
 		add_height = (rt.ui.objects.expanded[i] ? OBJECT_PROPERTIES_H : 0);
 		if (rt.scene.objects[i].type &&
 			rect.y + add_height >= rt.ui.objects.rect.y - TILE &&

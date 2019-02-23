@@ -26,21 +26,9 @@ void	event_mouse_wheel(SDL_Event *event)
 		rt.ui.objects.rect.w += 2;
 		mouse_in_objectlist = SDL_PointInRect(&rt.input.mouse_tile, &rt.ui.objects.rect);
 		rt.ui.objects.rect.w -= 2;
-		if (mouse_in_objectlist)
-		{
-			if (event->wheel.y > 0)
-			{
-				rt.ui.objects.scroll -= event->wheel.y * 10;
-				if (rt.ui.objects.scroll < 0)
-					rt.ui.objects.scroll = 0;
-			}
-			if (event->wheel.y < 0)
-			{
-				rt.ui.objects.scroll -= event->wheel.y * 10;
-				if (rt.ui.objects.scroll > rt.ui.objects.scroll_max - rt.ui.objects.scroll_view + TILE)
-					rt.ui.objects.scroll = rt.ui.objects.scroll_max - rt.ui.objects.scroll_view + TILE;
-			}
-		}
+		if (mouse_in_objectlist && (rt.ui.objects.scrollbar.scroll > 0 ||
+			rt.ui.objects.scrollbar.scroll_max > rt.ui.objects.scrollbar.scroll_view))
+			ui_scrollbar_setscroll(&rt.ui.objects.scrollbar, event->wheel.y * -10);
 		else
 		{
 			if (event->wheel.y > 0)
@@ -62,7 +50,8 @@ void	event_mouse_press(SDL_Event *event)
 	camera = &rt.scene.camera;
 	if (event->button.x < UI_WIDTH)
 	{
-		if (event->button.button == SDL_BUTTON_LEFT)
+		if (event->button.button == SDL_BUTTON_LEFT &&
+			(rt.ui.objects.scrollbar.scroll_max > rt.ui.objects.scrollbar.scroll_view))
 			ui_mouse_scrollbar();
 		return ;
 	}
@@ -80,13 +69,11 @@ void	event_mouse_release(SDL_Event *event)
 {
 	t_camera	*camera;
 
+	rt.ui.objects.scrollbar.clicked = scrollclick_none;
 	camera = &rt.scene.camera;
 	if (camera->mode)
 		rt.must_render = TRUE;
 	camera->mode = CAMERA_MODE_NONE;
-	rt.ui.objects.scrollbar_clicked = FALSE;
-	rt.ui.objects.scrollbutton_up_clicked = FALSE;
-	rt.ui.objects.scrollbutton_down_clicked = FALSE;
 	if (event->button.button == SDL_BUTTON_LEFT)
 	{
 		if (rt.ui.menubar.selection == -1)
@@ -106,7 +93,15 @@ void	event_mouse_motion(SDL_Event *event)
 	t_camera	*camera;
 
 	camera = &rt.scene.camera;
-	if (camera->mode != CAMERA_MODE_NONE &&
+	if (rt.ui.objects.scrollbar.clicked == scrollclick_bar)
+	{
+		t_scrollbar	*scrollbar;
+		t_f32		ratio;
+		scrollbar = &rt.ui.objects.scrollbar;
+		ratio = ((t_f32)scrollbar->scroll_max / (t_f32)scrollbar->bar.h);
+		ui_scrollbar_setscroll(scrollbar, event->motion.yrel * ratio);
+	}
+	else if (camera->mode != CAMERA_MODE_NONE &&
 		(event->motion.xrel || event->motion.yrel))
 	{
 		motion_x = (float)(event->motion.xrel) * 0.1;

@@ -35,8 +35,9 @@ void	event_window_resize(t_s32 window_w, t_s32 window_h)
 		SDL_FreeSurface(rt.sdl.window_surface);
 		init_window_display();
 		rt.ui.objects.rect.h = rt.sdl.window_h - rt.ui.objects.rect.y;
-		rt.ui.objects.scroll_view = (rt.sdl.window_h - MENUBAR_ITEMS_H);
-		rt.ui.objects.scrollbutton_down.y = rt.sdl.window_h - TILE * 2;
+		rt.ui.objects.scrollbar.scroll_view = (rt.sdl.window_h - MENUBAR_ITEMS_H);
+		rt.ui.objects.scrollbar.bar.h = (rt.sdl.window_h - MENUBAR_ITEMS_H) - TILE * 4;
+		rt.ui.objects.scrollbar.button_down.y = rt.sdl.window_h - TILE * 2;
 	}
 }
 

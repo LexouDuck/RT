@@ -20,52 +20,6 @@
 #include "debug.h"
 #include "event.h"
 
-void	ui_render_scrollbar(t_menulist *list)
-{
-	static SDL_Rect	dest = { 0, 0, TILE * 2, TILE * 2 };
-	static SDL_Rect	tile = { 0, 0, TILE * 2, TILE };
-
-	if (list->scrollbutton_up_clicked)
-		list->scroll -= (list->scroll <= 0) ? 0 : 1;
-	if (list->scrollbutton_down_clicked)
-		list->scroll += (list->scroll >= list->scroll_max - list->scroll_view + TILE) ? 0 : 1;
-
-	dest.h = TILE * 2;
-	ui_render_icon((list->scrollbutton_up_clicked ? 21 : 20),
-		list->scrollbutton_up.x,
-		list->scrollbutton_up.y, FALSE);
-	ui_render_icon((list->scrollbutton_down_clicked ? 29 : 28),
-		list->scrollbutton_down.x,
-		list->scrollbutton_down.y, FALSE);
-	tile.x = TILE * (rt.ui.objects.scrollbar_clicked ? 14 : 12);
-	tile.y = TILE * 12;
-	dest.x = list->scrollbar.x;
-	dest.y = list->scrollbar.y;
-	t_f32 ratio;
-	t_s32 height;
-	ratio = (list->scrollbar.h / (t_f32)list->scroll_max);
-	dest.y += (int)(list->scroll * ratio);
-	if (SDL_BlitSurface(rt.ui.tileset, &tile, rt.sdl.window_surface, &dest))
-		debug_output_error("Error during ui_render_scrollbar(): ", TRUE);
-	dest.y += TILE;
-	tile.y = TILE * 13;
-	height = (list->scroll_view * ratio) / TILE - 2;
-	for (int i = 0; i < height; ++i)
-	{
-		if (SDL_BlitSurface(rt.ui.tileset, &tile, rt.sdl.window_surface, &dest))
-			debug_output_error("Error during ui_render_scrollbar(): ", TRUE);
-		dest.y += TILE;
-	}
-	tile.y = TILE * 15;
-	if (SDL_BlitSurface(rt.ui.tileset, &tile, rt.sdl.window_surface, &dest))
-		debug_output_error("Error during ui_render_scrollbar(): ", TRUE);
-	height = (list->scroll_view * ratio) / 2 - TILE / 2;
-	dest.y = list->scrollbar.y + (int)(list->scroll * ratio) + height;
-	tile.y = TILE * 14;
-	if (SDL_BlitSurface(rt.ui.tileset, &tile, rt.sdl.window_surface, &dest))
-		debug_output_error("Error during ui_render_scrollbar(): ", TRUE);
-}
-
 void	ui_render_icon_object(t_object* object, t_s32 y)
 {
 	static const t_u8	light = 0x50;
@@ -135,7 +89,7 @@ void	ui_render_objects()
 	while (i < rt.scene.object_amount)
 	{
 		tmp = rect.y;
-		rect.y -= rt.ui.objects.scroll / TILE;
+		rect.y -= rt.ui.objects.scrollbar.scroll / TILE;
 		add_height = (rt.ui.objects.expanded[i] ? OBJECT_PROPERTIES_H : 0);
 		if (rt.scene.objects[i].type &&
 			rect.y + add_height >= rt.ui.objects.rect.y - TILE &&
@@ -155,18 +109,18 @@ void	ui_render_objects()
 		rect.y += 2 + add_height;
 		++i;
 	}
-	rt.ui.objects.scroll_max = TILE * rect.y;
-	if (rt.ui.objects.scroll > rt.ui.objects.scroll_max)
-		rt.ui.objects.scroll = rt.ui.objects.scroll_max;
-	if (rt.ui.objects.scroll_max > rt.ui.objects.scroll_view)
-		ui_render_scrollbar(&rt.ui.objects);
+	rt.ui.objects.scrollbar.scroll_max = TILE * rect.y;
+	if (rt.ui.objects.scrollbar.scroll > rt.ui.objects.scrollbar.scroll_max)
+		rt.ui.objects.scrollbar.scroll = rt.ui.objects.scrollbar.scroll_max;
+	if (rt.ui.objects.scrollbar.scroll_max > rt.ui.objects.scrollbar.scroll_view)
+		ui_render_scrollbar(&rt.ui.objects.scrollbar);
 }
 
 void	ui_render_menubar()
 {
 	t_bool		hover;
 	SDL_Rect	rect;
-	t_s8		i;
+	t_s32		i;
 
 	i = -1;
 	while (++i < MENUBAR_ITEMS)
@@ -183,7 +137,7 @@ void	ui_render_dropdown(t_menu *dropdown)
 {
 	t_bool		hover;
 	SDL_Rect	rect;
-	t_s8		i;
+	t_s32		i;
 
 	i = -1;
 	while (++i < dropdown->item_amount)

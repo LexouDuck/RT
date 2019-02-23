@@ -166,7 +166,7 @@ void	ui_render_menubar()
 {
 	t_bool		hover;
 	SDL_Rect	rect;
-	t_s8		i;
+	t_s32		i;
 
 	i = -1;
 	while (++i < MENUBAR_ITEMS)
@@ -183,7 +183,7 @@ void	ui_render_dropdown(t_menu *dropdown)
 {
 	t_bool		hover;
 	SDL_Rect	rect;
-	t_s8		i;
+	t_s32		i;
 
 	i = -1;
 	while (++i < dropdown->item_amount)

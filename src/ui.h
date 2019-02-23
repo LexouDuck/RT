@@ -80,20 +80,33 @@ typedef struct	s_menu
 	t_s8		selection;
 }				t_menu;
 
+typedef enum	e_scrolling
+{
+	scrollclick_none = 0,
+	scrollclick_button_up,
+	scrollclick_button_down,
+	scrollclick_bar_above,
+	scrollclick_bar_below,
+	scrollclick_bar
+}				t_scrolling;
+
+typedef struct	s_scrollbar
+{
+	t_scrolling	clicked;
+	SDL_Rect	button_up;
+	SDL_Rect	button_down;
+	SDL_Rect	bar;
+	t_s32		scroll;			// the current pixel y value
+	t_s32		scroll_max;		// the amount of pixels to fit the entire list (with expanded objects and all)
+	t_s32		scroll_view;	// the amount of pixels visible in the window, vertically
+}				t_scrollbar;
+
 typedef struct	s_menulist
 {
 	SDL_Rect	rect;
 	t_bool		selected[OBJECT_MAX_AMOUNT];
 	t_bool		expanded[OBJECT_MAX_AMOUNT];
-	SDL_Rect	scrollbutton_up;
-	t_bool		scrollbutton_up_clicked;
-	SDL_Rect	scrollbutton_down;
-	t_bool		scrollbutton_down_clicked;
-	SDL_Rect	scrollbar;
-	t_bool		scrollbar_clicked;
-	t_s32		scroll;			// the current pixel y value
-	t_s32		scroll_max;		// the amount of pixels to fit the entire list (with expanded objects and all)
-	t_s32		scroll_view;	// the amount of pixels visible in the window, vertically
+	t_scrollbar	scrollbar;
 }				t_menulist;
 
 typedef struct	s_ui
@@ -122,6 +135,7 @@ void	ui_render_objects();
 void	ui_render_menubar();
 void	ui_render_dropdown(t_menu *dropdown);
 void	ui_render_caminfo(t_camera *camera);
+void	ui_render_scrollbar(t_scrollbar *scrollbar);
 
 /*
 **	ui_mouse.c
@@ -130,6 +144,8 @@ void	ui_mouse_menubar();
 void	ui_mouse_dropdown(t_menu *dropdown);
 void	ui_mouse_objectlist();
 void	ui_mouse_scrollbar();
+
+void	ui_scrollbar_setscroll(t_scrollbar *scrollbar, t_s32 scroll);
 
 /*
 **	ui_render_util.c

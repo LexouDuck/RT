@@ -29,17 +29,20 @@
 //INTERSECTIONS
 void	rt_output_readfile()
 {
-	static const char *primitive_types[9] = {
+	static const char *primitive_types[13] = {
 		"N/A",
-		"PLANE    ",
-		"DISK     ",
-		"RECTANGLE",
-		"CUBE     ",
-		"SPHERE   ",
-		"CYLINDER ",
+		"SPHERE     ",
+		"CUBE       ",
+		"CYLINDER   ",
+		"CONE       ",
+		"PLANE      ",
+		"RECTANGLE  ",
+		"DISK       ",
+		"OBJ MESH   ",
+		"PARABOLOID ",
+		"SADDLE     ",
 		"INFCYLINDER",
-		"CONE     ",
-		"OBJ MESH "
+		"INFCONE    ",
 	};
 	t_object *object;
 	unsigned int i;

@@ -120,18 +120,18 @@ typedef struct	s_bvh
 typedef enum	e_primitive
 {
 	none = 0,
-	plane,
-	disk,
-	rectangle,			
-	cube,
 	sphere,
+	cube,
 	cylinder,
-	infcylinder,
 	cone,
-//	infcone,
-//	paraboloid,
-//	saddle,
-	obj_mesh	
+	plane,
+	rectangle,			
+	disk,
+	obj_mesh,
+	paraboloid,
+	saddle,
+	infcylinder,
+	infcone,
 }				t_primitive;
 
 /*

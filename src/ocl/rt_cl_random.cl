@@ -213,23 +213,7 @@ static float3			rt_cl_f3rand_neg1half_to_pos1half
 
 
 
-
-
 //TODO add vectorial cos/phong sampling etc
-//TODO Add random points on algebraic curves
-
-static float3			rt_cl_rand_dir_sphere
-(
-							uint2 *			random_seeds
-)
-{
-	float radius_cos_th = rt_cl_frand_neg1_to_pos1(random_seeds); //rand_-1_to_1 = cos(theta)
-    float radius_sin_th = sqrt(1 - radius_cos_th * radius_cos_th); // sin(theta)
-    float lon = TAU * rt_cl_frand_0_to_1(random_seeds);
-
-    return (float3)(radius_cos_th, cos(lon) * radius_sin_th, sin(lon) * radius_sin_th);
-}
-
 
 /*
 ** Returns a random vector in a hemisphere defined by 'axis'.

@@ -1,3 +1,26 @@
+static bool				rt_cl_get_realroots_quadpoly
+(
+							float2 *	roots,
+							float3		quadpoly
+)
+{
+	float		delta;
+	float		one_over_two_a;
+
+	delta = quadpoly.y * quadpoly.y - 4 * quadpoly.x * quadpoly.z;
+	if (delta < 0.)
+	{
+		roots->x = roots->y = 0. / 0.;
+		return (false);
+	}
+	one_over_two_a = 0.5 / quadpoly.x;
+	delta = sqrt(delta);
+	roots->x = (-quadpoly.y + delta) * one_over_two_a;
+	roots->y = (-quadpoly.y - delta) * one_over_two_a;
+	return (true);
+}
+
+
 static float16			rt_cl_mat44_transpose(float16 mat44)
 {
 	return (mat44.s048C159D26AE37BF);

@@ -1,34 +1,14 @@
-static bool			get_realroots_quadpoly
-(
-							float2 *	roots,
-							float3		quadpoly
-)
-{
-	float		delta;
-	float		one_over_two_a;
-
-	delta = quadpoly.y * quadpoly.y - 4 * quadpoly.x * quadpoly.z;
-	if (delta < 0.)
-	{
-		roots->x = roots->y = 0. / 0.;
-		return (false);
-	}
-	one_over_two_a = 0.5 / quadpoly.x;
-	delta = sqrt(delta);
-	roots->x = (-quadpoly.y + delta) * one_over_two_a;
-	roots->y = (-quadpoly.y - delta) * one_over_two_a;
-	return (true);
-}
-
-static bool			ray_intersect_bbox
+static bool			rt_cl_ray_intersect_bbox
 (
 					t_ray		ray,
 					t_bbox		aabb,
 					float		tmin,
-					float		tmax/*,
-					float *		tres*/
+					float		tmax,
+					float *		tres
 )
 {
+	t_intersection	inter;
+	float			tmax_old = tmax;
 	//TODO add aabb.vi.x < ray.pos.x < aabb.vf.x: if true for every coordinate, return INTER_INSIDE
 
 	float3	inv_dir = native_recip(ray.dir);
@@ -45,86 +25,82 @@ static bool			ray_intersect_bbox
 	tmax = fmin(tmax, fmin(tsup.x, fmin(tsup.y, tsup.z)));
 
 	//intersection iff no incoherence in all previous checks and tmin = Max(inferior bound) < Min(superior bound) = tmax
-	return (tmin < tmax);
-}
-
-static t_intersection			ray_intersect_sphere
-(
-							float *		res,
-							t_ray		ray
-)
-{
-	float3		quadpoly;
-	float2		roots;
-
-	quadpoly.x = dot(ray.dir, ray.dir);
-	quadpoly.y = 2. * dot(ray.dir, ray.pos);
-	quadpoly.z = dot(ray.pos, ray.pos) - 1.;
-	if (!(get_realroots_quadpoly(&roots, quadpoly)))
-		return (INTER_NONE);
-	if ((roots.x <= 0. && roots.y <= 0.) ||
-		(roots.x > ray.t && roots.y > ray.t))
-		return (INTER_NONE);
-	else if (roots.x <= 0.)
+	inter = tmin < tmax ? INTER_OUTSIDE : INTER_NONE;
+	*tres = inter ? tmin : tmax_old;
+	if (*tres == 0.)
 	{
-		*res = roots.y;
-		return (INTER_INSIDE);
+		*tres = tmax;
+		inter = INTER_INSIDE;
 	}
-	else if (roots.y <= 0.)
-	{
-		*res = roots.x;
-		return (INTER_INSIDE);
-	}
-	else
-	{
-		*res = fmin(roots.x, roots.y);
-		return (INTER_OUTSIDE);
-	}
+	return (inter);
 }
 
 /*
 ** If BBoxes have a non-empty intersection, you can't use new_t as tmax
 ** for ray_intersect_bbox.
 */
-static t_ray			trace_ray_to_scene
+static t_intersection		rt_cl_trace_ray_to_scene
 (
 					__constant		t_scene	*	scene,
-									t_ray		ray
+									t_ray *		ray
 )
 {
-//	bool			inter;
-	float			tmax;
-	float			new_t;
-	t_ray			ray_os;
-	t_ray			result_ray_os;
+	__constant t_object *		obj;
+	t_intersection				bbox_inter;
+	t_intersection				prim_inter;
+	float						tmax;
+	float						new_tbbox;
+	float						new_t;
+	t_ray						ray_os;
+	t_ray						result_ray_os;
 
-	tmax = ray.t;
+	tmax = ray->t;
+	prim_inter = INTER_NONE;
 	for (uint i = 0; i < scene->object_amount; ++i)
 	{
-		if (ray_intersect_bbox(ray, scene->objects[i].bbox, 0, tmax))
+		obj = &(scene->objects[i]);
+		bbox_inter = rt_cl_ray_intersect_bbox(*ray, obj->bbox, 0., tmax, &new_tbbox);
+		if (bbox_inter)
 		{
-//			if (scene->render_mode == RENDERMODE_BBOX)
-//				return 
-			ray_os = ray;
-			ray_os.inter_type = INTER_NONE;
-			ray_os.pos = rt_cl_apply_homogeneous_matrix(scene->objects[i].w_to_o, ray_os.pos);
-			ray_os.dir = rt_cl_apply_linear_matrix(scene->objects[i].w_to_o, ray_os.dir);//DO NOT NORMALIZE: YOU NEED TO KEEP ray.t CONSISTENT
-			ray_os.inter_type = ray_intersect_sphere(&new_t, ray_os);
-			if (ray_os.inter_type)
-			{	
-				ray.inter_type = ray_os.inter_type;
-				result_ray_os = ray_os;
-				result_ray_os.hit_obj_id = i;
-				ray.t = new_t;
-				result_ray_os.t = new_t;
+			if (scene->render_mode == RENDERMODE_BBOX)
+			{
+				tmax = new_tbbox;
+				ray->t = new_tbbox;
+				ray->hit_obj_id = i;
+				prim_inter = bbox_inter;
+			}
+			else
+			{
+				ray_os = *ray;
+				ray_os.inter_type = INTER_NONE;
+				ray_os.pos = rt_cl_apply_homogeneous_matrix(obj->w_to_o, ray_os.pos);
+				ray_os.dir = rt_cl_apply_linear_matrix(obj->w_to_o, ray_os.dir);//DO NOT NORMALIZE: YOU NEED TO KEEP ray.t CONSISTENT
+
+				if (obj->type == sphere)
+					ray_os.inter_type = rt_cl_sphere_intersect(&new_t, ray_os);
+				else if (obj->type == infcylinder)
+					ray_os.inter_type = rt_cl_infcylinder_intersect(&new_t, ray_os);
+				else
+					ray_os.inter_type = rt_cl_sphere_intersect(&new_t, ray_os);
+
+				if (ray_os.inter_type)
+				{
+					prim_inter = ray_os.inter_type;
+					result_ray_os = ray_os;
+					result_ray_os.hit_obj_id = i;
+					ray->t = new_t;//TODO see what changing this line does
+					result_ray_os.t = new_t;
+				}
 			}
 		}
 	}
-	return (ray.inter_type ? result_ray_os : ray);
+	if (scene->render_mode != RENDERMODE_BBOX && prim_inter)
+		*ray = result_ray_os;
+	return (prim_inter);
 }
 
 
-static t_ray			accumulate_lum_and_bounce_ray
+static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 (
 						__constant	t_scene	*	scene,
 									uint2 *		random_seeds,
@@ -138,10 +114,14 @@ static t_ray			accumulate_lum_and_bounce_ray
 				float3		hitpos;
 				float3		normal;
 
-
-	hitpos = ray.pos + ((float3)(ray.t)) * ray.dir;
-	normal = rt_cl_apply_linear_matrix(obj->n_to_w, hitpos) * (float3)(ray.inter_type); //sphere formula, normal == hitpos
-	normal = normalize(normal);
+	hitpos = ray.pos + ((float3)ray.t) * ray.dir;
+	if (obj->type == sphere)
+		normal = rt_cl_sphere_get_normal(hitpos);
+	else if (obj->type == infcylinder)
+		normal = rt_cl_infcylinder_get_normal(hitpos);
+	else
+		normal = rt_cl_sphere_get_normal(hitpos);
+	normal = normalize(rt_cl_apply_linear_matrix(obj->n_to_w, normal)) * ray.inter_type; //sphere formula, normal == hitpos
 	new_ray.pos = rt_cl_apply_homogeneous_matrix(obj->o_to_w, hitpos) + normal * (float3)(EPS);
 	new_ray.dir = rt_cl_rand_dir_coshemi(random_seeds, normal);
 	new_ray.hit_obj_id = -1;
@@ -171,7 +151,8 @@ static t_ray			accumulate_lum_and_bounce_ray
 	return (new_ray);
 }
 
-static t_ray			create_camray
+
+static t_ray			rt_cl_create_camray
 (
 					__constant		t_scene	*	scene,
 									uint2 *		random_seeds
@@ -203,7 +184,8 @@ static t_ray			create_camray
 	return (camray);
 }
 
-static float3			get_pixel_color_from_mc_sampling
+//For some reason a statement with || doesn't EVER get read properly as a truth statement so I switched conditions around 
+static float3			rt_cl_get_pixel_color_from_mc_sampling
 (
 					__constant		t_scene	*	scene,
 									uint2 *		random_seeds
@@ -212,23 +194,36 @@ static float3			get_pixel_color_from_mc_sampling
 	float3				pixel_rgb = (float3)(0.);
 	float const			inv_samp_size = 1. / scene->mc_raysamp_size;
 	t_ray				ray_i;
+	t_intersection		inter;
 
 	for (uint i = 0; i < scene->mc_raysamp_size; ++i)
 	{
-		ray_i = create_camray(scene, random_seeds);
+		ray_i = rt_cl_create_camray(scene, random_seeds);
 		for (uint depth = 0; !ray_i.complete && depth < scene->max_ray_depth; ++depth)
 		{
-			ray_i = trace_ray_to_scene(scene, ray_i);
-			if (ray_i.inter_type)
+			inter = rt_cl_trace_ray_to_scene(scene, &ray_i);
+			if (inter)
 			{
-//				return scene->objects[ray_i.hit_obj_id].rgb;
-				ray_i = accumulate_lum_and_bounce_ray(scene, random_seeds, ray_i, i, depth);
+				if (scene->render_mode == RENDERMODE_MCPT)
+				{
+					ray_i = rt_cl_accumulate_lum_and_bounce_ray(scene, random_seeds, ray_i, i, depth);
+				}
+				else
+				{
+					return (scene->objects[ray_i.hit_obj_id].rgb);
+				}
 			}
 			else
 			{
-//				return (0xFF000000);
-				ray_i.complete = true;
-				ray_i.lum_acc += ray_i.lum_mask * scene->bg_rgb;
+				if (scene->render_mode == RENDERMODE_MCPT)
+				{
+					ray_i.complete = true;
+					ray_i.lum_acc += ray_i.lum_mask * scene->bg_rgb;
+				}
+				else
+				{
+					return (scene->bg_rgb);
+				}
 			}
 		}
 		pixel_rgb += ray_i.lum_acc;
@@ -238,7 +233,7 @@ static float3			get_pixel_color_from_mc_sampling
 }
 
 
-__kernel void	rt_cl_render
+__kernel void			rt_cl_render
 (
 					__global		uint *		result_imgbuf,
 					__constant		t_scene	*	scene
@@ -259,7 +254,7 @@ __kernel void	rt_cl_render
 	debug_print_camera(&(scene->camera));
 }*/
 	rt_cl_rand(&random_seeds);
-	float3 vcolor3 = (float3)(255.) * get_pixel_color_from_mc_sampling(scene, &random_seeds);//rt_cl_f3rand_neg1half_to_pos1half(random_seed) * (float3)(255.);//
+	float3 vcolor3 = (float3)(255.) * rt_cl_get_pixel_color_from_mc_sampling(scene, &random_seeds);//rt_cl_f3rand_neg1half_to_pos1half(random_seed) * (float3)(255.);//
 //	printf((__constant char *)"kernel %10g %10g %10g\n", vcolor3.x, vcolor3.y, vcolor3.z);
 	uint3 color3 = (uint3)(floor(vcolor3.x), floor(vcolor3.y), floor(vcolor3.z));
 //	printf((__constant char *)"kernel %u %u %u\n", color3.x, color3.y, color3.z);

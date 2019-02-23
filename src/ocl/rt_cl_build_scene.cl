@@ -108,7 +108,7 @@ static void			rt_cl_get_vertices_for_bbox
 }
 
 
-
+//INTERSECTIONS
 static t_bbox			rt_cl_build_object_bbox
 (
 							t_primitive		type,
@@ -124,6 +124,11 @@ static t_bbox			rt_cl_build_object_bbox
 	{
 		objspace_bbox = (t_bbox){(float3)(-1., -1., -1.),
 									(float3)(1., 1., 1.)};
+	}
+	else if (type == infcylinder)
+	{
+		objspace_bbox = (t_bbox){(float3)(-1., -render_dist, -1.),
+									(float3)(1., render_dist, 1.)};
 	}
 	else
 	{

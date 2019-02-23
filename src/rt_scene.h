@@ -171,6 +171,7 @@ typedef struct	s_bvh
 ** All primitives are considered to be centered near the origin with default
 ** unit dimensions.
 */
+//INTERSECTIONS
 typedef enum	e_primitive
 {
 	none = 0,
@@ -180,8 +181,8 @@ typedef enum	e_primitive
 	cube,
 	sphere,
 	cylinder,
+	infcylinder,
 	cone,
-//	infcylinder,
 //	infcone,
 //	paraboloid,
 //	saddle,

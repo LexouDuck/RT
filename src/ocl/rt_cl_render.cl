@@ -84,8 +84,8 @@ static t_intersection		rt_cl_trace_ray_to_scene
 					ray_os.inter_type = rt_cl_disk_intersect(&new_t, ray_os);
 				else if (obj->type == rectangle)
 					ray_os.inter_type = rt_cl_square_intersect(&new_t, ray_os);
-//				else if (obj->type == cylinder)
-//					ray_os.inter_type = rt_cl_cylinder_intersect(&new_t, ray_os);
+				else if (obj->type == cylinder)
+					ray_os.inter_type = rt_cl_cylinder_intersect(&new_t, ray_os);
 				else if (obj->type == infcylinder)
 					ray_os.inter_type = rt_cl_infcylinder_intersect(&new_t, ray_os);
 				else
@@ -127,6 +127,8 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 		normal = rt_cl_sphere_get_normal(hitpos);
 	else if (obj->type == plane || obj->type == disk || obj->type == rectangle)
 		normal = rt_cl_plane_get_normal(hitpos);
+	else if (obj->type == cylinder)
+		normal = rt_cl_cylinder_get_normal(hitpos);
 	else if (obj->type == infcylinder)
 		normal = rt_cl_infcylinder_get_normal(hitpos);
 	else

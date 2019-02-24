@@ -32,7 +32,10 @@ static t_intersection		rt_cl_sphere_intersect
 	}
 }
 
-static float3			rt_cl_sphere_get_normal(float3 hitpos)
+static float3			rt_cl_sphere_get_normal
+(
+						float3 hitpos
+)
 {
 	return (hitpos);
 }

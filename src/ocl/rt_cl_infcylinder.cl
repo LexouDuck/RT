@@ -45,7 +45,10 @@ static t_intersection		rt_cl_infcylinder_intersect
 	}
 }
 
-static float3				rt_cl_infcylinder_get_normal(float3 hitpos)
+static float3				rt_cl_infcylinder_get_normal
+(
+							float3 hitpos
+)
 {
 	hitpos.y = 0;
 	return (hitpos);

@@ -12,8 +12,8 @@ static t_intersection		rt_cl_sphere_intersect
 	quadpoly.z = dot(ray.pos, ray.pos) - 1.;
 	if (!(rt_cl_get_realroots_quadpoly(&roots, quadpoly)))
 		return (INTER_NONE);
-	if ((roots.x <= 0. && roots.y <= 0.) ||
-		(roots.x > ray.t && roots.y > ray.t))
+	if ((roots.x <= 0. && roots.y <= 0.)/* ||
+		(roots.x > ray.t && roots.y > ray.t)*/)
 		return (INTER_NONE);
 	else if (roots.x <= 0.)
 	{

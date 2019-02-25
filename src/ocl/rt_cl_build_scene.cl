@@ -130,6 +130,11 @@ static t_bbox			rt_cl_build_object_bbox
 		objspace_bbox = (t_bbox){(float3)(-1., -render_dist, -1.),
 									(float3)(1., render_dist, 1.)};
 	}
+	else if (type == paraboloid)
+	{
+		objspace_bbox = (t_bbox){(float3)(-sqrt(render_dist), 0., -sqrt(render_dist)),
+									(float3)(sqrt(render_dist), render_dist, sqrt(render_dist))};
+	}
 	else
 	{
 		return ((t_bbox){(float3)(-render_dist, -render_dist, -render_dist),

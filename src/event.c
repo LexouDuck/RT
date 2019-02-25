@@ -27,6 +27,22 @@ static void	event_check_window(SDL_Event *event)
 		event_window_mouse_leave();
 }
 
+static void event_check_textinput(SDL_Event *event)
+{
+	char	*tmp;
+
+	if (!((rt.input.keys & KEY_CTRL) && (
+		(event->text.text[0] == 'c' || event->text.text[0] == 'C') ||
+		(event->text.text[0] == 'v' || event->text.text[0] == 'V'))))
+	{
+		tmp = rt.ui.current_textinput.input;
+		rt.ui.current_textinput.input = ft_strjoin(tmp ? tmp : "", event->text.text);
+		if (tmp)
+			free(tmp);
+		rt.ui.current_textinput.value_changed = TRUE;
+	}
+}
+
 static void	event_check_mouse(SDL_Event *event)
 {
 	if (!event)
@@ -59,6 +75,8 @@ t_bool		event_checkevents()
 			event_check_keydown(&event);
 		else if (event.type == SDL_KEYUP)
 			event_check_keyup(&event);
+		else if (event.type == SDL_TEXTINPUT)
+			event_check_textinput(&event);
 		else
 			event_check_mouse(&event);
 	}

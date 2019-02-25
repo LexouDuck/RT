@@ -54,25 +54,25 @@ void	ui_render_expandedproperties(t_object *object, t_s32 y)
 		ui_render_text(       tmp, 9, y + 2, FALSE);
 		free(tmp);
 	}
-	ui_render_control_numberbox( 1, y + 3, object->rgb.x);
-	ui_render_control_numberbox(10, y + 3, object->rgb.y);
-	ui_render_control_numberbox(19, y + 3, object->rgb.z);
+	ui_render_control_numberbox( 1, y + 3, &object->rgb.x);
+	ui_render_control_numberbox(10, y + 3, &object->rgb.y);
+	ui_render_control_numberbox(19, y + 3, &object->rgb.z);
 	ui_render_text("Light:", 1, y + 6, FALSE);
-	ui_render_control_numberbox( 1, y + 7, object->light.x);
-	ui_render_control_numberbox(10, y + 7, object->light.y);
-	ui_render_control_numberbox(19, y + 7, object->light.z);
+	ui_render_control_numberbox( 1, y + 7, &object->light.x);
+	ui_render_control_numberbox(10, y + 7, &object->light.y);
+	ui_render_control_numberbox(19, y + 7, &object->light.z);
 	ui_render_text("Pos:", 1, y + 10, FALSE);
-	ui_render_control_numberbox( 1, y + 11, object->pos.x);
-	ui_render_control_numberbox(10, y + 11, object->pos.y);
-	ui_render_control_numberbox(19, y + 11, object->pos.z);
+	ui_render_control_numberbox( 1, y + 11, &object->pos.x);
+	ui_render_control_numberbox(10, y + 11, &object->pos.y);
+	ui_render_control_numberbox(19, y + 11, &object->pos.z);
 	ui_render_text("Rot:", 1, y + 14, FALSE);
-	ui_render_control_numberbox( 1, y + 15, object->rot.x);
-	ui_render_control_numberbox(10, y + 15, object->rot.y);
-	ui_render_control_numberbox(19, y + 15, object->rot.z);
+	ui_render_control_numberbox( 1, y + 15, &object->rot.x);
+	ui_render_control_numberbox(10, y + 15, &object->rot.y);
+	ui_render_control_numberbox(19, y + 15, &object->rot.z);
 	ui_render_text("Scale:", 1, y + 18, FALSE);
-	ui_render_control_numberbox( 1, y + 19, object->scale.x);
-	ui_render_control_numberbox(10, y + 19, object->scale.y);
-	ui_render_control_numberbox(19, y + 19, object->scale.z);
+	ui_render_control_numberbox( 1, y + 19, &object->scale.x);
+	ui_render_control_numberbox(10, y + 19, &object->scale.y);
+	ui_render_control_numberbox(19, y + 19, &object->scale.z);
 }
 
 void	ui_render_objects()

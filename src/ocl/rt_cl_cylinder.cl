@@ -51,8 +51,7 @@ static float3				rt_cl_infcylinder_get_normal
 							float3 hitpos
 )
 {
-	hitpos.y = 0;
-	return (hitpos);
+	return ((float3)(hitpos.x, 0, hitpos.y));
 }
 /*
 t_bool						intersect_ray_cylinder(t_ray *objray)
@@ -116,6 +115,7 @@ static t_intersection		rt_cl_cylinder_intersect
 	if (tmp_ray.inter_type)
 	{
 		tmp_ray.t = *res;
+		tmp_ray.t = *res;
 		if (fabs(tmp_ray.pos.y + tmp_ray.t * tmp_ray.dir.y) < 0.5)
 		{
 			tmp = tmp_ray.t;
@@ -137,8 +137,9 @@ static t_intersection		rt_cl_cylinder_intersect
 		tmp_ray.t = *res;
 		tmp = fmin(tmp, tmp_ray.t);
 	}
-	*res = fmin(tmp, ray.t);
-	inter = *res == ray.t ? INTER_NONE : INTER_OUTSIDE;
+	ray.t = fmin(tmp, ray.t);
+	*res = ray.t;
+	inter = ray.t == tmp ? INTER_OUTSIDE : INTER_NONE;
 	inter = inter && is_in_hrz_area && is_in_vrt_area ? INTER_INSIDE : inter;
 	return (inter);
 }

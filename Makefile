@@ -139,6 +139,7 @@ SRCS_CL	=	rt_cl_scene.cl.h		\
 			rt_cl_primitives_2d.cl		\
 			rt_cl_cylinder.cl		\
 			rt_cl_infcylinder.cl	\
+			rt_cl_infcone.cl 		\
 			rt_cl_debug.cl			\
 			rt_cl_build_scene.cl	\
 			rt_cl_render.cl

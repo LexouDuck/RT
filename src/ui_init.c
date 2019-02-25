@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ui.c                                               :+:      :+:    :+:   */
+/*   ui_init.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -16,6 +16,7 @@
 #include "../rt.h"
 #include "../assets.h"
 #include "debug.h"
+#include "ui.h"
 
 static void	ui_init_menubar()
 {
@@ -49,6 +50,10 @@ static void	ui_init_dropdown_file()
 	dropdown->item_labels[DROPDOWN_FILE_IMPORT]	= "Import file...";
 	dropdown->item_labels[DROPDOWN_FILE_SAVE]	= "Save";
 	dropdown->item_labels[DROPDOWN_FILE_SAVEAS]	= "Save as...";
+	dropdown->item_action[DROPDOWN_FILE_OPEN]	= ui_menu_file_open;
+	dropdown->item_action[DROPDOWN_FILE_IMPORT]	= ui_menu_file_import;
+	dropdown->item_action[DROPDOWN_FILE_SAVE]	= ui_menu_file_save;
+	dropdown->item_action[DROPDOWN_FILE_SAVEAS]	= ui_menu_file_saveas;
 	i = 0;
 	while (i < DROPDOWN_ITEMS_FILE)
 	{
@@ -73,6 +78,11 @@ static void	ui_init_dropdown_edit()
 	dropdown->item_labels[DROPDOWN_EDIT_CUT]	= "Cut";
 	dropdown->item_labels[DROPDOWN_EDIT_COPY]	= "Copy";
 	dropdown->item_labels[DROPDOWN_EDIT_PASTE]	= "Paste";
+	dropdown->item_action[DROPDOWN_EDIT_UNDO]	= ui_menu_edit_undo;
+	dropdown->item_action[DROPDOWN_EDIT_REDO]	= ui_menu_edit_redo;
+	dropdown->item_action[DROPDOWN_EDIT_CUT]	= ui_menu_edit_cut;
+	dropdown->item_action[DROPDOWN_EDIT_COPY]	= ui_menu_edit_copy;
+	dropdown->item_action[DROPDOWN_EDIT_PASTE]	= ui_menu_edit_paste;
 	i = 0;
 	while (i < DROPDOWN_ITEMS_EDIT)
 	{
@@ -96,6 +106,7 @@ static void	ui_init_dropdown_view()
 	dropdown->item_labels[DROPDOWN_VIEW_DIFFUSE]	= "Diffuse lighting";
 	dropdown->item_labels[DROPDOWN_VIEW_SPECULAR]	= "Specular lighting";
 	dropdown->item_labels[DROPDOWN_VIEW_GLOBAL_I]	= "Global illumination";
+	dropdown->item_action[DROPDOWN_VIEW_ORTHOGONAL]	= ui_menu_view_orthogonal;
 	i = 0;
 	while (i < DROPDOWN_ITEMS_VIEW)
 	{

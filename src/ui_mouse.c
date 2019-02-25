@@ -110,7 +110,8 @@ void	ui_mouse_dropdown(t_menu *dropdown)
 			rect = dropdown->item_hitbox[i];
 			if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
 			{
-				rt.ui.menubar.selection = i;
+				if (dropdown->item_action[i])
+					dropdown->item_action[i]();
 				collided = TRUE;
 			}
 		}

@@ -76,9 +76,6 @@ static int	main_loop()
 		frame_wait = SDL_GetTicks() + FRAME_MS;
 		++rt.sdl.current_frame;
 		loop = event_checkevents();
-
-		// TODO do stuff here
-
 		update_window();
 	}
 	config_save();
@@ -126,9 +123,13 @@ int			main(int argc, char* argv[])
 	if (argc > 1)
 	{
 		int i = 1;
-		ui_menu_file_open(argv[i]);
+		rt.filepath = argv[i];
+		rt_file_open(rt.filepath);
 		while (++i < argc)
-			ui_menu_file_import(argv[i]);
+		{
+			rt.filepath = NULL;
+			rt_file_import(argv[i]);
+		}
 	}
 
 //printf("debug: init ui\n");

@@ -15,5 +15,5 @@
 
 void		ui_menu_view_orthogonal()
 {
-
+	debug_output("View->Orthogonal\n");
 }

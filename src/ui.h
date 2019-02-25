@@ -76,7 +76,7 @@ typedef struct	s_menu
 	char const	*item_labels[MENU_MAX_ITEMS];
 	SDL_Rect	item_hitbox[MENU_MAX_ITEMS];
 	t_u32		item_hotkey[MENU_MAX_ITEMS];
-//	void		(*items)(void)[MENU_MAX_ITEMS];
+	void		(*item_action[MENU_MAX_ITEMS])(void);
 	t_s8		selection;
 }				t_menu;
 
@@ -132,8 +132,20 @@ typedef struct	s_textinput
 	t_bool		value_changed;	// whether or not text has been input by the user
 }				t_textinput;
 
+/*
+**	This struct holds the current UI pop-up dialog prompt
+**	if 'textbox' is 0 (texttype_none), then there currently is no prompt open
+*/
+typedef struct	s_prompt
+{
+	t_texttype	textbox;
+	char const*	name;
+	char const*	description;
+}				t_prompt;
 
-
+/*
+**	This struct holds all info pertaining to the UI sidebar
+*/
 typedef struct	s_ui
 {
 	t_u8 const	*chr;
@@ -145,6 +157,7 @@ typedef struct	s_ui
 	t_menu		dropdowns[MENUBAR_ITEMS];
 	t_menulist	objects;
 	t_textinput	current_textinput;
+	t_prompt	current_prompt;
 }				t_ui;
 
 /*
@@ -153,6 +166,26 @@ typedef struct	s_ui
 int				ui_init();
 SDL_Palette*	ui_set_palette(SDL_Surface *surface, t_u32 const *palette);
 SDL_Surface*	ui_set_tileset(t_u8 const *chr, size_t length);
+
+/*
+**	ui_menu_file.c
+*/
+void		ui_menu_file_open();
+void		ui_menu_file_import();
+void		ui_menu_file_save();
+void		ui_menu_file_saveas();
+/*
+**	ui_edit_file.c
+*/
+void		ui_menu_edit_undo();
+void		ui_menu_edit_redo();
+void		ui_menu_edit_cut();
+void		ui_menu_edit_copy();
+void		ui_menu_edit_paste();
+/*
+**	ui_view_file.c
+*/
+void		ui_menu_view_orthogonal();
 
 /*
 **	ui_render.c

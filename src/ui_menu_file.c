@@ -10,56 +10,44 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft_memory.h"
-#include "libft_convert.h"
-
 #include "../rt.h"
 #include "debug.h"
 
-int			ui_menu_file_open(char *filepath)
+void		ui_menu_file_open()
 {
-	t_rtparser	parser;
-	char		*error;
-
-	if (rt_open_file(filepath, &parser))
-		return (ERROR);
-	if (parser.file)
-	{
-		ft_memclr(rt.scene.objects, OBJECT_MAX_AMOUNT * sizeof(t_object));
-		rt.scene.object_amount = 0;
-		if ((error = rt_read_file(&parser)))
-		{
-			debug_output_value("Error: while reading rt file -> at line ",
-				ft_s32_to_str(parser.line), TRUE);
-			debug_output_error(error, FALSE);
-			return (ERROR);
-		}
-		debug_output_value("Successfully opened file: ", filepath, FALSE);
-		rt_output_readfile();
-		free(parser.file);
-	}
-	return (OK);
+	debug_output("File->Open\n");
+	rt.ui.current_prompt.textbox = texttype_text;
+	rt.ui.current_prompt.name = "Open file prompt";
+	rt.ui.current_prompt.description = "Type in the file(s) to open.";
 }
 
-int			ui_menu_file_import(char *filepath)
+void		ui_menu_file_import()
 {
-	t_rtparser	parser;
-	char		*error;
+	debug_output("File->Import\n");
+	rt.ui.current_prompt.textbox = texttype_text;
+	rt.ui.current_prompt.name = "Import file prompt";
+	rt.ui.current_prompt.description = "Type in the file(s) to import to the scene.";
+}
 
-	if (rt_open_file(filepath, &parser))
-		return (ERROR);
-	if (parser.file)
+void		ui_menu_file_save()
+{
+	debug_output("File->Save\n");
+	if (rt.filepath)
 	{
-		if ((error = rt_read_file(&parser)))
-		{
-			debug_output_value("Error: while reading rt file -> at line ",
-				ft_s32_to_str(parser.line), TRUE);
-			debug_output_error(error, FALSE);
-			return (ERROR);
-		}
-		debug_output_value("Successfully imported file: ", filepath, FALSE);
-		rt_output_readfile();
-		free(parser.file);
+		//rt_file_save(rt.filepath);
 	}
-	return (OK);
+	else
+	{
+		rt.ui.current_prompt.textbox = texttype_text;
+		rt.ui.current_prompt.name = "Save file prompt";
+		rt.ui.current_prompt.description = "Type in the destination filepath.";
+	}
+}
+
+void		ui_menu_file_saveas()
+{
+	debug_output("File->SaveAs\n");
+	rt.ui.current_prompt.textbox = texttype_text;
+	rt.ui.current_prompt.name = "Save file prompt";
+	rt.ui.current_prompt.description = "Type in the destination filepath.";
 }

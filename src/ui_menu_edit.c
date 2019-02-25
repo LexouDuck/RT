@@ -15,25 +15,25 @@
 
 void		ui_menu_edit_undo()
 {
-
+	debug_output("Edit->Undo\n");
 }
 
 void		ui_menu_edit_redo()
 {
-	
+	debug_output("Edit->Redo\n");
 }
 
 void		ui_menu_edit_cut()
 {
-	
+	debug_output("Edit->Cut\n");
 }
 
 void		ui_menu_edit_copy()
 {
-	
+	debug_output("Edit->Copy\n");
 }
 
 void		ui_menu_edit_paste()
 {
-	
+	debug_output("Edit->Paste\n");
 }

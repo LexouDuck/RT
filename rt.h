@@ -72,6 +72,7 @@ typedef struct		t_rt
 	int				canvas_h;
 	t_u32			canvas_pixel_amount;
 	t_bool			must_render;
+	char			*filepath;
 	t_ui			ui;
 }					t_rt;
 
@@ -102,8 +103,8 @@ typedef struct	s_rtparser
 /*
 **	ui_menu_file.c
 */
-int			ui_menu_file_open(char *filepath);
-int			ui_menu_file_import(char *filepath);
+void		ui_menu_file_open();
+void		ui_menu_file_import();
 /*
 **	ui_menu_edit.c
 */
@@ -117,6 +118,11 @@ void		ui_menu_edit_paste();
 */
 void		ui_menu_view_orthogonal();
 
+/*
+**	rt_file.c
+*/
+int			rt_file_open(char *filepath);
+int			rt_file_import(char *filepath);
 /*
 **	rt_open.c
 **	rt_open_util.c

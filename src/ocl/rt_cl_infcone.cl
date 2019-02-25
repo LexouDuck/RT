@@ -1,4 +1,5 @@
-static t_intersection		rt_cl_sphere_intersect
+
+static t_intersection		rt_cl_infcone_intersect
 (
 							float *		res,
 							t_ray		ray
@@ -33,10 +34,18 @@ static t_intersection		rt_cl_sphere_intersect
 }
 
 
-static inline t_float	vec3_yneg_dot
+static inline float		vec3_yneg_dot
 (							float3 v1, 
 							float3 v2
 )
 {
 	return (v1.x * v2.x - v1.y * v2.y + v1.z * v2.z);
+}
+
+static float3			rt_cl_infcone_get_normal
+(
+						float3 hitpos
+)
+{
+	return (hitpos);
 }

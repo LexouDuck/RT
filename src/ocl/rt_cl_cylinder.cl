@@ -94,6 +94,7 @@ t_bool						intersect_ray_cylinder(t_ray *objray)
 **	circle verifies {p = (x, -0.5, z) | x^2 + z^2 <= 1} and the top circle
 **	{p = (x, +0.5, z) | x^2 + z^2 <= 1}
 */
+
 static t_intersection		rt_cl_cylinder_intersect
 (
 							float *		res,
@@ -116,7 +117,7 @@ static t_intersection		rt_cl_cylinder_intersect
 	{
 		tmp_ray.t = *res;
 		tmp_ray.t = *res;
-		if (fabs(tmp_ray.pos.y + tmp_ray.t * tmp_ray.dir.y) < 0.5)
+		if (fabs((float)(tmp_ray.pos.y + tmp_ray.t * tmp_ray.dir.y)) < 0.5)
 		{
 			tmp = tmp_ray.t;
 		}
@@ -157,9 +158,9 @@ static float3				rt_cl_cylinder_get_normal
 							float3		hitpos
 )
 {
-	if (fabs(hitpos.y - 0.5) < EPS)
+	if (fabs((float)(hitpos.y - 0.5)) < EPS)
 		return ((float3)(0., 1., 0.));
-	else if (fabs(hitpos.y + 0.5) < EPS)
+	else if (fabs((float)(hitpos.y + 0.5)) < EPS)
 		return ((float3)(0., -1., 0.));
 	else
 		return ((float3)(hitpos.x, 0., hitpos.z));

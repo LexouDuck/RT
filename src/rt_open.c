@@ -121,6 +121,8 @@ static char	*rt_read_command(t_rtparser *p, char *label)
 		shape = infcylinder;
 	else if (ft_strequ(label, "CONE"))
 		shape = cone;
+	else if (ft_strequ(label, "PARABOLOID"))
+		shape = paraboloid;
 	else if (ft_strequ(label, "OBJ") || ft_strequ(label, "MESH"))
 		shape = obj_mesh;
 

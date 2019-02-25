@@ -42,17 +42,17 @@ static float3				rt_cl_cube_get_normal
 							float3 hitpos
 )
 {
-	if (fabs(hitpos.x - 1.) <= EPS)
+	if (fabs((float)(hitpos.x - 1.)) <= EPS)
 		return ((float3)(1., 0., 0.));
-	else if (fabs(hitpos.x + 1.) <= EPS)
+	else if (fabs((float)(hitpos.x + 1.)) <= EPS)
 		return ((float3)(-1., 0., 0.));
-	else if (fabs(hitpos.y - 1.) <= EPS)
+	else if (fabs((float)(hitpos.y - 1.)) <= EPS)
 		return ((float3)(0., 1., 0.));
-	else if (fabs(hitpos.y + 1.) <= EPS)
+	else if (fabs((float)(hitpos.y + 1.)) <= EPS)
 		return ((float3)(0., -1., 0.));
-	else if (fabs(hitpos.z - 1.) <= EPS)
+	else if (fabs((float)(hitpos.z - 1.)) <= EPS)
 		return ((float3)(0., 0., 1.));
-	else if (fabs(hitpos.z + 1.) <= EPS)
+	else if (fabs((float)(hitpos.z + 1.)) <= EPS)
 		return ((float3)(0., 0., -1.));
 	else
 		return ((float3)(0., 0., 0.));

@@ -94,6 +94,7 @@ t_bool						intersect_ray_cylinder(t_ray *objray)
 **	circle verifies {p = (x, -0.5, z) | x^2 + z^2 <= 1} and the top circle
 **	{p = (x, +0.5, z) | x^2 + z^2 <= 1}
 */
+
 static t_intersection		rt_cl_cylinder_intersect
 (
 							float *		res,
@@ -106,9 +107,8 @@ static t_intersection		rt_cl_cylinder_intersect
 	bool			is_in_vrt_area;
 	t_intersection	inter;
 
-	if ((is_in_hrz_area = (-0.5 <= ray.pos.y && ray.pos.y <= 0.5)) &&
-		(is_in_vrt_area = (rt_cl_float3_ynull_dot(ray.pos, ray.pos) <= 1.)))
-		return (INTER_NONE);
+	is_in_hrz_area = (-0.5 <= ray.pos.y && ray.pos.y <= 0.5);
+	is_in_vrt_area = (rt_cl_float3_ynull_dot(ray.pos, ray.pos) <= 1.);
 	tmp = 1. / 0.;
 	tmp_ray = ray;
 	tmp_ray.inter_type = rt_cl_infcylinder_intersect(res, tmp_ray);
@@ -116,7 +116,7 @@ static t_intersection		rt_cl_cylinder_intersect
 	{
 		tmp_ray.t = *res;
 		tmp_ray.t = *res;
-		if (fabs(tmp_ray.pos.y + tmp_ray.t * tmp_ray.dir.y) < 0.5)
+		if (fabs((float)(tmp_ray.pos.y + tmp_ray.t * tmp_ray.dir.y)) < 0.5)
 		{
 			tmp = tmp_ray.t;
 		}
@@ -124,7 +124,7 @@ static t_intersection		rt_cl_cylinder_intersect
 	tmp_ray.t = ray.t;
 	tmp_ray.pos.y -= 0.5;
 	tmp_ray.inter_type = rt_cl_disk_intersect(res, tmp_ray);
-	if (!is_in_hrz_area && tmp_ray.inter_type)
+	if (tmp_ray.inter_type)
 	{
 		tmp_ray.t = *res;
 		tmp = fmin(tmp, tmp_ray.t);
@@ -132,7 +132,7 @@ static t_intersection		rt_cl_cylinder_intersect
 	tmp_ray.t = ray.t;
 	tmp_ray.pos.y += 1.;
 	tmp_ray.inter_type = rt_cl_disk_intersect(res, tmp_ray);
-	if (!is_in_hrz_area && tmp_ray.inter_type)
+	if (tmp_ray.inter_type)
 	{
 		tmp_ray.t = *res;
 		tmp = fmin(tmp, tmp_ray.t);
@@ -157,9 +157,9 @@ static float3				rt_cl_cylinder_get_normal
 							float3		hitpos
 )
 {
-	if (fabs(hitpos.y - 0.5) < EPS)
+	if (fabs((float)(hitpos.y - 0.5)) < EPS)
 		return ((float3)(0., 1., 0.));
-	else if (fabs(hitpos.y + 0.5) < EPS)
+	else if (fabs((float)(hitpos.y + 0.5)) < EPS)
 		return ((float3)(0., -1., 0.));
 	else
 		return ((float3)(hitpos.x, 0., hitpos.z));

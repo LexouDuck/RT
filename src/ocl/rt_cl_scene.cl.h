@@ -136,6 +136,7 @@ typedef enum	e_primitive
 	disk,
 	obj_mesh,
 	paraboloid,
+	hyperboloid,
 	saddle,
 	infcylinder,
 	infcone,

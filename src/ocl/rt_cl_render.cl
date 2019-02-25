@@ -94,6 +94,8 @@ static t_intersection		rt_cl_trace_ray_to_scene
 					ray_os.inter_type = rt_cl_cube_intersect(&new_t, ray_os);
 				else if (obj->type == paraboloid)
 					ray_os.inter_type = rt_cl_paraboloid_intersect(&new_t, ray_os);
+				else if (obj->type == hyperboloid)
+					ray_os.inter_type = rt_cl_hyperboloid_intersect(&new_t, ray_os);
 				else
 					ray_os.inter_type = rt_cl_sphere_intersect(&new_t, ray_os);
 
@@ -137,8 +139,8 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 		normal = rt_cl_cylinder_get_normal(hitpos);
 	else if (obj->type == infcylinder)
 		normal = rt_cl_infcylinder_get_normal(hitpos);
-	else if (obj->type == infcone)
-		normal = rt_cl_infcone_get_normal(hitpos);
+	//else if (obj->type == infcone)
+	//	normal = rt_cl_infcone_get_normal(hitpos);
 	else if (obj->type == cube)
 		normal = rt_cl_cube_get_normal(hitpos);
 	else if (obj->type == paraboloid)

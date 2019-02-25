@@ -92,15 +92,17 @@ static t_intersection		rt_cl_trace_ray_to_scene
 					ray_os.inter_type = rt_cl_infcone_intersect(&new_t, ray_os);
 				else if (obj->type == cube)
 					ray_os.inter_type = rt_cl_cube_intersect(&new_t, ray_os);
+				else if (obj->type == paraboloid)
+					ray_os.inter_type = rt_cl_paraboloid_intersect(&new_t, ray_os);
 				else
 					ray_os.inter_type = rt_cl_sphere_intersect(&new_t, ray_os);
 
-				if (ray_os.inter_type)
+				if (ray_os.inter_type && new_t > EPS && new_t < ray->t)
 				{
 					prim_inter = ray_os.inter_type;
 					result_ray_os = ray_os;
 					result_ray_os.hit_obj_id = i;
-					ray->t = new_t;//TODO see what changing this line does
+					ray->t = new_t;
 					result_ray_os.t = new_t;
 				}
 			}
@@ -135,13 +137,12 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 		normal = rt_cl_cylinder_get_normal(hitpos);
 	else if (obj->type == infcylinder)
 		normal = rt_cl_infcylinder_get_normal(hitpos);
-<<<<<<< HEAD
 	else if (obj->type == infcone)
 		normal = rt_cl_infcone_get_normal(hitpos);
-=======
 	else if (obj->type == cube)
 		normal = rt_cl_cube_get_normal(hitpos);
->>>>>>> 89c36cdb4a3be0c27b79b76a15646dae4e0f7bfb
+	else if (obj->type == paraboloid)
+		normal = rt_cl_paraboloid_get_normal(hitpos);
 	else
 		normal = rt_cl_sphere_get_normal(hitpos);
 	normal = normalize(rt_cl_apply_linear_matrix(obj->n_to_w, normal)) * ray.inter_type; //sphere formula, normal == hitpos

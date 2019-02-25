@@ -154,5 +154,6 @@ int			ui_init()
 	ui_init_dropdown_edit();
 	ui_init_dropdown_view();
 	ui_init_objectlist();
+	SDL_StopTextInput();
 	return (OK);
 }

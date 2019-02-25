@@ -15,6 +15,24 @@
 #include "../rt.h"
 #include "debug.h"
 
+void	ui_mouse_objectlist_expandedproperties(t_object *object, t_s32 y)
+{
+	cl_float3	*ptr;
+	t_u8		i;
+
+	ptr = &object->rgb;
+	i = 0;
+	while (i < OBJECT_PROPERTIES)
+	{
+		ui_mouse_control_numberbox(&rt.ui.current_textinput, &ptr->x,  1, y + 1);
+		ui_mouse_control_numberbox(&rt.ui.current_textinput, &ptr->y, 10, y + 1);
+		ui_mouse_control_numberbox(&rt.ui.current_textinput, &ptr->z, 19, y + 1);
+		y += OBJECT_PROPERTY_H;
+		++ptr;
+		++i;
+	}
+}
+
 void	ui_mouse_objectlist()
 {
 	t_s32		tmp;
@@ -34,8 +52,10 @@ void	ui_mouse_objectlist()
 			rect.y + add_height >= rt.ui.objects.rect.y - TILE &&
 			rect.y < rt.ui.objects.rect.y + rt.ui.objects.rect.h)
 		{
+			if (rt.ui.objects.expanded[i])
+				ui_mouse_objectlist_expandedproperties(&rt.scene.objects[i], rect.y + 2);
 			rect.x = 0;
-			rect.w = UI_WIDTH_TILES - 1;
+			rect.w = UI_WIDTH_TILES - 4;
 			if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
 			{
 				if (!(rt.input.keys & KEY_CTRL))

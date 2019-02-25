@@ -251,12 +251,12 @@ typedef struct	s_object
 	t_primitive		type;
 	t_material		material;
 	char			name[OBJECT_NAME_MAXLENGTH];
-	cl_float3		pos;
-	cl_float3		rot;
-	cl_float3		scale;
 	cl_uint			color;
 	cl_float3		rgb;
 	cl_float3		light;
+	cl_float3		pos;
+	cl_float3		rot;
+	cl_float3		scale;
 	t_bbox			bbox;
 //	cl_float3		specul;
 //	t_float			refrac;//refraction index for snell-descartes

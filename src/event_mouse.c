@@ -76,6 +76,8 @@ void	event_mouse_release(SDL_Event *event)
 	camera->mode = CAMERA_MODE_NONE;
 	if (event->button.button == SDL_BUTTON_LEFT)
 	{
+		if (rt.ui.current_textinput.type)
+			ui_leave_control_numberbox(&rt.ui.current_textinput);
 		if (rt.ui.menubar.selection == -1)
 			ui_mouse_objectlist();
 		else

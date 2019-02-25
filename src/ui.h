@@ -109,6 +109,31 @@ typedef struct	s_menulist
 	t_scrollbar	scrollbar;
 }				t_menulist;
 
+
+typedef enum	e_texttype
+{
+	texttype_none = 0,
+	texttype_number_int,
+	texttype_number_hex,
+	texttype_number_float,
+	texttype_text,
+}				t_texttype;
+/*
+**	This struct holds current text input selection info
+**	if 'type' is 0 (texttype_none), nothing is selected
+**	otherwise, the 'type' will inform how to convert the
+**	contents of 'input' to write it into 'value'
+*/
+typedef struct	s_textinput
+{
+	t_texttype	type;	// the type of keyboard input box selected
+	char		*input;	// the string of text that the user has entered
+	void		*value;	// a pointer to the value in memory which needs to be changed
+	t_bool		value_changed;	// whether or not text has been input by the user
+}				t_textinput;
+
+
+
 typedef struct	s_ui
 {
 	t_u8 const	*chr;
@@ -119,6 +144,7 @@ typedef struct	s_ui
 	t_menu		menubar;
 	t_menu		dropdowns[MENUBAR_ITEMS];
 	t_menulist	objects;
+	t_textinput	current_textinput;
 }				t_ui;
 
 /*
@@ -163,6 +189,8 @@ void	ui_render_rect(SDL_Rect rect, t_bool filled);
 **	ui_control_colorbox.c
 **	ui_control_textbox.c
 */
-void	ui_render_control_numberbox(int x, int y, cl_float value);
+void	ui_mouse_control_numberbox(t_textinput *textinput, cl_float *value, int x, int y);
+void	ui_leave_control_numberbox(t_textinput *textinput);
+void	ui_render_control_numberbox(int x, int y, cl_float *value);
 
 #endif

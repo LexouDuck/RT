@@ -202,16 +202,16 @@ typedef struct	s_object
 	t_primitive		type;
 	t_material		material;
 	char			name[OBJECT_NAME_MAXLENGTH];
+	uint			color;
+	float3			rgb;
+	float3			light;
 	float3			pos;
 	float3			rot;
 	float3			scale;
-	uint			color; 
-	float3			rgb;
-	float3			light;
 	t_bbox			bbox;
-//	cl_float3		specul;
-//	t_float			refrac;//refraction index for snell-descartes
-//	t_float			intensity;//intensity for lightsrc objects, 1. for other objects //or reflectivity ??
+//	float3			specul;
+//	float			refrac;//refraction index for snell-descartes
+//	float			intensity;//intensity for lightsrc objects, 1. for other objects //or reflectivity ??
 	float16			o_to_w;
 	float16			w_to_o;
 	float16			n_to_w;

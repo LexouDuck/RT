@@ -106,9 +106,8 @@ static t_intersection		rt_cl_cylinder_intersect
 	bool			is_in_vrt_area;
 	t_intersection	inter;
 
-	if ((is_in_hrz_area = (-0.5 <= ray.pos.y && ray.pos.y <= 0.5)) &&
-		(is_in_vrt_area = (rt_cl_float3_ynull_dot(ray.pos, ray.pos) <= 1.)))
-		return (INTER_NONE);
+	is_in_hrz_area = (-0.5 <= ray.pos.y && ray.pos.y <= 0.5);
+	is_in_vrt_area = (rt_cl_float3_ynull_dot(ray.pos, ray.pos) <= 1.);
 	tmp = 1. / 0.;
 	tmp_ray = ray;
 	tmp_ray.inter_type = rt_cl_infcylinder_intersect(res, tmp_ray);
@@ -124,7 +123,7 @@ static t_intersection		rt_cl_cylinder_intersect
 	tmp_ray.t = ray.t;
 	tmp_ray.pos.y -= 0.5;
 	tmp_ray.inter_type = rt_cl_disk_intersect(res, tmp_ray);
-	if (!is_in_hrz_area && tmp_ray.inter_type)
+	if (tmp_ray.inter_type)
 	{
 		tmp_ray.t = *res;
 		tmp = fmin(tmp, tmp_ray.t);
@@ -132,7 +131,7 @@ static t_intersection		rt_cl_cylinder_intersect
 	tmp_ray.t = ray.t;
 	tmp_ray.pos.y += 1.;
 	tmp_ray.inter_type = rt_cl_disk_intersect(res, tmp_ray);
-	if (!is_in_hrz_area && tmp_ray.inter_type)
+	if (tmp_ray.inter_type)
 	{
 		tmp_ray.t = *res;
 		tmp = fmin(tmp, tmp_ray.t);

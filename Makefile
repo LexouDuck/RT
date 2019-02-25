@@ -136,9 +136,10 @@ SRCS_CL	=	rt_cl_scene.cl.h		\
 			rt_cl_linear_algebra.cl	\
 			rt_cl_random.cl			\
 			rt_cl_sphere.cl			\
-			rt_cl_primitives_2d.cl		\
+			rt_cl_primitives_2d.cl	\
 			rt_cl_cylinder.cl		\
-			rt_cl_cube.cl		\
+			rt_cl_cube.cl			\
+			rt_cl_paraboloid.cl		\
 			rt_cl_debug.cl			\
 			rt_cl_build_scene.cl	\
 			rt_cl_render.cl

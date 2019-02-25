@@ -120,7 +120,7 @@ static t_bbox			rt_cl_build_object_bbox
 	float3		objspace_bbox_vertices[8];
 	t_bbox		result;
 
-	if (type == sphere || type == cube)
+	if (type == sphere || type == cube || type == cylinder)
 	{
 		objspace_bbox = (t_bbox){(float3)(-1., -1., -1.),
 									(float3)(1., 1., 1.)};

@@ -84,12 +84,14 @@ static t_intersection		rt_cl_trace_ray_to_scene
 					ray_os.inter_type = rt_cl_disk_intersect(&new_t, ray_os);
 				else if (obj->type == rectangle)
 					ray_os.inter_type = rt_cl_square_intersect(&new_t, ray_os);
-//				else if (obj->type == cylinder)
-//					ray_os.inter_type = rt_cl_cylinder_intersect(&new_t, ray_os);
+				else if (obj->type == cylinder)
+					ray_os.inter_type = rt_cl_cylinder_intersect(&new_t, ray_os);
 				else if (obj->type == infcylinder)
 					ray_os.inter_type = rt_cl_infcylinder_intersect(&new_t, ray_os);
 				else if (obj->type == infcone)
-					ray_os.inter_type = rt_cl_infcylinder_intersect(&new_t, ray_os);
+					ray_os.inter_type = rt_cl_infcone_intersect(&new_t, ray_os);
+				else if (obj->type == cube)
+					ray_os.inter_type = rt_cl_cube_intersect(&new_t, ray_os);
 				else
 					ray_os.inter_type = rt_cl_sphere_intersect(&new_t, ray_os);
 
@@ -129,10 +131,17 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 		normal = rt_cl_sphere_get_normal(hitpos);
 	else if (obj->type == plane || obj->type == disk || obj->type == rectangle)
 		normal = rt_cl_plane_get_normal(hitpos);
+	else if (obj->type == cylinder)
+		normal = rt_cl_cylinder_get_normal(hitpos);
 	else if (obj->type == infcylinder)
 		normal = rt_cl_infcylinder_get_normal(hitpos);
+<<<<<<< HEAD
 	else if (obj->type == infcone)
 		normal = rt_cl_infcone_get_normal(hitpos);
+=======
+	else if (obj->type == cube)
+		normal = rt_cl_cube_get_normal(hitpos);
+>>>>>>> 89c36cdb4a3be0c27b79b76a15646dae4e0f7bfb
 	else
 		normal = rt_cl_sphere_get_normal(hitpos);
 	normal = normalize(rt_cl_apply_linear_matrix(obj->n_to_w, normal)) * ray.inter_type; //sphere formula, normal == hitpos

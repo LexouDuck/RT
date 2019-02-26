@@ -38,12 +38,12 @@ static t_intersection		rt_cl_hyperboloid_intersect
 	if ((ray.dir.y * roots.x + ray.pos.y) *
 		(ray.dir.y * roots.y + ray.pos.y) >= 0.)
 	{
-		ray.t = fmin(roots.x, roots.y);
+		*res = fmin(roots.x, roots.y);
 		return(INTER_OUTSIDE);
 	
 	}
 	else
-		ray.t = fmax(roots.x, roots.y);
+		*res = fmax(roots.x, roots.y);
 	return (INTER_INSIDE);
 }
 

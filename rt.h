@@ -55,6 +55,7 @@ typedef struct		s_sdl
 	int				window_h;
 	t_bool			fullscreen;
 	t_u64			current_frame;
+	t_bool			loop;
 }					t_sdl;
 
 /*

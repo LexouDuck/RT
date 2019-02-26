@@ -40,7 +40,7 @@
 
 # define OBJECT_NAME_MAXLENGTH	24
 # define OBJECT_MAX_AMOUNT		32
-# define DEFAULT_RAYSAMP_SIZE	128
+# define DEFAULT_RAYSAMP_SIZE	64
 # define DEFAULT_MAX_RAY_DEPTH	4
 
 typedef enum		e_rendermode
@@ -180,13 +180,14 @@ typedef enum	e_primitive
 	cylinder,
 	cone,
 	plane,
-	rectangle,			
+	rectangle,
 	disk,
-	obj_mesh,
 	paraboloid,
+	hyperboloid,
 	saddle,
 	infcylinder,
 	infcone,
+	obj_mesh,
 }				t_primitive;
 
 /*

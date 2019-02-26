@@ -142,6 +142,7 @@ SRCS_CL	=	rt_cl_scene.cl.h		\
 			rt_cl_infcone.cl 		\
 			rt_cl_cube.cl			\
 			rt_cl_paraboloid.cl		\
+			rt_cl_hyperboloid.cl 	\
 			rt_cl_debug.cl			\
 			rt_cl_build_scene.cl	\
 			rt_cl_render.cl

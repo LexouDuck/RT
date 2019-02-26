@@ -57,7 +57,7 @@ static void	event_check_mouse(SDL_Event *event)
 		event_mouse_motion(event);
 }
 
-t_bool		event_checkevents()
+void		event_checkevents()
 {
 	SDL_Event	event;
 
@@ -68,7 +68,10 @@ t_bool		event_checkevents()
 	while (SDL_PollEvent(&event))
 	{	// Handle events on queue
 		if (event.type == SDL_QUIT)
-		    return (FALSE);
+		{
+			rt.sdl.loop = FALSE;
+			return ;
+		}
 		else if (event.type == SDL_WINDOWEVENT)
 			event_check_window(&event);
 		else if (event.type == SDL_KEYDOWN)
@@ -80,5 +83,4 @@ t_bool		event_checkevents()
 		else
 			event_check_mouse(&event);
 	}
-	return (TRUE);
 }

@@ -1,4 +1,4 @@
-static inline float		rt_cl_float3_yneg_dot
+static inline float		float3_yneg_dot
 (							float3 v1, 
 							float3 v2
 )
@@ -6,7 +6,7 @@ static inline float		rt_cl_float3_yneg_dot
 	return (v1.x * v2.x - v1.y * v2.y + v1.z * v2.z);
 }
 
-static t_intersection		rt_cl_infcone_intersect
+static t_intersection		rt_cl_hyperboloid_intersect
 (
 							float *		res,
 							t_ray		ray
@@ -15,9 +15,9 @@ static t_intersection		rt_cl_infcone_intersect
 	float3 		quadpoly;
 	float2		roots;
 
-	quadpoly.x = rt_cl_float3_yneg_dot(ray.dir, ray.dir);
-	quadpoly.y = 2. * rt_cl_float3_yneg_dot(ray.dir, ray.pos);
-	quadpoly.z = rt_cl_float3_yneg_dot(ray.pos, ray.pos);
+	quadpoly.x = float3_yneg_dot(ray.dir, ray.dir);
+	quadpoly.y = 2. * float3_yneg_dot(ray.dir, ray.pos);
+	quadpoly.z = float3_yneg_dot(ray.pos, ray.pos) - 1.;
 	if(!(rt_cl_get_realroots_quadpoly(&roots, quadpoly)))
 		return (INTER_NONE);
 	if (roots.x <= 0. && roots.y <= 0.)
@@ -38,16 +38,18 @@ static t_intersection		rt_cl_infcone_intersect
 	if ((ray.dir.y * roots.x + ray.pos.y) *
 		(ray.dir.y * roots.y + ray.pos.y) >= 0.)
 	{
-		*res = fmin(roots.x, roots.y);
+		ray.t = fmin(roots.x, roots.y);
 		return(INTER_OUTSIDE);
 	
 	}
 	else
-		*res = fmax(roots.x, roots.y);
+		ray.t = fmax(roots.x, roots.y);
 	return (INTER_INSIDE);
 }
 
-static float3			rt_cl_infcone_get_normal
+
+
+static float3			rt_cl_herperboloid_get_normal
 (
 						float3 hitpos
 )

@@ -16,8 +16,12 @@
 void	event_check_keydown(SDL_Event *event)
 {
 	if (event->key.keysym.sym == SDLK_ESCAPE)
+	{
 		if (rt.sdl.fullscreen)
 			event_window_fullscreen(FALSE);
+		else
+			rt.sdl.loop = FALSE;
+	}
 	if (event->key.keysym.sym == SDLK_RETURN && (rt.input.keys & KEY_ALT))
 		if (!rt.sdl.fullscreen)
 			event_window_fullscreen(TRUE);

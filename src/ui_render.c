@@ -150,6 +150,17 @@ void	ui_render_dropdown(t_menu *dropdown)
 	}
 }
 
+void	ui_render_prompt()
+{
+	ui_render_rect(rt.ui.current_prompt.rect, FALSE);
+	ui_render_text(rt.ui.current_prompt.name,
+		rt.ui.current_prompt.rect.x + 2, rt.ui.current_prompt.rect.y + 0, TRUE);
+	ui_render_text(rt.ui.current_prompt.description,
+		rt.ui.current_prompt.rect.x + 2, rt.ui.current_prompt.rect.y + 2, FALSE);
+	//textbox.x = 
+	ui_render_rect(rt.ui.current_prompt.rect, FALSE);
+}
+
 void		ui_render_caminfo(t_camera *camera)
 {
 	char	*tmp;

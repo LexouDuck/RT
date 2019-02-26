@@ -29,7 +29,7 @@
 //INTERSECTIONS
 void	rt_output_readfile()
 {
-	static const char *primitive_types[13] = {
+	static const char *primitive_types[] = {
 		"N/A",
 		"SPHERE     ",
 		"CUBE       ",
@@ -40,6 +40,7 @@ void	rt_output_readfile()
 		"DISK       ",
 		"OBJ MESH   ",
 		"PARABOLOID ",
+		"HYPERBOLOID",
 		"SADDLE     ",
 		"INFCYLINDER",
 		"INFCONE    ",
@@ -125,6 +126,8 @@ static char	*rt_read_command(t_rtparser *p, char *label)
 		shape = cone;
 	else if (ft_strequ(label, "PARABOLOID"))
 		shape = paraboloid;
+	else if (ft_strequ(label, "HYPERBOLOID"))
+		shape = hyperboloid;
 	else if (ft_strequ(label, "OBJ") || ft_strequ(label, "MESH"))
 		shape = obj_mesh;
 

@@ -141,6 +141,7 @@ typedef struct	s_prompt
 	t_texttype	textbox;
 	char const*	name;
 	char const*	description;
+	SDL_Rect	rect;
 }				t_prompt;
 
 /*

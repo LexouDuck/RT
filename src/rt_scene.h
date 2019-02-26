@@ -180,14 +180,14 @@ typedef enum	e_primitive
 	cylinder,
 	cone,
 	plane,
-	rectangle,			
+	rectangle,
 	disk,
-	obj_mesh,
 	paraboloid,
 	hyperboloid,
 	saddle,
 	infcylinder,
 	infcone,
+	obj_mesh,
 }				t_primitive;
 
 /*

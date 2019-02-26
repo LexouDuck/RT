@@ -3,5 +3,42 @@ BG #FFFFFF
 
 INFCONE #FFFF11
 (4, 4, 1)
-{0, 0, -0.789}
+{0, 0, 1}
 [2, 20, 2]
+BG #888888
+
+SPHERE #FFFFFF	(3, 20, 3)	{0, 0, 0}	[0, 0, 0]	light:(1, 1, 1)
+
+SPHERE #FFFFFF	(3,-10, 3)	{0, 0, 0}	[0, 0, 0]	light:(1, 1, 1)
+
+
+
+CUBE #FF0000	(-9, 0, 0)	{0, 0, 0}	[1, 6, 10]	"Brick Side Left"
+CUBE #FF0000	(9, 0, 0)	{0, 0, 0}	[1, 6, 10]	"Brick Side Right"
+CUBE #FF0000	(0, 0, -9)	{0, 0, 0}	[10, 6, 1]	"Brick Side Near"
+CUBE #FF0000	(0, 0, 9)	{0, 0, 0}	[10, 6, 1]	"Brick Side Far"
+
+CUBE #FF0000	(0, 6, 0)	{0, 0, 0}	[10, 1, 10]	"Brick Top"
+
+CYLINDER #FF0000
+(5, 8, 5)
+{0, 0, 0}
+[3, 2, 3]	"Brick Stud TL"
+CYLINDER #FF0000
+(5, 8, -5)
+{0, 0, 0}
+[3, 2, 3]	"Brick Stud TR"
+CYLINDER #FF0000
+(-5, 8, 5)
+{0, 0, 0}
+[3, 2, 3]	"Brick Stud BL"
+CYLINDER #FF0000
+(-5, 8, -5)
+{0, 0, 0}
+[3, 2, 3]	"Brick Stud BR"
+
+CYLINDER #FF0000
+(0, 0, 0)
+{0, 0, 0}
+[4.07, 12, 4.07]
+"Bottom Pillar"

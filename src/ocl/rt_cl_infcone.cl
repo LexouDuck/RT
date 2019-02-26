@@ -1,11 +1,3 @@
-static inline float		rt_cl_float3_yneg_dot
-(							float3 v1, 
-							float3 v2
-)
-{
-	return (v1.x * v2.x - v1.y * v2.y + v1.z * v2.z);
-}
-
 static t_intersection		rt_cl_infcone_intersect
 (
 							float *		res,
@@ -33,8 +25,8 @@ static t_intersection		rt_cl_infcone_intersect
 		*res = roots.x;
 		return (INTER_OUTSIDE);
 	}
-	if (roots.x > ray.t && roots.y > ray.t)
-		return (INTER_OUTSIDE);
+//	if (roots.x > ray.t && roots.y > ray.t)
+//		return (INTER_OUTSIDE);
 	if ((ray.dir.y * roots.x + ray.pos.y) *
 		(ray.dir.y * roots.y + ray.pos.y) >= 0.)
 	{
@@ -52,5 +44,5 @@ static float3			rt_cl_infcone_get_normal
 						float3 hitpos
 )
 {
-	return (hitpos);
+	return ((float3)(hitpos.x, 0, hitpos.y));
 }

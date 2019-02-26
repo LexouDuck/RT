@@ -139,12 +139,14 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 		normal = rt_cl_cylinder_get_normal(hitpos);
 	else if (obj->type == infcylinder)
 		normal = rt_cl_infcylinder_get_normal(hitpos);
-	//else if (obj->type == infcone)
-	//	normal = rt_cl_infcone_get_normal(hitpos);
+	else if (obj->type == infcone)
+		normal = rt_cl_infcone_get_normal(hitpos);
 	else if (obj->type == cube)
 		normal = rt_cl_cube_get_normal(hitpos);
 	else if (obj->type == paraboloid)
 		normal = rt_cl_paraboloid_get_normal(hitpos);
+	else if (obj->type == paraboloid)
+		normal = rt_cl_hyperboloid_get_normal(hitpos);
 	else
 		normal = rt_cl_sphere_get_normal(hitpos);
 	normal = normalize(rt_cl_apply_linear_matrix(obj->n_to_w, normal)) * ray.inter_type; //sphere formula, normal == hitpos
@@ -280,7 +282,8 @@ __kernel void			rt_cl_render
 	debug_print_camera(&(scene->camera));
 }*/
 	rt_cl_rand(&random_seeds);
-	float3 vcolor3 = (float3)(255.) * rt_cl_get_pixel_color_from_mc_sampling(scene, &random_seeds);//rt_cl_f3rand_neg1half_to_pos1half(random_seed) * (float3)(255.);//
+	float3 vcolor3 = rt_cl_get_pixel_color_from_mc_sampling(scene, &random_seeds);//rt_cl_f3rand_neg1half_to_pos1half(random_seed) * (float3)(255.);//
+	vcolor3 = (float3)(255.) * fmin(vcolor3, (float3)(1.));
 //	printf((__constant char *)"kernel %10g %10g %10g\n", vcolor3.x, vcolor3.y, vcolor3.z);
 	uint3 color3 = (uint3)(floor(vcolor3.x), floor(vcolor3.y), floor(vcolor3.z));
 //	printf((__constant char *)"kernel %u %u %u\n", color3.x, color3.y, color3.z);

@@ -139,12 +139,14 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 		normal = rt_cl_cylinder_get_normal(hitpos);
 	else if (obj->type == infcylinder)
 		normal = rt_cl_infcylinder_get_normal(hitpos);
-	//else if (obj->type == infcone)
-	//	normal = rt_cl_infcone_get_normal(hitpos);
+	else if (obj->type == infcone)
+		normal = rt_cl_infcone_get_normal(hitpos);
 	else if (obj->type == cube)
 		normal = rt_cl_cube_get_normal(hitpos);
 	else if (obj->type == paraboloid)
 		normal = rt_cl_paraboloid_get_normal(hitpos);
+	else if (obj->type == paraboloid)
+		normal = rt_cl_hyperboloid_get_normal(hitpos);
 	else
 		normal = rt_cl_sphere_get_normal(hitpos);
 	normal = normalize(rt_cl_apply_linear_matrix(obj->n_to_w, normal)) * ray.inter_type; //sphere formula, normal == hitpos

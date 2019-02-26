@@ -48,8 +48,7 @@ static t_intersection		rt_cl_hyperboloid_intersect
 }
 
 
-
-static float3			rt_cl_herperboloid_get_normal
+static float3			rt_cl_hyperboloid_get_normal
 (
 						float3 hitpos
 )

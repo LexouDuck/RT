@@ -56,7 +56,7 @@ typedef struct	s_input
 /*
 **	event.c
 */
-t_bool	event_checkevents();
+void	event_checkevents();
 /*
 **	event_window.c
 */

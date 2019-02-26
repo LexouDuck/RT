@@ -75,7 +75,7 @@ static int	main_loop()
 			SDL_Delay(1);
 		frame_wait = SDL_GetTicks() + FRAME_MS;
 		++rt.sdl.current_frame;
-		rt.sdl.loop = event_checkevents();
+		event_checkevents();
 		update_window();
 	}
 	config_save();

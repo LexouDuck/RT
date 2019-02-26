@@ -280,7 +280,8 @@ __kernel void			rt_cl_render
 	debug_print_camera(&(scene->camera));
 }*/
 	rt_cl_rand(&random_seeds);
-	float3 vcolor3 = (float3)(255.) * rt_cl_get_pixel_color_from_mc_sampling(scene, &random_seeds);//rt_cl_f3rand_neg1half_to_pos1half(random_seed) * (float3)(255.);//
+	float3 vcolor3 = rt_cl_get_pixel_color_from_mc_sampling(scene, &random_seeds);//rt_cl_f3rand_neg1half_to_pos1half(random_seed) * (float3)(255.);//
+	vcolor3 = (float3)(255.) * fmin(vcolor3, (float3)(1.));
 //	printf((__constant char *)"kernel %10g %10g %10g\n", vcolor3.x, vcolor3.y, vcolor3.z);
 	uint3 color3 = (uint3)(floor(vcolor3.x), floor(vcolor3.y), floor(vcolor3.z));
 //	printf((__constant char *)"kernel %u %u %u\n", color3.x, color3.y, color3.z);

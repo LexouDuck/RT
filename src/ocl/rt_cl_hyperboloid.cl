@@ -1,11 +1,3 @@
-static inline float		float3_yneg_dot
-(							float3 v1, 
-							float3 v2
-)
-{
-	return (v1.x * v2.x - v1.y * v2.y + v1.z * v2.z);
-}
-
 static t_intersection		rt_cl_hyperboloid_intersect
 (
 							float *		res,
@@ -15,9 +7,9 @@ static t_intersection		rt_cl_hyperboloid_intersect
 	float3 		quadpoly;
 	float2		roots;
 
-	quadpoly.x = float3_yneg_dot(ray.dir, ray.dir);
-	quadpoly.y = 2. * float3_yneg_dot(ray.dir, ray.pos);
-	quadpoly.z = float3_yneg_dot(ray.pos, ray.pos) - 1.;
+	quadpoly.x = rt_cl_float3_yneg_dot(ray.dir, ray.dir);
+	quadpoly.y = 2. * rt_cl_float3_yneg_dot(ray.dir, ray.pos);
+	quadpoly.z = rt_cl_float3_yneg_dot(ray.pos, ray.pos) - 1.;
 	if(!(rt_cl_get_realroots_quadpoly(&roots, quadpoly)))
 		return (INTER_NONE);
 	if (roots.x <= 0. && roots.y <= 0.)
@@ -48,10 +40,11 @@ static t_intersection		rt_cl_hyperboloid_intersect
 }
 
 
+
 static float3			rt_cl_hyperboloid_get_normal
 (
 						float3 hitpos
 )
 {
-	return (hitpos);
+	return ((float3)(hitpos.x, 0, hitpos.y));
 }

@@ -23,7 +23,7 @@ void	ui_leave_control_numberbox(t_textinput *textinput)
 {
 	cl_float	*value;
 
-	if (textinput->value)
+	if (textinput->value && rt.ui.current_textinput.value_changed)
 	{
 		value = (cl_float *)textinput->value;
 		*value = textinput->input ? ft_str_to_f32(textinput->input) : 0;

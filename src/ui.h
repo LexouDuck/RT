@@ -191,6 +191,7 @@ void		ui_menu_view_orthogonal();
 /*
 **	ui_render.c
 */
+void	ui_render_prompt();
 void	ui_render_objects();
 void	ui_render_menubar();
 void	ui_render_dropdown(t_menu *dropdown);
@@ -220,11 +221,18 @@ void	ui_render_rect(SDL_Rect rect, t_bool filled);
 
 /*
 **	ui_control_numberbox.c
-**	ui_control_colorbox.c
-**	ui_control_textbox.c
 */
 void	ui_mouse_control_numberbox(t_textinput *textinput, cl_float *value, int x, int y);
 void	ui_leave_control_numberbox(t_textinput *textinput);
 void	ui_render_control_numberbox(int x, int y, cl_float *value);
+/*
+**	ui_control_textbox.c
+*/
+void	ui_leave_control_textbox(t_textinput *textinput);
+void	ui_mouse_control_textbox(t_textinput *textinput, char *value, int x, int y);
+void	ui_render_control_textbox(int x, int y, char *value);
+/*
+**	ui_control_colorbox.c
+*/
 
 #endif

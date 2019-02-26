@@ -157,8 +157,9 @@ void	ui_render_prompt()
 		rt.ui.current_prompt.rect.x + 2, rt.ui.current_prompt.rect.y + 0, TRUE);
 	ui_render_text(rt.ui.current_prompt.description,
 		rt.ui.current_prompt.rect.x + 2, rt.ui.current_prompt.rect.y + 2, FALSE);
-	//textbox.x = 
-	ui_render_rect(rt.ui.current_prompt.rect, FALSE);
+
+	ui_render_control_textbox(2, 8, rt.ui.current_textinput.value);
+	//ui_render_rect(rt.ui.current_textinput, FALSE);
 }
 
 void		ui_render_caminfo(t_camera *camera)

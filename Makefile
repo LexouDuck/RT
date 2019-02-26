@@ -124,6 +124,7 @@ SRCS	= 	main.c				\
 			ui_menu_view.c		\
 			ui_scrollbar.c		\
 			ui_control_numberbox.c	\
+			ui_control_textbox.c	\
 			ui_render_util.c	\
 			ui_render.c			\
 			camera.c			\

@@ -30,7 +30,10 @@ static void	update_window()
 			"Error during update_window() -> Screen clear: ", TRUE);
 
 	// display the UI
-	ui_render_objects();
+	if (rt.ui.current_prompt.name)
+		ui_render_prompt();
+	else
+		ui_render_objects();
 	ui_render_menubar();
 	if (rt.ui.menubar.selection != -1)
 		ui_render_dropdown(&rt.ui.dropdowns[rt.ui.menubar.selection]);

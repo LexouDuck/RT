@@ -239,6 +239,7 @@ void	ui_render_rect(SDL_Rect rect, t_bool filled);
 /*
 **	ui_control_numberbox.c
 */
+void	ui_keypress_control_numberbox(t_textinput *textinput, t_bool up);
 void	ui_mouse_control_numberbox(t_textinput *textinput, cl_float *value, int x, int y);
 void	ui_leave_control_numberbox(t_textinput *textinput);
 void	ui_render_control_numberbox(int x, int y, cl_float *value);

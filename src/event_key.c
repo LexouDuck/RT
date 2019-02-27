@@ -54,6 +54,12 @@ void	event_check_keydown(SDL_Event *event)
 		}
 	}
 
+	if (event->key.keysym.sym == SDLK_UP || event->key.keysym.sym == SDLK_DOWN)
+	{
+		if (rt.ui.current_textinput.type == texttype_number_float)
+			ui_keypress_control_numberbox(&rt.ui.current_textinput, event->key.keysym.sym == SDLK_UP);
+	}
+
 	// set modifier key flags to be on
 	if (event->key.keysym.sym == SDLK_LALT)
 		rt.input.keys |= KEY_ALT_L;

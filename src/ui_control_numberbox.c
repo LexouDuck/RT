@@ -42,6 +42,24 @@ void	ui_leave_control_numberbox(t_textinput *textinput)
 	}
 }
 
+void	ui_keypress_control_numberbox(t_textinput *textinput, t_bool up)
+{
+	cl_float *value;
+
+	value = (cl_float *)textinput->value;
+	if (up)
+		*value += 1.;
+	else
+		*value -= 1.0;
+	rt.must_render = TRUE;
+	ui_leave_control_numberbox(textinput);
+			textinput->type = texttype_number_float;
+			textinput->input = ft_f32_to_str(*value, 4);
+			textinput->value = (void *)value;
+			rt.ui.current_textinput.value_changed = FALSE;
+			SDL_StartTextInput();
+}
+
 void	ui_mouse_control_numberbox(t_textinput *textinput, cl_float *value, int x, int y)
 {
 	static SDL_Rect	rect = { 0, 0, 9 * TILE, 3 * TILE };
@@ -55,12 +73,12 @@ void	ui_mouse_control_numberbox(t_textinput *textinput, cl_float *value, int x, 
 		button.y = rect.y;
 		if (SDL_PointInRect(&rt.input.mouse, &button))
 		{
-			*value += 1.0;
+			*value += 0.500;
 			rt.must_render = TRUE;
 		}
 		else if ((button.y += 2 * TILE) && SDL_PointInRect(&rt.input.mouse, &button))
 		{
-			*value -= 1.0;
+			*value -= 0.500;
 			rt.must_render = TRUE;
 		}
 		else

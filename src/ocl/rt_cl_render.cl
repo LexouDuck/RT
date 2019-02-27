@@ -158,8 +158,6 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 				t_ray		new_ray;
 				float3		hitpos;
 				float3		normal;
-// HUGO
-				float3		random_dir;
 
 	hitpos = ray.pos + ((float3)ray.t) * ray.dir;
 	if (obj->type == sphere)
@@ -244,8 +242,8 @@ static t_ray			rt_cl_create_camray
 	//	Box muller, anti-aliasing
 	seed.x = rt_cl_frand_0_to_1(random_seeds) / 2;
 	seed.y = rt_cl_frand_0_to_1(random_seeds) / 2;
-	anti_aliasing.x = sqrt(-2 * log((float)(seed.x))) * cos(2 * M_PI * seed.y);
-	anti_aliasing.y = sqrt(-2 * log((float)(seed.x))) * sin(2 * M_PI * seed.y);
+	anti_aliasing.x = sqrt(-2 * log((float)(seed.x))) * cos((float)(TAU * seed.y));
+	anti_aliasing.y = sqrt(-2 * log((float)(seed.x))) * sin((float)(TAU * seed.y));
 	camray.dir = (float3)(x_id - width / 2 + anti_aliasing.x, y_id - height / 2 + anti_aliasing.y, fov_val);
 	camray.dir = normalize(camray.dir);
 

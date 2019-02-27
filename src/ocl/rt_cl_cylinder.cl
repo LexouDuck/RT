@@ -1,17 +1,3 @@
-static float				rt_cl_float3_ynull_dot
-(
-							float3 v1,
-							float3 v2
-)
-{
-	/*
-		v1.y = v2.y = 0;
-		return (dot(v1, v2));
-	*/
-	return (v1.x * v2.x + v1.z * v2.z);
-}
-
-
 static t_intersection		rt_cl_infcylinder_intersect
 (
 							float *		res,
@@ -53,36 +39,9 @@ static float3				rt_cl_infcylinder_get_normal
 {
 	return ((float3)(hitpos.x, 0, hitpos.y));
 }
-/*
-t_bool						intersect_ray_cylinder(t_ray *objray)
-{
-	t_ray		tmp_ray;
-	t_float		tmp;
-	t_bool		is_in_hrz_area;
-	t_bool		is_in_vrt_area;
 
-	if ((is_in_hrz_area = (-0.5 <= objray->pos[1] && objray->pos[1] <= 0.5)) &&
-		(is_in_vrt_area = (vec3_ynull_dot(objray->pos, objray->pos) <= 1.)))
-		return (FALSE);
-	tmp = 1. / 0.;
-	tmp_ray = *objray;
-	if (intersect_ray_infcylinder(&tmp_ray))
-	{
-		if (ft_fabs(tmp_ray.pos[1] + tmp_ray.t * tmp_ray.dir[1]) < 0.5)
-			tmp = tmp_ray.t;
-	}
-	tmp_ray.t = objray->t;
-	tmp_ray.pos[1] -= 0.5;
-	if (!is_in_hrz_area && intersect_ray_disk(&tmp_ray))
-		tmp = ft_fmin(tmp, tmp_ray.t);
-	tmp_ray.t = objray->t;
-	tmp_ray.pos[1] += 1.;
-	if (!is_in_hrz_area && intersect_ray_disk(&tmp_ray))
-		tmp = ft_fmin(tmp, tmp_ray.t);
-	objray->t = ft_fmin(tmp, objray->t);
-	return (objray->t == tmp);
-}
-*/
+
+
 /*
 ** This function should return TRUE iff objray.t has been updated; ie, iff
 **	there is an intersection, and ray.origin is not located within the cylinder.

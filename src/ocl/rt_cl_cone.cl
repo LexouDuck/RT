@@ -27,13 +27,18 @@ static t_intersection		rt_cl_infcone_hole_view_intersect
 		*res = roots.x;
 		return (ray_hrz_orient ? INTER_INSIDE : INTER_OUTSIDE);
 	}
-//	if (roots.x > ray.t && roots.y > ray.t)
-//		return (INTER_OUTSIDE);
-
 	*res = (ray_hrz_orient) ? fmin(roots.x, roots.y) :
 							  fmax(roots.x, roots.y) ;
 	return (ray_hrz_orient ? INTER_OUTSIDE : INTER_INSIDE);
 }
+
+/*
+** The cone primitive is an infcone from 0. to 1. on the y axis, and a circle
+** of radius one, in the affine plane "xz + (0, 1, 0)" and centered in (0,1,0).
+**
+** This means the position of the cone in world space should coincide with
+** the point of the cone.
+*/
 
 static t_intersection		rt_cl_cone_intersect
 (
@@ -71,6 +76,11 @@ static t_intersection		rt_cl_cone_intersect
 	inter = is_in_hrz_area && is_in_infcone ? INTER_INSIDE : inter;
 	return (inter);
 }
+
+/*
+** Notice that if one reflects hitpos over the xz-plane, one obtains a scaled
+**	version of the normal at hitpos.
+*/
 
 static float3		rt_cl_cone_get_normal
 (

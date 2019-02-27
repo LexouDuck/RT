@@ -5,12 +5,14 @@ INFCONE #FFFF11
 (4, 4, 1)
 {0, 0, 1}
 [2, 20, 2]
-BG #888888
+"Infcone"
 
-SPHERE #FFFFFF	(3, 20, 3)	{0, 0, 0}	[0, 0, 0]	light:(1, 1, 1)
 
-SPHERE #FFFFFF	(3,-10, 3)	{0, 0, 0}	[0, 0, 0]	light:(1, 1, 1)
+SPHERE #FFFFFF	(-19, 19, 0)	{0, 0, 0}	[1, 1, 1] "Magenta"	light:(1, 0.1, 1)
 
+SPHERE #FFFFFF	(33, -13, -1)	{0, 0, 0}	[1, 1, 1] "Blue"	light:(0.1, 1, 1) 
+SPHERE #FFFFFF	(30, -13, 1)	{0, 0, 0}	[1, 1, 1] "Pink"	light:(1, 0.1, 1) 
+SPHERE #FFFFFF	(32, -13, 3)	{0, 0, 0}	[1, 1, 1] "Yellow"	light:(1, 1, 0.1) 
 
 
 CUBE #FF0000	(-9, 0, 0)	{0, 0, 0}	[1, 6, 10]	"Brick Side Left"

@@ -142,6 +142,7 @@ SRCS_CL	=	rt_cl_scene.cl.h		\
 			rt_cl_primitives_2d.cl	\
 			rt_cl_cylinder.cl		\
 			rt_cl_infcone.cl 		\
+			rt_cl_cone.cl 			\
 			rt_cl_cube.cl			\
 			rt_cl_paraboloid.cl		\
 			rt_cl_hyperboloid.cl 	\

@@ -122,6 +122,7 @@ SRCS	= 	main.c				\
 			ui_menu_file.c		\
 			ui_menu_edit.c		\
 			ui_menu_view.c		\
+			ui_prompt.c			\
 			ui_scrollbar.c		\
 			ui_control_numberbox.c	\
 			ui_control_textbox.c	\

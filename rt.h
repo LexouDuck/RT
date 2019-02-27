@@ -124,6 +124,7 @@ void		ui_menu_view_orthogonal();
 */
 int			rt_file_open(char *filepath);
 int			rt_file_import(char *filepath);
+int			rt_file_save(char *filepath);
 /*
 **	rt_open.c
 **	rt_open_util.c

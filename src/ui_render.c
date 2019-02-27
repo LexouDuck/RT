@@ -152,6 +152,8 @@ void	ui_render_dropdown(t_menu *dropdown)
 
 void	ui_render_prompt()
 {
+	SDL_Rect button;
+
 	ui_render_rect(rt.ui.current_prompt.rect, FALSE);
 	ui_render_text(rt.ui.current_prompt.name,
 		rt.ui.current_prompt.rect.x + 2, rt.ui.current_prompt.rect.y + 0, TRUE);
@@ -159,7 +161,13 @@ void	ui_render_prompt()
 		rt.ui.current_prompt.rect.x + 2, rt.ui.current_prompt.rect.y + 2, FALSE);
 
 	ui_render_control_textbox(2, 8, rt.ui.current_textinput.value);
-	//ui_render_rect(rt.ui.current_textinput, FALSE);
+	
+	button = PROMPT_BUTTON_OK;
+	ui_render_rect(button, SDL_PointInRect(&rt.input.mouse_tile, &button));
+	ui_render_text("OK", button.x + 3, button.y + 1, TRUE);
+	button = PROMPT_BUTTON_CANCEL;
+	ui_render_rect(button, SDL_PointInRect(&rt.input.mouse_tile, &button));
+	ui_render_text("CANCEL", button.x + 1, button.y + 1, TRUE);
 }
 
 void		ui_render_caminfo(t_camera *camera)

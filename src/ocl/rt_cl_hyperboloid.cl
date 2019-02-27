@@ -46,5 +46,5 @@ static float3			rt_cl_hyperboloid_get_normal
 						float3 hitpos
 )
 {
-	return ((float3)(hitpos.x, 0, hitpos.y));
+	return (hitpos);
 }

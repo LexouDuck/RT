@@ -4,8 +4,9 @@ static t_intersection		rt_cl_infcone_intersect
 							t_ray		ray
 )
 {
-	float3 		quadpoly;
-	float2		roots;
+	float3 			quadpoly;
+	float2			roots;
+	bool			ray_hrz_orient;
 
 	quadpoly.x = rt_cl_float3_yneg_dot(ray.dir, ray.dir);
 	quadpoly.y = 2. * rt_cl_float3_yneg_dot(ray.dir, ray.pos);
@@ -14,29 +15,20 @@ static t_intersection		rt_cl_infcone_intersect
 		return (INTER_NONE);
 	if (roots.x <= 0. && roots.y <= 0.)
 		return (INTER_NONE);
+	ray_hrz_orient = (ray.dir.y * roots.x + ray.pos.y) *
+					(ray.dir.y * roots.y + ray.pos.y) >= 0.;
 	if (roots.x <= 0.)
 	{
 		*res = roots.y;
-		return (INTER_OUTSIDE);
-		
+		return (ray_hrz_orient ? INTER_INSIDE : INTER_OUTSIDE);
 	}
 	else if (roots.y <= 0.)
 	{
 		*res = roots.x;
-		return (INTER_OUTSIDE);
+		return (ray_hrz_orient ? INTER_INSIDE : INTER_OUTSIDE);
 	}
-//	if (roots.x > ray.t && roots.y > ray.t)
-//		return (INTER_OUTSIDE);
-	if ((ray.dir.y * roots.x + ray.pos.y) *
-		(ray.dir.y * roots.y + ray.pos.y) >= 0.)
-	{
-		*res = fmin(roots.x, roots.y);
-		return(INTER_OUTSIDE);
-	
-	}
-	else
-		*res = fmax(roots.x, roots.y);
-	return (INTER_INSIDE);
+	*res = fmin(roots.x, roots.y);
+	return (ray_hrz_orient ? INTER_OUTSIDE : INTER_INSIDE);
 }
 
 static float3			rt_cl_infcone_get_normal
@@ -44,5 +36,10 @@ static float3			rt_cl_infcone_get_normal
 						float3 hitpos
 )
 {
-	return ((float3)(hitpos.x, 0, hitpos.y));
+	float3 	normal;
+
+	normal = (float3)(hitpos.x, - hitpos.y, hitpos.z);	
+	normal = normalize(normal);
+
+	return (normal);
 }

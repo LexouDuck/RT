@@ -86,7 +86,7 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 	object.light.y = fmax(0., fmin(object.light.y, 1.));
 	object.light.z = fmax(0., fmin(object.light.z, 1.));
 	if (object.light.x + object.light.y + object.light.z > 0.)
-		object.material = lightsrc;
+		object.material = lightsource;
 	else
 		object.material = diffuse;
 	object.rgb.x = ft_color_argb32_get_r(object.color) / 255.;

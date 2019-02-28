@@ -24,45 +24,6 @@
 # define CEIL_SQRT_MOD	46341
 # define OFFSET			2835
 
-
-#if 0
-static uint		rt_cl_rand_bit_shuffle
-(
-							uint	n
-)
-{
-//	uint	offset = n % 32;
-//	return ((n << (32 - offset)) ^ (n >> offset));
-
-	return ((n << 20) ^ (n >> 12));
-}
-
-static uint		rt_cl_rand_bit_entropy
-(
-						uint	seed0,
-						uint	seed1
-)
-{
-
-	/* hash the seeds using bitwise AND operations and bitshifts */
-	seed0 = 36969 * ((seed0) & 0xFFFF) + ((seed0) >> 16);  
-	seed1 = 18000 * ((seed1) & 0xFFFF) + ((seed1) >> 16);
-
-	uint tmp = ((seed0) << 16) + (seed1);
-
-	/* use union struct to convert int to float */
-	union
-	{
-		float 			f;
-		uint 			u;
-	} 					res;
-
-//	res.u = rt_cl_rand_bit_shuffle((tmp & 0x007fffff) | 0x40000000);  /* bitwise AND, bitwise OR */
-	res.f = (res.f - 2.7) * 0.5;
-	return (res.u);
-}
-#endif
-
 static uint		rt_cl_rand
 (
 							uint2 *		rand_s
@@ -102,13 +63,12 @@ static uint		rt_cl_rand
 
 static uint			rt_cl_rand_0_to_pow2n
 (
-						 	uint2 *		random_seeds,
-							uint		n
+						 	uint2 *			random_seeds,
+							uint			n
 )
 {
 	return (rt_cl_rand(random_seeds) & ((0x1 << n) - 1));
 }
-
 
 static uint			rt_cl_rand_0_to_n
 (
@@ -265,6 +225,39 @@ static float3			rt_cl_rand_dir_coshemi
 	seed.y = rt_cl_frand_0_to_1(random_seeds);
 	tmp = sqrt((float)(1. - seed.y));
 	randdir = (float3)(cos(seed.x) * tmp, sin(seed.x) * tmp, sqrt(seed.y));
+	vtan1 = rt_cl_f3rand_neg1half_to_pos1half(random_seeds);
+	vtan1 = cross(axis, vtan1);
+	vtan1 = normalize(vtan1);
+	vtan2 = cross(vtan1, axis);
+	lin_mat.s012 = vtan1;
+	lin_mat.s456 = vtan2;
+	lin_mat.s89A = axis;
+	randdir = rt_cl_apply_linear_matrix(lin_mat, randdir);
+//	randdir = normalize(randdir); //useless because of orthonormality of lin_mat
+	return (randdir);
+}
+
+static float3			rt_cl_rand_dir_coslobe
+(
+							uint2 *			random_seeds,
+							float3			axis,
+							uint			phong
+)
+{
+	float3		randdir;
+	float2		seed;
+	float		tmp;
+	float3		vtan1;
+	float3		vtan2;
+	float16		lin_mat;
+	float		phongexp;
+
+	phongexp = 1. / (phong + 1);
+	seed.x = TAU * rt_cl_frand_0_to_1(random_seeds);
+	seed.y = rt_cl_frand_0_to_1(random_seeds);
+	//TODO can be done with single call to powr, (e^2x) = e^x^2 = e^x * e^x
+	tmp = sqrt((float)(1. - powr(seed.y, 2.f * phongexp)));
+	randdir = (float3)(cos(seed.x) * tmp, sin(seed.x) * tmp, powr(seed.y, phongexp));
 	vtan1 = rt_cl_f3rand_neg1half_to_pos1half(random_seeds);
 	vtan1 = cross(axis, vtan1);
 	vtan1 = normalize(vtan1);

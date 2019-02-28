@@ -149,7 +149,6 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 		normal = rt_cl_sphere_get_normal(hitpos);
 	normal = normalize(rt_cl_apply_linear_matrix(obj->n_to_w, normal)) * ray.inter_type; //sphere formula, normal == hitpos
 	new_ray.pos = rt_cl_apply_homogeneous_matrix(obj->o_to_w, hitpos) + normal * (float3)(EPS);
-	new_ray.dir = rt_cl_rand_dir_coshemi(random_seeds, normal);
 	new_ray.hit_obj_id = -1;
 	new_ray.inter_type = INTER_NONE;
 	new_ray.t = scene->render_dist;
@@ -164,16 +163,40 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 	if (obj->material == lightsrc)
 	{
 		new_ray.complete = true;
-		new_ray.lum_mask = ray.lum_mask;
 		new_ray.lum_acc = ray.lum_acc + ray.lum_mask * obj->light;//obj->rgb;
+
+		new_ray.lum_mask = ray.lum_mask;
 	}
-	else
+	else if (obj->material == diffuse)
 	{
 		new_ray.complete = false;
-		new_ray.lum_mask = ray.lum_mask * obj->rgb * (float3)(dot(normal, new_ray.dir));
-		new_ray.lum_acc = ray.lum_acc;// + ray.lum_mask;
-	}
+		new_ray.lum_acc = ray.lum_acc;
 
+		new_ray.dir = rt_cl_rand_dir_coshemi(random_seeds, normal);
+		new_ray.lum_mask = ray.lum_mask * obj->rgb * (float3)(dot(normal, new_ray.dir));
+	}
+	else if (obj->material == glassy)
+	{
+		new_ray.complete = false;
+		new_ray.lum_acc = ray.lum_acc;
+
+		new_ray.lum_mask = (ray.inter_type == INTER_INSIDE) ?
+			ray.lum_mask * obj->rgb :
+			ray.lum_mask;
+		new_ray.dir = rt_cl_get_transmit_or_reflect(random_seeds, ray.dir, ray.inter_type == INTER_INSIDE, normal, 1.25);
+		//	Position correction for transmission
+		new_ray.pos = mad(-2 * EPS, normal, new_ray.pos);
+	}
+	else if (obj->material == glossy)
+	{
+		new_ray.complete = false;
+		new_ray.lum_acc = ray.lum_acc;
+
+		float3 reflect = rt_cl_get_reflect(ray.dir, normal);
+		new_ray.dir = rt_cl_rand_dir_coslobe(random_seeds, reflect, 7);
+
+		new_ray.lum_mask = ray.lum_mask * obj->rgb * (float3)(dot(normal, reflect));// * obj->rgb;//*dot(new_dir, reflect) ?
+	}
 	return (new_ray);
 }
 
@@ -209,6 +232,40 @@ static t_ray			rt_cl_create_camray
 
 	return (camray);
 }
+
+#if 0
+static t_ray			rt_cl_create_camray
+(
+					__constant		t_scene	*	scene,
+									uint2 *		random_seeds
+)
+{
+	int const			x_id = get_global_id(0);
+	int const			y_id = get_global_id(1);
+	int const			width = get_global_size(0);
+	int const			height = get_global_size(1);
+	float16	const		cam_mat44 = scene->camera.c_to_w;
+	float const			fov_val = -width / (2 * tan(scene->camera.hrz_fov));
+	t_ray				camray;
+
+	camray.lum_acc = (float3)(0.);
+	camray.lum_mask = (float3)(1.);
+	camray.t = scene->render_dist;
+	camray.complete = false;
+	camray.hit_obj_id = -1;
+	camray.inter_type = INTER_NONE;
+//	camray.pos = (float3)(0., 0., 0.);
+	camray.pos = (float3)(rt_cl_frand_neg1half_to_pos1half(random_seeds), rt_cl_frand_neg1half_to_pos1half(random_seeds), 0.);
+	camray.pos *= (float3)(scene->camera.aperture);
+	camray.pos = rt_cl_apply_homogeneous_matrix(cam_mat44, camray.pos);
+	camray.dir = (float3)(x_id - width / 2, y_id - height / 2, fov_val);
+	camray.dir += (float3)(rt_cl_frand_neg1half_to_pos1half(random_seeds) * 0.1, rt_cl_frand_neg1half_to_pos1half(random_seeds) * 0.1, 0.); //TODO, replace 0.1 by appropriate value; add and fix for depth of field
+	camray.dir = rt_cl_apply_linear_matrix(cam_mat44, camray.dir);
+	camray.dir = normalize(camray.dir);
+
+	return (camray);
+}
+#endif
 
 //For some reason a statement with || doesn't EVER get read properly as a truth statement so I switched conditions around 
 static float3			rt_cl_get_pixel_color_from_mc_sampling

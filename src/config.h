@@ -107,6 +107,6 @@ typedef struct	s_iniparser
 **	config_ini.c
 */
 
-void			INI_ReadFile(int fd);
+void			ini_read_file(int fd);
 
 #endif

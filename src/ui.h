@@ -130,7 +130,6 @@ typedef enum	e_texttype
 **	otherwise, the 'type' will inform how to convert the
 **	contents of 'input' to write it into 'value'
 */
-
 typedef struct	s_textinput
 {
 // the type of keyboard input box selected
@@ -147,7 +146,6 @@ typedef struct	s_textinput
 **	This struct holds the current UI pop-up dialog prompt
 **	if 'textbox' is 0 (texttype_none), then there currently is no prompt open
 */
-
 typedef struct	s_prompt
 {
 	char		*text;
@@ -164,7 +162,6 @@ typedef struct	s_prompt
 /*
 **	This struct holds all info pertaining to the UI sidebar
 */
-
 typedef struct	s_ui
 {
 	t_u8 const	*chr;
@@ -182,7 +179,6 @@ typedef struct	s_ui
 /*
 **	ui.c
 */
-
 int				ui_init();
 SDL_Palette		*ui_set_palette(SDL_Surface *surface, t_u32 const *palette);
 SDL_Surface		*ui_set_tileset(t_u8 const *chr, size_t length);
@@ -190,7 +186,6 @@ SDL_Surface		*ui_set_tileset(t_u8 const *chr, size_t length);
 /*
 **	ui_menu_file.c
 */
-
 void			ui_menu_file_open();
 void			ui_menu_file_import();
 void			ui_menu_file_save();
@@ -199,7 +194,6 @@ void			ui_menu_file_saveas();
 /*
 **	ui_edit_file.c
 */
-
 void			ui_menu_edit_undo();
 void			ui_menu_edit_redo();
 void			ui_menu_edit_cut();
@@ -209,13 +203,11 @@ void			ui_menu_edit_paste();
 /*
 **	ui_view_file.c
 */
-
 void			ui_menu_view_orthogonal();
 
 /*
 **	ui_render.c
 */
-
 void			ui_render_prompt();
 void			ui_render_objects();
 void			ui_render_menubar();
@@ -226,7 +218,6 @@ void			ui_render_scrollbar(t_scrollbar *scrollbar);
 /*
 **	ui_mouse.c
 */
-
 void			ui_mouse_menubar();
 void			ui_mouse_dropdown(t_menu *dropdown);
 void			ui_mouse_objectlist();
@@ -238,7 +229,6 @@ void			ui_scrollbar_setscroll(t_scrollbar *scrollbar, t_s32 scroll);
 /*
 **	ui_render_util.c
 */
-
 void			ui_render_fill(t_u8 tile_index,
 				SDL_Rect dest_region, t_bool transparent);
 void			ui_render_icon(t_u8 icon_index,
@@ -250,7 +240,6 @@ void			ui_render_rect(SDL_Rect rect, t_bool filled);
 /*
 **	ui_control_numberbox.c
 */
-
 void			ui_keypress_control_numberbox(t_textinput *textinput, t_bool up);
 void			ui_mouse_control_numberbox(t_textinput *textinput, cl_float *value, int x, int y);
 void			ui_leave_control_numberbox(t_textinput *textinput);
@@ -259,7 +248,6 @@ void			ui_render_control_numberbox(int x, int y, cl_float *value);
 /*
 **	ui_control_textbox.c
 */
-
 void			ui_leave_control_textbox(t_textinput *textinput);
 void			ui_mouse_control_textbox(t_textinput *textinput, char **value, int x, int y);
 void			ui_render_control_textbox(int x, int y, char *value);

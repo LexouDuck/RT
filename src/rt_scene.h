@@ -187,7 +187,6 @@ typedef struct		s_bbox
 ** All primitives are considered to be centered near the origin with default
 ** unit dimensions.
 */
-//INTERSECTIONS
 typedef enum		e_primitive
 {
 	none = 0,
@@ -213,18 +212,14 @@ typedef enum		e_primitive
 */
 typedef enum		e_material
 {
-// 	simply returns object->color
-	lightsource = 0,
+// 	emits light
+	light = 0,
 // 	linear to-dark shading
 	diffuse,
-// 		this material emits light
-// 	light,
-// 		returns a reflection ray color
-// 	mirror,
-// 		returns a blended color of a reflection ray and a refraction ray
-	glassy,
-// 		has a special "lighter" mode of specular hightlighting
-	glossy,
+// 	returns a blended color of a reflection ray and a refraction ray
+	transparent,
+// 	has a special "lighter" mode of specular hightlighting
+	specular,
 // 	skybox ?
 }					t_material;
 

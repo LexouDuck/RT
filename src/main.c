@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft_convert.h"
+
 #include "../assets.h"
 #include "../rt.h"
 #include "config.h"
@@ -83,6 +84,11 @@ static int	main_loop(void)
 		++rt.sdl.current_frame;
 		event_checkevents();
 		update_window();
+	}
+	if (rt.ui.current_textinput.input)
+	{
+		free(rt.ui.current_textinput.input);
+		rt.ui.current_textinput.input = NULL;
 	}
 	config_save();
 	config_free();

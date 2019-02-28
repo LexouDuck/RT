@@ -10,6 +10,7 @@ RECTANGLE #FFFFFF
 pos:(0, 0, -50)
 rot:{1.57079632679, 0, 0}
 scale:[100.0, 100.0, 100.0]
+material:transparent
 
 RECTANGLE #FFFFFF
 pos:(0, 50, 0)

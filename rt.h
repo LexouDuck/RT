@@ -76,16 +76,10 @@ typedef struct		t_rt
 	char			*filepath;
 	t_ui			ui;
 }					t_rt;
-
-t_rt				rt;
-
 /*
-**	init.c
+**	This is our global variable which stores everything.
 */
-int		init_sdl();
-int		init_window();
-int		init_window_display();
-void	init_scene();
+t_rt				rt;
 
 /*
 ** ************************************************************************** *|
@@ -100,6 +94,14 @@ typedef struct	s_rtparser
 	int			line;
 	int			current_object;
 }				t_rtparser;
+
+/*
+**	init.c
+*/
+int			init_sdl();
+int			init_window();
+int			init_window_display();
+void		init_scene();
 
 /*
 **	ui_menu_file.c
@@ -120,11 +122,18 @@ void		ui_menu_edit_paste();
 void		ui_menu_view_orthogonal();
 
 /*
+**	rt_get_str.c
+*/
+char		*rt_get_str_primitive(t_primitive primitive);
+char		*rt_get_str_material(t_material material);
+
+/*
 **	rt_file.c
 */
 int			rt_file_open(char *filepath);
 int			rt_file_import(char *filepath);
 int			rt_file_save(char *filepath);
+
 /*
 **	rt_open.c
 **	rt_open_util.c

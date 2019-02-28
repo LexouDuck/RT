@@ -11,8 +11,10 @@
 /* ************************************************************************** */
 
 #include <math.h>
+
 #include "libft_string.h"
 #include "libft_convert.h"
+
 #include "../rt.h"
 #include "../assets.h"
 #include "debug.h"
@@ -28,8 +30,10 @@ void	ui_leave_control_textbox(t_textinput *textinput)
 		rt.must_render = TRUE;
 	}
 	if (textinput->input)
+	{
 		free(textinput->input);
-	textinput->input = NULL;
+		textinput->input = NULL;
+	}
 	if (textinput->type)
 	{
 		textinput->type = texttype_none;

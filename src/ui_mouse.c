@@ -20,6 +20,7 @@ void	ui_mouse_objectlist_expandedproperties(t_object *object, t_s32 y)
 	cl_float3	*ptr;
 	t_u8		i;
 
+	y += 4;
 	ptr = &object->rgb;
 	i = 0;
 	while (i < OBJECT_PROPERTIES)

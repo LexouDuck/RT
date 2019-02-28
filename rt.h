@@ -135,11 +135,11 @@ char		*rt_read_file(t_rtparser *p);
 void		rt_output_readfile();
 void		rt_read_whitespace(t_rtparser *p);
 char		*rt_read_error(char expected, char *description, char instead);
-char		*rt_read_arg_color(t_rtparser *p, t_u32 *result);
-char		*rt_read_arg_number(t_rtparser *p, float *result);
-char		*rt_read_arg_vector(t_rtparser *p, cl_float3 *result);
-char		*rt_read_arg_light(t_rtparser *p, cl_float3 *result);
 char		*rt_read_arg_name(t_rtparser *p, char *result);
+char		*rt_read_arg_number(t_rtparser *p, float *result);
+char		*rt_read_arg_vector(t_rtparser *p, cl_float3 *result, char const* label);
+char		*rt_read_arg_color(t_rtparser *p, cl_float3 *result, char const* label);
+char		*rt_read_arg_material(t_rtparser *p, t_material *result, char const *label);
 
 /*
 ** ************************************************************************** *|

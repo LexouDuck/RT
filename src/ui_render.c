@@ -48,19 +48,17 @@ void	ui_render_expandedproperties(t_object *object, t_s32 y)
 {
 	char		*tmp;
 
+	ui_render_text("Material:", 1, y + 3, FALSE);
+	ui_render_text(ft_s8_to_str(object->material), 10, y + 3, FALSE);
 	if ((tmp = ft_u32_to_hex(object->color)))
 	{
-		ui_render_text("Color: #", 1, y + 2, FALSE);
-		ui_render_text(       tmp, 9, y + 2, FALSE);
+		ui_render_text("Color: #", 1, y + 6, FALSE);
+		ui_render_text(       tmp, 9, y + 6, FALSE);
 		free(tmp);
 	}
-	ui_render_control_numberbox( 1, y + 3, &object->rgb.x);
-	ui_render_control_numberbox(10, y + 3, &object->rgb.y);
-	ui_render_control_numberbox(19, y + 3, &object->rgb.z);
-	ui_render_text("Light:", 1, y + 6, FALSE);
-	ui_render_control_numberbox( 1, y + 7, &object->light.x);
-	ui_render_control_numberbox(10, y + 7, &object->light.y);
-	ui_render_control_numberbox(19, y + 7, &object->light.z);
+	ui_render_control_numberbox( 1, y + 7, &object->rgb.x);
+	ui_render_control_numberbox(10, y + 7, &object->rgb.y);
+	ui_render_control_numberbox(19, y + 7, &object->rgb.z);
 	ui_render_text("Pos:", 1, y + 10, FALSE);
 	ui_render_control_numberbox( 1, y + 11, &object->pos.x);
 	ui_render_control_numberbox(10, y + 11, &object->pos.y);

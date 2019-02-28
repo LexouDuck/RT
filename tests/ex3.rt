@@ -1,93 +1,93 @@
 BG #FFFFFF
 
 SPHERE #FFFFFF
-(9, 5, 10)
-{0, 0, 0}
-[0, 0, 0]
-light:(1, 1, 1)
+pos:(9, 5, 10)
+rot:{0, 0, 0}
+scale:[0, 0, 0]
+material:light
 
 SPHERE #FFFFFF
-(-9, 5, 10)
-{0, 0, 0}
-[0, 0, 0]
-light:(1, 1, 1)
+pos:(-9, 5, 10)
+rot:{0, 0, 0}
+scale:[0, 0, 0]
+material:light
 
 
 
-
-CUBE #DDAA4F
-(0, -1, 0)
-{0, 0, 0}
-[10, -1, 10] "floor"
 
 CUBE #444444
-(0, 11, 0)
-{0, 0, 0}
-[10, 2, 10] "ceiling"
+pos:(0, -1, 0)
+rot:{0, 0, 0}
+scale:[10, -1, 10] "floor"
+
+CUBE #444444
+pos:(0, 11, 0)
+rot:{0, 0, 0}
+scale:[10, 2, 10] "ceiling"
 
 CUBE #3388FF
-(0, 5, -10)
-{0, 0, 0}
-[10, 10, 2] "walls"
+pos:(0, 5, -10)
+rot:{0, 0, 0}
+scale:[10, 10, 2] "walls"
 
 
 SPHERE #FF0000
-(0, 2, 0)
-{0, 0, 0}
-[1, 1, 1]
+pos:(0, 2, 0)
+rot:{0, 0, 0}
+scale:[1, 1, 1]
 
 //pillar TL
 CYLINDER #AAAAAA
-(-6, 5, -6)
-{0, 0, 0}
-[1.5, 8, 1.5] "pillar TL"
+pos:(-6, 5, -6)
+rot:{0, 0, 0}
+scale:[1.5, 8, 1.5] "pillar TL"
 SPHERE #AAAAAA
-(-6, 0, -6)
-{0, 0, 0}
-[3, 3, 3] "pillar TL bot"
+pos:(-6, 0, -6)
+rot:{0, 0, 0}
+scale:[3, 3, 3] "pillar TL bot"
 SPHERE #AAAAAA
-(-6, 10, -6)
-{0, 0, 0}
-[3, 3, 3] "pillar TL top"
+pos:(-6, 10, -6)
+rot:{0, 0, 0}
+scale:[3, 3, 3] "pillar TL top"
 
 //pillar TR
 CYLINDER #AAAAAA
-(6, 5, -6)
-{0, 0, 0}
-[1.5, 8, 1.5] "pillar TR"
+pos:(6, 5, -6)
+rot:{0, 0, 0}
+scale:[1.5, 8, 1.5] "pillar TR"
 SPHERE #AAAAAA
-(6, 0, -6)
-{0, 0, 0}
-[3, 3, 3] "pillar TR bot"
+pos:(6, 0, -6)
+rot:{0, 0, 0}
+scale:[3, 3, 3] "pillar TR bot"
 SPHERE #AAAAAA
-(6, 10, -6)
-{0, 0, 0}
-[3, 3, 3] "pillar TR top"
+pos:(6, 10, -6)
+rot:{0, 0, 0}
+scale:[3, 3, 3] "pillar TR top"
 
 //pillar BL
 CYLINDER #AAAAAA
-(-6, 5, 6)
-{0, 0, 0}
-[1.5, 8, 1.5] "pillar BL"
+pos:(-6, 5, 6)
+rot:{0, 0, 0}
+scale:[1.5, 8, 1.5] "pillar BL"
 SPHERE #AAAAAA
-(-6, 0, 6)
-{0, 0, 0}
-[3, 3, 3] "pillar BL bot"
+pos:(-6, 0, 6)
+rot:{0, 0, 0}
+scale:[3, 3, 3] "pillar BL bot"
 SPHERE #AAAAAA
-(-6, 10, 6)
-{0, 0, 0}
-[3, 3, 3] "pillar BL top"
+pos:(-6, 10, 6)
+rot:{0, 0, 0}
+scale:[3, 3, 3] "pillar BL top"
 
 //pillar BR
 CYLINDER #AAAAAA
-(6, 5, 6)
-{0, 0, 0}
-[1.5, 8, 1.5] "pillar BR"
+pos:(6, 5, 6)
+rot:{0, 0, 0}
+scale:[1.5, 8, 1.5] "pillar BR"
 SPHERE #AAAAAA
-(6, 0, 6)
-{0, 0, 0}
-[3, 3, 3] "pillar BR bot"
+pos:(6, 0, 6)
+rot:{0, 0, 0}
+scale:[3, 3, 3] "pillar BR bot"
 SPHERE #AAAAAA
-(6, 10, 6)
-{0, 0, 0}
-[3, 3, 3] "pillar BR top"
+pos:(6, 10, 6)
+rot:{0, 0, 0}
+scale:[3, 3, 3] "pillar BR top"

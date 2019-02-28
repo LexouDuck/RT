@@ -49,13 +49,14 @@ typedef enum	e_cameramode
 	CAMERA_MODE_PAN,
 }				t_cameramode;
 
-/*
-typedef enum	e_camera_model
+
+typedef enum		e_camera_model
 {
+	CAMERA_MODEL_TMP,
 	CAMERA_MODEL_PINHOLE,
-	CAMERA_MODEL_FOCUS
-}				t_camera_model;
-*/
+	CAMERA_MODEL_FOCAL,
+	CAMERA_MODEL_ORTHOGRAPHIC
+}					t_camera_model;
 
 /*
 ** c_to_w.s012 is axis_x, .s456 is axis_y, .s89A is axis_z and .sCDE is world_pos
@@ -63,21 +64,23 @@ typedef enum	e_camera_model
 
 typedef struct	s_camera
 {
-	t_cameramode	mode;
-	float3			world_pos;
-	float3			anchor;
-	float3			relative_pos;
-	float			zoom;
-	float			lat;
-	float			lon;
-	float			tilt_angle;
-	float3			tilt_vector;
-	float			range_min;
-	float			range_max;
-	float			hrz_fov;
-	float			aperture;
-	float16			c_to_w;
-//	float16			w_to_c;
+	t_cameramode		mode;
+	float3				world_pos;
+	float3				anchor;
+	float3				relative_pos;
+	float				zoom;
+	float				lat;
+	float				lon;
+	float				tilt_angle;
+	float3				tilt_vector;
+	float				range_min;
+	float				range_max;
+	float				hrz_fov;
+	float				aperture;
+	float				focal_length;
+	t_camera_model		model;
+	float16				c_to_w;
+//	float16				w_to_c;
 }				t_camera;
 
 
@@ -159,7 +162,7 @@ typedef enum	e_primitive
 */
 typedef enum	e_material
 {
-	lightsrc = 0,
+	lightsource = 0,
 	diffuse,
 //	mirror,
 	glassy,
@@ -215,13 +218,13 @@ typedef struct	s_object
 	char			name[OBJECT_NAME_MAXLENGTH];
 	uint			color;
 	float3			rgb;
-	float3			light;
 	float3			pos;
 	float3			rot;
 	float3			scale;
 	t_bbox			bbox;
 //	float3			specul;
-//	float			refrac;//refraction index for snell-descartes
+	float			refrac;//refraction index for snell-descartes
+	float			roughness;
 //	float			intensity;//intensity for lightsrc objects, 1. for other objects //or reflectivity ??
 	float16			o_to_w;
 	float16			w_to_o;

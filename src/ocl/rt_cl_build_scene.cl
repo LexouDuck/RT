@@ -107,18 +107,17 @@ static void			rt_cl_get_vertices_for_bbox
 	vertices[7] = (float3)(aabb.vf.x, aabb.vf.y, aabb.vf.z);
 }
 
-
-//INTERSECTIONS
 static t_bbox			rt_cl_build_object_bbox
 (
 							t_primitive		type,
 							float16			o_to_w,
+						/*	t_bbox			objspace_bbox,*/
 							float			render_dist
 )
 {
-	t_bbox		objspace_bbox;
 	float3		objspace_bbox_vertices[8];
 	t_bbox		result;
+	t_bbox		objspace_bbox;
 
 	if (type == sphere || type == cube || type == cylinder)
 	{
@@ -170,7 +169,7 @@ __kernel void	rt_cl_build_scene
 
 	scene->camera.c_to_w = rt_cl_build_cam_matrix(scene->camera);
 	rt_cl_build_object_matrices(obj);
-	obj->bbox = rt_cl_build_object_bbox(obj->type, obj->o_to_w, scene->render_dist);
+	obj->bbox = rt_cl_build_object_bbox(obj->type, obj->o_to_w, /*obj->bbox,*/ scene->render_dist);
 
 //debug_print_object(obj);
 }

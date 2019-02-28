@@ -36,8 +36,9 @@
 # define DEFAULT_RENDER_DIST	100000.
 # define EPS					0.00003
 
-# define BG_COLOR				0xFF00BB88 //0xFF000000
+# define DEFAULT_BG_COLOR		0xFF555555
 
+# define OBJECT_ARGS_AMOUNT		7
 # define OBJECT_NAME_MAXLENGTH	24
 # define OBJECT_MAX_AMOUNT		32
 # define DEFAULT_RAYSAMP_SIZE	64
@@ -57,6 +58,14 @@ typedef enum		e_cameramode
 	CAMERA_MODE_TILT,
 	CAMERA_MODE_PAN,
 }					t_cameramode;
+
+typedef enum		e_camera_model
+{
+	CAMERA_MODEL_TMP,
+	CAMERA_MODEL_PINHOLE,
+	CAMERA_MODEL_FOCAL,
+	CAMERA_MODEL_ORTHOGRAPHIC
+}					t_camera_model;
 
 /*
 ** CAMERA
@@ -91,6 +100,8 @@ typedef struct	s_camera
 	cl_float		range_max;
 	cl_float		hrz_fov;
 	cl_float		aperture;
+	cl_float		focal_length;
+	t_camera_model	model;
 	cl_float16		c_to_w;
 //	cl_float16		w_to_c;
 }				t_camera;
@@ -198,7 +209,7 @@ typedef enum	e_primitive
 */
 typedef enum	e_material
 {
-	lightsrc = 0,	// simply returns object->color
+	lightsource = 0,	// simply returns object->color
 	diffuse,		// linear to-dark shading
 //	light,			// this material emits light
 //	mirror,			// returns a reflection ray color
@@ -224,7 +235,7 @@ typedef enum	e_material
 ** rgb			: a vector of float from 0. to 1. representing how much each
 **					object reflects each primary color of light,
 **					respectively (r, g, b); albedo for a diffuse surface;
-**					light emitted for a lightsrc; albedo and filter for
+**					light emitted for a lightsource; albedo and filter for
 **					glassy, glossy and mirror surfaces.
 ** unit_w_to_o	: takes a unit vector from world space (that shouldn't be
 **					translated) to a non-unit vector in object space
@@ -255,14 +266,14 @@ typedef struct	s_object
 	char			name[OBJECT_NAME_MAXLENGTH];
 	cl_uint			color;
 	cl_float3		rgb;
-	cl_float3		light;
 	cl_float3		pos;
 	cl_float3		rot;
 	cl_float3		scale;
 	t_bbox			bbox;
 //	cl_float3		specul;
-//	t_float			refrac;//refraction index for snell-descartes
-//	t_float			intensity;//intensity for lightsrc objects, 1. for other objects //or reflectivity ??
+	cl_float		refrac;//refraction index for snell-descartes
+	cl_float		roughness;
+//	t_float			intensity;//intensity for lightsource objects, 1. for other objects //or reflectivity ??
 	cl_float16		o_to_w;
 	cl_float16		w_to_o;
 	cl_float16		n_to_w;

@@ -43,6 +43,9 @@
 # define MENUBAR_ITEM_EDIT	1
 # define MENUBAR_ITEM_VIEW	2
 # define MENUBAR_ITEMS		3
+# define MENUBAR_LABEL_FILE	"File"
+# define MENUBAR_LABEL_EDIT	"Edit"
+# define MENUBAR_LABEL_VIEW	"View"
 
 # define DROPDOWN_ITEMS_W		30
 # define DROPDOWN_ITEMS_H		2
@@ -52,6 +55,10 @@
 # define DROPDOWN_FILE_SAVE		2
 # define DROPDOWN_FILE_SAVEAS	3
 # define DROPDOWN_ITEMS_FILE	4
+# define DROPDOWN_LABEL_FILE_OPEN	"Open file..."
+# define DROPDOWN_LABEL_FILE_IMPORT	"Import file..."
+# define DROPDOWN_LABEL_FILE_SAVE	"Save"
+# define DROPDOWN_LABEL_FILE_SAVEAS	"Save as..."
 
 # define DROPDOWN_EDIT_UNDO		0
 # define DROPDOWN_EDIT_REDO		1
@@ -59,6 +66,11 @@
 # define DROPDOWN_EDIT_COPY		3
 # define DROPDOWN_EDIT_PASTE	4
 # define DROPDOWN_ITEMS_EDIT	5
+# define DROPDOWN_LABEL_EDIT_UNDO	"Undo"
+# define DROPDOWN_LABEL_EDIT_REDO	"Redo"
+# define DROPDOWN_LABEL_EDIT_CUT	"Cut"
+# define DROPDOWN_LABEL_EDIT_COPY	"Copy"
+# define DROPDOWN_LABEL_EDIT_PASTE	"Paste"
 
 # define DROPDOWN_VIEW_ORTHOGONAL	0
 # define DROPDOWN_VIEW_DIFFUSE		1
@@ -138,11 +150,15 @@ typedef struct	s_textinput
 */
 typedef struct	s_prompt
 {
+	char		*text;
 	t_texttype	textbox;
 	char const*	name;
 	char const*	description;
 	SDL_Rect	rect;
 }				t_prompt;
+#define PROMPT					(SDL_Rect){ 0, MENUBAR_ITEMS_H + 1, UI_WIDTH_TILES, 12 }
+#define PROMPT_BUTTON_OK		(SDL_Rect){ 5, 12, 8, 3 }
+#define PROMPT_BUTTON_CANCEL	(SDL_Rect){ 17,12, 8, 3 }
 
 /*
 **	This struct holds all info pertaining to the UI sidebar
@@ -191,6 +207,7 @@ void		ui_menu_view_orthogonal();
 /*
 **	ui_render.c
 */
+void	ui_render_prompt();
 void	ui_render_objects();
 void	ui_render_menubar();
 void	ui_render_dropdown(t_menu *dropdown);
@@ -204,6 +221,7 @@ void	ui_mouse_menubar();
 void	ui_mouse_dropdown(t_menu *dropdown);
 void	ui_mouse_objectlist();
 void	ui_mouse_scrollbar();
+void	ui_mouse_prompt();
 
 void	ui_scrollbar_setscroll(t_scrollbar *scrollbar, t_s32 scroll);
 
@@ -220,11 +238,19 @@ void	ui_render_rect(SDL_Rect rect, t_bool filled);
 
 /*
 **	ui_control_numberbox.c
-**	ui_control_colorbox.c
-**	ui_control_textbox.c
 */
+void	ui_keypress_control_numberbox(t_textinput *textinput, t_bool up);
 void	ui_mouse_control_numberbox(t_textinput *textinput, cl_float *value, int x, int y);
 void	ui_leave_control_numberbox(t_textinput *textinput);
 void	ui_render_control_numberbox(int x, int y, cl_float *value);
+/*
+**	ui_control_textbox.c
+*/
+void	ui_leave_control_textbox(t_textinput *textinput);
+void	ui_mouse_control_textbox(t_textinput *textinput, char **value, int x, int y);
+void	ui_render_control_textbox(int x, int y, char *value);
+/*
+**	ui_control_colorbox.c
+*/
 
 #endif

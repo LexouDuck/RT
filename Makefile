@@ -122,8 +122,10 @@ SRCS	= 	main.c				\
 			ui_menu_file.c		\
 			ui_menu_edit.c		\
 			ui_menu_view.c		\
+			ui_prompt.c			\
 			ui_scrollbar.c		\
 			ui_control_numberbox.c	\
+			ui_control_textbox.c	\
 			ui_render_util.c	\
 			ui_render.c			\
 			camera.c			\
@@ -141,6 +143,7 @@ SRCS_CL	=	rt_cl_scene.cl.h		\
 			rt_cl_primitives_2d.cl	\
 			rt_cl_cylinder.cl		\
 			rt_cl_infcone.cl 		\
+			rt_cl_cone.cl 			\
 			rt_cl_cube.cl			\
 			rt_cl_paraboloid.cl		\
 			rt_cl_hyperboloid.cl 	\

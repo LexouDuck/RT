@@ -48,6 +48,15 @@ typedef enum	e_cameramode
 	CAMERA_MODE_TILT,
 	CAMERA_MODE_PAN,
 }				t_cameramode;
+
+/*
+typedef enum	e_camera_model
+{
+	CAMERA_MODEL_PINHOLE,
+	CAMERA_MODEL_FOCUS
+}				t_camera_model;
+*/
+
 /*
 ** c_to_w.s012 is axis_x, .s456 is axis_y, .s89A is axis_z and .sCDE is world_pos
 */

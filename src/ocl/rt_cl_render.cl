@@ -86,6 +86,8 @@ static t_intersection		rt_cl_trace_ray_to_scene
 					ray_os.inter_type = rt_cl_square_intersect(&new_t, ray_os);
 				else if (obj->type == cylinder)
 					ray_os.inter_type = rt_cl_cylinder_intersect(&new_t, ray_os);
+				else if (obj->type == cone)
+					ray_os.inter_type = rt_cl_cone_intersect(&new_t, ray_os);
 				else if (obj->type == infcylinder)
 					ray_os.inter_type = rt_cl_infcylinder_intersect(&new_t, ray_os);
 				else if (obj->type == infcone)
@@ -115,6 +117,33 @@ static t_intersection		rt_cl_trace_ray_to_scene
 	return (prim_inter);
 }
 
+/*
+static float3			rt_cl_new_rand_dir_coshemi
+(
+						 uint2 *		random_seeds
+						float3		normal, 
+)
+{
+
+	float3				ray;
+	float3				random_dir;
+	float3				random;
+	float3				tangent1;
+	float3				tangent2;
+	float2				seed;
+	float2				d;
+
+	seed.x = rt_cl_frand_0_to_1(random_seeds);
+	seed.y = rt_cl_frand_0_to_1(random_seeds);
+	random_dir = (float3)(cos(2 * M_PI * seed.x) * sqrt(1 - seed.y), sin(2 * M_PI * seed.x) * sqrt(1 - seed.y), sqrt(seed.y));
+	random = (float3)(rt_cl_frand_0_to_1(random_seeds) - 0.5, rt_cl_frand_0_to_1(random_seeds) - 0.5, rt_cl_frand_0_to_1(random_seeds) - 0.5);
+	cl_float3_cross(&tangent1, normal, random);
+	tangent1 = normalize(tangent1);
+	cl_float3_cross(&tangent2, tangent1, normal);
+	ray = (random_dir.z * normal) + (random_dir.x * tangent1) + (random_dir.y * tangent2);
+	return (ray);
+}
+*/
 
 static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 (
@@ -139,12 +168,16 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 		normal = rt_cl_cylinder_get_normal(hitpos);
 	else if (obj->type == infcylinder)
 		normal = rt_cl_infcylinder_get_normal(hitpos);
-	//else if (obj->type == infcone)
-	//	normal = rt_cl_infcone_get_normal(hitpos);
+	else if (obj->type == infcone)
+		normal = rt_cl_infcone_get_normal(hitpos);
+	else if (obj->type == cone)
+		normal = rt_cl_cone_get_normal(hitpos);
 	else if (obj->type == cube)
 		normal = rt_cl_cube_get_normal(hitpos);
 	else if (obj->type == paraboloid)
 		normal = rt_cl_paraboloid_get_normal(hitpos);
+	else if (obj->type == paraboloid)
+		normal = rt_cl_hyperboloid_get_normal(hitpos);
 	else
 		normal = rt_cl_sphere_get_normal(hitpos);
 	normal = normalize(rt_cl_apply_linear_matrix(obj->n_to_w, normal)) * ray.inter_type; //sphere formula, normal == hitpos
@@ -152,7 +185,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 	new_ray.hit_obj_id = -1;
 	new_ray.inter_type = INTER_NONE;
 	new_ray.t = scene->render_dist;
-
+//	rt_cl_new_random_cos_hemi(normal, random_seeds);
 #if 0
 	new_ray.complete = obj->material == lightsrc;
 	new_ray.lum_mask = ray.lum_mask * obj->rgb;
@@ -160,6 +193,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 	new_ray.lum_acc = ray.lum_acc + (float3)(new_ray.complete) * new_ray.lum_mask;
 #endif
 
+	//TODO echantillonage par importance, séparation éclairage direct et indirect
 	if (obj->material == lightsrc)
 	{
 		new_ray.complete = true;
@@ -173,7 +207,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 		new_ray.lum_acc = ray.lum_acc;
 
 		new_ray.dir = rt_cl_rand_dir_coshemi(random_seeds, normal);
-		new_ray.lum_mask = ray.lum_mask * obj->rgb * (float3)(dot(normal, new_ray.dir));
+		new_ray.lum_mask = ray.lum_mask * obj->rgb * (float3)(dot(normal, new_ray.dir));//cos sampling, defines contribution to ray.lum_acc
 	}
 	else if (obj->material == glassy)
 	{
@@ -201,38 +235,6 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 }
 
 
-static t_ray			rt_cl_create_camray
-(
-					__constant		t_scene	*	scene,
-									uint2 *		random_seeds
-)
-{
-	int const			x_id = get_global_id(0);
-	int const			y_id = get_global_id(1);
-	int const			width = get_global_size(0);
-	int const			height = get_global_size(1);
-	float16	const		cam_mat44 = scene->camera.c_to_w;
-	float const			fov_val = -width / (2 * tan(scene->camera.hrz_fov));
-	t_ray				camray;
-
-	camray.lum_acc = (float3)(0.);
-	camray.lum_mask = (float3)(1.);
-	camray.t = scene->render_dist;
-	camray.complete = false;
-	camray.hit_obj_id = -1;
-	camray.inter_type = INTER_NONE;
-//	camray.pos = (float3)(0., 0., 0.);
-	camray.pos = (float3)(rt_cl_frand_neg1half_to_pos1half(random_seeds), rt_cl_frand_neg1half_to_pos1half(random_seeds), 0.);
-	camray.pos *= (float3)(scene->camera.aperture);
-	camray.pos = rt_cl_apply_homogeneous_matrix(cam_mat44, camray.pos);
-	camray.dir = (float3)(x_id - width / 2, y_id - height / 2, fov_val);
-	camray.dir += (float3)(rt_cl_frand_neg1half_to_pos1half(random_seeds) * 0.1, rt_cl_frand_neg1half_to_pos1half(random_seeds) * 0.1, 0.); //TODO, replace 0.1 by appropriate value; add and fix for depth of field
-	camray.dir = rt_cl_apply_linear_matrix(cam_mat44, camray.dir);
-	camray.dir = normalize(camray.dir);
-
-	return (camray);
-}
-
 #if 0
 static t_ray			rt_cl_create_camray
 (
@@ -244,6 +246,86 @@ static t_ray			rt_cl_create_camray
 	int const			y_id = get_global_id(1);
 	int const			width = get_global_size(0);
 	int const			height = get_global_size(1);
+	float16	const		cam_mat44_c_to_w = scene->camera.c_to_w;
+	float const			fov_val = -width / (2 * tan(scene->camera.hrz_fov));
+	t_ray				camray;
+	float2				seed;
+	float2				anti_aliasing;
+	float2				aperture;
+	float				focus_distance = 50;
+	float3				destination;
+	float3				new_origin;
+
+	camray.lum_acc = (float3)(0.);
+	camray.lum_mask = (float3)(1.);
+	camray.t = scene->render_dist;
+	camray.complete = false;
+	camray.hit_obj_id = -1;
+	camray.inter_type = INTER_NONE;
+
+	//	Box muller, anti-aliasing
+	seed.x = rt_cl_frand_0_to_1(random_seeds) / 2;
+	seed.y = rt_cl_frand_0_to_1(random_seeds) / 2;
+	anti_aliasing.x = sqrt(-2 * log((float)(seed.x))) * cos((float)(TAU * seed.y));
+	anti_aliasing.y = sqrt(-2 * log((float)(seed.x))) * sin((float)(TAU * seed.y));
+	camray.dir = (float3)(x_id - width / 2 + anti_aliasing.x, y_id - height / 2 + anti_aliasing.y, fov_val);
+	camray.dir = normalize(camray.dir);
+
+	camray.pos = (float3)(0., 0., 0.);
+	destination = camray.pos + (focus_distance * camray.dir);
+//	aperture.x = rt_cl_frand_0_to_1(random_seeds) * scene->camera.aperture;
+//	aperture.y = rt_cl_frand_0_to_1(random_seeds) * scene->camera.aperture;
+	aperture.x = rt_cl_frand_0_to_1(random_seeds) * 4;
+	aperture.y = rt_cl_frand_0_to_1(random_seeds) * 4;
+	new_origin = camray.pos + (float3)(aperture.x, aperture.y, 0.);
+
+	camray.pos = rt_cl_apply_homogeneous_matrix(cam_mat44_c_to_w, new_origin);
+	camray.dir = destination - new_origin;
+	camray.dir = rt_cl_apply_linear_matrix(cam_mat44_c_to_w, camray.dir);
+	camray.dir = normalize(camray.dir);
+
+	return (camray);
+
+/*
+//	Box muller, anti-aliasing
+	seed.x = rt_cl_frand_0_to_1(random_seeds) / 2;
+	seed.y = rt_cl_frand_0_to_1(random_seeds) / 2;
+	anti_aliasing.x = sqrt(-2 * log((float)(seed.x))) * cos(2 * M_PI * seed.y);
+	anti_aliasing.y = sqrt(-2 * log((float)(seed.x))) * sin(2 * M_PI * seed.y);
+	camray.dir = (float3)(x_id - width / 2 + anti_aliasing.x, y_id - height / 2 + anti_aliasing.y, fov_val);
+
+	dofray.lum_acc = (float3)(0.);
+	dofray.lum_mask = (float3)(1.);
+	dofray.t = scene->render_dist;
+	dofray.complete = false;
+	dofray.hit_obj_id = -1;
+	dofray.inter_type = INTER_NONE;
+
+	dofray.dir = normalize(camray.dir);
+	aperture.x = rt_cl_frand_0_to_1(random_seeds) * 5;
+	aperture.y = rt_cl_frand_0_to_1(random_seeds) * 5;
+
+	destination = camray.pos + focus_distance * camray.dir;
+	dofray.pos = (camray.pos + (float3)(aperture.x, aperture.y, 0));
+//	dofray.pos = normalize(destination - dofray.pos);
+	dofray.pos = rt_cl_apply_homogeneous_matrix(cam_mat44, dofray.pos);
+//	dofray.pos = rt_cl_apply_homogeneous_matrix(cam_mat44, dofray.pos);
+//	dof_ray.dir = rt_cl_apply_linear_matrix(cam_mat44, dof_ray.dir);
+	return(dofray);
+*/
+}
+#endif
+
+static t_ray			rt_cl_create_camray
+(
+					__constant		t_scene	*	scene,
+									uint2 *		random_seeds
+)
+{
+	int const			x_id = get_global_id(0);
+	int const			y_id = get_global_id(1);
+	int const			width = get_global_size(0);
+	int const			height = get_global_size(1);
 	float16	const		cam_mat44 = scene->camera.c_to_w;
 	float const			fov_val = -width / (2 * tan(scene->camera.hrz_fov));
 	t_ray				camray;
@@ -265,7 +347,6 @@ static t_ray			rt_cl_create_camray
 
 	return (camray);
 }
-#endif
 
 //For some reason a statement with || doesn't EVER get read properly as a truth statement so I switched conditions around 
 static float3			rt_cl_get_pixel_color_from_mc_sampling

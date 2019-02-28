@@ -1,3 +1,24 @@
+static float				rt_cl_float3_ynull_dot
+(
+							float3 v1,
+							float3 v2
+)
+{
+	/*
+		v1.y = v2.y = 0;
+		return (dot(v1, v2));
+	*/
+	return (v1.x * v2.x + v1.z * v2.z);
+}
+
+static inline float			rt_cl_float3_yneg_dot
+(							float3 v1, 
+							float3 v2
+)
+{
+	return (v1.x * v2.x - v1.y * v2.y + v1.z * v2.z);
+}
+
 static bool				rt_cl_get_realroots_quadpoly
 (
 							float2 *	roots,
@@ -140,3 +161,5 @@ static float16			rt_cl_mat33in44_inv(float16 const mat33)
 	result.sCDEF = (float4)(0., 0., 0., 1.);                                                                                                                      
 	return (result);
 }
+
+

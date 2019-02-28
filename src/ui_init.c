@@ -6,19 +6,18 @@
 /*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
-/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
+/*   Updated: 2019/02/28 16:05:34 by hbruvry          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft_memory.h"
 #include "libft_convert.h"
-
 #include "../rt.h"
 #include "../assets.h"
 #include "debug.h"
 #include "ui.h"
 
-static void	ui_init_menubar()
+static void	ui_init_menubar(void)
 {
 	int i;
 
@@ -38,22 +37,22 @@ static void	ui_init_menubar()
 	}
 }
 
-static void	ui_init_dropdown_file()
+static void	ui_init_dropdown_file(void)
 {
-	t_menu* dropdown;
-	int i;
+	t_menu	*dropdown;
+	int		i;
 
 	dropdown = &rt.ui.dropdowns[MENUBAR_ITEM_FILE];
 	dropdown->selection = -1;
 	dropdown->item_amount = DROPDOWN_ITEMS_FILE;
-	dropdown->item_labels[DROPDOWN_FILE_OPEN]	= DROPDOWN_LABEL_FILE_OPEN;
-	dropdown->item_labels[DROPDOWN_FILE_IMPORT]	= DROPDOWN_LABEL_FILE_IMPORT;
-	dropdown->item_labels[DROPDOWN_FILE_SAVE]	= DROPDOWN_LABEL_FILE_SAVE;
-	dropdown->item_labels[DROPDOWN_FILE_SAVEAS]	= DROPDOWN_LABEL_FILE_SAVEAS;
-	dropdown->item_action[DROPDOWN_FILE_OPEN]	= ui_menu_file_open;
-	dropdown->item_action[DROPDOWN_FILE_IMPORT]	= ui_menu_file_import;
-	dropdown->item_action[DROPDOWN_FILE_SAVE]	= ui_menu_file_save;
-	dropdown->item_action[DROPDOWN_FILE_SAVEAS]	= ui_menu_file_saveas;
+	dropdown->item_labels[DROPDOWN_FILE_OPEN] = DROPDOWN_LABEL_FILE_OPEN;
+	dropdown->item_labels[DROPDOWN_FILE_IMPORT] = DROPDOWN_LABEL_FILE_IMPORT;
+	dropdown->item_labels[DROPDOWN_FILE_SAVE] = DROPDOWN_LABEL_FILE_SAVE;
+	dropdown->item_labels[DROPDOWN_FILE_SAVEAS] = DROPDOWN_LABEL_FILE_SAVEAS;
+	dropdown->item_action[DROPDOWN_FILE_OPEN] = ui_menu_file_open;
+	dropdown->item_action[DROPDOWN_FILE_IMPORT] = ui_menu_file_import;
+	dropdown->item_action[DROPDOWN_FILE_SAVE] = ui_menu_file_save;
+	dropdown->item_action[DROPDOWN_FILE_SAVEAS] = ui_menu_file_saveas;
 	i = 0;
 	while (i < DROPDOWN_ITEMS_FILE)
 	{
@@ -65,24 +64,24 @@ static void	ui_init_dropdown_file()
 	}
 }
 
-static void	ui_init_dropdown_edit()
+static void	ui_init_dropdown_edit(void)
 {
-	t_menu* dropdown;
-	int i;
+	t_menu	*dropdown;
+	int		i;
 
 	dropdown = &rt.ui.dropdowns[MENUBAR_ITEM_EDIT];
 	dropdown->selection = -1;
 	dropdown->item_amount = DROPDOWN_ITEMS_EDIT;
-	dropdown->item_labels[DROPDOWN_EDIT_UNDO]	= DROPDOWN_LABEL_EDIT_UNDO;
-	dropdown->item_labels[DROPDOWN_EDIT_REDO]	= DROPDOWN_LABEL_EDIT_REDO;
-	dropdown->item_labels[DROPDOWN_EDIT_CUT]	= DROPDOWN_LABEL_EDIT_CUT;
-	dropdown->item_labels[DROPDOWN_EDIT_COPY]	= DROPDOWN_LABEL_EDIT_COPY;
-	dropdown->item_labels[DROPDOWN_EDIT_PASTE]	= DROPDOWN_LABEL_EDIT_PASTE;
-	dropdown->item_action[DROPDOWN_EDIT_UNDO]	= ui_menu_edit_undo;
-	dropdown->item_action[DROPDOWN_EDIT_REDO]	= ui_menu_edit_redo;
-	dropdown->item_action[DROPDOWN_EDIT_CUT]	= ui_menu_edit_cut;
-	dropdown->item_action[DROPDOWN_EDIT_COPY]	= ui_menu_edit_copy;
-	dropdown->item_action[DROPDOWN_EDIT_PASTE]	= ui_menu_edit_paste;
+	dropdown->item_labels[DROPDOWN_EDIT_UNDO] = DROPDOWN_LABEL_EDIT_UNDO;
+	dropdown->item_labels[DROPDOWN_EDIT_REDO] = DROPDOWN_LABEL_EDIT_REDO;
+	dropdown->item_labels[DROPDOWN_EDIT_CUT] = DROPDOWN_LABEL_EDIT_CUT;
+	dropdown->item_labels[DROPDOWN_EDIT_COPY] = DROPDOWN_LABEL_EDIT_COPY;
+	dropdown->item_labels[DROPDOWN_EDIT_PASTE] = DROPDOWN_LABEL_EDIT_PASTE;
+	dropdown->item_action[DROPDOWN_EDIT_UNDO] = ui_menu_edit_undo;
+	dropdown->item_action[DROPDOWN_EDIT_REDO] = ui_menu_edit_redo;
+	dropdown->item_action[DROPDOWN_EDIT_CUT] = ui_menu_edit_cut;
+	dropdown->item_action[DROPDOWN_EDIT_COPY] = ui_menu_edit_copy;
+	dropdown->item_action[DROPDOWN_EDIT_PASTE] = ui_menu_edit_paste;
 	i = 0;
 	while (i < DROPDOWN_ITEMS_EDIT)
 	{
@@ -94,19 +93,19 @@ static void	ui_init_dropdown_edit()
 	}
 }
 
-static void	ui_init_dropdown_view()
+static void	ui_init_dropdown_view(void)
 {
-	t_menu* dropdown;
-	int i;
+	t_menu	*dropdown;
+	int		i;
 
 	dropdown = &rt.ui.dropdowns[MENUBAR_ITEM_VIEW];
 	dropdown->selection = -1;
 	dropdown->item_amount = DROPDOWN_ITEMS_VIEW;
-	dropdown->item_labels[DROPDOWN_VIEW_ORTHOGONAL]	= "Orthogonal projection";
-	dropdown->item_labels[DROPDOWN_VIEW_DIFFUSE]	= "Diffuse lighting";
-	dropdown->item_labels[DROPDOWN_VIEW_SPECULAR]	= "Specular lighting";
-	dropdown->item_labels[DROPDOWN_VIEW_GLOBAL_I]	= "Global illumination";
-	dropdown->item_action[DROPDOWN_VIEW_ORTHOGONAL]	= ui_menu_view_orthogonal;
+	dropdown->item_labels[DROPDOWN_VIEW_ORTHOGONAL] = "Orthogonal projection";
+	dropdown->item_labels[DROPDOWN_VIEW_DIFFUSE] = "Diffuse lighting";
+	dropdown->item_labels[DROPDOWN_VIEW_SPECULAR] = "Specular lighting";
+	dropdown->item_labels[DROPDOWN_VIEW_GLOBAL_I] = "Global illumination";
+	dropdown->item_action[DROPDOWN_VIEW_ORTHOGONAL] = ui_menu_view_orthogonal;
 	i = 0;
 	while (i < DROPDOWN_ITEMS_VIEW)
 	{
@@ -118,7 +117,7 @@ static void	ui_init_dropdown_view()
 	}
 }
 
-static void	ui_init_objectlist()
+static void	ui_init_objectlist(void)
 {
 	rt.ui.objects.rect.x = 0;
 	rt.ui.objects.rect.y = 4;
@@ -136,7 +135,7 @@ static void	ui_init_objectlist()
 	rt.ui.objects.scrollbar.scroll_view = (rt.sdl.window_h - MENUBAR_ITEMS_H);
 }
 
-int			ui_init()
+int			ui_init(void)
 {
 	static const t_u32	palette[PALETTE] = {
 		0x000000,
@@ -146,7 +145,7 @@ int			ui_init()
 	};
 
 #ifdef __APPLE__
-	size_t		size = 0;
+	size_t				size = 0;
 	rt.ui.chr = getsectiondata(&_mh_execute_header,
 		"__DATA", "__inc_ui_chr", &size);
 	if (size != CHR_SIZE)

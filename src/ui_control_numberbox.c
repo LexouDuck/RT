@@ -6,7 +6,7 @@
 /*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
-/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
+/*   Updated: 2019/02/28 16:03:10 by hbruvry          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,11 @@ void	ui_keypress_control_numberbox(t_textinput *textinput, t_bool up)
 		*value -= 1.0;
 	rt.must_render = TRUE;
 	ui_leave_control_numberbox(textinput);
-			textinput->type = texttype_number_float;
-			textinput->input = ft_f32_to_str(*value, 4);
-			textinput->value = (void *)value;
-			rt.ui.current_textinput.value_changed = FALSE;
-			SDL_StartTextInput();
+	textinput->type = texttype_number_float;
+	textinput->input = ft_f32_to_str(*value, 4);
+	textinput->value = (void *)value;
+	rt.ui.current_textinput.value_changed = FALSE;
+	SDL_StartTextInput();
 }
 
 void	ui_mouse_control_numberbox(t_textinput *textinput, cl_float *value, int x, int y)

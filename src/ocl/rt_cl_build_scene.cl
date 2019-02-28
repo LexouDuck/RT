@@ -113,8 +113,8 @@ static t_bbox			rt_cl_build_object_bbox
 (
 							t_primitive		type,
 							float16			o_to_w,
+							t_bbox			objspace_bbox,
 							float			render_dist
-							t_bbox		objspace_bbox;
 )
 {
 	float3		objspace_bbox_vertices[8];
@@ -122,17 +122,17 @@ static t_bbox			rt_cl_build_object_bbox
 
 	if (type == sphere || type == cube || type == cylinder)
 	{
-		object.bbox->objspace_bbox = (t_bbox){(float3)(-1., -1., -1.),
+		objspace_bbox = (t_bbox){(float3)(-1., -1., -1.),
 									(float3)(1., 1., 1.)};
 	}
 	else if (type == infcylinder)
 	{
-		object.bbox->objspace_bbox = (t_bbox){(float3)(-1., -render_dist, -1.),
+		objspace_bbox = (t_bbox){(float3)(-1., -render_dist, -1.),
 									(float3)(1., render_dist, 1.)};
 	}
 	else if (type == paraboloid)
 	{
-		object.bbox->objspace_bbox = (t_bbox){(float3)(-sqrt(render_dist), 0., -sqrt(render_dist)),
+		objspace_bbox = (t_bbox){(float3)(-sqrt(render_dist), 0., -sqrt(render_dist)),
 									(float3)(sqrt(render_dist), render_dist, sqrt(render_dist))};
 	}
 	else

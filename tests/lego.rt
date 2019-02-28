@@ -1,191 +1,37 @@
 BG #888888
 
-SPHERE #FFFFFF	(3, 20, 3)	{0, 0, 0}	[0, 0, 0]	light:(1, 1, 1)
+SPHERE #FFFFFF	pos:(3, 20, 3)	rot:{0, 0, 0}	scale:[0, 0, 0]	light:(1, 1, 1)
 
-SPHERE #FFFFFF	(3,-10, 3)	{0, 0, 0}	[0, 0, 0]	light:(1, 1, 1)
+SPHERE #FFFFFF	pos:(3,-10, 3)	rot:{0, 0, 0}	scale:[0, 0, 0]	light:(1, 1, 1)
 
 
 
-CUBE #FF0000	(-9, 0, 0)	{0, 0, 0}	[1, 6, 10]	"Brick Side Left"
-CUBE #FF0000	(9, 0, 0)	{0, 0, 0}	[1, 6, 10]	"Brick Side Right"
-CUBE #FF0000	(0, 0, -9)	{0, 0, 0}	[10, 6, 1]	"Brick Side Near"
-CUBE #FF0000	(0, 0, 9)	{0, 0, 0}	[10, 6, 1]	"Brick Side Far"
+CUBE #FF0000	pos:(-9, 0, 0)	scale:[1, 6, 10]	rot:{0, 0, 0}	"Brick Side Left"
+CUBE #FF0000	pos:(9, 0, 0)	scale:[1, 6, 10]	rot:{0, 0, 0}	"Brick Side Right"
+CUBE #FF0000	pos:(0, 0, -9)	scale:[10, 6, 1]	rot:{0, 0, 0}	"Brick Side Near"
+CUBE #FF0000	pos:(0, 0, 9)	scale:[10, 6, 1]	rot:{0, 0, 0}	"Brick Side Far"
 
-CUBE #FF0000	(0, 6, 0)	{0, 0, 0}	[10, 1, 10]	"Brick Top"
-
-CYLINDER #FF0000
-(5, 8, 5)
-{0, 0, 0}
-[3, 2, 3]	"Brick Stud TL"
-CYLINDER #FF0000
-(5, 8, -5)
-{0, 0, 0}
-[3, 2, 3]	"Brick Stud TR"
-CYLINDER #FF0000
-(-5, 8, 5)
-{0, 0, 0}
-[3, 2, 3]	"Brick Stud BL"
-CYLINDER #FF0000
-(-5, 8, -5)
-{0, 0, 0}
-[3, 2, 3]	"Brick Stud BR"
+CUBE #FF0000	pos:(0, 6, 0)	rot:{0, 0, 0}	scale:[10, 1, 10]	"Brick Top"
 
 CYLINDER #FF0000
-(0, 0, 0)
-{0, 0, 0}
-[4.07, 12, 4.07]
-"Bottom Pillar"
-
-
-CUBE #FF0000	(31, 0, 0)	{0, 0, 0}	[1, 6, 10]	"Brick Side Left"
-CUBE #FF0000	(49, 0, 0)	{0, 0, 0}	[1, 6, 10]	"Brick Side Right"
-CUBE #FF0000	(40, 0, -9)	{0, 0, 0}	[10, 6, 1]	"Brick Side Near"
-CUBE #FF0000	(40, 0, 9)	{0, 0, 0}	[10, 6, 1]	"Brick Side Far"
-
-CUBE #FF0000	(40, 6, 0)	{0, 0, 0}	[10, 1, 10]	"Brick Top"
-
+pos:(5, 8, 5)
+rot:{0, 0, 0}
+scale:[3, 2, 3]	"Brick Stud TL"
 CYLINDER #FF0000
-(45, 8, 5)
-{0, 0, 0}
-[3, 2, 3]	"Brick Stud TL"
+pos:(5, 8, -5)
+rot:{0, 0, 0}
+scale:[3, 2, 3]	"Brick Stud TR"
 CYLINDER #FF0000
-(45, 8, -5)
-{0, 0, 0}
-[3, 2, 3]	"Brick Stud TR"
+pos:(-5, 8, 5)
+rot:{0, 0, 0}
+scale:[3, 2, 3]	"Brick Stud BL"
 CYLINDER #FF0000
-(35, 8, 5)
-{0, 0, 0}
-[3, 2, 3]	"Brick Stud BL"
-CYLINDER #FF0000
-(35, 8, -5)
-{0, 0, 0}
-[3, 2, 3]	"Brick Stud BR"
+pos:(-5, 8, -5)
+rot:{0, 0, 0}
+scale:[3, 2, 3]	"Brick Stud BR"
 
 CYLINDER #FF0000
-(40, 0, 0)
-{0, 0, 0}
-[4.07, 12, 4.07]
-"Bottom Pillar"
-
-
-CUBE #FF0000	(-31, 0, 0)	{0, 0, 0}	[1, 6, 10]	"Brick Side Left"
-CUBE #FF0000	(-39, 0, 0)	{0, 0, 0}	[1, 6, 10]	"Brick Side Right"
-CUBE #FF0000	(-40, 0, -9)	{0, 0, 0}	[10, 6, 1]	"Brick Side Near"
-CUBE #FF0000	(-40, 0, 9)	{0, 0, 0}	[10, 6, 1]	"Brick Side Far"
-
-CUBE #FF0000	(-40, 6, 0)	{0, 0, 0}	[10, 1, 10]	"Brick Top"
-
-CYLINDER #FF0000
-(-35, 8, 5)
-{0, 0, 0}
-[3, 2, 3]	"Brick Stud TL"
-CYLINDER #FF0000
-(-35, 8, -5)
-{0, 0, 0}
-[3, 2, 3]	"Brick Stud TR"
-CYLINDER #FF0000
-(-45, 8, 5)
-{0, 0, 0}
-[3, 2, 3]	"Brick Stud BL"
-CYLINDER #FF0000
-(-45, 8, -5)
-{0, 0, 0}
-[3, 2, 3]	"Brick Stud BR"
-
-CYLINDER #FF0000
-(-40, 0, 0)
-{0, 0, 0}
-[4.07, 12, 4.07]
-"Bottom Pillar"
-
-CUBE #FF0000	(-9, 0, 40)	{0, 0, 0}	[1, 6, 10]	"Brick Side Left"
-CUBE #FF0000	(9, 0, 40)	{0, 0, 0}	[1, 6, 10]	"Brick Side Right"
-CUBE #FF0000	(0, 0, 31)	{0, 0, 0}	[10, 6, 1]	"Brick Side Near"
-CUBE #FF0000	(0, 0, 49)	{0, 0, 0}	[10, 6, 1]	"Brick Side Far"
-
-CUBE #FF0000	(0, 6, 40)	{0, 0, 0}	[10, 1, 10]	"Brick Top"
-
-CYLINDER #FF0000
-(5, 8, 45)
-{0, 0, 0}
-[3, 2, 3]	"Brick Stud TL"
-CYLINDER #FF0000
-(5, 8, 35)
-{0, 0, 0}
-[3, 2, 3]	"Brick Stud TR"
-CYLINDER #FF0000
-(-5, 8, 45)
-{0, 0, 0}
-[3, 2, 3]	"Brick Stud BL"
-CYLINDER #FF0000
-(-5, 8, 35)
-{0, 0, 0}
-[3, 2, 3]	"Brick Stud BR"
-
-CYLINDER #FF0000
-(0, 0, 40)
-{0, 0, 0}
-[4.07, 12, 4.07]
-"Bottom Pillar"
-
-
-CUBE #FF0000	(31, 0, 40)	{0, 0, 0}	[1, 6, 10]	"Brick Side Left"
-CUBE #FF0000	(49, 0, 40)	{0, 0, 0}	[1, 6, 10]	"Brick Side Right"
-CUBE #FF0000	(40, 0, 31)	{0, 0, 0}	[10, 6, 1]	"Brick Side Near"
-CUBE #FF0000	(40, 0, 49)	{0, 0, 0}	[10, 6, 1]	"Brick Side Far"
-
-CUBE #FF0000	(40, 6, 40)	{0, 0, 0}	[10, 1, 10]	"Brick Top"
-
-CYLINDER #FF0000
-(45, 8, 45)
-{0, 0, 0}
-[3, 2, 3]	"Brick Stud TL"
-CYLINDER #FF0000
-(45, 8, 35)
-{0, 0, 0}
-[3, 2, 3]	"Brick Stud TR"
-CYLINDER #FF0000
-(35, 8, 45)
-{0, 0, 0}
-[3, 2, 3]	"Brick Stud BL"
-CYLINDER #FF0000
-(35, 8, 35)
-{0, 0, 0}
-[3, 2, 3]	"Brick Stud BR"
-
-CYLINDER #FF0000
-(40, 0, 40)
-{0, 0, 0}
-[4.07, 12, 4.07]
-"Bottom Pillar"
-
-
-CUBE #FF0000	(-31, 0, 40)	{0, 0, 0}	[1, 6, 10]	"Brick Side Left"
-CUBE #FF0000	(-39, 0, 40)	{0, 0, 0}	[1, 6, 10]	"Brick Side Right"
-CUBE #FF0000	(-40, 0, 31)	{0, 0, 0}	[10, 6, 1]	"Brick Side Near"
-CUBE #FF0000	(-40, 0, 49)	{0, 0, 0}	[10, 6, 1]	"Brick Side Far"
-
-CUBE #FF0000	(-40, 6, 40)	{0, 0, 0}	[10, 1, 10]	"Brick Top"
-
-CYLINDER #FF0000
-(-35, 8, 45)
-{0, 0, 0}
-[3, 2, 3]	"Brick Stud TL"
-CYLINDER #FF0000
-(-35, 8, 35)
-{0, 0, 0}
-[3, 2, 3]	"Brick Stud TR"
-CYLINDER #FF0000
-(-45, 8, 45)
-{0, 0, 0}
-[3, 2, 3]	"Brick Stud BL"
-CYLINDER #FF0000
-(-45, 8, 35)
-{0, 0, 0}
-[3, 2, 3]	"Brick Stud BR"
-
-CYLINDER #FF0000
-(-40, 0, 40)
-{0, 0, 0}
-[4.07, 12, 4.07]
+pos:(0, 0, 0)
+rot:{0, 0, 0}
+scale:[4.07, 12, 4.07]
 "Bottom Pillar"

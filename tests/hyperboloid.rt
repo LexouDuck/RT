@@ -2,6 +2,6 @@ BG #FFFFFF
 
 
 HYPERBOLOID #FFFF11
-(4, 4, 1)
-{0, 0, -0.789}
-[4, 16, 2] "HYPERBOLOID"
+pos:(4, 4, 1)
+rot:{0, 0, -0.789}
+scale:[4, 16, 2] "HYPERBOLOID"

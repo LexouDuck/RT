@@ -173,7 +173,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 	if (obj->material == light)
 	{
 		new_ray.complete = true;
-		new_ray.lum_acc = ray.lum_acc + ray.lum_mask * obj->rgb;
+		new_ray.lum_acc = ray.lum_acc + ray.lum_mask * color.rgb;
 		new_ray.lum_mask = ray.lum_mask;
 	}
 	else if (obj->material == diffuse)

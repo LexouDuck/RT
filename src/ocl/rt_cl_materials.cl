@@ -46,7 +46,6 @@ static float3		rt_cl_get_transmit_or_reflect
 		refrac_ratio = is_inter_inside ? refrac : 1. / refrac;
 		fresnel = 1 - refrac_ratio * refrac_ratio * (1 - dot_i_n * dot_i_n);
 		if (fresnel < 0.)
-//			return ((float3)(0., 0., 0.));
 			return (rt_cl_get_reflect(incdir, normal));
 		fresnel = -sqrt(fresnel); //this is -cos(theta_transmited), the angle made after transmission)
 	//	Tn

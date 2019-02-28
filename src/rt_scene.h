@@ -38,7 +38,7 @@
 
 # define DEFAULT_BG_COLOR		0xFF555555
 
-# define OBJECT_ARGS_AMOUNT		6
+# define OBJECT_ARGS_AMOUNT		7
 # define OBJECT_NAME_MAXLENGTH	24
 # define OBJECT_MAX_AMOUNT		32
 # define DEFAULT_RAYSAMP_SIZE	64
@@ -265,13 +265,13 @@ typedef struct	s_object
 	char			name[OBJECT_NAME_MAXLENGTH];
 	cl_uint			color;
 	cl_float3		rgb;
-	cl_float3		light;
 	cl_float3		pos;
 	cl_float3		rot;
 	cl_float3		scale;
 	t_bbox			bbox;
 //	cl_float3		specul;
-//	t_float			refrac;//refraction index for snell-descartes
+	cl_float		refrac;//refraction index for snell-descartes
+	cl_float		roughness;
 //	t_float			intensity;//intensity for lightsource objects, 1. for other objects //or reflectivity ??
 	cl_float16		o_to_w;
 	cl_float16		w_to_o;

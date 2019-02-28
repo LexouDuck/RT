@@ -59,7 +59,7 @@ void	rt_output_readfile()
 		debug_output_value(" -   pos:",	cl_float3_to_str(&object->pos, 3), TRUE);
 		debug_output_value(" -   rot:",	cl_float3_to_str(&object->rot, 3), TRUE);
 		debug_output_value(" - scale:",	cl_float3_to_str(&object->scale, 3), TRUE);
-		debug_output_value(" - light:",	cl_float3_to_str(&object->light, 3), TRUE);
+//		debug_output_value(" - light:",	cl_float3_to_str(&object->light, 3), TRUE);
 		++i;
 	}
 }
@@ -74,25 +74,21 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 	ft_memclr(&object.name, OBJECT_NAME_MAXLENGTH);
 	object.color = 0xFFFFFF;
 	object.rgb = (cl_float3){{ 1., 1., 1. }};
-	object.light = (cl_float3){{ 0., 0., 0. }};
 	object.pos = (cl_float3){{ 0., 0., 0. }};
 	object.rot = (cl_float3){{ 0., 0., 0. }};
 	object.scale = (cl_float3){{ 1., 1., 1. }};
+	object.material = diffuse;
 	i = -1;
 	while (++i < OBJECT_ARGS_AMOUNT)
 	{
-		if ((error = rt_read_arg_name(p, &object.name)) ||
+		if ((error = rt_read_arg_name(p, (char *)&object.name)) ||
 			(error = rt_read_arg_color(p, &object.rgb, "color")) ||
-			(error = rt_read_arg_vector(p, &object.light, "light")) ||
 			(error = rt_read_arg_vector(p, &object.pos, "pos")) ||
 			(error = rt_read_arg_vector(p, &object.rot, "rot")) ||
-			(error = rt_read_arg_vector(p, &object.scale, "scale")))
+			(error = rt_read_arg_vector(p, &object.scale, "scale")) ||
+			(error = rt_read_arg_material(p, &object.material, "material")))
 			return (error);
 	}
-	if (object.light.x + object.light.y + object.light.z > 0.)
-		object.material = lightsource;
-	else
-		object.material = diffuse;
 	object.color = ft_color_argb32_set(0.,
 		object.rgb.x * 255.,
 		object.rgb.y * 255.,

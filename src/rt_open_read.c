@@ -158,3 +158,27 @@ char		*rt_read_arg_color(t_rtparser *p, cl_float3 *result, char const *label)
 		return (str);
 	}
 }
+
+char		*rt_read_arg_material(t_rtparser *p, t_material *result, char const *label)
+{
+	size_t	length;
+
+	rt_read_whitespace(p);
+	if (!p->file[p->index] || !ft_strnequ(p->file + p->index, label, ft_strlen(label)))
+		return (NULL);
+	p->index += ft_strlen(label);
+	if (p->file[p->index] != ':')
+		return (rt_read_error(':', "without spaces before material string", p->file[p->index]));
+	if (ft_strnequ(p->file + p->index, "diffuse", (length = 7)))
+		*result = diffuse;
+	else if (ft_strnequ(p->file + p->index, "light", (length = 5)))
+		*result = lightsource;
+	else if (ft_strnequ(p->file + p->index, "glassy", (length = 6)))
+		*result = glassy;
+	else if (ft_strnequ(p->file + p->index, "glossy", (length = 6)))
+		*result = glossy;
+	else
+		return ("No valid material enum label encountered");
+	p->index += length;
+	return (NULL);
+}

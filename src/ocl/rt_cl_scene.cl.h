@@ -161,7 +161,7 @@ typedef enum	e_primitive
 */
 typedef enum	e_material
 {
-	lightsrc = 0,
+	lightsource = 0,
 	diffuse,
 //	mirror,
 	glassy,
@@ -217,13 +217,14 @@ typedef struct	s_object
 	char			name[OBJECT_NAME_MAXLENGTH];
 	uint			color;
 	float3			rgb;
-	float3			light;
+//	float3			light;
 	float3			pos;
 	float3			rot;
 	float3			scale;
 	t_bbox			bbox;
 //	float3			specul;
-//	float			refrac;//refraction index for snell-descartes
+	float			refrac;//refraction index for snell-descartes
+	float			roughness;
 //	float			intensity;//intensity for lightsrc objects, 1. for other objects //or reflectivity ??
 	float16			o_to_w;
 	float16			w_to_o;

@@ -194,10 +194,10 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 #endif
 
 	//TODO echantillonage par importance, séparation éclairage direct et indirect
-	if (obj->material == lightsrc)
+	if (obj->material == lightsource)
 	{
 		new_ray.complete = true;
-		new_ray.lum_acc = ray.lum_acc + ray.lum_mask * obj->light;//obj->rgb;
+		new_ray.lum_acc = ray.lum_acc + ray.lum_mask * obj->rgb;
 
 		new_ray.lum_mask = ray.lum_mask;
 	}

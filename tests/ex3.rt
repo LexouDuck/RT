@@ -4,13 +4,13 @@ SPHERE #FFFFFF
 pos:(9, 5, 10)
 rot:{0, 0, 0}
 scale:[0, 0, 0]
-light:(1, 1, 1)
+material:light
 
 SPHERE #FFFFFF
 pos:(-9, 5, 10)
 rot:{0, 0, 0}
 scale:[0, 0, 0]
-light:(1, 1, 1)
+material:light
 
 
 

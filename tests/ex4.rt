@@ -4,7 +4,7 @@ SPHERE #E6CD9B
 pos:(0, 1.36, 0)
 rot:{0, 0, 0}
 scale:[1, 1, 1]
-light:(0.9, 0.8, 0.6)
+material:light
 
 SPHERE #E6CDB2
 pos:(-0.25, -0.24, -0.1)

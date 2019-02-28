@@ -1,8 +1,8 @@
 BG #888888
 
-SPHERE #FFFFFF	pos:(3, 20, 3)	rot:{0, 0, 0}	scale:[0, 0, 0]	light:(1, 1, 1)
+SPHERE #FFFFFF	pos:(3, 20, 3)	rot:{0, 0, 0}	scale:[0, 0, 0]	material:light
 
-SPHERE #FFFFFF	pos:(3,-10, 3)	rot:{0, 0, 0}	scale:[0, 0, 0]	light:(1, 1, 1)
+SPHERE #FFFFFF	pos:(3,-10, 3)	rot:{0, 0, 0}	scale:[0, 0, 0]	material:light
 
 
 

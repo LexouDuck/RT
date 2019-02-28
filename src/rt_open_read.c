@@ -169,6 +169,7 @@ char		*rt_read_arg_material(t_rtparser *p, t_material *result, char const *label
 	p->index += ft_strlen(label);
 	if (p->file[p->index] != ':')
 		return (rt_read_error(':', "without spaces before material string", p->file[p->index]));
+	++(p->index);
 	if (ft_strnequ(p->file + p->index, "diffuse", (length = 7)))
 		*result = diffuse;
 	else if (ft_strnequ(p->file + p->index, "light", (length = 5)))

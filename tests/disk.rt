@@ -4,7 +4,7 @@ SPHERE #FFFFFF
 pos:(0, 10, 0)
 rot:{0, 0, 0}
 scale:[7.5, 7.5, 7.5]
-light:(1, 1, 1)
+material:light
 
 DISK #FF0000
 pos:(0, -0.25, 0)

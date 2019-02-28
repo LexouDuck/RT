@@ -4,7 +4,7 @@ SPHERE #FF4444
 pos:(2, 10, 0)
 rot:{0, 0, 0}
 scale:[0, 0, 0]
-light:(1, 1, 1)
+material:light
 
 // commentaires
 
@@ -12,7 +12,7 @@ SPHERE #FFFFFF
 pos:(0, 0, 0)
 rot:{0, 0, 0}
 scale:[2, 2, 2]
-light:(1., 1., 1.)
+material:light
 
 SPHERE #FF2222
 pos:(10, 0, 0)

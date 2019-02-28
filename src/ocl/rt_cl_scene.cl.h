@@ -217,7 +217,6 @@ typedef struct	s_object
 	char			name[OBJECT_NAME_MAXLENGTH];
 	uint			color;
 	float3			rgb;
-//	float3			light;
 	float3			pos;
 	float3			rot;
 	float3			scale;

@@ -4,7 +4,7 @@ SPHERE #FFFFFF
 pos:(0, 10, 0)
 rot:{0, 0, 0}
 scale:[0, 0, 0]
-light:(1, 1, 1)
+material:light
 
 // commentaires
 
@@ -20,16 +20,17 @@ pos:(0, 5, -10)
 rot:{0, 0, 0}
 scale:[10, 10, 1]
 
-SPHERE #FF1111
+SPHERE #FF11FF
 pos:(0, 4, 0)
 rot:{0, 0, 0.789}
 scale:[2, 2, 2]
-light:(1, 0.1, 1)
+material:light
 
 CYLINDER #11FF11
 pos:(-3, 4, 1)
 rot:{0, 0, 1.5789}
 scale:[2, 2, 2]
+material:glassy
 
 CONE #FFFF11
 pos:(4, 4, 1)

@@ -34,7 +34,7 @@
 # define DEFAULT_CAM_APERTURE	0.05
 
 # define DEFAULT_RENDER_DIST	100000.
-# define EPS					0.001
+# define EPS					0.00003
 
 # define DEFAULT_BG_COLOR		0xFF555555
 
@@ -42,7 +42,7 @@
 # define OBJECT_NAME_MAXLENGTH	24
 # define OBJECT_MAX_AMOUNT		32
 # define DEFAULT_RAYSAMP_SIZE	64
-# define DEFAULT_MAX_RAY_DEPTH	4
+# define DEFAULT_MAX_RAY_DEPTH	8
 
 typedef enum		e_rendermode
 {
@@ -198,12 +198,12 @@ typedef enum	e_primitive
 */
 typedef enum	e_material
 {
-	lightsrc = 0,	// simply returns object->color
+	lightsource = 0,	// simply returns object->color
 	diffuse,		// linear to-dark shading
 //	light,			// this material emits light
 //	mirror,			// returns a reflection ray color
-//	glass,			// returns a blended color of a reflection ray and a refraction ray
-//	glossy,			// has a special "lighter" mode of specular hightlighting
+	glassy,			// returns a blended color of a reflection ray and a refraction ray
+	glossy,			// has a special "lighter" mode of specular hightlighting
 //	skybox ?
 }				t_material;
 
@@ -224,7 +224,7 @@ typedef enum	e_material
 ** rgb			: a vector of float from 0. to 1. representing how much each
 **					object reflects each primary color of light,
 **					respectively (r, g, b); albedo for a diffuse surface;
-**					light emitted for a lightsrc; albedo and filter for
+**					light emitted for a lightsource; albedo and filter for
 **					glassy, glossy and mirror surfaces.
 ** unit_w_to_o	: takes a unit vector from world space (that shouldn't be
 **					translated) to a non-unit vector in object space
@@ -262,7 +262,7 @@ typedef struct	s_object
 	t_bbox			bbox;
 //	cl_float3		specul;
 //	t_float			refrac;//refraction index for snell-descartes
-//	t_float			intensity;//intensity for lightsrc objects, 1. for other objects //or reflectivity ??
+//	t_float			intensity;//intensity for lightsource objects, 1. for other objects //or reflectivity ??
 	cl_float16		o_to_w;
 	cl_float16		w_to_o;
 	cl_float16		n_to_w;

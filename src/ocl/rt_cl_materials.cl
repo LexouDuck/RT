@@ -7,29 +7,58 @@ static float3		rt_cl_get_reflect
 	return (incdir - (float3)(2.f * dot(incdir, normal)) * normal);
 }
 
-static float3		rt_cl_get_transmit
+/*
+** Formula for transparency transmitted ray T:
+**
+** T = 	Tn + Tt
+**	 = 	[n1/n2 * (I - dot(I, N) * N)]
+**		+
+**		[N   *   -sqrt(1 - (n1/n2)^2 * (1 - quadnorm(I, N)))]
+**
+** with n1 the refractive index for the incidence medium, n2 for refrac_ind of
+**		the transmission medium, N the hitpos normal, I the hitpos incidence
+**		vector.
+*/
+static float3		rt_cl_get_transmit_or_reflect
 (
-						t_ray		incident,
-						float3		normal
+						uint2 *			random_seeds,
+						float3			incdir,
+						bool			is_inter_inside,
+						float3			normal,
+						float			refrac
 )
 {
+	float3		newdir;
 	float		dot_i_n;
-	bool		incid_inside_obj;
 	float		refrac_ratio;
+	float		schlick;
+	float		n1 = is_inter_inside ? refrac : 1.;
+	float		n2 = is_inter_inside ? 1. : refrac;
+	float		schlick_r0;
 	float		fresnel;
 
-	dot_i_n = dot(incident.dir, normal);
-	incid_inside_obj = (ray.inter_type == INTER_INSIDE);
-	refrac_ratio = incid_inside_obj ? shdr->hit_obj->refrac : 1. / shdr->hit_obj->refrac;
-	fresnel = 1 - refrac_ratio * refrac_ratio * (1 - dot_i_n * dot_i_n);
-	if (fresnel < 0.)
-		return (FALSE);
-	fresnel = -sqrt(fresnel);
-//	Tn
-	newdir = (float3)refrac_ratio * mad(dot_i_n, normal, incident.dir);
-//	+ Tt
-	newdir = mad(fresnel, normal, newdir);
-//	Position correction for transmission
-	newpos = mad(-EPS, normal, newpos);
-	return (TRUE);
+	schlick_r0 = (n1 - n2) / (n1 + n2);
+	schlick_r0 = schlick_r0 * schlick_r0;
+	dot_i_n = dot(incdir, normal);
+	schlick = schlick_r0 + (1. - schlick_r0) * pown((float)(1. - dot_i_n), 5);
+	if (rt_cl_frand_0_to_1(random_seeds) < schlick)
+	{
+		refrac_ratio = is_inter_inside ? refrac : 1. / refrac;
+		fresnel = 1 - refrac_ratio * refrac_ratio * (1 - dot_i_n * dot_i_n);
+		if (fresnel < 0.)
+//			return ((float3)(0., 0., 0.));
+			return (rt_cl_get_reflect(incdir, normal));
+		fresnel = -sqrt(fresnel); //this is -cos(theta_transmited), the angle made after transmission)
+	//	Tn
+		newdir = (float3)refrac_ratio * mad(dot_i_n, normal, incdir);
+	//	+ Tt
+		newdir = mad(fresnel, normal, newdir);
+		newdir = normalize(newdir);
+	}
+	else
+	{
+		newdir = rt_cl_get_reflect(incdir, normal);
+		//coslobe phong according to roughness?
+	}
+	return (newdir);
 }

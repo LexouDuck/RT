@@ -41,8 +41,7 @@ static t_intersection		rt_cl_paraboloid_intersect
 	quadpoly.z = rt_cl_float3_ynull_dot(ray.pos, ray.pos) - ray.pos.y;
 	if (!(rt_cl_get_realroots_quadpoly(&roots, quadpoly)))
 		return (INTER_NONE);
-	if ((roots.x <= 0. && roots.y <= 0.)/* ||
-		(roots.x > ray.t && roots.y > ray.t)*/)
+	if (roots.x <= 0. && roots.y <= 0.)
 		return (INTER_NONE);
 	else if (roots.x <= 0.)
 	{

@@ -90,7 +90,7 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 			return (error);
 	}
 	if (object.light.x + object.light.y + object.light.z > 0.)
-		object.material = lightsrc;
+		object.material = lightsource;
 	else
 		object.material = diffuse;
 	object.color = ft_color_argb32_set(0.,

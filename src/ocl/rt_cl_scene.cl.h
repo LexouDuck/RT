@@ -15,7 +15,7 @@
 # define EPS					0.00003
 
 # define TAU 					0x1.921fb54442d18p2
-//# define INV_PI				0x1.45f306dc9c883p-2
+# define INV_PI					0x1.45f306dc9c883p-2
 
 typedef enum		e_rendermode
 {

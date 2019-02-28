@@ -134,7 +134,7 @@ static char	*rt_read_command(t_rtparser *p, char *label)
 			: "Import error: Maximum object amount limit has been reached.");
 	else if (ft_strequ(label, "BG"))
 	{
-		*error = rt_read_arg_color(p, &rt.scene.bg_rgb, "color");
+		error = rt_read_arg_color(p, &rt.scene.bg_rgb, "color");
 		rt.scene.bg_color = ft_color_argb32_set(0.,
 			rt.scene.bg_rgb.x * 255.,
 			rt.scene.bg_rgb.y * 255.,

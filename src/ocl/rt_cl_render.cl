@@ -181,7 +181,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 	//	angle = (M_PI / 8); 
 	//	uv_mapping.x = new_ray.uv_coordinates.x * cos(M_PI / 8) - new_ray.uv_coordinates.y * sin(angle); 
 	//	uv_mapping.y = new_ray.uv_coordinates.y * cos(angle) + new_ray.uv_coordinates.x * sin(angle);
-		pattern = (sin(new_ray.uv_coordinates.x * 2 * M_PI * 8) + 1) * 0.5;
+		pattern = (sin((float)(new_ray.uv_coordinates.x * TAU * 8)) + 1) * 0.5;
 		new_ray.lum_mask = ray.lum_mask * obj->rgb * pattern * (float3)(dot(normal, new_ray.dir));
 		new_ray.lum_acc = ray.lum_acc;
 	}

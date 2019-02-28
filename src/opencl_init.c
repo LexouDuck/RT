@@ -15,9 +15,7 @@
 #include <sys/stat.h>
 // TODO remove stdio include
 #include <stdio.h>
-
 #include "libft_convert.h"
-
 #include "../rt.h"
 #include "debug.h"
 
@@ -28,47 +26,46 @@
 **		size_t param_value_size,		// sizeof(*(pointer passed param_value))
 **		void *param_value,				// returns queried arg value
 **		size_t *param_value_size_ret)	// returns actual size of return arg
-**	return CL_SUCCESS, CL_INVALID_DEVICE or 
+**	return CL_SUCCESS, CL_INVALID_DEVICE or
 */
 
 /*
-1 thread (work item) per core; each compute unit on the gpu may have multiple cores
-
-work group size = product of work group dim(i) ; also equal to number of threads
-(work items) in work group. This number should always be a multiple of the number
-of cores per compute unit (cpcu generally = 16 on nvidia and 64 on AMD)
-
-CL_QUEUE_SIZE
-
-CL_DEVICE_VENDOR					:
-CL_DEVICE_NAME						:
-CL_DRIVER_VERSION					:
-CL_DEVICE_PROFILE					:
-CL_DEVICE_VERSION					:
-CL_DEVICE_OPENCL_C_VERSION			:
-CL_DEVICE_MAX_COMPUTE_UNITS			:
-CL_DEVICE_MAX_WORK_ITEM_DIMENSIONS	:
-CL_DEVICE_MAX_WORK_ITEM_SIZES		:
-CL_DEVICE_MAX_WORK_GROUP_SIZE		:
-CL_DEVICE_MEM_BASE_ADDR_ALIGN 		:
-CL_DEVICE_MIN_DATA_TYPE_ALIGN_SIZE	:
-CL_DEVICE_MAX_CLOCK_FREQUENCY		:
-CL_DEVICE_LOCAL_MEM_SIZE			:
-CL_DEVICE_MAX_MEM_ALLOC_SIZE		:
-
-
-cl_int clGetPlatformInfo( 	cl_platform_id platform,
-  	cl_platform_info param_name, //CL_PLATFORM_...
-  	size_t param_value_size,
-  	void *param_value,
-  	size_t *param_value_size_ret)
-CL_PLATFORM_PROFILE
-CL_PLATFORM_VERSION
-CL_PLATFORM_NAME
-CL_PLATFORM_VENDOR
+** 1 thread (work item) per core; each compute unit on the gpu may have multiple cores
+**
+** work group size = product of work group dim(i) ; also equal to number of threads
+** (work items) in work group. This number should always be a multiple of the number
+** of cores per compute unit (cpcu generally = 16 on nvidia and 64 on AMD)
+**
+** CL_QUEUE_SIZE
+**
+** CL_DEVICE_VENDOR					:
+** CL_DEVICE_NAME						:
+** CL_DRIVER_VERSION					:
+** CL_DEVICE_PROFILE					:
+** CL_DEVICE_VERSION					:
+** CL_DEVICE_OPENCL_C_VERSION			:
+** CL_DEVICE_MAX_COMPUTE_UNITS			:
+** CL_DEVICE_MAX_WORK_ITEM_DIMENSIONS	:
+** CL_DEVICE_MAX_WORK_ITEM_SIZES		:
+** CL_DEVICE_MAX_WORK_GROUP_SIZE		:
+** CL_DEVICE_MEM_BASE_ADDR_ALIGN 		:
+** CL_DEVICE_MIN_DATA_TYPE_ALIGN_SIZE	:
+** CL_DEVICE_MAX_CLOCK_FREQUENCY		:
+** CL_DEVICE_LOCAL_MEM_SIZE			:
+** CL_DEVICE_MAX_MEM_ALLOC_SIZE		:
+**
+** cl_int clGetPlatformInfo( 	cl_platform_id platform,
+**   	cl_platform_info param_name, //CL_PLATFORM_...
+**   	size_t param_value_size,
+**   	void *param_value,
+**   	size_t *param_value_size_ret)
+** CL_PLATFORM_PROFILE
+** CL_PLATFORM_VERSION
+** CL_PLATFORM_NAME
+** CL_PLATFORM_VENDOR
 */
 
-int				print_device_info()
+int				print_device_info(void)
 {
 	char	gpu_name[256];
 	char	platform_name[256];
@@ -91,7 +88,7 @@ int				print_device_info()
 	clGetDeviceInfo(rt.ocl.gpu.id, CL_DEVICE_MAX_WORK_ITEM_SIZES,
 						sizeof(size_t) * rt.ocl.gpu.max_nd_range,
 						&(rt.ocl.gpu.max_witems_per_dim), NULL);
-printf("Platform chosen: %s (index %d) | Device: %s | Version: %s\n\t"
+	printf("Platform chosen: %s (index %d) | Device: %s | Version: %s\n\t"
 		"- global mem size (nb of bytes): "OPENCL_LLU64"\n\t"//"- global mem size (nb of bytes): %#lx\n\t"
 		"- compute unit nb: %u\n\t"
 		"- max kernel args size: "OPENCL_LU64"\n\t"
@@ -109,7 +106,7 @@ printf("Platform chosen: %s (index %d) | Device: %s | Version: %s\n\t"
 	return (OK);
 }
 
-int				opencl_get_platform_and_gpu()
+int				opencl_get_platform_and_gpu(void)
 {
 	int			err;
 	int			has_gpu;
@@ -135,15 +132,14 @@ int				opencl_get_platform_and_gpu()
 		return (debug_perror("OpenCL: no GPU device found."));
 	print_device_info();
 	return (OK);
-
 }
 
-//TODO: more precise error handling for OpenCL with flags etc.
-int				opencl_create_context_and_queue()
+int				opencl_create_context_and_queue(void)
 {
 	int			err;
 
 	rt.ocl.context = clCreateContext(NULL, 1, &(rt.ocl.gpu.id), NULL, NULL, &err);
+//TODO: more precise error handling for OpenCL with flags etc
 	if (err < 0)
 		return (debug_perror("OpenCL: could not create context."));
 	rt.ocl.cmd_queue = clCreateCommandQueue(rt.ocl.context, rt.ocl.gpu.id, 0, &err);
@@ -152,24 +148,24 @@ int				opencl_create_context_and_queue()
 	return (OK);
 }
 
-
 /*
-cl_program clCreateProgramWithSource (cl_context context,
-  	cl_uint count,
-  	const char **strings,
-  	const size_t *lengths,
-  	cl_int *errcode_ret)
+** cl_program clCreateProgramWithSource (cl_context context,
+**  	cl_uint count,
+**   	const char **strings,
+**   	const size_t *lengths,
+**   	cl_int *errcode_ret)
+**
+** cl_int clBuildProgram (cl_program program,
+** 		cl_uint num_devices,
+** 		const cl_device_id *device_list,
+** 		const char *options,
+** 		void (CL_CALLBACK *pfn_notify)(cl_program program, void *user_data),
+** 		void *user_data)
+**
+** also see clGetProgramInfo and clGetProgramBuildInfo
+*/
 
-cl_int clBuildProgram (cl_program program,
-	cl_uint num_devices,
-	const cl_device_id *device_list, 
-	const char *options,
-	void (CL_CALLBACK *pfn_notify)(cl_program program, void *user_data),
-	void *user_data)
-
-also see clGetProgramInfo and clGetProgramBuildInfo
- */
-int				opencl_read_and_build_program()
+int				opencl_read_and_build_program(void)
 {
 	int			fd;
 	cl_int		err;
@@ -188,13 +184,13 @@ int				opencl_read_and_build_program()
 		return (debug_perror("build_cl_program: clCreateProgramWithSource returned error."));
 	if ((err = clBuildProgram(rt.ocl.program, 1, &(rt.ocl.gpu.id), RT_CL_PROGRAM_OPTIONS, NULL, NULL)) < 0)
 	{
-		/* Find size of log and print to std output */
-		clGetProgramBuildInfo(rt.ocl.program, rt.ocl.gpu.id, CL_PROGRAM_BUILD_LOG, 
+	// Find size of log and print to std output
+		clGetProgramBuildInfo(rt.ocl.program, rt.ocl.gpu.id, CL_PROGRAM_BUILD_LOG,
 				0, NULL, &file_len);
 		if (!(file_buf = (char *)malloc(file_len + 1)))
 			return (ERROR);
 		file_buf[file_len] = '\0';
-		clGetProgramBuildInfo(rt.ocl.program, rt.ocl.gpu.id, CL_PROGRAM_BUILD_LOG, 
+		clGetProgramBuildInfo(rt.ocl.program, rt.ocl.gpu.id, CL_PROGRAM_BUILD_LOG,
 				file_len + 1, file_buf, NULL);
 		debug_output(file_buf);
 		free(file_buf);
@@ -205,7 +201,7 @@ int				opencl_read_and_build_program()
 	return (OK);
 }
 
-int				opencl_init()
+int				opencl_init(void)
 {
 	int		err;
 

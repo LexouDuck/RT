@@ -20,7 +20,7 @@
 #include "ui.h"
 #include "rt_scene.h"
 
-static void	update_window()
+static void	update_window(void)
 {
 	SDL_Rect	dest;
 
@@ -28,7 +28,6 @@ static void	update_window()
 	if (SDL_FillRect(rt.sdl.window_surface, NULL, 0x000000))
 		debug_output_error(
 			"Error during update_window() -> Screen clear: ", TRUE);
-
 	// display the UI
 	if (rt.ui.current_prompt.name)
 		ui_render_prompt();
@@ -37,24 +36,25 @@ static void	update_window()
 	ui_render_menubar();
 	if (rt.ui.menubar.selection != -1)
 		ui_render_dropdown(&rt.ui.dropdowns[rt.ui.menubar.selection]);
-
-	// Do the 3d render if needed
 	if (rt.must_render)
+	{
+	// Do the 3d render if needed
 		render();
+	}
 	dest = rt.sdl.window_surface->clip_rect;
 	dest.x += UI_WIDTH;
 	dest.w -= UI_WIDTH;
 	if (SDL_BlitSurface(rt.canvas, &rt.canvas->clip_rect, rt.sdl.window_surface, &dest))
 		debug_output_error("Error during update_window() -> render blit: ", TRUE);
-
 	ui_render_caminfo(&rt.scene.camera);
-
-	// and update the window display
 	if (SDL_UpdateTexture(rt.sdl.window_texture, NULL,
 		rt.sdl.window_surface->pixels, rt.sdl.window_surface->pitch))
+	{
+	// and update the window display
 		debug_output_error("Error during window update: ", TRUE);
-//	if (SDL_RenderClear(rt.sdl.window_renderer))
-//		debug_output_error("Error during render screen clear: ", TRUE);
+	}
+	//	if (SDL_RenderClear(rt.sdl.window_renderer))
+	//		debug_output_error("Error during render screen clear: ", TRUE);
 	if (SDL_RenderCopy(rt.sdl.window_renderer, rt.sdl.window_texture, NULL, NULL))
 		debug_output_error("Error during render copy: ", TRUE);
 	SDL_RenderPresent(rt.sdl.window_renderer);
@@ -65,10 +65,14 @@ static void	update_window()
 **	The main program loop: pretty much everything is called from here
 **	Runs at 60fps (the 3 first lines of code inside the loop do this)
 */
-static int	main_loop()
-{
-	t_u32			frame_wait = 0;
 
+static int	main_loop(void)
+{
+	t_u32	frame_wait;
+	int		i;
+
+	frame_wait = 0;
+	i = -1;
 	rt.sdl.current_frame = 0;
 	rt.must_render = TRUE;
 	rt.sdl.loop = TRUE;
@@ -83,7 +87,7 @@ static int	main_loop()
 	}
 	config_save();
 	config_free();
-	for (int i = 0; i < RT_CL_KERNEL_AMOUNT; ++i)
+	while (++i < RT_CL_KERNEL_AMOUNT)
 		clReleaseKernel(rt.ocl.kernels[i]);
 	clReleaseCommandQueue(rt.ocl.cmd_queue);
 	clReleaseProgram(rt.ocl.program);
@@ -103,8 +107,9 @@ static int	main_loop()
 #undef main
 #endif
 
-int			main(int argc, char* argv[])
+int			main(int argc, char *argv[])
 {
+	int	i;
 //printf("debug: init debug\n");
 	if (debug_init())
 		return (ERROR);
@@ -119,13 +124,11 @@ int			main(int argc, char* argv[])
 		return (ERROR);
 	if (init_window_display())
 		return (ERROR);
-
 	init_scene();
 	init_camera(&rt.scene.camera);
-
 	if (argc > 1)
 	{
-		int i = 1;
+		i = 1;
 		rt.filepath = argv[i];
 		rt_file_open(rt.filepath);
 		while (++i < argc)
@@ -134,7 +137,6 @@ int			main(int argc, char* argv[])
 			rt_file_import(argv[i]);
 		}
 	}
-
 //printf("debug: init ui\n");
 	if (ui_init())
 		return (ERROR);

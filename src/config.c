@@ -72,7 +72,7 @@ int			config_init(void)
 			" could not be opened for reading: ", strerror(errno), FALSE);
 		return (ERROR);
 	}
-	INI_ReadFile(fd);
+	ini_read_file(fd);
 	if (close(fd) < 0)
 	{
 		debug_output_value("Error during config_save() -> "CONFIG_FILE

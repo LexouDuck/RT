@@ -84,6 +84,11 @@ static int	main_loop(void)
 		event_checkevents();
 		update_window();
 	}
+	if (rt.ui.current_textinput.input)
+	{
+		free(rt.ui.current_textinput.input);
+		rt.ui.current_textinput.input = NULL;
+	}
 	config_save();
 	config_free();
 	while (++i < RT_CL_KERNEL_AMOUNT)

@@ -14,6 +14,7 @@
 #include <errno.h>
 #include "libft_memory.h"
 #include "libft_convert.h"
+
 #include "../rt.h"
 #include "debug.h"
 
@@ -26,13 +27,15 @@ int		rt_file_open(char *filepath)
 		return (ERROR);
 	if (parser.file)
 	{
-		ft_memclr(rt.scene.objects, OBJECT_MAX_AMOUNT * sizeof(t_object));
+		ft_memclr(rt.scene.objects, sizeof(rt.scene.objects));
 		rt.scene.object_amount = 0;
 		if ((error = rt_read_file(&parser)))
 		{
 			debug_output_value("Error: while reading rt file -> at line ",
 				ft_s32_to_str(parser.line), TRUE);
 			debug_output_error(error, FALSE);
+			if (ft_strnequ(error, "Could not resolve label", 23))
+				free(error);
 			return (ERROR);
 		}
 		debug_output_value("Successfully opened file: ", filepath, FALSE);

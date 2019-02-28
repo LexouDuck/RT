@@ -45,10 +45,18 @@ void	ui_render_icon_object(t_object *object, t_s32 y)
 
 void	ui_render_expandedproperties(t_object *object, t_s32 y)
 {
+	static const char *materials[] = {
+		"   LIGHT   ",
+		"  DIFFUSE  ",
+		"TRANSPARENT",
+		" SPECULAR  ",
+	};
 	char		*tmp;
 
 	ui_render_text("Material:", 1, y + 3, FALSE);
-	ui_render_text(ft_s8_to_str(object->material), 10, y + 3, FALSE);
+	ui_render_text(materials[(int)object->material], 12, y + 3, FALSE);
+	ui_render_text("\x12", 11, y + 3, FALSE);
+	ui_render_text("\x13", 25, y + 3, FALSE);
 	if ((tmp = ft_u32_to_hex(object->color)))
 	{
 		ui_render_text("Color: #", 1, y + 6, FALSE);

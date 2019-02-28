@@ -16,9 +16,26 @@
 
 void	ui_mouse_objectlist_expandedproperties(t_object *object, t_s32 y)
 {
-	cl_float3	*ptr;
-	t_u8		i;
+	static SDL_Rect	rect = { 0, 0, 1, 1 };
+	cl_float3		*ptr;
+	t_u8			i;
 
+	rect.x = 11;
+	rect.y = y + 1;
+	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+	{
+		object->material = (int)object->material == 0 ? 3 : object->material - 1;
+		rt.must_render = TRUE;
+		return ;
+	}
+	rect.x = 25;
+	rect.y = y + 1;
+	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+	{
+		object->material = (int)object->material == 3 ? 0 : object->material + 1;
+		rt.must_render = TRUE;
+		return ;
+	}
 	y += 4;
 	ptr = &object->rgb;
 	i = 0;
@@ -58,12 +75,9 @@ void	ui_mouse_objectlist(void)
 			rect.w = UI_WIDTH_TILES - 4;
 			if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
 			{
-//WARNING Is rt.ui.objects.selected[i] = TRUE in if statement or not
 				if (!(rt.input.keys & KEY_CTRL))
-				{
 					ft_memclr(rt.ui.objects.selected, OBJECT_MAX_AMOUNT * sizeof(t_bool));
-					rt.ui.objects.selected[i] = TRUE;
-				}
+				rt.ui.objects.selected[i] = TRUE;
 			}
 			rect.x = UI_WIDTH_TILES - 4;
 			rect.w = 2;

@@ -18,7 +18,7 @@
 #include "../rt.h"
 #include "debug.h"
 
-static char	*INI_Error(char expected, char *description, char instead)
+static char	*ini_error(char expected, char *description, char instead)
 {
 	char	*result;
 	size_t	length;
@@ -41,7 +41,7 @@ static char	*INI_Error(char expected, char *description, char instead)
 	return (result);
 }
 
-static void	INI_ParseWhitespace(t_iniparser *p)
+static void	ini_parse_whitespace(t_iniparser *p)
 {
 	char	*file;
 
@@ -62,7 +62,7 @@ static void	INI_ParseWhitespace(t_iniparser *p)
 	}
 }
 
-static char	*INI_ApplySetting(t_iniparser *p)
+static char	*ini_apply_setting(t_iniparser *p)
 {
 	int index;
 	int	i;
@@ -88,7 +88,7 @@ static char	*INI_ApplySetting(t_iniparser *p)
 	return (NULL);
 }
 
-static char	*INI_ReadSetting(t_iniparser *p)
+static char	*ini_read_setting(t_iniparser *p)
 {
 	char	*file;
 
@@ -101,11 +101,11 @@ static char	*INI_ReadSetting(t_iniparser *p)
 		++(p->index);
 	p->name_length = (file + p->index) - p->name;
 	if (file[p->index] != '=')
-		INI_ParseWhitespace(p);
+		ini_parse_whitespace(p);
 	if (file[p->index] != '=')
-		return (INI_Error('=', " symbol but instead found ", file[p->index]));
+		return (ini_error('=', " symbol but instead found ", file[p->index]));
 	++(p->index);
-	INI_ParseWhitespace(p);
+	ini_parse_whitespace(p);
 	if (!file[p->index])
 		return ("Unexpected end of file encountered before value.");
 	p->value = (file + p->index);
@@ -113,10 +113,10 @@ static char	*INI_ReadSetting(t_iniparser *p)
 		++(p->index);
 	p->value_length = (file + p->index) - p->value;
 	++(p->index);
-	return (INI_ApplySetting(p));
+	return (ini_apply_setting(p));
 }
 
-void		INI_ReadFile(int fd)
+void		ini_read_file(int fd)
 {
 	t_iniparser	parser;
 	char		*error;
@@ -129,17 +129,17 @@ void		INI_ReadFile(int fd)
 	}
 	parser.index = 0;
 	parser.line = 1;
-	INI_ParseWhitespace(&parser);
+	ini_parse_whitespace(&parser);
 	while (parser.file[parser.index])
 	{
-		if ((error = INI_ReadSetting(&parser)))
+		if ((error = ini_read_setting(&parser)))
 		{
 			debug_output_value("Error while reading INI file, at line ",
 				FT_Size_To_String(parser.line), TRUE);
 			debug_output_error(error, FALSE);
 			free(error);
 		}
-		INI_ParseWhitespace(&parser);
+		ini_parse_whitespace(&parser);
 	}
 	free(parser.file);
 }

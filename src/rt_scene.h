@@ -31,7 +31,7 @@
 # define DEFAULT_CAM_ANCHOR		((cl_float3){{ 0., 0., 0. }})
 # define DEFAULT_CAM_TILT		0.
 # define DEFAULT_CAM_FOV		1.
-# define DEFAULT_CAM_APERTURE	0.2
+# define DEFAULT_CAM_APERTURE	2.
 # define DEFAULT_RENDER_DIST	100000.
 # define EPS					0.00003
 # define DEFAULT_BG_COLOR		0xFF555555
@@ -187,7 +187,6 @@ typedef struct		s_bbox
 ** All primitives are considered to be centered near the origin with default
 ** unit dimensions.
 */
-//INTERSECTIONS
 typedef enum		e_primitive
 {
 	none = 0,
@@ -213,18 +212,14 @@ typedef enum		e_primitive
 */
 typedef enum		e_material
 {
-// 	simply returns object->color
-	lightsource = 0,
+// 	emits light
+	light = 0,
 // 	linear to-dark shading
 	diffuse,
-// 		this material emits light
-// 	light,
-// 		returns a reflection ray color
-// 	mirror,
-// 		returns a blended color of a reflection ray and a refraction ray
-	glassy,
-// 		has a special "lighter" mode of specular hightlighting
-	glossy,
+// 	returns a blended color of a reflection ray and a refraction ray
+	transparent,
+// 	has a special "lighter" mode of specular hightlighting
+	specular,
 // 	skybox ?
 }					t_material;
 

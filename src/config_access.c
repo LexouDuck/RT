@@ -12,7 +12,7 @@
 
 #include "../rt.h"
 
-inline char*	config_get(int index)
+inline char		*config_get(int index)
 {
 	if (rt.config.names[index])
 	{
@@ -24,7 +24,7 @@ inline char*	config_get(int index)
 	return (NULL);
 }
 
-inline void		config_set(int index, char* value)
+inline void		config_set(int index, char *value)
 {
 	if (rt.config.names[index])
 	{

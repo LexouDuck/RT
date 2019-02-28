@@ -1,43 +1,32 @@
-static t_ray	rt_cl_get_new_ray_properties
+static t_color	rt_cl_get_color_properties
 (
 				__constant	t_scene	*	scene,
 							t_object	obj,
-							uint2 *		random_seeds,
 							float3		hitpos,
 							float3		normal
 )
 {
-	t_ray		new_ray;
+	t_color	color;
 
-	new_ray.pos = rt_cl_apply_homogeneous_matrix(obj.o_to_w, hitpos) + normal * (float3)(EPS);
-	new_ray.dir = rt_cl_rand_dir_coshemi(random_seeds, normal);
-	new_ray.hit_obj_id = -1;
-	new_ray.inter_type = INTER_NONE;
-	new_ray.t = scene->render_dist;
-/*	new_ray.hit_texture_coordinates.x = (1 + atan2(normal.z, normal.x) / M_PI) * 0.5; 
-	new_ray.hit_texture_coordinates.y = acosf(normal.y) / M_PI;*/
+//	obj.texture = horizontal_wave;
+	obj.texture = wave;
 	if (obj.type == sphere)
 	{
-		new_ray.uv_coordinates.x = (1 + atan2((float)(normal.z), (float)(normal.x)) * INV_PI) * 0.5; 
-		new_ray.uv_coordinates.y = acos((float)(normal.y)) * INV_PI;
-	}
-	if (obj.type == cube)
+		color.uv_pos.x = (1 + atan2((float)(normal.z), (float)(normal.x)) * INV_PI) * 0.5; 
+		color.uv_pos.y = acos((float)(normal.y)) * INV_PI;
+	}	
+	if (obj.texture == horizontal_wave)
+		color.uv_map = (sin((float)(color.uv_pos.x * 2 * TAU * 4)) + 1) * 0.5;
+	else if (obj.texture == vertical_wave)
+		color.uv_map = (cos((float)(color.uv_pos.y * 2 * TAU * 4)) + 1) * 0.5;
+	else if (obj.texture == wave)
+		color.uv_map = (cos((float)(color.uv_pos.y * 2 * TAU * 4)) + 1) * 0.5
+		* (sin((float)(color.uv_pos.x * 2 * TAU * 8)) + 1) * 0.5;
+	else if (obj.texture == hue)
 	{
-		if (fabs((float)(new_ray.uv_coordinates.x)) == 1)
-		{
-			new_ray.uv_coordinates.x = (normal.z + 1) / 2;
-			new_ray.uv_coordinates.y = (normal.y + 1) / 2;
-		}
-		else if (fabs((float)(new_ray.uv_coordinates.y)) == 1)
-		{
-			new_ray.uv_coordinates.x = (normal.x + 1) / 2;
-			new_ray.uv_coordinates.y = (normal.z + 1) / 2;
-		}
-		else
-		{
-			new_ray.uv_coordinates.x = (normal.x + 1) / 2;
-			new_ray.uv_coordinates.y = (normal.y + 1) / 2;
-		}
+		color.uv_map = 1;
+		obj.rgb = (float3)(color.uv_pos.x, color.uv_pos.y, 0);
 	}
-	return (new_ray);
+	color.rgb = color.uv_map * obj.rgb;
+	return (color);
 }

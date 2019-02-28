@@ -134,7 +134,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 				float2		uv_mapping;
 				float		angle;
 				float		pattern;
-				float3		texture;
+				t_color		color;
 
 
 	hitpos = ray.pos + ((float3)ray.t) * ray.dir;
@@ -159,8 +159,12 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 	else
 		normal = rt_cl_sphere_get_normal(hitpos);
 	normal = normalize(rt_cl_apply_linear_matrix(obj->n_to_w, normal)) * ray.inter_type; //sphere formula, normal == hitpos
-	new_ray = rt_cl_get_new_ray_properties(scene, *obj, random_seeds, hitpos, normal);
-
+	new_ray.pos = rt_cl_apply_homogeneous_matrix(obj->o_to_w, hitpos) + normal * (float3)(EPS);
+	new_ray.dir = rt_cl_rand_dir_coshemi(random_seeds, normal);
+	new_ray.hit_obj_id = -1;
+	new_ray.inter_type = INTER_NONE;
+	new_ray.t = scene->render_dist;
+	color = rt_cl_get_color_properties(scene, *obj, hitpos, normal);
 #if 0
 	new_ray.complete = obj->material == lightsrc;
 	new_ray.lum_mask = ray.lum_mask * obj->rgb;
@@ -172,17 +176,14 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 	{
 		new_ray.complete = true;
 		new_ray.lum_acc = ray.lum_acc + ray.lum_mask * obj->rgb;
-
 		new_ray.lum_mask = ray.lum_mask;
 	}
 	else if (obj->type == sphere)
 	{
-		// compute the pattern
-	//	angle = (M_PI / 8); 
-	//	uv_mapping.x = new_ray.uv_coordinates.x * cos(M_PI / 8) - new_ray.uv_coordinates.y * sin(angle); 
-	//	uv_mapping.y = new_ray.uv_coordinates.y * cos(angle) + new_ray.uv_coordinates.x * sin(angle);
-		pattern = (sin((float)(new_ray.uv_coordinates.x * TAU * 8)) + 1) * 0.5;
-		new_ray.lum_mask = ray.lum_mask * obj->rgb * pattern * (float3)(dot(normal, new_ray.dir));
+		new_ray.complete = false;
+		new_ray.lum_acc = ray.lum_acc;
+
+		new_ray.lum_mask = ray.lum_mask * color.rgb * (float3)(dot(normal, new_ray.dir));
 		new_ray.lum_acc = ray.lum_acc;
 	}
 /*
@@ -242,7 +243,6 @@ static t_ray			rt_cl_create_camray
 	float2				seeds;
 	float2				box_muller_sample;
 	float3				aperture;
-	float				focus_distance = 50;
 
 	camray.lum_acc = (float3)(0.);
 	camray.lum_mask = (float3)(1.);

@@ -161,7 +161,6 @@ typedef struct		s_ray
 	cl_float3		lum_mask;
 	cl_float3		lum_acc;
 	t_intersection	inter_type;
-	cl_float2		uv_coordinates;
 }					t_ray;
 
 /*
@@ -187,7 +186,6 @@ typedef struct		s_bbox
 ** All primitives are considered to be centered near the origin with default
 ** unit dimensions.
 */
-//INTERSECTIONS
 typedef enum		e_primitive
 {
 	none = 0,
@@ -227,6 +225,25 @@ typedef enum		e_material
 	glossy,
 // 	skybox ?
 }					t_material;
+
+typedef	enum		e_texture
+{
+	solid = 0,
+	horizontal_wave,
+	vertical_wave,
+	wave,
+	checkerboard,
+	hue,
+	noisy,
+}					t_texture;
+
+typedef struct		s_color
+{
+	t_texture		texture;
+	cl_float		uv_map;
+	cl_float2		uv_pos;
+	cl_float3		rgb;
+}					t_color;
 
 /*
 ** This struct is used to translate, rotate and scale our object into position
@@ -287,6 +304,7 @@ typedef struct		s_object
 	cl_float16		o_to_w;
 	cl_float16		w_to_o;
 	cl_float16		n_to_w;
+	t_texture		texture;
 }					t_object;
 
 typedef struct		s_scene

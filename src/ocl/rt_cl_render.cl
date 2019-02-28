@@ -117,34 +117,6 @@ static t_intersection		rt_cl_trace_ray_to_scene
 	return (prim_inter);
 }
 
-/*
-static float3			rt_cl_new_rand_dir_coshemi
-(
-						 uint2 *		random_seeds
-						float3		normal, 
-)
-{
-
-	float3				ray;
-	float3				random_dir;
-	float3				random;
-	float3				tangent1;
-	float3				tangent2;
-	float2				seed;
-	float2				d;
-
-	seed.x = rt_cl_frand_0_to_1(random_seeds);
-	seed.y = rt_cl_frand_0_to_1(random_seeds);
-	random_dir = (float3)(cos(2 * M_PI * seed.x) * sqrt(1 - seed.y), sin(2 * M_PI * seed.x) * sqrt(1 - seed.y), sqrt(seed.y));
-	random = (float3)(rt_cl_frand_0_to_1(random_seeds) - 0.5, rt_cl_frand_0_to_1(random_seeds) - 0.5, rt_cl_frand_0_to_1(random_seeds) - 0.5);
-	cl_float3_cross(&tangent1, normal, random);
-	tangent1 = normalize(tangent1);
-	cl_float3_cross(&tangent2, tangent1, normal);
-	ray = (random_dir.z * normal) + (random_dir.x * tangent1) + (random_dir.y * tangent2);
-	return (ray);
-}
-*/
-
 static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 (
 						__constant	t_scene	*	scene,
@@ -158,8 +130,11 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 				t_ray		new_ray;
 				float3		hitpos;
 				float3		normal;
-// HUGO
 				float3		random_dir;
+				float2		uv_mapping;
+				float		angle;
+				float		pattern;
+				float3		texture;
 
 	hitpos = ray.pos + ((float3)ray.t) * ray.dir;
 	if (obj->type == sphere)
@@ -183,25 +158,35 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 	else
 		normal = rt_cl_sphere_get_normal(hitpos);
 	normal = normalize(rt_cl_apply_linear_matrix(obj->n_to_w, normal)) * ray.inter_type; //sphere formula, normal == hitpos
-	new_ray.pos = rt_cl_apply_homogeneous_matrix(obj->o_to_w, hitpos) + normal * (float3)(EPS);
-	new_ray.dir = rt_cl_rand_dir_coshemi(random_seeds, normal);
-	new_ray.hit_obj_id = -1;
-	new_ray.inter_type = INTER_NONE;
-	new_ray.t = scene->render_dist;
-//	rt_cl_new_random_cos_hemi(normal, random_seeds);
+	new_ray = rt_cl_get_new_ray_properties(scene, *obj, random_seeds, hitpos, normal);
 #if 0
 	new_ray.complete = obj->material == lightsrc;
 	new_ray.lum_mask = ray.lum_mask * obj->rgb;
 	new_ray.lum_mask *= (float3)(1. - new_ray.complete) * (float3)(dot(normal, new_ray.dir));
 	new_ray.lum_acc = ray.lum_acc + (float3)(new_ray.complete) * new_ray.lum_mask;
 #endif
-
 	//TODO echantillonage par importance, séparation éclairage direct et indirect
 	if (obj->material == lightsrc)
 	{
 		new_ray.complete = true;
 		new_ray.lum_mask = ray.lum_mask;
 		new_ray.lum_acc = ray.lum_acc + ray.lum_mask * obj->light;//obj->rgb;
+	}
+	else if (obj->type == sphere)
+	{
+		// compute the pattern
+	//	angle = (M_PI / 8); 
+	//	uv_mapping.x = new_ray.uv_coordinates.x * cos(M_PI / 8) - new_ray.uv_coordinates.y * sin(angle); 
+	//	uv_mapping.y = new_ray.uv_coordinates.y * cos(angle) + new_ray.uv_coordinates.x * sin(angle);
+		pattern = (sin(new_ray.uv_coordinates.x * 2 * M_PI * 8) + 1) * 0.5;
+		new_ray.lum_mask = ray.lum_mask * obj->rgb * pattern * (float3)(dot(normal, new_ray.dir));
+		new_ray.lum_acc = ray.lum_acc;
+	}
+	else if (obj->type == cube)
+	{
+		pattern = (sin(new_ray.uv_coordinates.x * 2 * M_PI * 8) + 1) * 0.5;
+		new_ray.lum_mask = ray.lum_mask * obj->rgb * pattern * (float3)(dot(normal, new_ray.dir));
+		new_ray.lum_acc = ray.lum_acc;
 	}
 	else
 	{
@@ -216,7 +201,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 
 static t_ray			rt_cl_create_camray
 (
-					__constant		t_scene	*	scene,
+						__constant	t_scene	*	scene,
 									uint2 *		random_seeds
 )
 {
@@ -244,17 +229,15 @@ static t_ray			rt_cl_create_camray
 	//	Box muller, anti-aliasing
 	seed.x = rt_cl_frand_0_to_1(random_seeds) / 2;
 	seed.y = rt_cl_frand_0_to_1(random_seeds) / 2;
-	anti_aliasing.x = sqrt(-2 * log((float)(seed.x))) * cos(2 * M_PI * seed.y);
-	anti_aliasing.y = sqrt(-2 * log((float)(seed.x))) * sin(2 * M_PI * seed.y);
+	anti_aliasing.x = sqrt(-2 * log((float)(seed.x))) * cos((float)(2 * M_PI * seed.y));
+	anti_aliasing.y = sqrt(-2 * log((float)(seed.x))) * sin((float)(2 * M_PI * seed.y));
 	camray.dir = (float3)(x_id - width / 2 + anti_aliasing.x, y_id - height / 2 + anti_aliasing.y, fov_val);
 	camray.dir = normalize(camray.dir);
 
 	camray.pos = (float3)(0., 0., 0.);
 	destination = camray.pos + (focus_distance * camray.dir);
-//	aperture.x = rt_cl_frand_0_to_1(random_seeds) * scene->camera.aperture;
-//	aperture.y = rt_cl_frand_0_to_1(random_seeds) * scene->camera.aperture;
-	aperture.x = rt_cl_frand_0_to_1(random_seeds) * 4;
-	aperture.y = rt_cl_frand_0_to_1(random_seeds) * 4;
+	aperture.x = rt_cl_frand_0_to_1(random_seeds) * scene->camera.aperture;
+	aperture.y = rt_cl_frand_0_to_1(random_seeds) * scene->camera.aperture;
 	new_origin = camray.pos + (float3)(aperture.x, aperture.y, 0.);
 
 	camray.pos = rt_cl_apply_homogeneous_matrix(cam_mat44_c_to_w, new_origin);
@@ -263,34 +246,6 @@ static t_ray			rt_cl_create_camray
 	camray.dir = normalize(camray.dir);
 
 	return (camray);
-
-/*
-//	Box muller, anti-aliasing
-	seed.x = rt_cl_frand_0_to_1(random_seeds) / 2;
-	seed.y = rt_cl_frand_0_to_1(random_seeds) / 2;
-	anti_aliasing.x = sqrt(-2 * log((float)(seed.x))) * cos(2 * M_PI * seed.y);
-	anti_aliasing.y = sqrt(-2 * log((float)(seed.x))) * sin(2 * M_PI * seed.y);
-	camray.dir = (float3)(x_id - width / 2 + anti_aliasing.x, y_id - height / 2 + anti_aliasing.y, fov_val);
-
-	dofray.lum_acc = (float3)(0.);
-	dofray.lum_mask = (float3)(1.);
-	dofray.t = scene->render_dist;
-	dofray.complete = false;
-	dofray.hit_obj_id = -1;
-	dofray.inter_type = INTER_NONE;
-
-	dofray.dir = normalize(camray.dir);
-	aperture.x = rt_cl_frand_0_to_1(random_seeds) * 5;
-	aperture.y = rt_cl_frand_0_to_1(random_seeds) * 5;
-
-	destination = camray.pos + focus_distance * camray.dir;
-	dofray.pos = (camray.pos + (float3)(aperture.x, aperture.y, 0));
-//	dofray.pos = normalize(destination - dofray.pos);
-	dofray.pos = rt_cl_apply_homogeneous_matrix(cam_mat44, dofray.pos);
-//	dofray.pos = rt_cl_apply_homogeneous_matrix(cam_mat44, dofray.pos);
-//	dof_ray.dir = rt_cl_apply_linear_matrix(cam_mat44, dof_ray.dir);
-	return(dofray);
-*/
 }
 
 //For some reason a statement with || doesn't EVER get read properly as a truth statement so I switched conditions around 

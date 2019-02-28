@@ -107,6 +107,7 @@ typedef struct	s_ray
 	float3			lum_mask;
 	float3			lum_acc;
 	t_intersection	inter_type;
+	float2			uv_coordinates;
 }				t_ray;
 
 /*

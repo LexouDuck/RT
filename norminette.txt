@@ -1,0 +1,284 @@
+Norme: ./src/config_access.c
+Norme: ./src/cl_float3_util.c
+Norme: ./src/config.c
+Error (line 64): C++ comment
+Norme: ./src/camera.c
+Norme: ./src/event.c
+Error (line 39): line has 86 characters
+Error (line 70): C++ comment
+Norme: ./src/debug.c
+Error (line 42): declarations must be followed by one empty line in debug_output
+Error (line 46): preprocessor block must be followed by one empty line
+Error (line 48): preprocessor block must be followed by one empty line
+Error (line 67): declarations must be followed by one empty line in debug_output_value
+Error (line 71): preprocessor block must be followed by one empty line
+Error (line 74): preprocessor block must be followed by one empty line
+Error (line 96): function debug_output_error has 35 lines
+Error (line 96): declarations must be followed by one empty line in debug_output_error
+Error (line 100): preprocessor block must be followed by one empty line
+Error (line 110): preprocessor block must be followed by one empty line
+Error (line 135): declarations must be followed by one empty line in debug_perror
+Error (line 139): preprocessor block must be followed by one empty line
+Error (line 142): preprocessor block must be followed by one empty line
+Norme: ./src/event_window.c
+Error (line 37): line has 83 characters
+Error (line 38): line has 88 characters
+Error (line 49): line has 83 characters
+Norme: ./src/config_ini.c
+Error (line 21, col 7): INI_Error not unixcase
+Error (line 44, col 7): INI_ParseWhitespace not unixcase
+Error (line 65, col 7): INI_ApplySetting not unixcase
+Error (line 91, col 7): INI_ReadSetting not unixcase
+Error (line 119, col 0): INI_ReadFile not unixcase
+Norme: ./src/event_key.c
+Error (line 16): function event_check_keydown has 55 lines
+Error (line 20): C++ comment
+Error (line 39): C++ comment
+Error (line 40): C++ comment
+Error (line 41): C++ comment
+Error (line 42): C++ comment
+Error (line 58): line has 103 characters
+Error (line 60): C++ comment
+Error (line 79): C++ comment
+Norme: ./src/init_scene.c
+Error (line 17): C++ comment
+Error (line 18): C++ comment
+Norme: ./src/init_sdl.c
+Error (line 58): function init_window_display has 33 lines
+Norme: ./src/main.c
+Error (line 22): function update_window has 37 lines
+Error (line 26): C++ comment
+Error (line 30): C++ comment
+Error (line 40): C++ comment
+Error (line 46): line has 89 characters
+Error (line 47): line has 83 characters
+Error (line 52): C++ comment
+Error (line 55): C++ comment
+Error (line 56): C++ comment
+Error (line 57): line has 83 characters
+Error (line 68): function main_loop has 27 lines
+Error (line 106): wrong number of spaces in preprocessor indentation
+Error (line 109): function main has 35 lines
+Error (line 112): C++ comment
+Error (line 115): C++ comment
+Error (line 118): C++ comment
+Error (line 121): C++ comment
+Error (line 139): C++ comment
+Error (line 142): C++ comment
+Norme: ./src/rt_file.c
+Warning: /Users/hbruvry/Desktop/RTV2/src/rt_file.c may not compile or is invalid for some reasons.
+Norme: ./src/event_mouse.c
+Error (line 18): declarations in event_mouse_wheel must be at the top of the function
+Error (line 18): declarations must be followed by one empty line in event_mouse_wheel
+Error (line 27): line has 90 characters
+Error (line 30): line has 87 characters
+Error (line 31): line has 84 characters
+Error (line 54): line has 88 characters
+Error (line 68): function event_mouse_release has 29 lines
+Error (line 101): function event_mouse_motion has 27 lines
+Error (line 101): declarations in event_mouse_motion must be at the top of the function
+Error (line 101): declarations must be followed by one empty line in event_mouse_motion
+Norme: ./src/opencl_init.c
+Error (line 15): preprocessor block must be followed by one empty line
+Error (line 16): C++ comment
+Error (line 33): line has 87 characters
+Error (line 35): line has 84 characters
+Error (line 36): line has 85 characters
+Error (line 68): function print_device_info has 37 lines
+Error (line 78): line has 82 characters
+Error (line 81): line has 82 characters
+Error (line 84): line has 82 characters
+Error (line 86): line has 88 characters
+Error (line 92): C++ comment
+Error (line 92): line has 107 characters
+Error (line 104): line has 109 characters
+Error (line 114): line has 120 characters
+Error (line 116): line has 96 characters
+Error (line 117): C++ comment
+Error (line 117): line has 85 characters
+Error (line 118): C++ comment
+Error (line 120): C++ comment
+Error (line 120): line has 158 characters
+Error (line 141): line has 83 characters
+Error (line 142): C++ comment
+Error (line 145): line has 85 characters
+Error (line 168): function opencl_read_and_build_program has 32 lines
+Error (line 176): C++ comment
+Error (line 176): line has 104 characters
+Error (line 180): line has 94 characters
+Error (line 184): line has 94 characters
+Error (line 185): line has 108 characters
+Error (line 187): C++ comment
+Error (line 188): line has 83 characters
+Error (line 193): line has 83 characters
+Error (line 197): line has 83 characters
+Error (line 200): C++ comment
+Error (line 200): line has 104 characters
+Error (line 209): line has 91 characters
+Error (line 211): line has 90 characters
+Error (line 214): C++ comment
+Error (line 215): C++ comment
+Error (line 215): line has 105 characters
+Error (line 216): C++ comment
+Error (line 219): line has 84 characters
+Error (line 222): line has 84 characters
+Norme: ./src/rt_open_util.c
+Norme: ./src/ui.c
+Error (line 53): line has 90 characters
+Error (line 57): function ui_set_tileset has 45 lines
+Error (line 57, col 0): ui_set_tileset has 8 variables
+Error (line 79): line has 95 characters
+Error (line 85): line has 82 characters
+Error (line 87): line has 82 characters
+Error (line 96): line has 128 characters
+Norme: ./src/render.c
+Error (line 25): line has 83 characters
+Error (line 33): function get_error_string has 137 lines
+Error (line 35): switch detected
+Error (line 77): C++ comment
+Error (line 156): C++ comment
+Error (line 174): function render_launch_kernel0_build_scene has 27 lines
+Error (line 179): C++ comment
+Error (line 185): line has 83 characters
+Error (line 188): line has 83 characters
+Error (line 189): line has 89 characters
+Error (line 191): line has 87 characters
+Error (line 192): C++ comment
+Error (line 205): function render_launch_kernel1_rendermain has 38 lines
+Error (line 216): C++ comment
+Error (line 221): line has 82 characters
+Error (line 223): line has 112 characters
+Error (line 224): line has 105 characters
+Error (line 225): C++ comment
+Error (line 225): line has 144 characters
+Error (line 228): C++ comment
+Error (line 229): line has 87 characters
+Error (line 231): C++ comment
+Error (line 232): line has 109 characters
+Error (line 252): C++ comment
+Error (line 253): C++ comment
+Error (line 254): line has 90 characters
+Error (line 255): line has 87 characters
+Error (line 261): C++ comment
+Error (line 262): C++ comment
+Error (line 265): C++ comment
+Error (line 271): C++ comment
+Error (line 273): C++ comment
+Error (line 274): C++ comment
+Error (line 276): C++ comment
+Error (line 277): C++ comment
+Error (line 278): C++ comment
+Error (line 279): C++ comment
+Error (line 280): C++ comment
+Error (line 281): C++ comment
+Error (line 281): line has 175 characters
+Norme: ./src/rt_open.c
+Error (line 26): function rt_output_readfile has 35 lines
+Error (line 57): line has 82 characters
+Error (line 58): line has 82 characters
+Error (line 59): line has 84 characters
+Error (line 60): C++ comment
+Error (line 60): line has 84 characters
+Error (line 65): function rt_read_object has 30 lines
+Error (line 99): function rt_read_command has 45 lines
+Norme: ./src/ui_control_textbox.c
+Error (line 41): line has 85 characters
+Error (line 67): line has 86 characters
+Norme: ./src/ui_menu_edit.c
+Norme: ./src/ui_control_numberbox.c
+Error (line 61): function ui_mouse_control_numberbox has 28 lines
+Error (line 61): line has 90 characters
+Error (line 77): line has 86 characters
+Error (line 104): line has 86 characters
+Norme: ./src/ui_menu_view.c
+Norme: ./src/ui_mouse.c
+Warning: /Users/hbruvry/Desktop/RTV2/src/ui_mouse.c may not compile or is invalid for some reasons.
+Norme: ./src/ui_prompt.c
+Error (line 27): function ui_mouse_prompt has 26 lines
+Error (line 39): line has 93 characters
+Error (line 40): line has 85 characters
+Error (line 42): line has 87 characters
+Error (line 44): line has 85 characters
+Error (line 46): line has 87 characters
+Error (line 51): line has 98 characters
+Norme: ./src/rt_open_read.c
+Error: 6 functions in the file
+Error (line 18): function rt_read_arg_name has 28 lines
+Error (line 47): line has 84 characters
+Error (line 77): line has 82 characters
+Error (line 101): line has 85 characters
+Error (line 107): line has 88 characters
+Error (line 111): line has 92 characters
+Error (line 127): function rt_read_arg_color has 41 lines
+Error (line 127): line has 84 characters
+Error (line 172): line has 88 characters
+Error (line 177): line has 88 characters
+Error (line 181): line has 97 characters
+Norme: ./src/ui_menu_file.c
+Error (line 32): line has 86 characters
+Norme: ./src/ui_init.c
+Error: 6 functions in the file
+Error (line 132): line has 145 characters
+Error (line 138): function ui_init has 29 lines
+Error (line 138): declarations in ui_init must be at the top of the function
+Error (line 138): declarations must be followed by one empty line in ui_init
+Error (line 147): preprocessor block must be followed by one empty line
+Error (line 148, col 11): size is instanciated during declaration
+Error (line 154): preprocessor block must be followed by one empty line
+Error (line 156): preprocessor block must be followed by one empty line
+Norme: ./tmp_srcs/solve_cubic.c
+Error: file must end with a single empty line
+Error (line 13): C++ comment
+Error (line 18): spaces at the end of line
+Error (line 23): spaces at the end of line
+Error (line 61): spaces at the end of line
+Error (line 61): line has 155 characters
+Error (line 74): spaces at the end of line
+Error (line 75): spaces at the end of line
+Error (line 76): spaces at the end of line
+Error (line 77): spaces at the end of line
+Norme: ./src/ui_scrollbar.c
+Error (line 30): line has 87 characters
+Error (line 31): line has 87 characters
+Error (line 62): function ui_render_scrollbar has 51 lines
+Error (line 90): line has 84 characters
+Norme: ./src/ui_render_util.c
+Error: 7 functions in the file
+Error (line 21): line has 86 characters
+Error (line 102): function ui_render_rect_corners has 29 lines
+Error (line 104, col 17): rect_UL not unixcase
+Error (line 105, col 17): rect_UR not unixcase
+Error (line 106, col 17): rect_DL not unixcase
+Error (line 107, col 17): rect_DR not unixcase
+Error (line 114): C++ comment
+Error (line 119): C++ comment
+Error (line 123): C++ comment
+Error (line 128): C++ comment
+Error (line 135): function ui_render_rect_edges_h has 27 lines
+Error (line 137, col 17): rect_U not unixcase
+Error (line 138, col 17): rect_D not unixcase
+Error (line 144): C++ comment
+Error (line 150): line has 83 characters
+Error (line 154): C++ comment
+Error (line 160): line has 83 characters
+Error (line 166): function ui_render_rect_edges_v has 27 lines
+Error (line 168, col 17): rect_R not unixcase
+Error (line 169, col 17): rect_L not unixcase
+Error (line 175): C++ comment
+Error (line 181): line has 83 characters
+Error (line 185): C++ comment
+Error (line 191): line has 83 characters
+Error (line 219): line has 85 characters
+Norme: ./src/ui_render.c
+Error: 7 functions in the file
+Error (line 32): line has 119 characters
+Error (line 33): line has 118 characters
+Error (line 34): line has 118 characters
+Error (line 36): line has 127 characters
+Error (line 37): line has 126 characters
+Error (line 38): line has 126 characters
+Error (line 75): function ui_render_objects has 37 lines
+Error (line 97): line has 82 characters
+Error (line 112): line has 82 characters
+Error (line 158): line has 82 characters
+Error (line 168): function ui_render_caminfo has 38 lines

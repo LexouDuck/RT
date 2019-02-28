@@ -23,7 +23,7 @@ void		init_camera(t_camera *camera)
 	camera->world_pos = (cl_float3){{
 		camera->anchor.x + camera->relative_pos.x,
 		camera->anchor.y + camera->relative_pos.y,
-		camera->anchor.z + camera->relative_pos.z			
+		camera->anchor.z + camera->relative_pos.z
 	}};
 	camera->zoom = 50.0;
 	camera->lat = 90;
@@ -132,6 +132,6 @@ void		camera_update(t_camera *camera)
 	camera->world_pos = (cl_float3){{
 		camera->anchor.x + camera->relative_pos.x,
 		camera->anchor.y + camera->relative_pos.y,
-		camera->anchor.z + camera->relative_pos.z			
+		camera->anchor.z + camera->relative_pos.z
 	}};
 }

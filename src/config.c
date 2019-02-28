@@ -41,28 +41,29 @@ static void	config_make_ini(int fd)
 	}
 }
 
-static void	config_init_settings()
+static void	config_init_settings(void)
 {
 	FT_MemoryClear(rt.config.names, CONFIG_AMOUNT * sizeof(char *));
-	rt.config.names[CONFIG_INDEX_FULLSCREEN]	= CONFIG_LABEL_FULLSCREEN;
-	rt.config.names[CONFIG_INDEX_MAXIMIZED]		= CONFIG_LABEL_MAXIMIZED;
-	rt.config.names[CONFIG_INDEX_WINDOW_W]		= CONFIG_LABEL_WINDOW_W;
-	rt.config.names[CONFIG_INDEX_WINDOW_H]		= CONFIG_LABEL_WINDOW_H;
+	rt.config.names[CONFIG_INDEX_FULLSCREEN] = CONFIG_LABEL_FULLSCREEN;
+	rt.config.names[CONFIG_INDEX_MAXIMIZED] = CONFIG_LABEL_MAXIMIZED;
+	rt.config.names[CONFIG_INDEX_WINDOW_W] = CONFIG_LABEL_WINDOW_W;
+	rt.config.names[CONFIG_INDEX_WINDOW_H] = CONFIG_LABEL_WINDOW_H;
 	FT_MemoryClear(rt.config.values, CONFIG_AMOUNT * sizeof(char *));
 	FT_MemoryClear(rt.config.defaults, CONFIG_AMOUNT * sizeof(char *));
-	rt.config.defaults[CONFIG_INDEX_FULLSCREEN]		= CONFIG_VALUE_FULLSCREEN;
-	rt.config.defaults[CONFIG_INDEX_MAXIMIZED]		= CONFIG_VALUE_MAXIMIZED;
-	rt.config.defaults[CONFIG_INDEX_WINDOW_W]		= CONFIG_VALUE_WINDOW_W;
-	rt.config.defaults[CONFIG_INDEX_WINDOW_H]		= CONFIG_VALUE_WINDOW_H;
+	rt.config.defaults[CONFIG_INDEX_FULLSCREEN] = CONFIG_VALUE_FULLSCREEN;
+	rt.config.defaults[CONFIG_INDEX_MAXIMIZED] = CONFIG_VALUE_MAXIMIZED;
+	rt.config.defaults[CONFIG_INDEX_WINDOW_W] = CONFIG_VALUE_WINDOW_W;
+	rt.config.defaults[CONFIG_INDEX_WINDOW_H] = CONFIG_VALUE_WINDOW_H;
 }
 
-int			config_init()
+int			config_init(void)
 {
 	int	fd;
 
 	config_init_settings();
 	if (access(CONFIG_FILE, R_OK) < 0)
-	{	// if file does not exist
+	{
+	// if file does not exist
 		debug_output_value("Using default settings, no ", CONFIG_FILE, FALSE);
 		return (OK);
 	}
@@ -83,7 +84,7 @@ int			config_init()
 	return (OK);
 }
 
-int			config_save()
+int			config_save(void)
 {
 	int fd;
 
@@ -104,7 +105,7 @@ int			config_save()
 	return (OK);
 }
 
-void		config_free()
+void		config_free(void)
 {
 	int i;
 

@@ -15,32 +15,18 @@
 #include <errno.h>
 #include <string.h>
 #include <math.h>
+
 #include "libft_char.h"
 #include "libft_color.h"
 #include "libft_memory.h"
 #include "libft_convert.h"
+
 #include "../rt.h"
 #include "debug.h"
 #include "rt_scene.h"
 
 void		rt_output_readfile(void)
 {
-	static const char	*primitive_types[] = {
-		"N/A",
-		"SPHERE     ",
-		"CUBE       ",
-		"CYLINDER   ",
-		"CONE       ",
-		"PLANE      ",
-		"RECTANGLE  ",
-		"DISK       ",
-		"OBJ MESH   ",
-		"PARABOLOID ",
-		"HYPERBOLOID",
-		"SADDLE     ",
-		"INFCYLINDER",
-		"INFCONE    ",
-	};
 	t_object			*object;
 	unsigned int		i;
 
@@ -51,10 +37,11 @@ void		rt_output_readfile(void)
 	while (i < rt.scene.object_amount)
 	{
 		object = &rt.scene.objects[i];
-		debug_output(primitive_types[(int)object->type]);
-		debug_output_value("-> #", ft_u32_to_hex(object->color), TRUE);
-		debug_output_value(" - ", cl_float3_to_str(&object->color, 3), TRUE);
+		debug_output(rt_get_str_primitive(object->type));
 		debug_output_value("NAME: ", object->name, FALSE);
+		debug_output_value("MATERIAL: ", rt_get_str_material(object->material), FALSE);
+		debug_output_value("-> #", ft_u32_to_hex(object->color), TRUE);
+		debug_output_value(" - ", cl_float3_to_str(&object->rgb, 3), TRUE);
 		debug_output_value(" -   pos:", cl_float3_to_str(&object->pos, 3), TRUE);
 		debug_output_value(" -   rot:", cl_float3_to_str(&object->rot, 3), TRUE);
 		debug_output_value(" - scale:", cl_float3_to_str(&object->scale, 3), TRUE);

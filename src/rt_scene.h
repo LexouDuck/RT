@@ -82,7 +82,6 @@ typedef enum	e_camera_model
 ** w_to_c		: the camera's world-to-view/cam matrix
 ** c_to_w		: the camera's view/cam-to-world matrix (used to put rays in world space)
 */
-
 typedef struct		s_camera
 {
 	t_cameramode	mode;
@@ -111,7 +110,6 @@ typedef struct		s_camera
 /*
 **	camera.c
 */
-
 void				init_camera(t_camera *camera);
 void				camera_pan(t_camera *camera, float x, float y);
 void				camera_rotate(t_camera *camera, float x, float y);
@@ -121,7 +119,6 @@ void				camera_update(t_camera *camera);
 /*
 **	cl_float3_util.c
 */
-
 cl_float			cl_float3_norm(cl_float3 const *vector);
 void				cl_float3_normalize(cl_float3 *vector);
 cl_float			cl_float3_dot(cl_float3 *v1, cl_float3 *v2);
@@ -131,7 +128,6 @@ char				*cl_float3_to_str(cl_float3 *vector, int i);
 /*
 **	init_scene.c
 */
-
 void				init_scene(void);
 
 /*
@@ -168,7 +164,6 @@ typedef struct		s_ray
 ** BVH: bounded volume hierarchies
 ** BBox: bounding box
 */
-
 typedef struct		s_bbox
 {
 	cl_float3		vi;

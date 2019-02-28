@@ -6,12 +6,11 @@
 /*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
-/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
+/*   Updated: 2019/02/28 16:47:32 by hbruvry          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft_memory.h"
-
 #include "../rt.h"
 #include "debug.h"
 
@@ -25,7 +24,7 @@ void	ui_mouse_objectlist_expandedproperties(t_object *object, t_s32 y)
 	i = 0;
 	while (i < OBJECT_PROPERTIES)
 	{
-		ui_mouse_control_numberbox(&rt.ui.current_textinput, &ptr->x,  1, y + 1);
+		ui_mouse_control_numberbox(&rt.ui.current_textinput, &ptr->x, 1, y + 1);
 		ui_mouse_control_numberbox(&rt.ui.current_textinput, &ptr->y, 10, y + 1);
 		ui_mouse_control_numberbox(&rt.ui.current_textinput, &ptr->z, 19, y + 1);
 		y += OBJECT_PROPERTY_H;
@@ -34,7 +33,7 @@ void	ui_mouse_objectlist_expandedproperties(t_object *object, t_s32 y)
 	}
 }
 
-void	ui_mouse_objectlist()
+void	ui_mouse_objectlist(void)
 {
 	t_s32		tmp;
 	t_s32		add_height;
@@ -43,8 +42,8 @@ void	ui_mouse_objectlist()
 
 	rect = rt.ui.objects.rect;
 	rect.h = 2;
-	i = 0;
-	while (i < rt.scene.object_amount)
+	i = -1;
+	while (++i < rt.scene.object_amount)
 	{
 		tmp = rect.y;
 		rect.y -= rt.ui.objects.scrollbar.scroll / TILE;
@@ -59,10 +58,12 @@ void	ui_mouse_objectlist()
 			rect.w = UI_WIDTH_TILES - 4;
 			if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
 			{
+//WARNING Is rt.ui.objects.selected[i] = TRUE in if statement or not
 				if (!(rt.input.keys & KEY_CTRL))
-					ft_memclr(rt.ui.objects.selected,
-						OBJECT_MAX_AMOUNT * sizeof(t_bool));
-				rt.ui.objects.selected[i] = TRUE;
+				{
+					ft_memclr(rt.ui.objects.selected, OBJECT_MAX_AMOUNT * sizeof(t_bool));
+					rt.ui.objects.selected[i] = TRUE;
+				}
 			}
 			rect.x = UI_WIDTH_TILES - 4;
 			rect.w = 2;
@@ -71,11 +72,10 @@ void	ui_mouse_objectlist()
 		}
 		rect.y = tmp;
 		rect.y += 2 + add_height;
-		++i;
 	}
 }
 
-void	ui_mouse_menubar()
+void	ui_mouse_menubar(void)
 {
 	t_bool		collided;
 	SDL_Rect	rect;

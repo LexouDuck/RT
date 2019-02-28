@@ -6,14 +6,14 @@
 /*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
-/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
+/*   Updated: 2019/02/28 16:42:51 by hbruvry          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../rt.h"
 #include "debug.h"
 
-void		ui_menu_file_open()
+void		ui_menu_file_open(void)
 {
 	debug_output("File->Open\n");
 	rt.ui.current_prompt.textbox = texttype_text;
@@ -23,7 +23,7 @@ void		ui_menu_file_open()
 	rt.ui.current_prompt.rect = PROMPT;
 }
 
-void		ui_menu_file_import()
+void		ui_menu_file_import(void)
 {
 	debug_output("File->Import\n");
 	rt.ui.current_prompt.textbox = texttype_text;
@@ -33,7 +33,7 @@ void		ui_menu_file_import()
 	rt.ui.current_prompt.rect = PROMPT;
 }
 
-void		ui_menu_file_save()
+void		ui_menu_file_save(void)
 {
 	debug_output("File->Save\n");
 	if (rt.filepath)
@@ -50,7 +50,7 @@ void		ui_menu_file_save()
 	}
 }
 
-void		ui_menu_file_saveas()
+void		ui_menu_file_saveas(void)
 {
 	debug_output("File->SaveAs\n");
 	rt.ui.current_prompt.textbox = texttype_text;

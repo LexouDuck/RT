@@ -11,12 +11,10 @@
 /* ************************************************************************** */
 
 #include <math.h>
-
 #include "libft_memory.h"
 #include "libft_string.h"
 #include "libft_convert.h"
 #include "libft_list.h"
-
 #include "rt_cl.h"
 
 cl_float	cl_float3_norm(cl_float3 const *vector)

@@ -11,10 +11,8 @@
 /* ************************************************************************** */
 
 #include <math.h>
-
 #include "libft_string.h"
 #include "libft_convert.h"
-
 #include "../rt.h"
 #include "../assets.h"
 #include "debug.h"

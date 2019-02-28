@@ -13,7 +13,6 @@
 #include "libft_char.h"
 #include "libft_color.h"
 #include "libft_convert.h"
-
 #include "../rt.h"
 
 char		*rt_read_arg_name(t_rtparser *p, char *result)

@@ -21,7 +21,6 @@
 
 # include "SDL.h"
 # include "libft.h"
-
 # include "../assets.h"
 # include "rt_scene.h"
 

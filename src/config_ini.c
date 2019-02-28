@@ -15,7 +15,6 @@
 #include "libft_string.h"
 #include "libft_convert.h"
 #include "libft_io.h"
-
 #include "../rt.h"
 #include "debug.h"
 

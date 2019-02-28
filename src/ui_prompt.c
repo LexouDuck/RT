@@ -6,16 +6,15 @@
 /*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
-/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
+/*   Updated: 2019/02/28 16:57:11 by hbruvry          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft_memory.h"
-
 #include "../rt.h"
 #include "debug.h"
 
-void	ui_leave_prompt()
+void	ui_leave_prompt(void)
 {
 	if (rt.ui.current_textinput.type)
 		ui_leave_control_textbox(&rt.ui.current_textinput);
@@ -25,10 +24,10 @@ void	ui_leave_prompt()
 	rt.ui.menubar.selection = -1;
 }
 
-void	ui_mouse_prompt()
+void	ui_mouse_prompt(void)
 {
-	static SDL_Rect	button_ok		= PROMPT_BUTTON_OK;
-	static SDL_Rect	button_cancel	= PROMPT_BUTTON_CANCEL;
+	static SDL_Rect	button_ok = PROMPT_BUTTON_OK;
+	static SDL_Rect	button_cancel = PROMPT_BUTTON_CANCEL;
 
 	if (SDL_PointInRect(&rt.input.mouse_tile, &rt.ui.current_prompt.rect))
 	{

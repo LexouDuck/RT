@@ -12,7 +12,6 @@
 
 #include "libft_char.h"
 #include "libft_string.h"
-
 #include "../rt.h"
 
 void		rt_read_whitespace(t_rtparser *p)

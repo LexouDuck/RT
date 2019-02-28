@@ -6,13 +6,12 @@
 /*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
-/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
+/*   Updated: 2019/02/28 15:34:04 by hbruvry          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft_color.h"
 #include "libft_memory.h"
-
 #include "../rt.h"
 #include "../assets.h"
 #include "debug.h"
@@ -20,7 +19,8 @@
 /*
 **	Set the current palette for the UI tileset
 */
-SDL_Palette*	ui_set_palette(SDL_Surface* surface, t_u32 const* palette)
+
+SDL_Palette		*ui_set_palette(SDL_Surface *surface, t_u32 const *palette)
 {
 	SDL_Color	result[PALETTE];
 	t_u8		i;
@@ -49,29 +49,37 @@ SDL_Palette*	ui_set_palette(SDL_Surface* surface, t_u32 const* palette)
 	return (surface->format->palette);
 }
 
-
 /*
 **	Creates an 8bpp indexed SDL_Surface from 2bpp NES-compliant pixel data ('.chr' files)
 **	- chr:	The chr file -> an array of 8x8 tiled pixel data
 */
-SDL_Surface*	ui_set_tileset(t_u8 const* chr, size_t length)
-{
-	SDL_Surface*	result = NULL;
-	t_u8*			result_pixels;
-	t_u16			tilecount = length / CHR_BYTES_PER_TILE;
 
+SDL_Surface		*ui_set_tileset(t_u8 const *chr, size_t length)
+{
+	SDL_Surface		*result;
+	t_u8			*result_pixels;
+	t_u16			tilecount;
+	t_u16			index;
+	t_u8			pixel;
+	t_u16			tile;
+	t_u8			x;
+	t_u8			y;
+
+	result = NULL;
+	tilecount = length / CHR_BYTES_PER_TILE;
+	tile = -1;
+	x = -1;
+	y = -1;
 	if (!chr)
 		return (NULL);
 	if (!(result_pixels = (t_u8*)FT_MemoryAlloc(length * 4)))
 		return (NULL);
-	t_u16 index;
-	t_u8 pixel;
-	for (t_u16 tile = 0; tile < tilecount; ++tile)
+	while (++tile < tilecount)
 	{
 		index = (tile / TILESET_W_TILES) * TILE * TILESET_W + (tile % TILESET_W_TILES) * TILE;
-		for (t_u8 y = 0; y < TILE; ++y)
+		while (++y < TILE)
 		{
-			for (t_u8 x = 0; x < TILE; ++x)
+			while (++x < TILE)
 			{
 				pixel = 0;
 				pixel |= 1 & (chr[tile * CHR_BYTES_PER_TILE + 8 + y] >> (7 - x));
@@ -80,7 +88,9 @@ SDL_Surface*	ui_set_tileset(t_u8 const* chr, size_t length)
 				result_pixels[index + x] = pixel;
 			}
 			index += TILESET_W;
+			x = -1;
 		}
+		y = -1;
 	}
 	if (!(result = SDL_CreateRGBSurfaceWithFormatFrom(result_pixels, TILESET_W,
 		((tilecount / TILESET_W_TILES) + (tilecount % TILESET_W_TILES ? 1 : 0)) * TILE, 8, TILESET_W, SDL_PIXELFORMAT_INDEX8)))

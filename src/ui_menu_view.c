@@ -6,14 +6,14 @@
 /*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
-/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
+/*   Updated: 2019/02/28 16:44:13 by hbruvry          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../rt.h"
 #include "debug.h"
 
-void		ui_menu_view_orthogonal()
+void		ui_menu_view_orthogonal(void)
 {
 	debug_output("View->Orthogonal\n");
 }

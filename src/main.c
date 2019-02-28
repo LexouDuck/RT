@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "libft_convert.h"
-
 #include "../assets.h"
 #include "../rt.h"
 #include "config.h"

@@ -6,7 +6,7 @@
 /*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
-/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
+/*   Updated: 2019/02/28 17:00:49 by hbruvry          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 /*
 **	Displays a rectangle of the given tile on the given tile region onscreen
 */
-void	ui_render_fill(t_u8 tile_index,
-	SDL_Rect dest_region, t_bool transparent)
+
+void		ui_render_fill(t_u8 tile_index, SDL_Rect dest_region, t_bool transparent)
 {
 	static SDL_Rect	dest = {0, 0, TILE, TILE};
 	static SDL_Rect	tile = {0, 0, TILE, TILE};
@@ -49,7 +49,8 @@ void	ui_render_fill(t_u8 tile_index,
 /*
 **	Displays a 16x16 icon at the given tile coordinates
 */
-void	ui_render_icon(t_u8 icon_index,
+
+void		ui_render_icon(t_u8 icon_index,
 	t_s32 x, t_s32 y, t_bool transparent)
 {
 	static SDL_Rect	dest = {0, 0, TILE * 2, TILE * 2};
@@ -70,7 +71,8 @@ void	ui_render_icon(t_u8 icon_index,
 /*
 **	Displays the given string in 8x8 monospace font at the given tile coords
 */
-void		ui_render_text(char const* str,
+
+void		ui_render_text(char const *str,
 	t_s32 x, t_s32 y, t_bool transparent)
 {
 	static SDL_Rect	dest = {0, 0, TILE, TILE};
@@ -114,16 +116,16 @@ static void	ui_render_rect_corners(SDL_Rect *rect, t_bool filled)
 	dest.y = TILE * (rect->y);
 	if (SDL_BlitSurface(rt.ui.tileset, &rect_UL, rt.sdl.window_surface, &dest))
 		debug_output_error("Error during render_rect() -> UL corner: ", TRUE);
-	// DL corner
+		// DL corner
 	dest.y = TILE * (rect->y + rect->h - 1);
 	if (SDL_BlitSurface(rt.ui.tileset, &rect_DL, rt.sdl.window_surface, &dest))
 		debug_output_error("Error during render_rect() -> DL corner: ", TRUE);
-	// UR corner
+		// UR corner
 	dest.x = TILE * (rect->x + rect->w - 1);
 	dest.y = TILE * (rect->y);
 	if (SDL_BlitSurface(rt.ui.tileset, &rect_UR, rt.sdl.window_surface, &dest))
 		debug_output_error("Error during render_rect() -> UR corner: ", TRUE);
-	// DR corner
+		// DR corner
 	dest.x = TILE * (rect->x + rect->w - 1);
 	dest.y = TILE * (rect->y + rect->h - 1);
 	if (SDL_BlitSurface(rt.ui.tileset, &rect_DR, rt.sdl.window_surface, &dest))
@@ -139,7 +141,8 @@ static void	ui_render_rect_edges_h(SDL_Rect *rect, t_bool filled)
 
 	rect_U.x = TILE * (0x9 + (filled ? 4 : 0));
 	rect_D.x = TILE * (0xA + (filled ? 4 : 0));
-	i = 1; // U edge
+	// U edge
+	i = 1;
 	while (i < (rect->w - 1))
 	{
 		dest.x = TILE * (rect->x + i);
@@ -148,7 +151,8 @@ static void	ui_render_rect_edges_h(SDL_Rect *rect, t_bool filled)
 			debug_output_error("Error during render_rect() -> U edge: ", TRUE);
 		++i;
 	}
-	i = 1; // D edge
+	// D edge
+	i = 1;
 	while (i < (rect->w - 1))
 	{
 		dest.x = TILE * (rect->x + i);
@@ -168,7 +172,8 @@ static void	ui_render_rect_edges_v(SDL_Rect *rect, t_bool filled)
 
 	rect_L.x = TILE * (0x8 + (filled ? 4 : 0));
 	rect_R.x = TILE * (0xB + (filled ? 4 : 0));
-	i = 1; // L edge
+	// L edge
+	i = 1;
 	while (i < (rect->h - 1))
 	{
 		dest.x = TILE * (rect->x);
@@ -177,7 +182,8 @@ static void	ui_render_rect_edges_v(SDL_Rect *rect, t_bool filled)
 			debug_output_error("Error during render_rect() -> L edge: ", TRUE);
 		++i;
 	}
-	i = 1; // R edge
+	// R edge
+	i = 1;
 	while (i < (rect->h - 1))
 	{
 		dest.x = TILE * (rect->x + rect->w - 1);
@@ -192,7 +198,8 @@ static void	ui_render_rect_edges_v(SDL_Rect *rect, t_bool filled)
 **	Displays a HUD border rectangle of the given w,h (in tiles)
 **	at the given tile x and y coordinates
 */
-void	ui_render_rect(SDL_Rect rect, t_bool filled)
+
+void		ui_render_rect(SDL_Rect rect, t_bool filled)
 {
 	static SDL_Rect	tile = {0, 0, TILE, TILE};
 	static SDL_Rect	dest = {0, 0, TILE, TILE};

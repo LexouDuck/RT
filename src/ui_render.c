@@ -6,7 +6,7 @@
 /*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
-/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
+/*   Updated: 2019/02/28 12:39:42 by hbruvry          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,12 @@
 #include "libft_string.h"
 #include "libft_convert.h"
 #include "libft_color.h"
-
 #include "../rt.h"
 #include "../assets.h"
 #include "debug.h"
 #include "event.h"
 
-void	ui_render_icon_object(t_object* object, t_s32 y)
+void	ui_render_icon_object(t_object *object, t_s32 y)
 {
 	static const t_u8	light = 0x50;
 	static const t_u8	shade = 0x50;
@@ -53,27 +52,27 @@ void	ui_render_expandedproperties(t_object *object, t_s32 y)
 	if ((tmp = ft_u32_to_hex(object->color)))
 	{
 		ui_render_text("Color: #", 1, y + 6, FALSE);
-		ui_render_text(       tmp, 9, y + 6, FALSE);
+		ui_render_text(tmp, 9, y + 6, FALSE);
 		free(tmp);
 	}
-	ui_render_control_numberbox( 1, y + 7, &object->rgb.x);
+	ui_render_control_numberbox(1, y + 7, &object->rgb.x);
 	ui_render_control_numberbox(10, y + 7, &object->rgb.y);
 	ui_render_control_numberbox(19, y + 7, &object->rgb.z);
 	ui_render_text("Pos:", 1, y + 10, FALSE);
-	ui_render_control_numberbox( 1, y + 11, &object->pos.x);
+	ui_render_control_numberbox(1, y + 11, &object->pos.x);
 	ui_render_control_numberbox(10, y + 11, &object->pos.y);
 	ui_render_control_numberbox(19, y + 11, &object->pos.z);
 	ui_render_text("Rot:", 1, y + 14, FALSE);
-	ui_render_control_numberbox( 1, y + 15, &object->rot.x);
+	ui_render_control_numberbox(1, y + 15, &object->rot.x);
 	ui_render_control_numberbox(10, y + 15, &object->rot.y);
 	ui_render_control_numberbox(19, y + 15, &object->rot.z);
 	ui_render_text("Scale:", 1, y + 18, FALSE);
-	ui_render_control_numberbox( 1, y + 19, &object->scale.x);
+	ui_render_control_numberbox(1, y + 19, &object->scale.x);
 	ui_render_control_numberbox(10, y + 19, &object->scale.y);
 	ui_render_control_numberbox(19, y + 19, &object->scale.z);
 }
 
-void	ui_render_objects()
+void	ui_render_objects(void)
 {
 	t_s32		tmp;
 	t_s32		add_height;
@@ -114,7 +113,7 @@ void	ui_render_objects()
 		ui_render_scrollbar(&rt.ui.objects.scrollbar);
 }
 
-void	ui_render_menubar()
+void	ui_render_menubar(void)
 {
 	t_bool		hover;
 	SDL_Rect	rect;
@@ -148,7 +147,7 @@ void	ui_render_dropdown(t_menu *dropdown)
 	}
 }
 
-void	ui_render_prompt()
+void	ui_render_prompt(void)
 {
 	SDL_Rect button;
 
@@ -157,9 +156,7 @@ void	ui_render_prompt()
 		rt.ui.current_prompt.rect.x + 2, rt.ui.current_prompt.rect.y + 0, TRUE);
 	ui_render_text(rt.ui.current_prompt.description,
 		rt.ui.current_prompt.rect.x + 2, rt.ui.current_prompt.rect.y + 2, FALSE);
-
 	ui_render_control_textbox(2, 8, rt.ui.current_textinput.value);
-	
 	button = PROMPT_BUTTON_OK;
 	ui_render_rect(button, SDL_PointInRect(&rt.input.mouse_tile, &button));
 	ui_render_text("OK", button.x + 3, button.y + 1, TRUE);
@@ -168,44 +165,44 @@ void	ui_render_prompt()
 	ui_render_text("CANCEL", button.x + 1, button.y + 1, TRUE);
 }
 
-void		ui_render_caminfo(t_camera *camera)
+void	ui_render_caminfo(t_camera *camera)
 {
 	char	*tmp;
 
 	ui_render_text("Camera", UI_WIDTH_TILES + 2, 1, FALSE);
-
-	tmp = ft_u32_to_str(camera->mode);		
+	tmp = ft_u32_to_str(camera->mode);
 	ui_render_text("Mode: ", UI_WIDTH_TILES + 2, 2, FALSE);
-	ui_render_text(		tmp, UI_WIDTH_TILES + 8, 2, FALSE);
-	if (tmp) free(tmp);
-
+	ui_render_text(tmp, UI_WIDTH_TILES + 8, 2, FALSE);
+	if (tmp)
+		free(tmp);
 	tmp = ft_f32_to_str(camera->lat, 3);
 	ui_render_text("LAT-> ", UI_WIDTH_TILES + 2, 4, FALSE);
-	ui_render_text(		tmp, UI_WIDTH_TILES + 8, 4, FALSE);
-	if (tmp) free(tmp);
-
+	ui_render_text(tmp, UI_WIDTH_TILES + 8, 4, FALSE);
+	if (tmp)
+		free(tmp);
 	tmp = ft_f32_to_str(camera->lon, 3);
 	ui_render_text("LON-> ", UI_WIDTH_TILES + 2, 5, FALSE);
-	ui_render_text(		tmp, UI_WIDTH_TILES + 8, 5, FALSE);
-	if (tmp) free(tmp);
-
+	ui_render_text(tmp, UI_WIDTH_TILES + 8, 5, FALSE);
+	if (tmp)
+		free(tmp);
 	tmp = ft_f32_to_str(camera->zoom, 3);
 	ui_render_text("Zoom: ", UI_WIDTH_TILES + 2, 6, FALSE);
-	ui_render_text(		tmp, UI_WIDTH_TILES + 8, 6, FALSE);
-	if (tmp) free(tmp);
-
+	ui_render_text(tmp, UI_WIDTH_TILES + 8, 6, FALSE);
+	if (tmp)
+		free(tmp);
 	tmp = ft_f32_to_str(camera->tilt_angle, 3);
 	ui_render_text("Tilt: ", UI_WIDTH_TILES + 2, 7, FALSE);
-	ui_render_text(		tmp, UI_WIDTH_TILES + 8, 7, FALSE);
-	if (tmp) free(tmp);
-
+	ui_render_text(tmp, UI_WIDTH_TILES + 8, 7, FALSE);
+	if (tmp)
+		free(tmp);
 	tmp = cl_float3_to_str(&camera->anchor, 3);
 	ui_render_text("Anchor", UI_WIDTH_TILES + 2, 9, FALSE);
-	ui_render_text(		tmp, UI_WIDTH_TILES + 8, 9, FALSE);
-	if (tmp) free(tmp);
-
+	ui_render_text(tmp, UI_WIDTH_TILES + 8, 9, FALSE);
+	if (tmp)
+		free(tmp);
 	tmp = cl_float3_to_str(&camera->relative_pos, 3);
 	ui_render_text("CamPos", UI_WIDTH_TILES + 2, 10, FALSE);
-	ui_render_text(		tmp, UI_WIDTH_TILES + 8, 10, FALSE);
-	if (tmp) free(tmp);
+	ui_render_text(tmp, UI_WIDTH_TILES + 8, 10, FALSE);
+	if (tmp)
+		free(tmp);
 }

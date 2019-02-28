@@ -31,7 +31,7 @@
 # define DEFAULT_CAM_ANCHOR		((cl_float3){{ 0., 0., 0. }})
 # define DEFAULT_CAM_TILT		0.
 # define DEFAULT_CAM_FOV		1.
-# define DEFAULT_CAM_APERTURE	0.2
+# define DEFAULT_CAM_APERTURE	2.
 # define DEFAULT_RENDER_DIST	100000.
 # define EPS					0.00003
 # define DEFAULT_BG_COLOR		0xFF555555

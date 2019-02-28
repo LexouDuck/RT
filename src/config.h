@@ -36,6 +36,7 @@
 **	There's only one of these: rt.config, it holds current state of all the
 **	persistent program data (this is thanks to read/writing an INI file).
 */
+
 typedef	struct	s_config
 {
 	char const	*names[CONFIG_AMOUNT];
@@ -46,6 +47,7 @@ typedef	struct	s_config
 /*
 **	If "true", the window mode is fullscreen
 */
+
 # define CONFIG_INDEX_FULLSCREEN	0x00
 # define CONFIG_LABEL_FULLSCREEN	"fullscreen"
 # define CONFIG_VALUE_FULLSCREEN	"false"
@@ -53,6 +55,7 @@ typedef	struct	s_config
 /*
 **	If "true", the window is maximized
 */
+
 # define CONFIG_INDEX_MAXIMIZED	0x01
 # define CONFIG_LABEL_MAXIMIZED	"window_maximized"
 # define CONFIG_VALUE_MAXIMIZED	"false"
@@ -60,6 +63,7 @@ typedef	struct	s_config
 /*
 **	The current dimensions of the window (irrelevant if fullscreen)
 */
+
 # define CONFIG_INDEX_WINDOW_W	0x02
 # define CONFIG_LABEL_WINDOW_W	"window_w"
 # define CONFIG_VALUE_WINDOW_W	"880"
@@ -70,12 +74,15 @@ typedef	struct	s_config
 /*
 **	config.c
 */
+
 int				config_init();
 int				config_save();
 void			config_free();
+
 /*
 **	config_access.c
 */
+
 char			*config_get(int index);
 void			config_set(int index, char *value);
 
@@ -99,6 +106,7 @@ typedef struct	s_iniparser
 /*
 **	config_ini.c
 */
+
 void			INI_ReadFile(int fd);
 
 #endif

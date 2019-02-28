@@ -6,13 +6,12 @@
 /*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
-/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
+/*   Updated: 2019/02/28 15:03:29 by hbruvry          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft_memory.h"
 #include "libft_convert.h"
-
 #include "../rt.h"
 #include "debug.h"
 

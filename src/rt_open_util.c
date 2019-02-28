@@ -34,7 +34,7 @@ void		rt_read_whitespace(t_rtparser *p)
 				++(p->line);
 			}
 			else
-				break;
+				break ;
 		}
 		++(p->index);
 	}

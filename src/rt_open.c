@@ -15,19 +15,17 @@
 #include <errno.h>
 #include <string.h>
 #include <math.h>
-
 #include "libft_char.h"
 #include "libft_color.h"
 #include "libft_memory.h"
 #include "libft_convert.h"
-
 #include "../rt.h"
 #include "debug.h"
 #include "rt_scene.h"
 
-void	rt_output_readfile()
+void		rt_output_readfile(void)
 {
-	static const char *primitive_types[] = {
+	static const char	*primitive_types[] = {
 		"N/A",
 		"SPHERE     ",
 		"CUBE       ",
@@ -43,8 +41,8 @@ void	rt_output_readfile()
 		"INFCYLINDER",
 		"INFCONE    ",
 	};
-	t_object *object;
-	unsigned int i;
+	t_object			*object;
+	unsigned int		i;
 
 	debug_output("RT File successfully read:\n");
 	debug_output_value("BG Color: #", ft_u32_to_hex(rt.scene.bg_color), TRUE);
@@ -54,12 +52,12 @@ void	rt_output_readfile()
 	{
 		object = &rt.scene.objects[i];
 		debug_output(primitive_types[(int)object->type]);
-		debug_output_value("-> #",	ft_u32_to_hex(object->color), TRUE);
+		debug_output_value("-> #", ft_u32_to_hex(object->color), TRUE);
 		debug_output_value("NAME: ", object->name, FALSE);
-		debug_output_value(" -   pos:",	cl_float3_to_str(&object->pos, 3), TRUE);
-		debug_output_value(" -   rot:",	cl_float3_to_str(&object->rot, 3), TRUE);
-		debug_output_value(" - scale:",	cl_float3_to_str(&object->scale, 3), TRUE);
-//		debug_output_value(" - light:",	cl_float3_to_str(&object->light, 3), TRUE);
+		debug_output_value(" -   pos:", cl_float3_to_str(&object->pos, 3), TRUE);
+		debug_output_value(" -   rot:", cl_float3_to_str(&object->rot, 3), TRUE);
+		debug_output_value(" - scale:", cl_float3_to_str(&object->scale, 3), TRUE);
+//		debug_output_value(" - light:", cl_float3_to_str(&object->light, 3), TRUE);
 		++i;
 	}
 }
@@ -101,11 +99,12 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 static char	*rt_read_command(t_rtparser *p, char *label)
 {
 	t_primitive	shape;
+	char		*error;
 
 	shape = none;
 	if (ft_strequ(label, "LIGHT"))
 		return ("'LIGHT' is not a valid usable 3D object label.\n"
-			"To create a light, make any object and add a 'light' argument.");
+		"To create a light, make any object and add a 'light' argument.");
 	else if (ft_strequ(label, "PLANE"))
 		shape = plane;
 	else if (ft_strequ(label, "DISC") || ft_strequ(label, "DISK"))
@@ -130,13 +129,12 @@ static char	*rt_read_command(t_rtparser *p, char *label)
 		shape = hyperboloid;
 	else if (ft_strequ(label, "OBJ") || ft_strequ(label, "MESH"))
 		shape = obj_mesh;
-
 	if (shape)
 		return (p->current_object < OBJECT_MAX_AMOUNT ? rt_read_object(p, shape)
 			: "Import error: Maximum object amount limit has been reached.");
 	else if (ft_strequ(label, "BG"))
 	{
-		char *error = rt_read_arg_color(p, &rt.scene.bg_rgb, "color");
+		*error = rt_read_arg_color(p, &rt.scene.bg_rgb, "color");
 		rt.scene.bg_color = ft_color_argb32_set(0.,
 			rt.scene.bg_rgb.x * 255.,
 			rt.scene.bg_rgb.y * 255.,
@@ -175,7 +173,6 @@ char		*rt_read_file(t_rtparser *p)
 	rt.scene.object_amount = p->current_object;
 	return (NULL);
 }
-
 
 int			rt_open_file(char *filepath, t_rtparser *p)
 {

@@ -74,9 +74,11 @@ void	event_check_keydown(SDL_Event *event)
 
 void	event_check_keyup(SDL_Event *event)
 {
-	// set modifier key flags to be off
 	if (event->key.keysym.sym == SDLK_LALT)
+	{
+	// set modifier key flags to be off
 		rt.input.keys &= ~KEY_ALT_L;
+	}
 	else if (event->key.keysym.sym == SDLK_RALT)
 		rt.input.keys &= ~KEY_ALT_R;
 	else if (event->key.keysym.sym == SDLK_LCTRL)

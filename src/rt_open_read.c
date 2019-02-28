@@ -29,8 +29,10 @@ char		*rt_read_arg_name(t_rtparser *p, char *result)
 		p->index += 5;
 	symbol = p->file[p->index];
 	if (symbol != '\"' && symbol != '\'' && symbol != '<')
+	{
 		return (has_arg ? rt_read_error('\"',
-			"or '\'' or '<' => name argument", symbol) : NULL);
+		"or '\'' or '<' => name argument", symbol) : NULL);
+	}
 	symbol = (symbol == '<') ? '>' : symbol;
 	offset = p->index + 1;
 	while (p->file[++p->index])
@@ -97,7 +99,7 @@ static char	*rt_read_arg_vector_number(t_rtparser *p, cl_float *result, char sep
 	return (NULL);
 }
 
-char		*rt_read_arg_vector(t_rtparser *p, cl_float3 *result, char const* label)
+char		*rt_read_arg_vector(t_rtparser *p, cl_float3 *result, char const *label)
 {
 	char	*error;
 	char	symbol;
@@ -152,9 +154,18 @@ char		*rt_read_arg_color(t_rtparser *p, cl_float3 *result, char const *label)
 	else
 	{
 		str = rt_read_arg_vector(p, result, label);
-		if (result->x < 0.) result->x = 0.; else if (result->x > 1.) result->x = 0.;
-		if (result->y < 0.) result->y = 0.; else if (result->y > 1.) result->y = 0.;
-		if (result->z < 0.) result->z = 0.; else if (result->z > 1.) result->z = 0.;
+		if (result->x < 0.)
+			result->x = 0.;
+		else if (result->x > 1.)
+			result->x = 0.;
+		if (result->y < 0.)
+			result->y = 0.;
+		else if (result->y > 1.)
+			result->y = 0.;
+		if (result->z < 0.)
+			result->z = 0.;
+		else if (result->z > 1.)
+			result->z = 0.;
 		return (str);
 	}
 }

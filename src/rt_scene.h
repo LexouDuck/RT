@@ -44,28 +44,28 @@
 # define DEFAULT_RAYSAMP_SIZE	64
 # define DEFAULT_MAX_RAY_DEPTH	8
 
-typedef enum		e_rendermode
+typedef enum	e_rendermode
 {
 	RENDERMODE_BBOX,
 	RENDERMODE_SOLIDCOLOR,
 	RENDERMODE_MCPT
-}					t_rendermode;
+}				t_rendermode;
 
-typedef enum		e_cameramode
+typedef enum	e_cameramode
 {
 	CAMERA_MODE_NONE,
 	CAMERA_MODE_ROTATE,
 	CAMERA_MODE_TILT,
 	CAMERA_MODE_PAN,
-}					t_cameramode;
+}				t_cameramode;
 
-typedef enum		e_camera_model
+typedef enum	e_camera_model
 {
 	CAMERA_MODEL_TMP,
 	CAMERA_MODEL_PINHOLE,
 	CAMERA_MODEL_FOCAL,
 	CAMERA_MODEL_ORTHOGRAPHIC
-}					t_camera_model;
+}				t_camera_model;
 
 /*
 ** CAMERA
@@ -81,11 +81,12 @@ typedef enum		e_camera_model
 ** range_min	: the minimal amount of distance needed for an object to show on this cam
 ** range_max	: the maximum vision distance for this camera
 ** hrz_fov		: field-of-view horizontal angle in radians
-** aperture		: 
+** aperture		:
 ** w_to_c		: the camera's world-to-view/cam matrix
 ** c_to_w		: the camera's view/cam-to-world matrix (used to put rays in world space)
 */
-typedef struct	s_camera
+
+typedef struct		s_camera
 {
 	t_cameramode	mode;
 	cl_float3		world_pos;
@@ -104,7 +105,8 @@ typedef struct	s_camera
 	t_camera_model	model;
 	cl_float16		c_to_w;
 //	cl_float16		w_to_c;
-}				t_camera;
+}					t_camera;
+
 /*
 ** c_to_w.s012 is axis_x, .s456 is axis_y, .s89A is axis_z and .sCDE is world_pos
 */
@@ -112,23 +114,28 @@ typedef struct	s_camera
 /*
 **	camera.c
 */
-void		init_camera(t_camera *camera);
-void		camera_pan(t_camera *camera, float x, float y);
-void		camera_rotate(t_camera *camera, float x, float y);
-void		camera_zoom_tilt(t_camera *camera, float x, float y);
-void		camera_update(t_camera *camera);
+
+void				init_camera(t_camera *camera);
+void				camera_pan(t_camera *camera, float x, float y);
+void				camera_rotate(t_camera *camera, float x, float y);
+void				camera_zoom_tilt(t_camera *camera, float x, float y);
+void				camera_update(t_camera *camera);
+
 /*
 **	cl_float3_util.c
 */
-cl_float	cl_float3_norm(cl_float3 const *vector);
-void		cl_float3_normalize(cl_float3 *vector);
-cl_float	cl_float3_dot(cl_float3 *v1, cl_float3 *v2);
-void		cl_float3_cross(cl_float3 *result, cl_float3 *v1, cl_float3 *v2);
-char		*cl_float3_to_str(cl_float3 *vector, int i);
+
+cl_float			cl_float3_norm(cl_float3 const *vector);
+void				cl_float3_normalize(cl_float3 *vector);
+cl_float			cl_float3_dot(cl_float3 *v1, cl_float3 *v2);
+void				cl_float3_cross(cl_float3 *result, cl_float3 *v1, cl_float3 *v2);
+char				*cl_float3_to_str(cl_float3 *vector, int i);
+
 /*
 **	init_scene.c
 */
-void		init_scene(void);
+
+void				init_scene(void);
 
 /*
 ** RAYS
@@ -146,7 +153,7 @@ typedef enum		e_intersection
 	INTER_NONE = 0
 }					t_intersection;
 
-typedef struct	s_ray
+typedef struct		s_ray
 {
 	cl_float3		pos;
 	cl_float3		dir;
@@ -158,23 +165,23 @@ typedef struct	s_ray
 	cl_float3		lum_acc;
 	t_intersection	inter_type;
 	cl_float2		uv_coordinates;
-}				t_ray;
+}					t_ray;
 
 /*
 ** BVH: bounded volume hierarchies
 ** BBox: bounding box
 */
 
-typedef struct	s_bbox
+typedef struct		s_bbox
 {
-	cl_float3	vi;
-	cl_float3	vf;
-}				t_bbox;
+	cl_float3		vi;
+	cl_float3		vf;
+}					t_bbox;
 /*
-typedef struct	s_bvh
-{
-	cl_bst_node	*root;
-}				t_bvh;
+** typedef struct	s_bvh
+** {
+** 	cl_bst_node	*root;
+** }				t_bvh;
 */
 
 /*
@@ -184,7 +191,7 @@ typedef struct	s_bvh
 ** unit dimensions.
 */
 //INTERSECTIONS
-typedef enum	e_primitive
+typedef enum		e_primitive
 {
 	none = 0,
 	sphere,
@@ -200,23 +207,29 @@ typedef enum	e_primitive
 	infcylinder,
 	infcone,
 	obj_mesh,
-}				t_primitive;
+}					t_primitive;
 
 /*
 ** Categories for the optical properties of materials for each geometric
 ** primtive (ie, how they interact with or produce light). Normals play
 ** a major role here.
 */
-typedef enum	e_material
+typedef enum		e_material
 {
-	lightsource = 0,	// simply returns object->color
-	diffuse,		// linear to-dark shading
-//	light,			// this material emits light
-//	mirror,			// returns a reflection ray color
-	glassy,			// returns a blended color of a reflection ray and a refraction ray
-	glossy,			// has a special "lighter" mode of specular hightlighting
-//	skybox ?
-}				t_material;
+// 	simply returns object->color
+	lightsource = 0,
+// 	linear to-dark shading
+	diffuse,
+// 		this material emits light
+// 	light,
+// 		returns a reflection ray color
+// 	mirror,
+// 		returns a blended color of a reflection ray and a refraction ray
+	glassy,
+// 		has a special "lighter" mode of specular hightlighting
+	glossy,
+// 	skybox ?
+}					t_material;
 
 /*
 ** This struct is used to translate, rotate and scale our object into position
@@ -259,7 +272,7 @@ typedef enum	e_material
 **	where rgb contains values between 0. and 1.
 */
 
-typedef struct	s_object
+typedef struct		s_object
 {
 	t_primitive		type;
 	t_material		material;
@@ -277,9 +290,9 @@ typedef struct	s_object
 	cl_float16		o_to_w;
 	cl_float16		w_to_o;
 	cl_float16		n_to_w;
-}				t_object;
+}					t_object;
 
-typedef struct	s_scene
+typedef struct		s_scene
 {
 	cl_uint			bg_color;
 	cl_float3		bg_rgb;
@@ -292,6 +305,6 @@ typedef struct	s_scene
 	cl_uint			mc_raysamp_size;
 	cl_uint			random_seed_time;
 	t_rendermode	render_mode;
-}				t_scene;
+}					t_scene;
 
 #endif

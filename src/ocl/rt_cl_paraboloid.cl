@@ -26,14 +26,14 @@ static t_intersection		rt_cl_paraboloid_intersect
 	quadpoly.z = rt_cl_float3_ynull_dot(ray.pos, ray.pos) - ray.pos.y;
 	if (!(rt_cl_get_realroots_quadpoly(&roots, quadpoly)))
 		return (INTER_NONE);
-	if (roots.x <= 0. && roots.y <= 0.)
+	if (roots.x <= 0.f && roots.y <= 0.f)
 		return (INTER_NONE);
-	else if (roots.x <= 0.)
+	else if (roots.x <= 0.f)
 	{
 		*res = roots.y;
 		return (INTER_INSIDE);
 	}
-	else if (roots.y <= 0.)
+	else if (roots.y <= 0.f)
 	{
 		*res = roots.x;
 		return (INTER_INSIDE);
@@ -59,7 +59,7 @@ static float3			rt_cl_paraboloid_get_normal
 {
 	float3		normal;
 
-	normal = (float3)(2 * hitpos.x, -1., 2 * hitpos.z);
+	normal = (float3)(2 * hitpos.x, -1.f, 2 * hitpos.z);
 	normal = normalize(normal);
 	return(normal);
 

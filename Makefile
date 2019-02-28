@@ -130,6 +130,7 @@ SRCS	= 	main.c				\
 			ui_render.c			\
 			camera.c			\
 			cl_float3_util.c	\
+			rt_save.c 			\
 			render.c
 
 SRCDIR_CL	= $(SRCDIR)ocl/

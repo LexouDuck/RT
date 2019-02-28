@@ -9,7 +9,9 @@
 /*   Updated: 2019/02/28 15:03:29 by hbruvry          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <errno.h>
 #include "libft_memory.h"
 #include "libft_convert.h"
 #include "../rt.h"
@@ -65,5 +67,22 @@ int		rt_file_import(char *filepath)
 
 int		rt_file_save(char *filepath)
 {
+
+	int			fd;
+
+	fd = open(filepath, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (fd < 0)
+	{
+		debug_output_value("Error: Could not write RT file: ", filepath, FALSE);
+		debug_output_value("open() -> ", strerror(errno), FALSE);
+		return (ERROR);
+	}
+	rt_save(fd);
+	if (close(fd) < 0)
+	{
+		debug_output_value("Error: Could not close RT file: ", filepath, FALSE);
+		debug_output_value("close() -> ", strerror(errno), FALSE);
+		return (ERROR);
+	}
 	return (filepath ? OK : ERROR);
 }

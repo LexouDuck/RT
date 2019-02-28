@@ -130,12 +130,6 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 				t_ray		new_ray;
 				float3		hitpos;
 				float3		normal;
-		//		float3		random_dir;
-		//		float2		uv_mapping;
-		//		float		angle;
-				float		pattern;
-		//		float3		texture;
-
 
 	hitpos = ray.pos + ((float3)ray.t) * ray.dir;
 	if (obj->type == sphere)
@@ -167,7 +161,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 	new_ray.lum_mask *= (float3)(1. - new_ray.complete) * (float3)(dot(normal, new_ray.dir));
 	new_ray.lum_acc = ray.lum_acc + (float3)(new_ray.complete) * new_ray.lum_mask;
 #endif
-	//TODO echantillonage par importance, séparation éclairage direct et indirect
+	
 	if (obj->material == light)
 	{
 		new_ray.complete = true;
@@ -175,26 +169,6 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 
 		new_ray.lum_mask = ray.lum_mask;
 	}
-/*
-	else if (obj->type == sphere)
-	{
-		// compute the pattern
-	//	angle = (M_PI / 8); 
-	//	uv_mapping.x = new_ray.uv_coordinates.x * cos(M_PI / 8) - new_ray.uv_coordinates.y * sin(angle); 
-	//	uv_mapping.y = new_ray.uv_coordinates.y * cos(angle) + new_ray.uv_coordinates.x * sin(angle);
-		pattern = (sin((float)(new_ray.uv_coordinates.x * TAU * 8)) + 1) * 0.5;
-		new_ray.lum_mask = ray.lum_mask * obj->rgb * pattern * (float3)(dot(normal, new_ray.dir));
-		new_ray.lum_acc = ray.lum_acc;
-	}
-*/
-/*
-	else if (obj->type == cube)
-	{
-		pattern = (sin(new_ray.uv_coordinates.x * 2 * M_PI * 8) + 1) * 0.5;
-		new_ray.lum_mask = ray.lum_mask * obj->rgb * pattern * (float3)(dot(normal, new_ray.dir));
-		new_ray.lum_acc = ray.lum_acc;
-	}
-*/
 	else if (obj->material == diffuse)
 	{
 		new_ray.complete = false;

@@ -18,8 +18,8 @@ static t_ray	rt_cl_get_new_ray_properties
 	new_ray.hit_texture_coordinates.y = acosf(normal.y) / M_PI;*/
 	if (obj.type == sphere)
 	{
-		new_ray.uv_coordinates.x = (1 + atan2((float)(normal.z), (float)(normal.x)) / M_PI) * 0.5; 
-		new_ray.uv_coordinates.y = acos((float)(normal.y)) / M_PI;
+		new_ray.uv_coordinates.x = (1 + atan2((float)(normal.z), (float)(normal.x)) * INV_PI) * 0.5; 
+		new_ray.uv_coordinates.y = acos((float)(normal.y)) * INV_PI;
 	}
 	if (obj.type == cube)
 	{

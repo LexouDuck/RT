@@ -215,6 +215,8 @@ int		render()
 //	int		err;
 
 rt.scene.render_mode = RENDERMODE_MCPT;
+rt.scene.objects[2].material = glassy;
+rt.scene.objects[4].material = glossy;
 //rt.scene.render_mode = RENDERMODE_SOLIDCOLOR;
 //rt.scene.objects[0].material = !lightsrc;
 //float intensity = 1. / 255.;

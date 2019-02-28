@@ -77,12 +77,22 @@ void	event_mouse_release(SDL_Event *event)
 	if (event->button.button == SDL_BUTTON_LEFT)
 	{
 		if (rt.ui.current_textinput.type)
-			ui_leave_control_numberbox(&rt.ui.current_textinput);
-		if (rt.ui.menubar.selection == -1)
-			ui_mouse_objectlist();
-		else
-			ui_mouse_dropdown(&rt.ui.dropdowns[rt.ui.menubar.selection]);
-		ui_mouse_menubar();
+		{
+			if (rt.ui.current_textinput.type == texttype_number_float)
+				ui_leave_control_numberbox(&rt.ui.current_textinput);
+			else if (rt.ui.current_textinput.type == texttype_text)
+				ui_leave_control_textbox(&rt.ui.current_textinput);
+		}
+		if (rt.ui.current_prompt.name)
+			ui_mouse_prompt();
+		else 
+		{
+			if (rt.ui.menubar.selection >= 0)
+				ui_mouse_dropdown(&rt.ui.dropdowns[rt.ui.menubar.selection]);
+			else
+				ui_mouse_objectlist();
+			ui_mouse_menubar();
+		}
 	}
 	if (SDL_CaptureMouse(FALSE))
 		debug_output_error("Unable to release the mouse cursor input.", TRUE);

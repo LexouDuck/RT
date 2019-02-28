@@ -29,7 +29,7 @@ static t_intersection		rt_cl_cube_intersect
 	//intersection iff no incoherence in all previous checks and tmin = Max(inferior bound) < Min(superior bound) = tmax
 	inter = tmin < tmax ? INTER_OUTSIDE : INTER_NONE;
 	*res = inter ? tmin : tmax_old;
-	if (*res == 0.)
+	if (*res < EPS)
 	{
 		*res = tmax;
 		inter = INTER_INSIDE;

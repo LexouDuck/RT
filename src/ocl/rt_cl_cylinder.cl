@@ -54,6 +54,7 @@ static float3				rt_cl_infcylinder_get_normal
 **	{p = (x, +0.5, z) | x^2 + z^2 <= 1}
 */
 
+
 static t_intersection		rt_cl_cylinder_intersect
 (
 							float *		res,
@@ -102,7 +103,7 @@ static t_intersection		rt_cl_cylinder_intersect
 	inter = inter && is_in_hrz_area && is_in_vrt_area ? INTER_INSIDE : inter;
 	return (inter);
 }
-//TODO Correct INTER_INSIDE
+
 
 /*
 ** Rays should arrive already converted to object space.
@@ -111,6 +112,8 @@ static t_intersection		rt_cl_cylinder_intersect
 **	R3, every point on the cylinder corresponds to its unit normal, if one sets
 **	the y coordinate to 0; as for every point on the cylinder x^2 + z^2 == 1
 */
+
+
 static float3				rt_cl_cylinder_get_normal
 (
 							float3		hitpos

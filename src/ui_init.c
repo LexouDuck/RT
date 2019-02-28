@@ -24,9 +24,9 @@ static void	ui_init_menubar()
 
 	rt.ui.menubar.selection = -1;
 	rt.ui.menubar.item_amount = MENUBAR_ITEMS;
-	rt.ui.menubar.item_labels[MENUBAR_ITEM_FILE] = "File";
-	rt.ui.menubar.item_labels[MENUBAR_ITEM_EDIT] = "Edit";
-	rt.ui.menubar.item_labels[MENUBAR_ITEM_VIEW] = "View";
+	rt.ui.menubar.item_labels[MENUBAR_ITEM_FILE] = MENUBAR_LABEL_FILE;
+	rt.ui.menubar.item_labels[MENUBAR_ITEM_EDIT] = MENUBAR_LABEL_EDIT;
+	rt.ui.menubar.item_labels[MENUBAR_ITEM_VIEW] = MENUBAR_LABEL_VIEW;
 	i = 0;
 	while (i < MENUBAR_ITEMS)
 	{
@@ -46,10 +46,10 @@ static void	ui_init_dropdown_file()
 	dropdown = &rt.ui.dropdowns[MENUBAR_ITEM_FILE];
 	dropdown->selection = -1;
 	dropdown->item_amount = DROPDOWN_ITEMS_FILE;
-	dropdown->item_labels[DROPDOWN_FILE_OPEN]	= "Open file...";
-	dropdown->item_labels[DROPDOWN_FILE_IMPORT]	= "Import file...";
-	dropdown->item_labels[DROPDOWN_FILE_SAVE]	= "Save";
-	dropdown->item_labels[DROPDOWN_FILE_SAVEAS]	= "Save as...";
+	dropdown->item_labels[DROPDOWN_FILE_OPEN]	= DROPDOWN_LABEL_FILE_OPEN;
+	dropdown->item_labels[DROPDOWN_FILE_IMPORT]	= DROPDOWN_LABEL_FILE_IMPORT;
+	dropdown->item_labels[DROPDOWN_FILE_SAVE]	= DROPDOWN_LABEL_FILE_SAVE;
+	dropdown->item_labels[DROPDOWN_FILE_SAVEAS]	= DROPDOWN_LABEL_FILE_SAVEAS;
 	dropdown->item_action[DROPDOWN_FILE_OPEN]	= ui_menu_file_open;
 	dropdown->item_action[DROPDOWN_FILE_IMPORT]	= ui_menu_file_import;
 	dropdown->item_action[DROPDOWN_FILE_SAVE]	= ui_menu_file_save;
@@ -73,11 +73,11 @@ static void	ui_init_dropdown_edit()
 	dropdown = &rt.ui.dropdowns[MENUBAR_ITEM_EDIT];
 	dropdown->selection = -1;
 	dropdown->item_amount = DROPDOWN_ITEMS_EDIT;
-	dropdown->item_labels[DROPDOWN_EDIT_UNDO]	= "Undo";
-	dropdown->item_labels[DROPDOWN_EDIT_REDO]	= "Redo";
-	dropdown->item_labels[DROPDOWN_EDIT_CUT]	= "Cut";
-	dropdown->item_labels[DROPDOWN_EDIT_COPY]	= "Copy";
-	dropdown->item_labels[DROPDOWN_EDIT_PASTE]	= "Paste";
+	dropdown->item_labels[DROPDOWN_EDIT_UNDO]	= DROPDOWN_LABEL_EDIT_UNDO;
+	dropdown->item_labels[DROPDOWN_EDIT_REDO]	= DROPDOWN_LABEL_EDIT_REDO;
+	dropdown->item_labels[DROPDOWN_EDIT_CUT]	= DROPDOWN_LABEL_EDIT_CUT;
+	dropdown->item_labels[DROPDOWN_EDIT_COPY]	= DROPDOWN_LABEL_EDIT_COPY;
+	dropdown->item_labels[DROPDOWN_EDIT_PASTE]	= DROPDOWN_LABEL_EDIT_PASTE;
 	dropdown->item_action[DROPDOWN_EDIT_UNDO]	= ui_menu_edit_undo;
 	dropdown->item_action[DROPDOWN_EDIT_REDO]	= ui_menu_edit_redo;
 	dropdown->item_action[DROPDOWN_EDIT_CUT]	= ui_menu_edit_cut;

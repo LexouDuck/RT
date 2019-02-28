@@ -30,18 +30,18 @@
 # define DEFAULT_CAM_POS		((cl_float3){{ 3., 6.,-5. }})
 # define DEFAULT_CAM_ANCHOR		((cl_float3){{ 0., 0., 0. }})
 # define DEFAULT_CAM_TILT		0.
-# define DEFAULT_CAM_FOV		0.8
-# define DEFAULT_CAM_APERTURE	2.0
+# define DEFAULT_CAM_FOV		1.
+# define DEFAULT_CAM_APERTURE	0.2
 
 # define DEFAULT_RENDER_DIST	100000.
-# define EPS					0.001
+# define EPS					0.00003
 
 # define BG_COLOR				0xFF00BB88 //0xFF000000
 
 # define OBJECT_NAME_MAXLENGTH	24
 # define OBJECT_MAX_AMOUNT		32
-# define DEFAULT_RAYSAMP_SIZE	128
-# define DEFAULT_MAX_RAY_DEPTH	4
+# define DEFAULT_RAYSAMP_SIZE	64
+# define DEFAULT_MAX_RAY_DEPTH	8
 
 typedef enum		e_rendermode
 {
@@ -202,8 +202,8 @@ typedef enum	e_material
 	diffuse,		// linear to-dark shading
 //	light,			// this material emits light
 //	mirror,			// returns a reflection ray color
-//	glass,			// returns a blended color of a reflection ray and a refraction ray
-//	glossy,			// has a special "lighter" mode of specular hightlighting
+	glassy,			// returns a blended color of a reflection ray and a refraction ray
+	glossy,			// has a special "lighter" mode of specular hightlighting
 //	skybox ?
 }				t_material;
 

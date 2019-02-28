@@ -16,7 +16,7 @@
 #include "../rt.h"
 #include "debug.h"
 
-int			rt_file_open(char *filepath)
+int		rt_file_open(char *filepath)
 {
 	t_rtparser	parser;
 	char		*error;
@@ -41,7 +41,7 @@ int			rt_file_open(char *filepath)
 	return (OK);
 }
 
-int			rt_file_import(char *filepath)
+int		rt_file_import(char *filepath)
 {
 	t_rtparser	parser;
 	char		*error;
@@ -62,4 +62,9 @@ int			rt_file_import(char *filepath)
 		free(parser.file);
 	}
 	return (OK);
+}
+
+int		rt_file_save(char *filepath)
+{
+	return (filepath ? OK : ERROR);
 }

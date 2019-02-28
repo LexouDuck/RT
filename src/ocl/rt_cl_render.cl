@@ -336,15 +336,49 @@ static t_ray			rt_cl_create_camray
 	camray.complete = false;
 	camray.hit_obj_id = -1;
 	camray.inter_type = INTER_NONE;
-//	camray.pos = (float3)(0., 0., 0.);
-	camray.pos = (float3)(rt_cl_frand_neg1half_to_pos1half(random_seeds), rt_cl_frand_neg1half_to_pos1half(random_seeds), 0.);
-	camray.pos *= (float3)(scene->camera.aperture);
+	if (scene->camera.model == CAMERA_MODEL_PINHOLE)
+	{
+		camray.pos = (float3)(0., 0., 0.);
+		camray.dir = (float3)(x_id - width / 2, y_id - height / 2, fov_val);
+	}
+	else if (scene->camera.model == CAMERA_MODEL_TMP)
+	{
+		camray.pos = (float3)(rt_cl_frand_neg1half_to_pos1half(random_seeds), rt_cl_frand_neg1half_to_pos1half(random_seeds), 0.);
+		camray.pos *= (float3)(scene->camera.aperture);
+
+		camray.dir = (float3)(x_id - width / 2, y_id - height / 2, fov_val);
+		camray.dir += (float3)(rt_cl_frand_neg1half_to_pos1half(random_seeds) * 0.1, rt_cl_frand_neg1half_to_pos1half(random_seeds) * 0.1, 0.); //TODO, replace 0.1 by appropriate value; add and fix for depth of field
+	}
+	else if (scene->camera.model == CAMERA_MODEL_FOCAL)
+	{
+
+		camray.pos = (float3)(rt_cl_frand_0_to_1(random_seeds), rt_cl_frand_0_to_1(random_seeds), 0.);
+		camray.pos *= (float3)scene->camera.aperture;
+
+		//Box-Muller sampling
+		uint2	seed;
+		float3	anti_aliasing;
+
+		seed.x = rt_cl_frand_0_to_1(random_seeds) / 2;
+		seed.y = rt_cl_frand_0_to_1(random_seeds) / 2;
+		anti_aliasing.x = sqrt(-2.f * log((float)(seed.x))) * cos((float)(TAU * seed.y));
+		anti_aliasing.y = sqrt(-2.f * log((float)(seed.x))) * sin((float)(TAU * seed.y));
+		anti_aliasing.z = 0.;
+
+		camray.dir = (float3)(x_id - width / 2, y_id - height / 2, fov_val);
+		camray.dir += anti_aliasing;
+		camray.dir = (float3)(scene->camera.focal_length) * normalize(camray.dir);
+		camray.dir = camray.dir - camray.pos;
+	}
+	else if (scene->camera.model == CAMERA_MODEL_ORTHOGRAPHIC)
+	{
+		camray.pos = (float3)(x_id - width / 2, y_id - height / 2, 0.f);
+		camray.pos *= (float3)(scene->camera.aperture);
+		camray.dir = (float3)(0.f, 0.f, -1.f);
+	}
 	camray.pos = rt_cl_apply_homogeneous_matrix(cam_mat44, camray.pos);
-	camray.dir = (float3)(x_id - width / 2, y_id - height / 2, fov_val);
-	camray.dir += (float3)(rt_cl_frand_neg1half_to_pos1half(random_seeds) * 0.1, rt_cl_frand_neg1half_to_pos1half(random_seeds) * 0.1, 0.); //TODO, replace 0.1 by appropriate value; add and fix for depth of field
 	camray.dir = rt_cl_apply_linear_matrix(cam_mat44, camray.dir);
 	camray.dir = normalize(camray.dir);
-
 	return (camray);
 }
 

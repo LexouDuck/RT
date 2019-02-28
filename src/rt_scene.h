@@ -58,6 +58,14 @@ typedef enum		e_cameramode
 	CAMERA_MODE_PAN,
 }					t_cameramode;
 
+typedef enum		e_camera_model
+{
+	CAMERA_MODEL_TMP,
+	CAMERA_MODEL_PINHOLE,
+	CAMERA_MODEL_FOCAL,
+	CAMERA_MODEL_ORTHOGRAPHIC
+}					t_camera_model;
+
 /*
 ** CAMERA
 **
@@ -91,6 +99,8 @@ typedef struct	s_camera
 	cl_float		range_max;
 	cl_float		hrz_fov;
 	cl_float		aperture;
+	cl_float		focal_length;
+	t_camera_model	model;
 	cl_float16		c_to_w;
 //	cl_float16		w_to_c;
 }				t_camera;

@@ -162,12 +162,11 @@ typedef enum	e_primitive
 */
 typedef enum	e_material
 {
-	lightsource = 0,
+	light = 0,
 	diffuse,
-//	mirror,
-	glassy,
-	glossy,
-//	skybox ?
+	transparent,
+	specular,
+// 	skybox ?
 }				t_material;
 
 /*

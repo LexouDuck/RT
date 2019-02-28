@@ -168,13 +168,14 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 	new_ray.lum_acc = ray.lum_acc + (float3)(new_ray.complete) * new_ray.lum_mask;
 #endif
 	//TODO echantillonage par importance, séparation éclairage direct et indirect
-	if (obj->material == lightsource)
+	if (obj->material == light)
 	{
 		new_ray.complete = true;
 		new_ray.lum_acc = ray.lum_acc + ray.lum_mask * obj->rgb;
 
 		new_ray.lum_mask = ray.lum_mask;
 	}
+/*
 	else if (obj->type == sphere)
 	{
 		// compute the pattern
@@ -185,6 +186,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 		new_ray.lum_mask = ray.lum_mask * obj->rgb * pattern * (float3)(dot(normal, new_ray.dir));
 		new_ray.lum_acc = ray.lum_acc;
 	}
+*/
 /*
 	else if (obj->type == cube)
 	{
@@ -201,7 +203,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 		new_ray.dir = rt_cl_rand_dir_coshemi(random_seeds, normal);
 		new_ray.lum_mask = ray.lum_mask * obj->rgb * (float3)(dot(normal, new_ray.dir));//cos sampling, defines contribution to ray.lum_acc
 	}
-	else if (obj->material == glassy)
+	else if (obj->material == transparent)
 	{
 		new_ray.complete = false;
 		new_ray.lum_acc = ray.lum_acc;
@@ -213,7 +215,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 		//	Position correction for transmission
 		new_ray.pos = mad(-2 * EPS, normal, new_ray.pos);
 	}
-	else if (obj->material == glossy)
+	else if (obj->material == specular)
 	{
 		new_ray.complete = false;
 		new_ray.lum_acc = ray.lum_acc;

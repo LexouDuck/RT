@@ -16,7 +16,7 @@
 #include "config.h"
 #include "debug.h"
 
-int		init_sdl()
+int		init_sdl(void)
 {
 	if (SDL_Init(
 		SDL_INIT_TIMER |
@@ -29,7 +29,7 @@ int		init_sdl()
 	return (OK);
 }
 
-int		init_window()
+int		init_window(void)
 {
 	t_u32	flags;
 
@@ -56,7 +56,7 @@ int		init_window()
 	return (OK);
 }
 
-int		init_window_display()
+int		init_window_display(void)
 {
 	SDL_GetWindowSize(rt.sdl.window, &rt.sdl.window_w, &rt.sdl.window_h);
 	rt.sdl.window_texture = SDL_CreateTexture(rt.sdl.window_renderer,

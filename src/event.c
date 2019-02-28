@@ -6,7 +6,7 @@
 /*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
-/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
+/*   Updated: 2019/02/28 13:13:18 by hbruvry          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	event_check_window(SDL_Event *event)
 		event_window_mouse_leave();
 }
 
-static void event_check_textinput(SDL_Event *event)
+static void	event_check_textinput(SDL_Event *event)
 {
 	char	*tmp;
 
@@ -57,7 +57,7 @@ static void	event_check_mouse(SDL_Event *event)
 		event_mouse_motion(event);
 }
 
-void		event_checkevents()
+void		event_checkevents(void)
 {
 	SDL_Event	event;
 
@@ -66,7 +66,8 @@ void		event_checkevents()
 	rt.input.mouse_tile.x = (rt.input.mouse.x) / TILE;
 	rt.input.mouse_tile.y = (rt.input.mouse.y) / TILE;
 	while (SDL_PollEvent(&event))
-	{	// Handle events on queue
+	{
+	// Handle events on queue
 		if (event.type == SDL_QUIT)
 		{
 			rt.sdl.loop = FALSE;

@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "libft_convert.h"
-
 #include "../rt.h"
 #include "config.h"
 #include "debug.h"
@@ -59,12 +58,10 @@ void	event_window_fullscreen(t_bool fullscreen)
 	}
 }
 
-void	event_window_mouse_enter()
+void	event_window_mouse_enter(void)
 {
-
 }
 
-void	event_window_mouse_leave()
+void	event_window_mouse_leave(void)
 {
-
 }

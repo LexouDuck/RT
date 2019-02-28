@@ -6,7 +6,7 @@
 /*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
-/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
+/*   Updated: 2019/02/28 13:26:08 by hbruvry          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	event_mouse_release(SDL_Event *event)
 		}
 		if (rt.ui.current_prompt.name)
 			ui_mouse_prompt();
-		else 
+		else
 		{
 			if (rt.ui.menubar.selection >= 0)
 				ui_mouse_dropdown(&rt.ui.dropdowns[rt.ui.menubar.selection]);

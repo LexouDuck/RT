@@ -122,11 +122,18 @@ void		ui_menu_edit_paste();
 void		ui_menu_view_orthogonal();
 
 /*
+**	rt_get_str.c
+*/
+char		*rt_get_str_primitive(t_primitive primitive);
+char		*rt_get_str_material(t_material material);
+
+/*
 **	rt_file.c
 */
 int			rt_file_open(char *filepath);
 int			rt_file_import(char *filepath);
 int			rt_file_save(char *filepath);
+
 /*
 **	rt_save.c
 */

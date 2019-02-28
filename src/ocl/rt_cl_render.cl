@@ -175,6 +175,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 
 		new_ray.lum_mask = ray.lum_mask;
 	}
+/*
 	else if (obj->type == sphere)
 	{
 		// compute the pattern
@@ -185,6 +186,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 		new_ray.lum_mask = ray.lum_mask * obj->rgb * pattern * (float3)(dot(normal, new_ray.dir));
 		new_ray.lum_acc = ray.lum_acc;
 	}
+*/
 /*
 	else if (obj->type == cube)
 	{

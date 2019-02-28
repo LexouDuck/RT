@@ -252,8 +252,4 @@ void			ui_leave_control_textbox(t_textinput *textinput);
 void			ui_mouse_control_textbox(t_textinput *textinput, char **value, int x, int y);
 void			ui_render_control_textbox(int x, int y, char *value);
 
-/*
-**	ui_control_colorbox.c
-*/
-
 #endif

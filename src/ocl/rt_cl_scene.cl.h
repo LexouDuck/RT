@@ -175,18 +175,21 @@ typedef	enum	e_texture
 	horizontal_wave,
 	vertical_wave,
 	wave,
+	horizontal_stripe,
+	vertical_stripe,
 	checkerboard,
 	hue,
 	noisy,
 }				t_texture;
 
-typedef struct		s_color
+typedef struct	s_color
 {
-	t_texture		texture;
-	float			uv_map;
-	float2			uv_pos;
-	float3			rgb;
-}					t_color;
+	t_texture	texture;
+	float		light_map;
+	float2		uv_pos;
+	float2		uv_scale;
+	float3		rgb;
+}				t_color;
 
 /*
 ** This struct is used to translate, rotate and scale our object into position

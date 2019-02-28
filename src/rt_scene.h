@@ -223,6 +223,8 @@ typedef	enum		e_texture
 	horizontal_wave,
 	vertical_wave,
 	wave,
+	horizontal_stripe,
+	vertical_stripe,
 	checkerboard,
 	hue,
 	noisy,
@@ -231,8 +233,9 @@ typedef	enum		e_texture
 typedef struct		s_color
 {
 	t_texture		texture;
-	cl_float		uv_map;
+	cl_float		light_map;
 	cl_float2		uv_pos;
+	cl_float2		uv_scale;
 	cl_float3		rgb;
 }					t_color;
 

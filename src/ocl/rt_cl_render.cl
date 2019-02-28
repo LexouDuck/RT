@@ -130,8 +130,6 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 				t_ray		new_ray;
 				float3		hitpos;
 				float3		normal;
-				float3		random_dir;
-				float2		uv_mapping;
 				float		angle;
 				float		pattern;
 				t_color		color;
@@ -178,31 +176,13 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 		new_ray.lum_acc = ray.lum_acc + ray.lum_mask * obj->rgb;
 		new_ray.lum_mask = ray.lum_mask;
 	}
-/*
-	else if (obj->type == sphere)
-	{
-		new_ray.complete = false;
-		new_ray.lum_acc = ray.lum_acc;
-
-		new_ray.lum_mask = ray.lum_mask * color.rgb * (float3)(dot(normal, new_ray.dir));
-		new_ray.lum_acc = ray.lum_acc;
-	}
-*/
-/*
-	else if (obj->type == cube)
-	{
-		pattern = (sin(new_ray.uv_coordinates.x * 2 * M_PI * 8) + 1) * 0.5;
-		new_ray.lum_mask = ray.lum_mask * obj->rgb * pattern * (float3)(dot(normal, new_ray.dir));
-		new_ray.lum_acc = ray.lum_acc;
-	}
-*/
 	else if (obj->material == diffuse)
 	{
 		new_ray.complete = false;
 		new_ray.lum_acc = ray.lum_acc;
 
 		new_ray.dir = rt_cl_rand_dir_coshemi(random_seeds, normal);
-		new_ray.lum_mask = ray.lum_mask * obj->rgb * (float3)(dot(normal, new_ray.dir));//cos sampling, defines contribution to ray.lum_acc
+		new_ray.lum_mask = ray.lum_mask * color.rgb * (float3)(dot(normal, new_ray.dir));//cos sampling, defines contribution to ray.lum_acc
 	}
 	else if (obj->material == transparent)
 	{
@@ -210,7 +190,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 		new_ray.lum_acc = ray.lum_acc;
 
 		new_ray.lum_mask = (ray.inter_type == INTER_INSIDE) ?
-			ray.lum_mask * obj->rgb :
+			ray.lum_mask * color.rgb :
 			ray.lum_mask;
 		new_ray.dir = rt_cl_get_transmit_or_reflect(random_seeds, ray.dir, ray.inter_type == INTER_INSIDE, normal, 1.25);
 		//	Position correction for transmission
@@ -224,7 +204,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 		float3 reflect = rt_cl_get_reflect(ray.dir, normal);
 		new_ray.dir = rt_cl_rand_dir_coslobe(random_seeds, reflect, 7);
 
-		new_ray.lum_mask = ray.lum_mask * obj->rgb * (float3)(dot(normal, reflect));// * obj->rgb;//*dot(new_dir, reflect) ?
+		new_ray.lum_mask = ray.lum_mask * color.rgb * (float3)(dot(normal, reflect));// * obj->rgb;//*dot(new_dir, reflect) ?
 	}
 	return (new_ray);
 }

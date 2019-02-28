@@ -53,11 +53,11 @@ void		rt_output_readfile(void)
 		object = &rt.scene.objects[i];
 		debug_output(primitive_types[(int)object->type]);
 		debug_output_value("-> #", ft_u32_to_hex(object->color), TRUE);
+		debug_output_value(" - ", cl_float3_to_str(&object->color, 3), TRUE);
 		debug_output_value("NAME: ", object->name, FALSE);
 		debug_output_value(" -   pos:", cl_float3_to_str(&object->pos, 3), TRUE);
 		debug_output_value(" -   rot:", cl_float3_to_str(&object->rot, 3), TRUE);
 		debug_output_value(" - scale:", cl_float3_to_str(&object->scale, 3), TRUE);
-//		debug_output_value(" - light:", cl_float3_to_str(&object->light, 3), TRUE);
 		++i;
 	}
 }

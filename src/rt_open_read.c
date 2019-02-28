@@ -184,9 +184,9 @@ char		*rt_read_arg_material(t_rtparser *p, t_material *result, char const *label
 		*result = diffuse;
 	else if (ft_strnequ(p->file + p->index, "light", (length = 5)))
 		*result = light;
-	else if (ft_strnequ(p->file + p->index, "transparent", (length = 6)))
+	else if (ft_strnequ(p->file + p->index, "transparent", (length = 11)))
 		*result = transparent;
-	else if (ft_strnequ(p->file + p->index, "specular", (length = 6)))
+	else if (ft_strnequ(p->file + p->index, "specular", (length = 8)))
 		*result = specular;
 	else
 		return ("No valid material enum label encountered");

@@ -25,8 +25,6 @@
 #include "debug.h"
 #include "rt_scene.h"
 
-
-//INTERSECTIONS
 void	rt_output_readfile()
 {
 	static const char *primitive_types[] = {
@@ -70,34 +68,40 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 {
 	char		*error;
 	t_object	object;
+	t_s32		i;
 
 	object.type = shape;
 	ft_memclr(&object.name, OBJECT_NAME_MAXLENGTH);
+	object.color = 0xFFFFFF;
+	object.rgb = (cl_float3){{ 1., 1., 1. }};
 	object.light = (cl_float3){{ 0., 0., 0. }};
-	if ((error = rt_read_arg_color(p, &object.color)) ||
-		(error = rt_read_arg_vector(p, &object.pos)) ||
-		(error = rt_read_arg_vector(p, &object.rot)) ||
-		(error = rt_read_arg_vector(p, &object.scale)))
-		return (error);
-	if ((error = rt_read_arg_name(p, object.name)) ||
-		(error = rt_read_arg_light(p, &object.light)))
-		return (error);
-	object.light.x = fmax(0., fmin(object.light.x, 1.));
-	object.light.y = fmax(0., fmin(object.light.y, 1.));
-	object.light.z = fmax(0., fmin(object.light.z, 1.));
+	object.pos = (cl_float3){{ 0., 0., 0. }};
+	object.rot = (cl_float3){{ 0., 0., 0. }};
+	object.scale = (cl_float3){{ 1., 1., 1. }};
+	i = -1;
+	while (++i < OBJECT_ARGS_AMOUNT)
+	{
+		if ((error = rt_read_arg_name(p, &object.name)) ||
+			(error = rt_read_arg_color(p, &object.rgb, "color")) ||
+			(error = rt_read_arg_vector(p, &object.light, "light")) ||
+			(error = rt_read_arg_vector(p, &object.pos, "pos")) ||
+			(error = rt_read_arg_vector(p, &object.rot, "rot")) ||
+			(error = rt_read_arg_vector(p, &object.scale, "scale")))
+			return (error);
+	}
 	if (object.light.x + object.light.y + object.light.z > 0.)
 		object.material = lightsource;
 	else
 		object.material = diffuse;
-	object.rgb.x = ft_color_argb32_get_r(object.color) / 255.;
-	object.rgb.y = ft_color_argb32_get_g(object.color) / 255.;
-	object.rgb.z = ft_color_argb32_get_b(object.color) / 255.;
+	object.color = ft_color_argb32_set(0.,
+		object.rgb.x * 255.,
+		object.rgb.y * 255.,
+		object.rgb.z * 255.);
 	rt.scene.objects[p->current_object] = object;
 	++(p->current_object);
 	return (NULL);
 }
 
-//INTERSECTIONS
 static char	*rt_read_command(t_rtparser *p, char *label)
 {
 	t_primitive	shape;
@@ -135,7 +139,14 @@ static char	*rt_read_command(t_rtparser *p, char *label)
 		return (p->current_object < OBJECT_MAX_AMOUNT ? rt_read_object(p, shape)
 			: "Import error: Maximum object amount limit has been reached.");
 	else if (ft_strequ(label, "BG"))
-		return (rt_read_arg_color(p, &rt.scene.bg_color));
+	{
+		char *error = rt_read_arg_color(p, &rt.scene.bg_rgb, "color");
+		rt.scene.bg_color = ft_color_argb32_set(0.,
+			rt.scene.bg_rgb.x * 255.,
+			rt.scene.bg_rgb.y * 255.,
+			rt.scene.bg_rgb.z * 255.);
+		return (error);
+	}
 	else
 		return (ft_strjoin("Could not resolve label -> ", label));
 }

@@ -4,16 +4,16 @@ BG #D3F9BC
 //LIGHT #FFFFFF 4	( 10, 10, 0.0)
 //LIGHT #FFFFFF 4	(0.0, 10, -10)
 //LIGHT #FFFFFF 4	(0.0, 10,  10)
-SPHERE #FFFFFF	(0, 10, 0)	{0, 0, 0}	[1, 1, 1]	"LIGHT" light:(1, 1, 1)
+SPHERE #FFFFFF	pos:(0, 10, 0)	rot:{0, 0, 0}	scale:[1, 1, 1]	"LIGHT" light:(1, 1, 1)
 
 // commentaires
 
-SPHERE #F8A0D8	( 0, 4, 0)	{0, 0, 0}	[5, 5, 5]	"Body"
-SPHERE #F8A0D8	( 4, 2, 0)	{1, 1, 1}	[2, 2, 2]	"Arm_L"
-SPHERE #F8A0D8	(-4, 2, 0)	{1, 1, 1}	[2, 2, 2]	"Arm_R"
+SPHERE #F8A0D8	pos:( 0, 4, 0)	rot:{0, 0, 0}	scale:[5, 5, 5]	"Body"
+SPHERE #F8A0D8	pos:( 4, 2, 0)	rot:{1, 1, 1}	scale:[2, 2, 2]	"Arm_L"
+SPHERE #F8A0D8	pos:(-4, 2, 0)	rot:{1, 1, 1}	scale:[2, 2, 2]	"Arm_R"
 
-SPHERE #000000	( 1, 5, 4)	{-0.2, 0, 0}	[1, 1.8, 1]	"Eye_L"
-SPHERE #000000	(-1, 5, 4)	{-0.2, 0, 0}	[1, 1.8, 1]	"Eye_R"
+SPHERE #000000	pos:( 1, 5, 4)	rot:{-0.2, 0, 0}	scale:[1, 1.8, 1]	"Eye_L"
+SPHERE #000000	pos:(-1, 5, 4)	rot:{-0.2, 0, 0}	scale:[1, 1.8, 1]	"Eye_R"
 
-SPHERE #F81880	( 2, 0, 1)	{0, 0.5, 0}	[2, 1.5, 4]	"Foot_L"
-SPHERE #F81880	(-2, 0, 1)	{0,-0.5, 0}	[2, 1.5, 4]	"Foot_R"
+SPHERE #F81880	pos:( 2, 0, 1)	rot:{0, 0.5, 0}		scale:[2, 1.5, 4]	"Foot_L"
+SPHERE #F81880	pos:(-2, 0, 1)	rot:{0,-0.5, 0}		scale:[2, 1.5, 4]	"Foot_R"

@@ -279,9 +279,10 @@ int			render(void)
 	rt.scene.render_mode = RENDERMODE_MCPT;
 //rt.scene.objects[2].material = glassy;
 //rt.scene.objects[4].material = glossy;
+	rt.scene.camera.model = CAMERA_MODEL_TMP;
 //	rt.scene.camera.model = CAMERA_MODEL_FOCAL;
-	rt.scene.camera.model = CAMERA_MODEL_PINHOLE;
-//rt.scene.camera.aperture = .1;
+//	rt.scene.camera.model = CAMERA_MODEL_PINHOLE;
+	rt.scene.camera.aperture = .1;
 	rt.scene.camera.focal_length = 50.;
 //rt.scene.render_mode = RENDERMODE_SOLIDCOLOR;
 //rt.scene.objects[0].material = !lightsource;

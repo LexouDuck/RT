@@ -175,13 +175,8 @@ int			render_launch_kernel0_build_scene(void)
 {
 	int err;
 
-	err = 0;
+	err = CL_SUCCESS;
 	// KERNEL 0: build_scene
-	rt.ocl.gpu_buf.scene = clCreateBuffer(rt.ocl.context,
-		CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR,
-		sizeof(t_scene), &rt.scene, &err);
-	if (err < 0)
-		return (debug_perror("Couldn't create read buffer for "RT_CL_KERNEL_0));
 	err = clEnqueueWriteBuffer(rt.ocl.cmd_queue, rt.ocl.gpu_buf.scene, CL_TRUE, 0,
 			sizeof(t_scene), &(rt.scene), 0, NULL, NULL);
 	if (err < 0)
@@ -213,12 +208,8 @@ int			render_launch_kernel1_rendermain(void)
 	work_dim_amount = 2;
 	work_dim_array[0] = (size_t)rt.canvas_w;
 	work_dim_array[1] = (size_t)rt.canvas_h;
+
 	// KERNEL 1: Launch camera rays and return color values
-	rt.ocl.gpu_buf.canvas_pixels = clCreateBuffer(rt.ocl.context,
-		CL_MEM_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,
-		sizeof(t_u32) * rt.canvas_pixel_amount, rt.canvas->pixels, &err);
-	if (err < 0)
-		return (debug_perror("Couldn't create write buffer for "RT_CL_KERNEL_1));
 	kernel_arg_nbr = -1;
 	err = clSetKernelArg(rt.ocl.kernels[1], ++kernel_arg_nbr, sizeof(cl_mem), &(rt.ocl.gpu_buf.canvas_pixels));
 	err |= clSetKernelArg(rt.ocl.kernels[1], ++kernel_arg_nbr, sizeof(cl_mem), &(rt.ocl.gpu_buf.scene));
@@ -260,8 +251,8 @@ int			render_read_gpu_buffer(void)
 	}
 //	clReleaseKernel(rt.ocl.kernels[1]);
 //	clReleaseKernel(rt.ocl.kernels[0]);
-	clReleaseMemObject(rt.ocl.gpu_buf.canvas_pixels);
-	clReleaseMemObject(rt.ocl.gpu_buf.scene);
+//	clReleaseMemObject(rt.ocl.gpu_buf.canvas_pixels);
+//	clReleaseMemObject(rt.ocl.gpu_buf.scene);
 //#endif
 	return (OK);
 }

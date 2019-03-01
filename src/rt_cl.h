@@ -42,14 +42,6 @@
 # endif
 
 /*
-** # define HALF_PI		0x1.921fb54442d18p0
-** # define PI			0x1.921fb54442d18p1
-** # define TAU 		0x1.921fb54442d18p2
-** # define INV_PI		0x1.45f306dc9c883p-2
-** # define INV_TAU		0x1.45f306dc9c883p-3
-*/
-
-/*
 ** ************************************************************************** *|
 **                                  OpenCL                                    *|
 ** ************************************************************************** *|
@@ -67,6 +59,8 @@
 # define RT_CL_KERNEL_AMOUNT		2
 # define RT_CL_KERNEL_0				"rt_cl_build_scene"
 # define RT_CL_KERNEL_1				"rt_cl_render"//"QJuliaKernel"//
+# define RT_CL_KERNEL_1_PACKET_SIZE	720 //1440 ?
+
 
 typedef struct	s_gpu
 {
@@ -102,12 +96,19 @@ typedef struct	s_cl
 	cl_command_queue	cmd_queue;
 	cl_kernel			kernels[RT_CL_KERNEL_AMOUNT];
 	t_gpu_buffers		gpu_buf;
-	cl_int				status;
+//	cl_int				status;
 }				t_cl;
 
 /*
 ** opencl_init.c
 */
 int				opencl_init();
+
+/*
+** opencl_utils.c
+*/
+int				opencl_set_device_info(void);
+void			opencl_freeall(void);
+void			opencl_log_compiler(void);
 
 #endif

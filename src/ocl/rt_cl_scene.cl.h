@@ -14,6 +14,14 @@
 # define OBJECT_MAX_AMOUNT		32
 # define EPS					0.00003
 
+/*
+** # define HALF_PI		0x1.921fb54442d18p0
+** # define PI			0x1.921fb54442d18p1
+** # define TAU 		0x1.921fb54442d18p2
+** # define INV_PI		0x1.45f306dc9c883p-2
+** # define INV_TAU		0x1.45f306dc9c883p-3
+*/
+
 # define TAU 					0x1.921fb54442d18p2
 # define INV_PI					0x1.45f306dc9c883p-2
 

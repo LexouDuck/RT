@@ -69,10 +69,8 @@ static void	update_window(void)
 static int	main_loop(void)
 {
 	t_u32	frame_wait;
-	int		i;
 
 	frame_wait = 0;
-	i = -1;
 	rt.sdl.current_frame = 0;
 	rt.must_render = TRUE;
 	rt.sdl.loop = TRUE;
@@ -92,11 +90,7 @@ static int	main_loop(void)
 	}
 	config_save();
 	config_free();
-	while (++i < RT_CL_KERNEL_AMOUNT)
-		clReleaseKernel(rt.ocl.kernels[i]);
-	clReleaseCommandQueue(rt.ocl.cmd_queue);
-	clReleaseProgram(rt.ocl.program);
-	clReleaseContext(rt.ocl.context);
+	opencl_freeall();
 	SDL_DestroyWindow(rt.sdl.window);
 	SDL_Quit();
 	return (OK);

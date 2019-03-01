@@ -103,6 +103,7 @@ HDRS	=	$(LFTDIR)libft.h 	\
 SRCS	= 	main.c				\
 			init_sdl.c			\
 			opencl_init.c		\
+			opencl_utils.c		\
 			init_scene.c		\
 			debug.c				\
 			config.c			\

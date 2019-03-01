@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rt_cl_paraboloid.ct                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
+/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 /*
 ** The paraboloid primitive is the set of points made by the rotation of the
 **	curve x^2 = y around the y-axis.

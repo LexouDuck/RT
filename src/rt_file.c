@@ -14,7 +14,7 @@
 #include <errno.h>
 #include "libft_memory.h"
 #include "libft_convert.h"
-
+#include <stdio.h>
 #include "../rt.h"
 #include "debug.h"
 

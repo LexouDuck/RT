@@ -71,7 +71,9 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 			(error = rt_read_arg_vector(p, &object.pos, "pos")) ||
 			(error = rt_read_arg_vector(p, &object.rot, "rot")) ||
 			(error = rt_read_arg_vector(p, &object.scale, "scale")) ||
-			(error = rt_read_arg_material(p, &object.material, "material")))
+			(error = rt_read_arg_material(p, &object.material, "material")) ||
+			(error = rt_read_arg_vector(p, &object.bbox_os.vi, "bbox_vi")) ||
+			(error = rt_read_arg_vector(p, &object.bbox_os.vf, "bbox_vf")))
 			return (error);
 	}
 	object.color = ft_color_argb32_set(0.,

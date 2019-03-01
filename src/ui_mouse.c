@@ -20,7 +20,7 @@ void	ui_mouse_objectlist_expandedproperties(t_object *object, t_s32 y)
 	cl_float3		*ptr;
 	t_u8			i;
 
-	rect.x = 11;
+	rect.x = 12;
 	rect.y = y + 1;
 	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
 	{
@@ -28,7 +28,7 @@ void	ui_mouse_objectlist_expandedproperties(t_object *object, t_s32 y)
 		rt.must_render = TRUE;
 		return ;
 	}
-	rect.x = 25;
+	rect.x = 24;
 	rect.y = y + 1;
 	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
 	{

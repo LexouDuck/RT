@@ -49,7 +49,7 @@ void	ui_render_expandedproperties(t_object *object, t_s32 y)
 	char		*tmp;
 
 	ui_render_text("Material:", 1, y + 3, FALSE);
-	ui_render_text(rt_get_str_material(object->material), 12, y + 3, FALSE);
+	ui_render_text(rt_get_str_material(object->material), 13, y + 3, FALSE);
 	ui_render_text("\x12", 12, y + 3, FALSE);
 	ui_render_text("\x13", 24, y + 3, FALSE);
 	if ((tmp = ft_u32_to_hex(object->color)))

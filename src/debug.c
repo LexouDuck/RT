@@ -21,7 +21,7 @@ int		debug_init(void)
 {
 	int fd;
 
-	fd = open(DEBUG_FILE, O_WRONLY | O_CREAT, 0644);
+	fd = open(DEBUG_FILE, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
 	{
 		FT_Write_String(STDERR, "Error in debug_init() -> "DEBUG_FILE

@@ -101,7 +101,13 @@ typedef struct	s_rtparser
 int			init_sdl();
 int			init_window();
 int			init_window_display();
+
+/*
+**	scene.c
+*/
 void		init_scene();
+void		update_scene();
+void		update_object(t_object *object);
 
 /*
 **	ui_menu_file.c

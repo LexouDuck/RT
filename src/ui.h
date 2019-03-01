@@ -224,6 +224,7 @@ void			ui_render_scrollbar(t_scrollbar *scrollbar);
 
 /*
 **	ui_mouse.c
+**	ui_mouse_objectlist.c
 */
 void			ui_mouse_menubar();
 void			ui_mouse_dropdown(t_menu *dropdown);

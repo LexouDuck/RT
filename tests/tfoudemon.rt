@@ -15,7 +15,7 @@ rot:(0.00000, 0.00000, 0.00000)
 scale:(0.00000, 0.00000, 0.00000)
 
 CUBE       
-material:DIFFUSE    
+material:TRANSPARENT
 color:(1.00000, 0.00000, 0.00000)
 pos:(-9.00000, 0.00000, 0.00000)
 rot:(0.00000, 0.00000, 0.00000)
@@ -23,7 +23,7 @@ scale:(1.00000, 6.00000, 10.00000)
 "Brick Side Left"
 
 CUBE       
-material:DIFFUSE    
+material:TRANSPARENT
 color:(1.00000, 0.00000, 0.00000)
 pos:(9.00000, 0.00000, 0.00000)
 rot:(0.00000, 0.00000, 0.00000)
@@ -31,7 +31,7 @@ scale:(1.00000, 6.00000, 10.00000)
 "Brick Side Right"
 
 CUBE       
-material:DIFFUSE    
+material:TRANSPARENT
 color:(1.00000, 0.00000, 0.00000)
 pos:(0.00000, 0.00000, -9.00000)
 rot:(0.00000, 0.00000, 0.00000)
@@ -39,7 +39,7 @@ scale:(10.00000, 6.00000, 1.00000)
 "Brick Side Near"
 
 CUBE       
-material:DIFFUSE    
+material:TRANSPARENT
 color:(1.00000, 0.00000, 0.00000)
 pos:(0.00000, 0.00000, 9.00000)
 rot:(0.00000, 0.00000, 0.00000)
@@ -47,7 +47,7 @@ scale:(10.00000, 6.00000, 1.00000)
 "Brick Side Far"
 
 CUBE       
-material:DIFFUSE    
+material:TRANSPARENT
 color:(1.00000, 0.00000, 0.00000)
 pos:(0.00000, 6.00000, 0.00000)
 rot:(0.00000, 0.00000, 0.00000)
@@ -55,7 +55,7 @@ scale:(10.00000, 1.00000, 10.00000)
 "Brick Top"
 
 CYLINDER   
-material:DIFFUSE    
+material:TRANSPARENT
 color:(1.00000, 0.00000, 0.00000)
 pos:(5.00000, 8.00000, 5.00000)
 rot:(0.00000, 0.00000, 0.00000)
@@ -63,7 +63,7 @@ scale:(3.00000, 2.00000, 3.00000)
 "Brick Stud TL"
 
 CYLINDER   
-material:DIFFUSE    
+material:TRANSPARENT
 color:(1.00000, 0.00000, 0.00000)
 pos:(5.00000, 8.00000, -5.00000)
 rot:(0.00000, 0.00000, 0.00000)
@@ -71,7 +71,7 @@ scale:(3.00000, 2.00000, 3.00000)
 "Brick Stud TR"
 
 CYLINDER   
-material:DIFFUSE    
+material:TRANSPARENT
 color:(1.00000, 0.00000, 0.00000)
 pos:(-5.00000, 8.00000, 5.00000)
 rot:(0.00000, 0.00000, 0.00000)
@@ -79,19 +79,26 @@ scale:(3.00000, 2.00000, 3.00000)
 "Brick Stud BL"
 
 CYLINDER   
-material:DIFFUSE    
+material:TRANSPARENT
 color:(1.00000, 0.00000, 0.00000)
 pos:(-5.00000, 8.00000, -5.00000)
 rot:(0.00000, 0.00000, 0.00000)
 scale:(3.00000, 2.00000, 3.00000)
 "Brick Stud BR"
 
-CYLINDER   
+PLANE      
 material:DIFFUSE    
+color:(1.00000, 1.00000, 1.00000)
+pos:(3.00000, -10.00000, 3.00000)
+rot:(0.00000, 0.50000, 0.00000)
+scale:(1.00000, 1.00000, 1.00000)
+
+CYLINDER   
+material:TRANSPARENT
 color:(1.00000, 0.00000, 0.00000)
-pos:(0.00000, 0.00000, 0.00000)
+pos:(0.00000, 5.00000, 0.00000)
 rot:(0.00000, 0.00000, 0.00000)
-scale:(4.06999, 12.00000, 4.06999)
+scale:(4.06999, 1.50000, 4.06999)
 "Bottom Pillar"
 
 

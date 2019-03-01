@@ -4,7 +4,7 @@ SPHERE #FF4444
 pos:(2, 10, 0)
 rot:{0, 0, 0}
 scale:[0, 0, 0]
-material:light
+material:LIGHT
 
 // commentaires
 

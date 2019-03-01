@@ -32,9 +32,11 @@
 
 # define UI_WIDTH_TILES	30
 # define UI_WIDTH		TILE * UI_WIDTH_TILES
+
 # define MENU_MAX_ITEMS	8
 # define MENUBAR_ITEMS_W	10
 # define MENUBAR_ITEMS_H	3
+
 # define MENUBAR_ITEM_FILE	0
 # define MENUBAR_ITEM_EDIT	1
 # define MENUBAR_ITEM_VIEW	2
@@ -42,8 +44,10 @@
 # define MENUBAR_LABEL_FILE	"File"
 # define MENUBAR_LABEL_EDIT	"Edit"
 # define MENUBAR_LABEL_VIEW	"View"
+
 # define DROPDOWN_ITEMS_W		30
 # define DROPDOWN_ITEMS_H		2
+
 # define DROPDOWN_FILE_OPEN		0
 # define DROPDOWN_FILE_IMPORT	1
 # define DROPDOWN_FILE_SAVE		2
@@ -53,6 +57,7 @@
 # define DROPDOWN_LABEL_FILE_IMPORT	"Import file..."
 # define DROPDOWN_LABEL_FILE_SAVE	"Save"
 # define DROPDOWN_LABEL_FILE_SAVEAS	"Save as..."
+
 # define DROPDOWN_EDIT_UNDO		0
 # define DROPDOWN_EDIT_REDO		1
 # define DROPDOWN_EDIT_CUT		2
@@ -64,11 +69,13 @@
 # define DROPDOWN_LABEL_EDIT_CUT	"Cut"
 # define DROPDOWN_LABEL_EDIT_COPY	"Copy"
 # define DROPDOWN_LABEL_EDIT_PASTE	"Paste"
+
 # define DROPDOWN_VIEW_ORTHOGONAL	0
 # define DROPDOWN_VIEW_DIFFUSE		1
 # define DROPDOWN_VIEW_SPECULAR		2
 # define DROPDOWN_VIEW_GLOBAL_I		3
 # define DROPDOWN_ITEMS_VIEW		4
+
 # define OBJECT_PROPERTY_H		4
 # define OBJECT_PROPERTIES		5
 # define OBJECT_PROPERTIES_H	OBJECT_PROPERTY_H * OBJECT_PROPERTIES
@@ -217,6 +224,7 @@ void			ui_render_scrollbar(t_scrollbar *scrollbar);
 
 /*
 **	ui_mouse.c
+**	ui_mouse_objectlist.c
 */
 void			ui_mouse_menubar();
 void			ui_mouse_dropdown(t_menu *dropdown);

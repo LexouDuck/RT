@@ -123,7 +123,7 @@ void		opencl_log_compiler(void)
 	clGetProgramBuildInfo(rt.ocl.program, rt.ocl.gpu.id, CL_PROGRAM_BUILD_LOG,
 			0, NULL, &file_len);
 	if (!(file_buf = (char *)malloc(file_len + 1)))
-		return (ERROR);
+		return ;
 	file_buf[file_len] = '\0';
 	clGetProgramBuildInfo(rt.ocl.program, rt.ocl.gpu.id, CL_PROGRAM_BUILD_LOG,
 			file_len + 1, file_buf, NULL);

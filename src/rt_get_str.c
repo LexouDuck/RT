@@ -17,19 +17,19 @@ inline char *rt_get_str_primitive(t_primitive primitive)
 {
 	static char	*primitives[] = {
 		"N/A",
-		"SPHERE     ",
-		"CUBE       ",
-		"CYLINDER   ",
-		"CONE       ",
-		"PLANE      ",
-		"RECTANGLE  ",
-		"DISK       ",
-		"OBJ MESH   ",
-		"PARABOLOID ",
+		"SPHERE",
+		"CUBE",
+		"CYLINDER",
+		"CONE",
+		"PLANE",
+		"RECTANGLE",
+		"DISK",
+		"SADDLE",
+		"PARABOLOID",
 		"HYPERBOLOID",
-		"SADDLE     ",
 		"INFCYLINDER",
-		"INFCONE    ",
+		"INFCONE",
+		"OBJ MESH",
 	};
 
 	return (primitives[primitive]);
@@ -38,10 +38,10 @@ inline char *rt_get_str_primitive(t_primitive primitive)
 inline char *rt_get_str_material(t_material material)
 {
 	static char	*materials[] = {
-		"LIGHT      ",
-		"DIFFUSE    ",
+		"LIGHT",
+		"DIFFUSE",
 		"TRANSPARENT",
-		"SPECULAR   ",
+		"SPECULAR",
 	};
 
 	return (materials[material]);

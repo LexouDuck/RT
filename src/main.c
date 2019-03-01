@@ -140,7 +140,7 @@ int			main(int argc, char *argv[])
 	if (ui_init())
 		return (ERROR);
 //printf("debug: init opencl\n");
-	if (opencl_init())
+	if (opencl_init(RT_CL_PLATFORM_UNINITIALIZED))
 		return (ERROR);
 	return (main_loop());
 }

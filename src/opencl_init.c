@@ -19,30 +19,39 @@
 #include "../rt.h"
 #include "debug.h"
 
-static int		opencl_get_platform_and_gpu(void)
+static int		opencl_get_platform_and_gpu(int platform_index)
 {
 	int			err;
 	int			has_gpu;
 
-	if ((err = clGetPlatformIDs(RT_CL_MAX_PLATFORM_AMOUNT, rt.ocl.platforms, &(rt.ocl.platform_amount))) != CL_SUCCESS)
-		return (debug_perror("OpenCL: could not get platform IDs."));
-	debug_output_value("Platform amount found: ", ft_u64_to_str(rt.ocl.platform_amount), TRUE);
-//	if (clGetDeviceIDs(rt.ocl.platform, CL_DEVICE_TYPE_CPU, 1, &(rt.ocl.cpu), NULL))
-//		return (ERROR);
-	has_gpu = FALSE;
-//	rt.ocl.gpu_platform_index = rt.ocl.platform_amount ? rt.ocl.platform_amount - 1 : 0; //@Alexis: this line breaks my opencl on Linux: platform 0 is my GPU
-	while (rt.ocl.gpu_platform_index < rt.ocl.platform_amount)
+	if (platform_index == RT_CL_PLATFORM_UNINITIALIZED)
 	{
-		if ((err = clGetDeviceIDs(rt.ocl.platforms[rt.ocl.gpu_platform_index],
-			CL_DEVICE_TYPE_GPU, 1, &(rt.ocl.gpu.id), NULL)) == CL_SUCCESS)
+		if ((err = clGetPlatformIDs(RT_CL_PLATFORM_MAX_AMOUNT, rt.ocl.platforms,
+									&(rt.ocl.platform_amount))) != CL_SUCCESS)
+			return (debug_perror("opencl_get_platform_and_gpu:"
+								" could not get platform IDs."));
+		has_gpu = FALSE;
+		rt.ocl.gpu_platform_index = -1;
+		while (!has_gpu && ++rt.ocl.gpu_platform_index < rt.ocl.platform_amount)
 		{
-			has_gpu = TRUE;
-			break ;
+			if ((err = clGetDeviceIDs(rt.ocl.platforms[rt.ocl.gpu_platform_index],
+				CL_DEVICE_TYPE_GPU, 1, &(rt.ocl.gpu.id), NULL)) == CL_SUCCESS)
+				has_gpu = TRUE;
 		}
-		++rt.ocl.gpu_platform_index;
+		if (!has_gpu)
+			return (debug_perror("opencl_get_platform_and_gpu:"
+								" no GPU device found."));
 	}
-	if (!has_gpu)
-		return (debug_perror("OpenCL: no GPU device found."));
+	else
+	{
+		rt.ocl.gpu_platform_index = platform_index;
+		if ((err = clGetDeviceIDs(rt.ocl.platforms[rt.ocl.gpu_platform_index],
+			CL_DEVICE_TYPE_GPU, 1, &(rt.ocl.gpu.id), NULL)) < 0)
+			return (debug_perror("opencl_get_platform_and_gpu:"
+								" error getting selected platform's GPU."));
+	}
+	debug_output_value("Platform amount found: ",
+							ft_u64_to_str(rt.ocl.platform_amount), TRUE);
 	opencl_set_device_info();
 	return (OK);
 }
@@ -123,11 +132,11 @@ static int		opencl_init_gpu_memory(void)
 	return (OK);
 }
 
-int				opencl_init(void)
+int				opencl_init(int platform_index)
 {
 	int		err;
 
-	if (opencl_get_platform_and_gpu())
+	if (opencl_get_platform_and_gpu(platform_index))
 		return (debug_perror("opencl_init: could not find an appropriate GPU/platform."));
 	if (opencl_create_context_and_queue())
 		return (debug_perror("opencl_init: could not create device, context or queue."));

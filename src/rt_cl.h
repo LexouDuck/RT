@@ -52,14 +52,15 @@
 */
 
 // TODO experiment with optimization options
-# define RT_CL_MAX_PLATFORM_AMOUNT	2
-//# define RT_CL_PROGRAM_SOURCE		"src/rt_cl_build_scene"//"tmp_srcs/opencl_sandbox/qjulia_kernel.cl"//
-# define RT_CL_PROGRAM_SOURCE		"concat.cl"//"src/rt_cl_render.cl"
-# define RT_CL_PROGRAM_OPTIONS		"-Werror"//-cl-opt-disable"//-Werror"// -g" //-cl-nv-verbose" //-cl-kernel-arg-info" //-cl-fast-relaxed-math" //-cl-unsafe-math-optimizations //-cl-mad-enable
-# define RT_CL_KERNEL_AMOUNT		2
-# define RT_CL_KERNEL_0				"rt_cl_build_scene"
-# define RT_CL_KERNEL_1				"rt_cl_render"//"QJuliaKernel"//
-# define RT_CL_KERNEL_1_PACKET_SIZE	720 //1440 ?
+# define RT_CL_PLATFORM_MAX_AMOUNT		2
+# define RT_CL_PLATFORM_UNINITIALIZED	-1
+//# define RT_CL_PROGRAM_SOURCE			"src/rt_cl_build_scene"//"tmp_srcs/opencl_sandbox/qjulia_kernel.cl"//
+# define RT_CL_PROGRAM_SOURCE			"concat.cl"//"src/rt_cl_render.cl"
+# define RT_CL_PROGRAM_OPTIONS			"-Werror"//-cl-opt-disable"//-Werror"// -g" //-cl-nv-verbose" //-cl-kernel-arg-info" //-cl-fast-relaxed-math" //-cl-unsafe-math-optimizations //-cl-mad-enable
+# define RT_CL_KERNEL_AMOUNT			2
+# define RT_CL_KERNEL_0					"rt_cl_build_scene"
+# define RT_CL_KERNEL_1					"rt_cl_render"//"QJuliaKernel"//
+# define RT_CL_KERNEL_1_PACKET_SIZE		720 //1440 ?
 
 
 typedef struct	s_gpu
@@ -87,7 +88,7 @@ typedef	struct	s_gpu_buffers
 
 typedef struct	s_cl
 {
-	cl_platform_id		platforms[RT_CL_MAX_PLATFORM_AMOUNT];
+	cl_platform_id		platforms[RT_CL_PLATFORM_MAX_AMOUNT];
 	cl_uint				platform_amount;
 	cl_uint				gpu_platform_index;
 	t_gpu				gpu;
@@ -102,7 +103,7 @@ typedef struct	s_cl
 /*
 ** opencl_init.c
 */
-int				opencl_init();
+int				opencl_init(int platform_index);
 
 /*
 ** opencl_utils.c

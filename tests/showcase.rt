@@ -4,7 +4,7 @@ SPHERE #FFFFFF
 pos:(0, 10, 0)
 rot:{0, 0, 0}
 scale:[1, 1, 1]
-material:light
+material:LIGHT
 
 
 CUBE #FFFFFF

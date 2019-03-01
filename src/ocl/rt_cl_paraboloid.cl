@@ -1,18 +1,3 @@
-static float3		cl_float3_eucl_nrmlz
-(
-					float3 		vector
-)
-{
-	float		inv_norm;
-
-	inv_norm = 1. / sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
-	vector.x = vector.x * inv_norm;
-	vector.y = vector.y * inv_norm;
-	vector.z = vector.z * inv_norm;
-	return (vector);
-
-}
-
 /*
 ** The paraboloid primitive is the set of points made by the rotation of the
 **	curve x^2 = y around the y-axis.
@@ -41,14 +26,14 @@ static t_intersection		rt_cl_paraboloid_intersect
 	quadpoly.z = rt_cl_float3_ynull_dot(ray.pos, ray.pos) - ray.pos.y;
 	if (!(rt_cl_get_realroots_quadpoly(&roots, quadpoly)))
 		return (INTER_NONE);
-	if (roots.x <= 0. && roots.y <= 0.)
+	if (roots.x <= 0.f && roots.y <= 0.f)
 		return (INTER_NONE);
-	else if (roots.x <= 0.)
+	else if (roots.x <= 0.f)
 	{
 		*res = roots.y;
 		return (INTER_INSIDE);
 	}
-	else if (roots.y <= 0.)
+	else if (roots.y <= 0.f)
 	{
 		*res = roots.x;
 		return (INTER_INSIDE);
@@ -74,8 +59,8 @@ static float3			rt_cl_paraboloid_get_normal
 {
 	float3		normal;
 
-	normal = (float3)(2 * hitpos.x, -1., 2 * hitpos.z);
-	normal = cl_float3_eucl_nrmlz(normal);
+	normal = (float3)(2 * hitpos.x, -1.f, 2 * hitpos.z);
+	normal = normalize(normal);
 	return(normal);
 
 //	return((float3)(2 * hitpos.x, -1., 2 * hitpos.z));

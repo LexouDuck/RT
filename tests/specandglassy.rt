@@ -4,13 +4,13 @@ SPHERE #FFFFFF
 pos:(0, 0, 0)
 rot:{0, 0, 0}
 scale:[7.5, 7.5, 7.5]
-material:light
+material:LIGHT
 
 RECTANGLE #FFFFFF
 pos:(0, 0, -50)
 rot:{1.57079632679, 0, 0}
 scale:[100.0, 100.0, 100.0]
-material:transparent
+material:TRANSPARENT
 
 RECTANGLE #FFFFFF
 pos:(0, 50, 0)

@@ -135,6 +135,10 @@ int			rt_file_import(char *filepath);
 int			rt_file_save(char *filepath);
 
 /*
+**	rt_save.c
+*/
+void		rt_save(int	fd);
+/*
 **	rt_open.c
 **	rt_open_util.c
 **	rt_open_read.c

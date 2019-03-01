@@ -4,7 +4,7 @@ BG #D3F9BC
 //LIGHT #FFFFFF 4	( 10, 10, 0.0)
 //LIGHT #FFFFFF 4	(0.0, 10, -10)
 //LIGHT #FFFFFF 4	(0.0, 10,  10)
-SPHERE #FFFFFF	pos:(0, 10, 0)	rot:{0, 0, 0}	scale:[1, 1, 1]	"LIGHT" material:light
+SPHERE #FFFFFF	pos:(0, 10, 0)	rot:{0, 0, 0}	scale:[1, 1, 1]	"LIGHT" material:LIGHT
 
 // commentaires
 

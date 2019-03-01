@@ -8,11 +8,11 @@ scale:[2, 20, 2]
 "Infcone"
 
 
-SPHERE #FF22FF	(-19, 19, 0)	{0, 0, 0}	[1, 1, 1] "Magenta"	material:light
+SPHERE #FF22FF	(-19, 19, 0)	{0, 0, 0}	[1, 1, 1] "Magenta"	material:LIGHT
 
-SPHERE #2222FF	(33, -13, -1)	{0, 0, 0}	[1, 1, 1] "Blue"	material:light
-SPHERE #FFAAAA	(30, -13, 1)	{0, 0, 0}	[1, 1, 1] "Pink"	material:light 
-SPHERE #FFFF22	(32, -13, 3)	{0, 0, 0}	[1, 1, 1] "Yellow"	material:light 
+SPHERE #2222FF	(33, -13, -1)	{0, 0, 0}	[1, 1, 1] "Blue"	material:LIGHT
+SPHERE #FFAAAA	(30, -13, 1)	{0, 0, 0}	[1, 1, 1] "Pink"	material:LIGHT
+SPHERE #FFFF22	(32, -13, 3)	{0, 0, 0}	[1, 1, 1] "Yellow"	material:LIGHT
 
 
 CUBE #FF0000	pos:(-9, 0, 0)	rot:{0, 0, 0}	scale:[1, 6, 10]	"Brick Side Left"

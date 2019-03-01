@@ -130,10 +130,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 				t_ray		new_ray;
 				float3		hitpos;
 				float3		normal;
-				float		angle;
-				float		pattern;
 				t_color		color;
-
 
 	hitpos = ray.pos + ((float3)ray.t) * ray.dir;
 	if (obj->type == sphere)
@@ -169,7 +166,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 	new_ray.lum_mask *= (float3)(1. - new_ray.complete) * (float3)(dot(normal, new_ray.dir));
 	new_ray.lum_acc = ray.lum_acc + (float3)(new_ray.complete) * new_ray.lum_mask;
 #endif
-	//TODO echantillonage par importance, séparation éclairage direct et indirect
+	
 	if (obj->material == light)
 	{
 		new_ray.complete = true;
@@ -209,6 +206,79 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 	return (new_ray);
 }
 
+#if 0
+static t_ray			rt_cl_create_camray
+(
+					__constant		t_scene	*	scene,
+									uint2 *		random_seeds
+)
+{
+	int const			x_id = get_global_id(0);
+	int const			y_id = get_global_id(1);
+	int const			width = get_global_size(0);
+	int const			height = get_global_size(1);
+	float16	const		cam_mat44 = scene->camera.c_to_w;
+	float const			fov_val = -width / (2 * tan(scene->camera.hrz_fov));
+	t_ray				camray;
+	float2				seed;
+	float2				anti_aliasing;
+	float2				aperture;
+	float				focus_distance = 10;
+	float3				destination;
+	float3				new_origin;
+
+	camray.lum_acc = (float3)(0.);
+	camray.lum_mask = (float3)(1.);
+	camray.t = scene->render_dist;
+	camray.complete = false;
+	camray.hit_obj_id = -1;
+	camray.inter_type = INTER_NONE;
+
+	//	Box muller, anti-aliasing
+	seed.x = rt_cl_frand_0_to_1(random_seeds) / 2;
+	seed.y = rt_cl_frand_0_to_1(random_seeds) / 2;
+	anti_aliasing.x = sqrt(-2 * log((float)(seed.x))) * cos(2 * M_PI * seed.y);
+	anti_aliasing.y = sqrt(-2 * log((float)(seed.x))) * sin(2 * M_PI * seed.y);
+	camray.dir = (float3)(x_id - width / 2 + anti_aliasing.x, y_id - height / 2 + anti_aliasing.y, fov_val);
+	camray.dir = normalize(camray.dir);
+
+	camray.pos = (float3)(0., 0., 0.);
+	aperture.x = rt_cl_frand_0_to_1(random_seeds) * scene->camera.aperture;
+	aperture.y = rt_cl_frand_0_to_1(random_seeds) * scene->camera.aperture;
+//	aperture.x = rt_cl_frand_0_to_1(random_seeds) * 4;
+//	aperture.y = rt_cl_frand_0_to_1(random_seeds) * 4;
+	new_origin = (float3)(aperture.x, aperture.y, 0.);
+
+	destination = (focus_distance * camray.dir);
+	camray.dir = destination - new_origin;
+	camray.pos = rt_cl_apply_homogeneous_matrix(cam_mat44, new_origin);
+	camray.dir = rt_cl_apply_linear_matrix(cam_mat44_c_to_w, camray.dir);
+	camray.dir = normalize(camray.dir);
+
+	return (camray);
+}
+#endif
+
+#if 0
+		//Box-Muller sampling
+		uint2	seed;
+		float3	anti_aliasing;
+
+		seed.x = rt_cl_frand_0_to_1(random_seeds);
+		seed.y = rt_cl_frand_0_to_1(random_seeds);
+		anti_aliasing.x = sqrt(-2.f * log((float)(seed.x))) * cos((float)(TAU * seed.y));
+		anti_aliasing.y = sqrt(-2.f * log((float)(seed.x))) * sin((float)(TAU * seed.y));
+		anti_aliasing.z = 0.f;
+
+		camray.pos = (float3)(rt_cl_frand_neg1half_to_pos1half(random_seeds), rt_cl_frand_neg1half_to_pos1half(random_seeds), 0.f);
+		camray.pos *= (float3)scene->camera.aperture;
+
+		camray.dir = (float3)(x_id - width / 2, y_id - height / 2, fov_val);
+		camray.dir += anti_aliasing;
+//		camray.dir = (float3)(scene->camera.focal_length) * normalize(camray.dir);
+//		camray.dir = camray.dir - camray.pos;
+#endif
+
 static t_ray			rt_cl_create_camray
 (
 					__constant		t_scene	*	scene,
@@ -242,12 +312,13 @@ static t_ray			rt_cl_create_camray
 		camray.pos = (float3)(rt_cl_frand_neg1half_to_pos1half(random_seeds), rt_cl_frand_neg1half_to_pos1half(random_seeds), 0.);
 		camray.pos *= (float3)(scene->camera.aperture);
 		camray.dir = (float3)(x_id - width / 2, y_id - height / 2, fov_val);
-		camray.dir += (float3)(rt_cl_frand_neg1half_to_pos1half(random_seeds) * 0.1, rt_cl_frand_neg1half_to_pos1half(random_seeds) * 0.1, 0.); //TODO, replace 0.1 by appropriate value; add and fix for depth of field
+		camray.dir += (float3)(rt_cl_frand_neg1half_to_pos1half(random_seeds) * 0.1f, rt_cl_frand_neg1half_to_pos1half(random_seeds) * 0.1f, 0.); //TODO, replace 0.1 by appropriate value; add and fix for depth of field
 	}
 	else if (scene->camera.model == CAMERA_MODEL_FOCAL)
 	{
 		seeds = (float2)(rt_cl_frand_0_to_1(random_seeds) / 2, rt_cl_frand_0_to_1(random_seeds) / 2);
-		box_muller_sample = (float2)(sqrt(-2 * log((float)(seeds.x))) * cos(TAU * seeds.y), sqrt(-2 * log((float)(seeds.x))) * sin(TAU * seeds.y));
+		box_muller_sample = (float2)(sqrt(-2 * log((float)(seeds.x))) * cos((float)(TAU * seeds.y)),
+								sqrt(-2 * log((float)(seeds.x))) * sin((float)(TAU * seeds.y)));
 		camray.dir = (float3)(x_id - width / 2 + box_muller_sample.x, y_id - height / 2 + box_muller_sample.y, fov_val);
 		camray.dir = normalize(camray.dir);
 		aperture.x = rt_cl_frand_0_to_1(random_seeds) * scene->camera.aperture;

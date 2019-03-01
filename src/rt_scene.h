@@ -38,7 +38,7 @@
 # define OBJECT_ARGS_AMOUNT		7
 # define OBJECT_NAME_MAXLENGTH	24
 # define OBJECT_MAX_AMOUNT		32
-# define DEFAULT_RAYSAMP_SIZE	64
+# define DEFAULT_RAYSAMP_SIZE	128
 # define DEFAULT_MAX_RAY_DEPTH	8
 
 typedef enum	e_rendermode

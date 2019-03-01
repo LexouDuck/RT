@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_scene.c                                       :+:      :+:    :+:   */
+/*   scene.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -9,6 +9,8 @@
 /*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "libft_color.h"
 
 #include "../rt.h"
 
@@ -33,4 +35,20 @@ void		init_scene(void)
 		DEFAULT_RENDER_DIST }};
 	rt.scene.max_ray_depth = DEFAULT_MAX_RAY_DEPTH;
 	rt.scene.mc_raysamp_size = DEFAULT_RAYSAMP_SIZE;
+}
+
+void		update_scene()
+{
+	rt.scene.bg_color = ft_color_argb32_set(0.,
+		rt.scene.bg_rgb.x * 255.,
+		rt.scene.bg_rgb.y * 255.,
+		rt.scene.bg_rgb.z * 255.);
+}
+
+void		update_object(t_object *object)
+{
+	object->color = ft_color_argb32_set(0.,
+		object->rgb.x * 255.,
+		object->rgb.y * 255.,
+		object->rgb.z * 255.);
 }

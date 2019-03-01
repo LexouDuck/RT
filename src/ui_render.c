@@ -48,10 +48,14 @@ void	ui_render_expandedproperties(t_object *object, t_s32 y)
 {
 	char		*tmp;
 
-	ui_render_text("Material:", 1, y + 3, FALSE);
-	ui_render_text(rt_get_str_material(object->material), 13, y + 3, FALSE);
-	ui_render_text("\x12", 12, y + 3, FALSE);
-	ui_render_text("\x13", 24, y + 3, FALSE);
+	ui_render_text("Primitive:", 1, y + 2, FALSE);
+	ui_render_text(rt_get_str_primitive(object->type), 13, y + 2, FALSE);
+	ui_render_text("\x12", 12, y + 2, FALSE);
+	ui_render_text("\x13", 24, y + 2, FALSE);
+	ui_render_text("Material:", 1, y + 4, FALSE);
+	ui_render_text(rt_get_str_material(object->material), 13, y + 4, FALSE);
+	ui_render_text("\x12", 12, y + 4, FALSE);
+	ui_render_text("\x13", 24, y + 4, FALSE);
 	if ((tmp = ft_u32_to_hex(object->color)))
 	{
 		ui_render_text("Color: #", 1, y + 6, FALSE);

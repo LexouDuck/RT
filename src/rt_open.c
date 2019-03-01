@@ -76,10 +76,7 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 			(error = rt_read_arg_vector(p, &object.bbox_os.vf, "bbox_vf")))
 			return (error);
 	}
-	object.color = ft_color_argb32_set(0.,
-		object.rgb.x * 255.,
-		object.rgb.y * 255.,
-		object.rgb.z * 255.);
+	update_object(&object);
 	rt.scene.objects[p->current_object] = object;
 	++(p->current_object);
 	return (NULL);
@@ -124,10 +121,7 @@ static char	*rt_read_command(t_rtparser *p, char *label)
 	else if (ft_strequ(label, "BG"))
 	{
 		error = rt_read_arg_color(p, &rt.scene.bg_rgb, "color");
-		rt.scene.bg_color = ft_color_argb32_set(0.,
-			rt.scene.bg_rgb.x * 255.,
-			rt.scene.bg_rgb.y * 255.,
-			rt.scene.bg_rgb.z * 255.);
+		update_scene();
 		return (error);
 	}
 	else

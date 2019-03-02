@@ -27,9 +27,9 @@
 
 typedef enum		e_rendermode
 {
-	RENDERMODE_BBOX = 0,
+	RENDERMODE_MCPT = 0,
+	RENDERMODE_BBOX,
 	RENDERMODE_SOLIDCOLOR,
-	RENDERMODE_MCPT
 }					t_rendermode;
 
 /*
@@ -52,9 +52,9 @@ typedef enum		e_rendermode
 
 typedef enum		e_camera_model
 {
-	CAMERA_MODEL_TMP,
-	CAMERA_MODEL_PINHOLE,
-	CAMERA_MODEL_FOCAL,
+	CAMERA_MODEL_PINHOLE = 0,
+	CAMERA_MODEL_BLUR_SIMPLE,
+	CAMERA_MODEL_BLUR_FOCAL,
 	CAMERA_MODEL_ORTHOGRAPHIC
 }					t_camera_model;
 

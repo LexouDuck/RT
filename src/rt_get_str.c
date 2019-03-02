@@ -50,9 +50,9 @@ inline char *rt_get_str_material(t_material material)
 inline char	*rt_get_str_rendermode(t_rendermode rendermode)
 {
 	static char	*rendermodes[RENDER_MODES] = {
+		"MONTE-CARLO",
 		"BOUNDINGBOX",
 		"SOLID COLOR",
-		"MONTE-CARLO",
 	};
 
 	return (rendermodes[rendermode]);
@@ -61,9 +61,9 @@ inline char	*rt_get_str_rendermode(t_rendermode rendermode)
 inline char	*rt_get_str_cameramodel(t_rendermode cameramodel)
 {
 	static char	*cameramodels[CAMERA_MODELS] = {
-		"TRISTAN",
 		"PINHOLE",
-		"FOCAL",
+		"BLUR SIMPLE",
+		"BLUR FOCAL",
 		"ORTHOGRAPHIC"
 	};
 

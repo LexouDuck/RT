@@ -61,7 +61,7 @@ void	event_mouse_press(SDL_Event *event)
 		camera->mode = CAMERA_MODE_TILT;
 	else if (event->button.button == SDL_BUTTON_RIGHT)
 		camera->mode = CAMERA_MODE_ROTATE;
-	if (SDL_CaptureMouse(TRUE))
+	if (camera->mode && SDL_CaptureMouse(TRUE))
 		debug_output_error("Unable to capture the mouse cursor input.", TRUE);
 }
 

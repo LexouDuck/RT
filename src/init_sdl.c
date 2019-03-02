@@ -19,8 +19,7 @@ int		init_sdl(void)
 {
 	if (SDL_Init(
 		SDL_INIT_TIMER |
-		SDL_INIT_VIDEO |
-		SDL_INIT_AUDIO) < 0)
+		SDL_INIT_VIDEO) < 0)
 	{
 		debug_output_error("Could not initialize SDL2: ", TRUE);
 		return (ERROR);

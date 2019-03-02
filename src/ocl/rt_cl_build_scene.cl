@@ -148,7 +148,7 @@ static t_bbox			rt_cl_build_object_bbox
 	}
 	else if (type == hyperboloid)
 	{
-		objspace_bbox =(t_bbox){(float3)(-render_dist, -render_dist, -render_dist),
+		objspace_bbox = (t_bbox){(float3)(-render_dist, -render_dist, -render_dist),
 							(float3)(render_dist, render_dist, render_dist)};
 	}
 	else if (type == cone)

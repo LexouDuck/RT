@@ -39,7 +39,7 @@ void		rt_output_readfile(void)
 		object = &rt.scene.objects[i];
 		debug_output(rt_get_str_primitive(object->type));
 		debug_output_value("NAME: ", object->name, FALSE);
-		debug_output_value("MATERIAL: ", rt_get_str_material(object->material), FALSE);
+		debug_output_value(" -> MATERIAL: ", rt_get_str_material(object->material), FALSE);
 		debug_output_value("-> #", ft_u32_to_hex(object->color), TRUE);
 		debug_output_value(" - ", cl_float3_to_str(&object->rgb, 3), TRUE);
 		debug_output_value(" -   pos:", cl_float3_to_str(&object->pos, 3), TRUE);
@@ -51,6 +51,41 @@ void		rt_output_readfile(void)
 	}
 }
 
+static void	rt_object_init_bbox(t_object *object)
+{
+	float	render_dist;
+
+	render_dist = rt.scene.render_dist;
+	if (object->type == sphere || object->type == cube || object->type == cylinder)
+		object->bbox_os = (t_bbox){
+			(cl_float3){{-1., -1., -1.}},
+			(cl_float3){{1., 1., 1.}}};
+	else if (object->type == infcylinder)
+		object->bbox_os = (t_bbox){
+			(cl_float3){{-1., -render_dist, -1.}},
+			(cl_float3){{1., render_dist, 1.}}};
+	else if (object->type == paraboloid)
+		object->bbox_os = (t_bbox){
+			(cl_float3){{-sqrt(render_dist), 0., -sqrt(render_dist)}},
+			(cl_float3){{sqrt(render_dist), render_dist, sqrt(render_dist)}}};
+	else if (object->type == hyperboloid)
+		object->bbox_os = (t_bbox){
+			(cl_float3){{-render_dist, -render_dist, -render_dist}},
+			(cl_float3){{render_dist, render_dist, render_dist}}};
+	else if (object->type == cone)
+		object->bbox_os = (t_bbox){
+			(cl_float3){{-1., 0, -1.}},
+			(cl_float3){{1., 1, 1.}}};
+	else if (object->type == infcone)
+		object->bbox_os = (t_bbox){
+			(cl_float3){{-render_dist, -render_dist, -render_dist}},
+			(cl_float3){{render_dist, render_dist, render_dist}}};
+	else
+		object->bbox_os = (t_bbox){
+			(cl_float3){{-render_dist, -render_dist, -render_dist}},
+			(cl_float3){{render_dist, render_dist, render_dist}}};
+}
+
 static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 {
 	char		*error;
@@ -58,13 +93,14 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 	t_s32		i;
 
 	object.type = shape;
+	object.material = diffuse;
 	ft_memclr(&object.name, OBJECT_NAME_MAXLENGTH);
 	object.color = 0xFFFFFF;
 	object.rgb = (cl_float3){{ 1., 1., 1. }};
 	object.pos = (cl_float3){{ 0., 0., 0. }};
 	object.rot = (cl_float3){{ 0., 0., 0. }};
 	object.scale = (cl_float3){{ 1., 1., 1. }};
-	object.material = diffuse;
+	rt_object_init_bbox(&object);
 	i = -1;
 	while (++i < OBJECT_ARGS_AMOUNT)
 	{

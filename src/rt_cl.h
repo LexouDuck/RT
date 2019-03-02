@@ -22,22 +22,16 @@
 #  define CL_TARGET_OPENCL_VERSION	120
 #  define CL_SILENCE_DEPRECATION
 #  include <OpenCL/cl.h>
-#  define OPENCL_LU64	"%#lx"
-#  define OPENCL_LLU64	"%#llx"
 
 # elif (defined __WIN32__)
 #  define CL_USE_DEPRECATED_OPENCL_1_2_APIS
 #  define CL_TARGET_OPENCL_VERSION	120
 #  include "CL/cl.h"
-#  define OPENCL_LLU64	"%#I64x"
-#  define OPENCL_LU64	"%#I64x"
 
 # else
 #  define CL_USE_DEPRECATED_OPENCL_1_2_APIS
 #  define CL_TARGET_OPENCL_VERSION	120
 #  include <CL/cl.h>
-#  define OPENCL_LU64	"%#lx"
-#  define OPENCL_LLU64	"%#lx"
 
 # endif
 
@@ -76,8 +70,8 @@ typedef struct	s_gpu
 	//gpu mem
 	//t_u8			*in_buf_hostptr;
 	//t_u8			*out_buf_hostptr;
-	//cl_mem			in_buf;
-	//cl_mem			out_buf;
+	//cl_mem		in_buf;
+	//cl_mem		out_buf;
 }				t_gpu;
 
 typedef	struct	s_gpu_buffers

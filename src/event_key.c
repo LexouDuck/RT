@@ -42,8 +42,10 @@ void	event_check_keydown(SDL_Event *event)
 		// handle paste
 		if (event->key.keysym.sym == SDLK_RETURN)
 		{
-			// TODO
-			ui_leave_control_numberbox(&rt.ui.current_textinput);
+			if (rt.ui.current_textinput.type == texttype_number_float)
+				ui_leave_control_numberbox(&rt.ui.current_textinput);
+			else if (rt.ui.current_textinput.type == texttype_text)
+				ui_leave_control_textbox(&rt.ui.current_textinput);
 		}
 		else if (event->key.keysym.sym == SDLK_BACKSPACE && length > 0)
 			rt.ui.current_textinput.input[length - 1] = '\0';

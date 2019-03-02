@@ -38,8 +38,9 @@ void		rt_output_readfile(void)
 	{
 		object = &rt.scene.objects[i];
 		debug_output(rt_get_str_primitive(object->type));
+		debug_output("\t-> ");
 		debug_output_value("NAME: ", object->name, FALSE);
-		debug_output_value(" -> MATERIAL: ", rt_get_str_material(object->material), FALSE);
+		debug_output_value("MATERIAL: ", rt_get_str_material(object->material), FALSE);
 		debug_output_value("-> #", ft_u32_to_hex(object->color), TRUE);
 		debug_output_value(" - ", cl_float3_to_str(&object->rgb, 3), TRUE);
 		debug_output_value(" -   pos:", cl_float3_to_str(&object->pos, 3), TRUE);

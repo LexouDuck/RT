@@ -53,8 +53,9 @@
 # define RT_CL_PROGRAM_OPTIONS			"-Werror"//-cl-opt-disable"//-Werror"// -g" //-cl-nv-verbose" //-cl-kernel-arg-info" //-cl-fast-relaxed-math" //-cl-unsafe-math-optimizations //-cl-mad-enable
 # define RT_CL_KERNEL_AMOUNT			2
 # define RT_CL_KERNEL_0					"rt_cl_build_scene"
-# define RT_CL_KERNEL_1					"rt_cl_render"//"QJuliaKernel"//
-# define RT_CL_KERNEL_1_PACKET_SIZE		720 //1440 ?
+# define RT_CL_KERNEL_1					"rt_cl_render"
+# define RT_CL_KERNEL_1_DIM_0_STEP		720 //1440 ?
+# define RT_CL_KERNEL_1_DIM_1_STEP		4
 
 
 typedef struct	s_gpu
@@ -91,18 +92,21 @@ typedef struct	s_cl
 	cl_command_queue	cmd_queue;
 	cl_kernel			kernels[RT_CL_KERNEL_AMOUNT];
 	t_gpu_buffers		gpu_buf;
+	float				render_progress;
 //	cl_int				status;
 }				t_cl;
 
 /*
 ** opencl_init.c
 */
+int				opencl_init_gpu_memory(void);
 int				opencl_init(int platform_index);
 
 /*
 ** opencl_utils.c
 */
 int				opencl_set_device_info(void);
+void			opencl_refresh_gpu_memory_buffers(void);
 void			opencl_freeall(void);
 void			opencl_log_compiler(void);
 

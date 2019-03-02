@@ -293,6 +293,7 @@ typedef struct		s_scene
 	cl_uint			mc_raysamp_size;
 	cl_uint			random_seed_time;
 	t_rendermode	render_mode;
+	size_t			work_dim[2];
 }					t_scene;
 
 #endif

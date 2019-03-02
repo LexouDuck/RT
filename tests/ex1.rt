@@ -12,7 +12,7 @@ SPHERE #FFFFFF
 pos:(0, 0, 0)
 rot:{0, 0, 0}
 scale:[2, 2, 2]
-material:light
+material:LIGHT
 
 SPHERE #FF2222
 pos:(10, 0, 0)
@@ -48,7 +48,7 @@ SPHERE #22AAAA
 pos:(0, 100, 0)
 rot:{0, 0, 0}
 scale:[90, 90, 90]
-light:(1., 1., 1.)
+material:LIGHT
 
 SPHERE #225555
 pos:(-100, 0, 0)

@@ -59,7 +59,7 @@ static t_intersection		rt_cl_paraboloid_intersect
 
 /*
 ** To find the normal of a parabola, consider the fact that a parabola is a
-** manifold and can thus be described as though its calculus form.
+** manifold and can thus be described through its calculus form.
 **
 ** Our scalar function for our hypersurface is f(x, y, z) = x^2 - y + z^2
 ** Its jacobian matrix is thus the 1×3 matrix [ 2x, -1, 2z ]
@@ -73,12 +73,9 @@ static float3			rt_cl_paraboloid_get_normal
 
 	normal = (float3)(2 * hitpos.x, -1.f, 2 * hitpos.z);
 	normal = normalize(normal);
-	return(normal);
-
-//	return((float3)(2 * hitpos.x, -1., 2 * hitpos.z));
+	return (normal);
 }
 
-#if 0
 /*
 ** The paraboloid primitive is the set of points made by the rotation of the
 **	curve x^2 = y around the y-axis.
@@ -93,49 +90,54 @@ static float3			rt_cl_paraboloid_get_normal
 **	(2 * (oxdx - ozdz) - dy)	* t			+
 **	(dx^2 - dz^2)				* t^2			== 0
 **
-t_bool						intersect_ray_saddle(t_ray *objray)
-{
-	t_vec_3d	quadpoly;
-	t_float		root1;
-	t_float		root2;
-
-	quadpoly[0] = objray->dir[0] * objray->dir[0]
-					- objray->dir[2] * objray->dir[2];
-	quadpoly[1] = 2 * (objray->dir[0] * objray->pos[0]
-					- objray->dir[2] * objray->pos[2]) - objray->dir[1];
-	quadpoly[2] = objray->pos[0] * objray->pos[0]
-					- objray->pos[2] * objray->pos[2] - objray->pos[1];
-	if (!(get_realroots_quadpoly(&root1, &root2, quadpoly)))
-		return (FALSE);
-	if (root1 <= 0. && root2 <= 0.)
-		return (FALSE);
-	if (root1 <= 0.)
-		root1 = root2;
-	else if (root2 <= 0.)
-		root2 = root1;
-	if (root1 > objray->t && root2 > objray->t)
-		return (FALSE);
-	objray->t = ft_fmin(root1, root2);
-	return (TRUE);
-}
 */
+static t_intersection			rt_cl_saddle_intersect
+(
+							float *		res,
+							t_ray		ray
+)
+{
+	float3		quadpoly;
+	float2		roots;
+	bool		is_inter_inside;
+
+	quadpoly.x = ray.dir.x * ray.dir.x - ray.dir.z * ray.dir.z;
+	quadpoly.y = 2 * (ray.dir.x * ray.pos.x - ray.dir.z * ray.pos.z) - ray.dir.y;
+	quadpoly.z = ray.pos.x * ray.pos.x - ray.pos.z * ray.pos.z - ray.pos.y;
+	if (!(rt_cl_get_realroots_quadpoly(&roots, quadpoly)))
+		return (INTER_NONE);
+	if (roots.x <= 0. && roots.y <= 0.)
+		return (INTER_NONE);
+	is_inter_inside = quadpoly.z < 0.;
+	if (roots.x <= 0.)
+	{
+		*res = roots.y;
+		return (is_inter_inside ? INTER_INSIDE : INTER_OUTSIDE);
+	}
+	else if (roots.y <= 0.)
+	{
+		*res = roots.x;
+		return (is_inter_inside ? INTER_INSIDE : INTER_OUTSIDE);
+	}
+	*res = fmin(roots.x, roots.y);
+	return (is_inter_inside ? INTER_INSIDE : INTER_OUTSIDE);
+}
 
 /*
 ** To find the normal of a parabola, consider the fact that a parabola is a
-** manifold and can thus be described as though its calculus form.
+** manifold and can thus be described through its calculus form.
 **
 ** Our scalar function for our hypersurface is f(x, y, z) = x^2 - y - z^2
 ** Its jacobian matrix is thus the 1×3 matrix [ 2x, -1, -2z ]
-
-void						get_hnn_saddle(t_vec_3d hitpos,
-								t_vec_3d normal, t_ray const objray)
-{
-	get_ray_hitpos(hitpos, objray);
-	vec3_set(normal, 2. * hitpos[0], -1., -2. * hitpos[2]);
-	if (objray.pos[0] * objray.pos[0] - objray.pos[2] * objray.pos[2]
-				<= objray.pos[1])
-		vec3_scale(normal, -1., normal);
-	vec3_eucl_nrmlz(normal, normal);
-}
 */
-#endif
+static float3			rt_cl_saddle_get_normal
+(
+						float3 hitpos
+)
+{
+	float3		normal;
+
+	normal = (float3)(2 * hitpos.x, -1.f, -2 * hitpos.z);
+	normal = normalize(normal);
+	return (normal);
+}

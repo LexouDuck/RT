@@ -35,6 +35,8 @@ void		init_scene(void)
 		DEFAULT_RENDER_DIST }};
 	rt.scene.max_ray_depth = DEFAULT_MAX_RAY_DEPTH;
 	rt.scene.mc_raysamp_size = DEFAULT_RAYSAMP_SIZE;
+	rt.scene.work_dim[0] = rt.canvas_w;
+	rt.scene.work_dim[1] = rt.canvas_h;
 }
 
 void		update_scene()

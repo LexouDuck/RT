@@ -58,7 +58,7 @@ inline char	*rt_get_str_rendermode(t_rendermode rendermode)
 	return (rendermodes[rendermode]);
 }
 
-inline char	*rt_get_str_cameramodel(t_rendermode cameramodel)
+inline char	*rt_get_str_cameramodel(t_camera_model cameramodel)
 {
 	static char	*cameramodels[CAMERA_MODELS] = {
 		"PINHOLE",

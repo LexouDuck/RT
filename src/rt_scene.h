@@ -269,8 +269,8 @@ typedef struct		s_object
 	cl_float3		pos;
 	cl_float3		rot;
 	cl_float3		scale;
-	t_bbox			bbox;//
 	t_bbox			bbox_os;
+	t_bbox			bbox;
 //	cl_float3		specul;
 	cl_float		refrac;//refraction index for snell-descartes
 	cl_float		roughness;

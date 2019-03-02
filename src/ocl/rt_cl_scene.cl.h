@@ -228,8 +228,8 @@ typedef struct	s_object
 	float3			pos;
 	float3			rot;
 	float3			scale;
-	t_bbox			bbox;
 	t_bbox			bbox_os;
+	t_bbox			bbox;
 //	float3			specul;
 	float			refrac;//refraction index for snell-descartes
 	float			roughness;

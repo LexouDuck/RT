@@ -77,7 +77,7 @@
 # define DROPDOWN_ITEMS_VIEW		4
 
 # define OBJECT_PROPERTY_H		4
-# define OBJECT_PROPERTIES		5
+# define OBJECT_PROPERTIES		7
 # define OBJECT_PROPERTIES_H	OBJECT_PROPERTY_H * OBJECT_PROPERTIES
 
 typedef struct	s_menu
@@ -215,12 +215,12 @@ void			ui_menu_view_orthogonal();
 /*
 **	ui_render.c
 */
-void			ui_render_prompt();
-void			ui_render_objects();
 void			ui_render_menubar();
 void			ui_render_dropdown(t_menu *dropdown);
-void			ui_render_caminfo(t_camera *camera);
+void			ui_render_objectlist();
 void			ui_render_scrollbar(t_scrollbar *scrollbar);
+void			ui_render_prompt();
+void			ui_render_caminfo(t_camera *camera);
 
 /*
 **	ui_mouse.c

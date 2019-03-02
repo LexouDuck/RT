@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft_convert.h"
+
 #include "../rt.h"
 #include "event.h"
 
@@ -32,6 +34,18 @@ void	event_check_keydown(SDL_Event *event)
 	{
 		if (event->key.keysym.sym == SDLK_SPACE)
 			rt.must_render = TRUE;
+	}
+
+	else if (event->key.keysym.sym == SDLK_TAB
+		&& rt.ui.current_textinput.type == texttype_number_float)
+	{
+		float *tmp = rt.ui.current_textinput.value;
+	 	if (rt.input.keys & KEY_SHIFT_L)
+			tmp -= 1;
+		else
+			tmp += 1;
+		rt.ui.current_textinput.value = tmp;
+		rt.ui.current_textinput.input = ft_f32_to_str(*tmp, 4);
 	}
 	else
 	{

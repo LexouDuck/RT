@@ -46,3 +46,26 @@ inline char *rt_get_str_material(t_material material)
 
 	return (materials[material]);
 }
+
+inline char	*rt_get_str_rendermode(t_rendermode rendermode)
+{
+	static char	*rendermodes[RENDER_MODES] = {
+		"MONTE-CARLO",
+		"BOUNDINGBOX",
+		"SOLID COLOR",
+	};
+
+	return (rendermodes[rendermode]);
+}
+
+inline char	*rt_get_str_cameramodel(t_rendermode cameramodel)
+{
+	static char	*cameramodels[CAMERA_MODELS] = {
+		"PINHOLE",
+		"BLUR SIMPLE",
+		"BLUR FOCAL",
+		"ORTHOGRAPHIC"
+	};
+
+	return (cameramodels[cameramodel]);
+}

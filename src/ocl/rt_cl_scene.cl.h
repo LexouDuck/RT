@@ -27,9 +27,9 @@
 
 typedef enum		e_rendermode
 {
+	RENDERMODE_MCPT = 0,
 	RENDERMODE_BBOX,
 	RENDERMODE_SOLIDCOLOR,
-	RENDERMODE_MCPT
 }					t_rendermode;
 
 /*
@@ -49,22 +49,22 @@ typedef enum		e_rendermode
 **						 rays in world space)
 */
 
+
+typedef enum		e_camera_model
+{
+	CAMERA_MODEL_PINHOLE = 0,
+	CAMERA_MODEL_BLUR_SIMPLE,
+	CAMERA_MODEL_BLUR_FOCAL,
+	CAMERA_MODEL_ORTHOGRAPHIC
+}					t_camera_model;
+
 typedef enum	e_cameramode
 {
-	CAMERA_MODE_NONE,
+	CAMERA_MODE_NONE = 0,
 	CAMERA_MODE_ROTATE,
 	CAMERA_MODE_TILT,
 	CAMERA_MODE_PAN,
 }				t_cameramode;
-
-
-typedef enum		e_camera_model
-{
-	CAMERA_MODEL_TMP,
-	CAMERA_MODEL_PINHOLE,
-	CAMERA_MODEL_FOCAL,
-	CAMERA_MODEL_ORTHOGRAPHIC
-}					t_camera_model;
 
 /*
 ** c_to_w.s012 is axis_x, .s456 is axis_y, .s89A is axis_z and .sCDE is world_pos
@@ -222,8 +222,8 @@ typedef struct	s_object
 	float3			pos;
 	float3			rot;
 	float3			scale;
-	t_bbox			bbox_ws;
 	t_bbox			bbox_os;
+	t_bbox			bbox_ws;
 //	float3			specul;
 	float			refrac;//refraction index for snell-descartes
 	float			roughness;

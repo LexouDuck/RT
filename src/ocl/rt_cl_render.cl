@@ -324,14 +324,14 @@ static t_ray			rt_cl_create_camray
 		camray.pos = (float3)(0., 0., 0.);
 		camray.dir = (float3)(x_id - width / 2, y_id - height / 2, fov_val);
 	}
-	else if (scene->camera.model == CAMERA_MODEL_TMP)
+	else if (scene->camera.model == CAMERA_MODEL_BLUR_SIMPLE)
 	{
 		camray.pos = (float3)(rt_cl_frand_neg1half_to_pos1half(random_seeds), rt_cl_frand_neg1half_to_pos1half(random_seeds), 0.);
 		camray.pos *= (float3)(scene->camera.aperture);
 		camray.dir = (float3)(x_id - width / 2, y_id - height / 2, fov_val);
 		camray.dir += (float3)(rt_cl_frand_neg1half_to_pos1half(random_seeds) * 0.1f, rt_cl_frand_neg1half_to_pos1half(random_seeds) * 0.1f, 0.); //TODO, replace 0.1 by appropriate value; add and fix for depth of field
 	}
-	else if (scene->camera.model == CAMERA_MODEL_FOCAL)
+	else if (scene->camera.model == CAMERA_MODEL_BLUR_FOCAL)
 	{
 		seeds = (float2)(rt_cl_frand_0_to_1(random_seeds) / 2, rt_cl_frand_0_to_1(random_seeds) / 2);
 		box_muller_sample = (float2)(sqrt(-2 * log((float)(seeds.x))) * cos((float)(TAU * seeds.y)),

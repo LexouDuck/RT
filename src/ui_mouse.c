@@ -13,6 +13,58 @@
 #include "../rt.h"
 #include "debug.h"
 
+static t_bool	ui_mouse_menu_rendermode(t_rendermode *rendermode)
+{
+	static SDL_Rect	rect = { 0, 0, 1, 1 };
+
+	rect.y = 6;
+	rect.x = 14;
+	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+	{
+		*rendermode = ((int)*rendermode == 0) ? (RENDER_MODES - 1) : ((int)*rendermode - 1);
+		rt.must_render = TRUE;
+		return (TRUE);
+	}
+	rect.x = 27;
+	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+	{
+		*rendermode = ((int)*rendermode == (RENDER_MODES - 1)) ? 0 : ((int)*rendermode + 1);
+		rt.must_render = TRUE;
+		return (TRUE);
+	}
+	return (FALSE);
+}
+
+static t_bool	ui_mouse_menu_cameramodel(t_camera_model *cameramodel)
+{
+	static SDL_Rect	rect = { 0, 0, 1, 1 };
+
+	rect.y = 8;
+	rect.x = 14;
+	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+	{
+		*cameramodel = ((int)*cameramodel == 0) ? (CAMERA_MODELS - 1) : ((int)*cameramodel - 1);
+		rt.must_render = TRUE;
+		return (TRUE);
+	}
+	rect.x = 27;
+	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+	{
+		*cameramodel = ((int)*cameramodel == (CAMERA_MODELS - 1)) ? 0 : ((int)*cameramodel + 1);
+		rt.must_render = TRUE;
+		return (TRUE);
+	}
+	return (FALSE);
+}
+
+void	ui_mouse_menu(void)
+{
+	if (ui_mouse_menu_rendermode(&rt.scene.render_mode))
+		return ;
+	if (ui_mouse_menu_cameramodel(&rt.scene.camera.model))
+		return ;
+}
+
 void	ui_mouse_menubar(void)
 {
 	t_bool		collided;

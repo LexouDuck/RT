@@ -32,6 +32,19 @@ void	ui_render_menubar(void)
 		ui_render_text(rt.ui.menubar.item_labels[i],
 			rt.ui.menubar.item_hitbox[i].x + 2, 1, TRUE);
 	}
+	rect.x = 0;
+	rect.y = MENUBAR_ITEMS_H;
+	rect.w = UI_WIDTH_TILES;
+	rect.h = 7;
+	ui_render_fill(0, rect, FALSE);
+	ui_render_text("Render Mode:", 2, 6, FALSE);
+	ui_render_text("\x12", 14, 6, TRUE);
+	ui_render_text("\x13", 27, 6, TRUE);
+	ui_render_text(rt_get_str_rendermode(rt.scene.render_mode), 15, 6, FALSE);
+	ui_render_text("Camera Type:", 2, 8, FALSE);
+	ui_render_text("\x12", 14, 8, TRUE);
+	ui_render_text("\x13", 27, 8, TRUE);
+	ui_render_text(rt_get_str_cameramodel(rt.scene.camera.model), 15, 8, FALSE);
 }
 
 void	ui_render_dropdown(t_menu *dropdown)

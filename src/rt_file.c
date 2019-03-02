@@ -14,7 +14,7 @@
 #include <errno.h>
 #include "libft_memory.h"
 #include "libft_convert.h"
-
+#include <stdio.h>
 #include "../rt.h"
 #include "debug.h"
 
@@ -73,7 +73,7 @@ int		rt_file_save(char *filepath)
 
 	int			fd;
 
-	fd = open(filepath, O_WRONLY | O_CREAT, 0644);
+	fd = open(filepath, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd < 0)
 	{
 		debug_output_value("Error: Could not write RT file: ", filepath, FALSE);

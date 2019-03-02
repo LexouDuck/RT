@@ -20,7 +20,7 @@
 #include "ui.h"
 #include "rt_scene.h"
 
-static void	update_window(void)
+static void		update_window(void)
 {
 	SDL_Rect	dest;
 
@@ -30,16 +30,21 @@ static void	update_window(void)
 			"Error during update_window() -> Screen clear: ", TRUE);
 	// display the UI
 	if (rt.ui.current_prompt.name)
+	{
+		ui_render_menubar();
 		ui_render_prompt();
+	}
 	else
-		ui_render_objects();
-	ui_render_menubar();
+	{
+		ui_render_objectlist();
+		ui_render_menubar();
+	}
 	if (rt.ui.menubar.selection != -1)
 		ui_render_dropdown(&rt.ui.dropdowns[rt.ui.menubar.selection]);
 	if (rt.must_render)
 	{
 	// Do the 3d render if needed
-		render();
+		render();//TODO: thread call to render with an SDL call ?
 	}
 	dest = rt.sdl.window_surface->clip_rect;
 	dest.x += UI_WIDTH;
@@ -47,10 +52,10 @@ static void	update_window(void)
 	if (SDL_BlitSurface(rt.canvas, &rt.canvas->clip_rect, rt.sdl.window_surface, &dest))
 		debug_output_error("Error during update_window() -> render blit: ", TRUE);
 	ui_render_caminfo(&rt.scene.camera);
+	ui_render_loading_bar();//TODO SNIF
 	if (SDL_UpdateTexture(rt.sdl.window_texture, NULL,
 		rt.sdl.window_surface->pixels, rt.sdl.window_surface->pitch))
-	{
-	// and update the window display
+	{ // and update the window display
 		debug_output_error("Error during window update: ", TRUE);
 	}
 	//	if (SDL_RenderClear(rt.sdl.window_renderer))
@@ -66,13 +71,11 @@ static void	update_window(void)
 **	Runs at 60fps (the 3 first lines of code inside the loop do this)
 */
 
-static int	main_loop(void)
+static int		main_loop(void)
 {
 	t_u32	frame_wait;
-	int		i;
 
 	frame_wait = 0;
-	i = -1;
 	rt.sdl.current_frame = 0;
 	rt.must_render = TRUE;
 	rt.sdl.loop = TRUE;
@@ -92,11 +95,7 @@ static int	main_loop(void)
 	}
 	config_save();
 	config_free();
-	while (++i < RT_CL_KERNEL_AMOUNT)
-		clReleaseKernel(rt.ocl.kernels[i]);
-	clReleaseCommandQueue(rt.ocl.cmd_queue);
-	clReleaseProgram(rt.ocl.program);
-	clReleaseContext(rt.ocl.context);
+	opencl_freeall();
 	SDL_DestroyWindow(rt.sdl.window);
 	SDL_Quit();
 	return (OK);
@@ -112,7 +111,7 @@ static int	main_loop(void)
 #undef main
 #endif
 
-int			main(int argc, char *argv[])
+int				main(int argc, char *argv[])
 {
 	int	i;
 //printf("debug: init debug\n");
@@ -146,7 +145,7 @@ int			main(int argc, char *argv[])
 	if (ui_init())
 		return (ERROR);
 //printf("debug: init opencl\n");
-	if (opencl_init())
+	if (opencl_init(RT_CL_PLATFORM_UNINITIALIZED))
 		return (ERROR);
 	return (main_loop());
 }

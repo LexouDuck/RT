@@ -1,50 +1,102 @@
 
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rt_save.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
+/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../rt.h"
 #include "debug.h"
+#include "libft_convert.h"
+
+/*
+** this function write a function to the savefile
+*/
+
+static void		print_float3_to_str(int	fd, cl_float3 *vector, char *label)
+{
+	char *tmp;
+
+	if ((tmp = cl_float3_to_str(vector, 5)))
+	{
+		FT_Write_String(fd, label);
+		FT_Write_Line(fd, tmp);
+		free(tmp);
+	}
+}
+
+/*
+** this function write revery data of the map and call above function.
+*/
+
+static void		print_get_str(int fd, t_object *object) 
+{
+	char *tmp;
+
+	if ((tmp = rt_get_str_primitive(object->type)))
+		FT_Write_Line(fd, tmp);
+	if ((tmp = rt_get_str_material(object->material)))
+	{
+		FT_Write_String(fd,"material:");
+		FT_Write_Line(fd, tmp);
+	}
+	if (ft_strlen(object->name))
+	{
+		FT_Write_Char(fd, '"');
+		FT_Write_String(fd, object->name);
+		FT_Write_Char(fd, '"');
+		FT_Write_Char(fd, '\n');
+	}
+}
+
+/*
+** this function print Back ground color on the savefile
+*/
+
+static void 	print_bg_color(int fd)
+{
+	char *tmp;
+
+	if ((tmp = FT_U32_To_HexString(rt.scene.bg_color)))
+	{	
+		FT_Write_String(fd, "BG #");
+		FT_Write_Line(fd, tmp);
+		FT_Write_Char(fd, '\n');
+	}
+}
+
+/*
+** this function write a map and save in a new file or in the same file.
+*/
 
 void		rt_save(int fd)
 {
 	size_t 			i;
 	t_object* 		object;
-//	t_primitive 	primitive = NULL;
-	char*			type;
-	char*			material;
-	char*			color;
-	char*			pos;
-	char*			rot;
-	char*			scale;
 
+	print_bg_color(fd);
 	i = 0;
 	while (i < rt.scene.object_amount)
 	{
 		object = &rt.scene.objects[i];
 		if (object)
 		{
-			type = rt_get_str_primitive(object->type);
-			material = rt_get_str_material(object->material);
-			color = cl_float3_to_str(&object->rgb, 5);
-			pos = cl_float3_to_str(&object->pos, 5);
-			rot = cl_float3_to_str(&object->rot, 5);
-			scale = cl_float3_to_str(&object->scale, 5);
-
-			FT_Write_Line(fd, type);
-			FT_Write_String(fd,"material:");
-			FT_Write_Line(fd, material);
-			FT_Write_String(fd, "color:");
-			FT_Write_Line(fd, color);
-			FT_Write_String(fd, "pos:");
-			FT_Write_Line(fd, pos);
-			FT_Write_String(fd, "rot:");
-			FT_Write_Line(fd, rot);
-			FT_Write_String(fd, "scale:");
-			FT_Write_Line(fd, scale);
+			print_get_str(fd, object);
+			print_float3_to_str(fd, &object->rgb, "color:");
+			print_float3_to_str(fd, &object->pos, "pos:");
+			print_float3_to_str(fd, &object->rot, "rot:");
+			print_float3_to_str(fd, &object->scale, "scale:");
+			print_float3_to_str(fd, &object->bbox_os.vi, "bbox_vi:");
+			print_float3_to_str(fd, &object->bbox_os.vf, "bbox_vf:");
 			FT_Write_Char(fd, '\n');
 		}
 		i++;
 	}
-	free(color);
-	free(pos);
-	free(rot);
-	free(scale);
-
+	FT_Write_Char(fd, '\n');
 }

@@ -101,7 +101,13 @@ typedef struct	s_rtparser
 int			init_sdl();
 int			init_window();
 int			init_window_display();
+
+/*
+**	scene.c
+*/
 void		init_scene();
+void		update_scene();
+void		update_object(t_object *object);
 
 /*
 **	ui_menu_file.c
@@ -126,6 +132,8 @@ void		ui_menu_view_orthogonal();
 */
 char		*rt_get_str_primitive(t_primitive primitive);
 char		*rt_get_str_material(t_material material);
+char		*rt_get_str_rendermode(t_rendermode rendermode);
+char		*rt_get_str_cameramodel(t_rendermode cameramodel);
 
 /*
 **	rt_file.c

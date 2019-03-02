@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft_convert.h"
+
 #include "../rt.h"
 #include "event.h"
 
@@ -33,19 +35,37 @@ void	event_check_keydown(SDL_Event *event)
 		if (event->key.keysym.sym == SDLK_SPACE)
 			rt.must_render = TRUE;
 	}
+
+	else if (event->key.keysym.sym == SDLK_TAB
+		&& rt.ui.current_textinput.type == texttype_number_float)
+	{
+		float *tmp = rt.ui.current_textinput.value;
+	 	if (rt.input.keys & KEY_SHIFT_L)
+			tmp -= 1;
+		else
+			tmp += 1;
+		rt.ui.current_textinput.value = tmp;
+		rt.ui.current_textinput.input = ft_f32_to_str(*tmp, 4);
+	}
 	else
 	{
 		length = ft_strlen(rt.ui.current_textinput.input);
 		// handle enter key to confirm
+		if (event->key.keysym.sym == SDLK_RETURN ||
+			event->key.keysym.sym == SDLK_KP_ENTER)
+		{
+			if (rt.ui.current_textinput.type == texttype_number_float)
+				ui_leave_control_numberbox(&rt.ui.current_textinput);
+			else if (rt.ui.current_textinput.type == texttype_text)
+				ui_leave_control_textbox(&rt.ui.current_textinput);
+		}
 		// handle backspace
-		// handle copy
-		// handle paste
-		if (event->key.keysym.sym == SDLK_RETURN)
-			ui_leave_control_numberbox(&rt.ui.current_textinput);
 		else if (event->key.keysym.sym == SDLK_BACKSPACE && length > 0)
 			rt.ui.current_textinput.input[length - 1] = '\0';
+		// handle copy
 		else if ((rt.input.keys & KEY_CTRL) && event->key.keysym.sym == SDLK_c)
 			SDL_SetClipboardText(rt.ui.current_textinput.input);
+		// handle paste
 		else if ((rt.input.keys & KEY_CTRL) && event->key.keysym.sym == SDLK_v)
 		{
 			rt.ui.current_textinput.input = SDL_GetClipboardText();

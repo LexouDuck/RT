@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft_memory.h"
+
 #include "../rt.h"
 #include "debug.h"
 
@@ -22,6 +23,10 @@ void	ui_leave_prompt(void)
 	rt.ui.current_prompt.name = NULL;
 	rt.ui.current_prompt.description = NULL;
 	rt.ui.menubar.selection = -1;
+	rt.ui.objects.scrollbar.scroll = 0;
+	rt.ui.objects.scrollbar.scroll_max = 0;
+	ft_memclr(&rt.ui.objects.selected, sizeof(rt.ui.objects.selected));
+	ft_memclr(&rt.ui.objects.expanded, sizeof(rt.ui.objects.expanded));
 }
 
 void	ui_mouse_prompt(void)
@@ -46,6 +51,7 @@ void	ui_mouse_prompt(void)
 			else if (ft_strequ(rt.ui.current_prompt.name, DROPDOWN_LABEL_FILE_SAVEAS))
 				rt_file_save(rt.ui.current_prompt.text);
 			ui_leave_prompt();
+			rt.must_render = TRUE;
 		}
 		else
 			ui_mouse_control_textbox(&rt.ui.current_textinput, &rt.ui.current_prompt.text, 2, 8);

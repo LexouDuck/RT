@@ -30,7 +30,7 @@ CYLINDER #11FF11
 pos:(-3, 4, 1)
 rot:{0, 0, 1.5789}
 scale:[2, 2, 2]
-material:GLASSY
+material:TRANSPARENT
 
 CONE #FFFF11
 pos:(4, 4, 1)

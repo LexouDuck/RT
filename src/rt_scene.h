@@ -32,37 +32,41 @@
 # define DEFAULT_CAM_TILT		0.
 # define DEFAULT_CAM_FOV		1.
 # define DEFAULT_CAM_APERTURE	2.
-# define DEFAULT_RENDER_DIST	100000.
+
 # define EPS					0.00003
+# define DEFAULT_RENDER_DIST	100000.
 # define DEFAULT_BG_COLOR		0xFF555555
+
 # define OBJECT_ARGS_AMOUNT		7
 # define OBJECT_NAME_MAXLENGTH	24
 # define OBJECT_MAX_AMOUNT		32
-# define DEFAULT_RAYSAMP_SIZE	128
+# define DEFAULT_RAYSAMP_SIZE	16
 # define DEFAULT_MAX_RAY_DEPTH	8
 
+# define RENDER_MODES	3
 typedef enum	e_rendermode
 {
+	RENDERMODE_MCPT = 0,
 	RENDERMODE_BBOX,
 	RENDERMODE_SOLIDCOLOR,
-	RENDERMODE_MCPT
 }				t_rendermode;
+
+# define CAMERA_MODELS	4
+typedef enum	e_camera_model
+{
+	CAMERA_MODEL_PINHOLE = 0,
+	CAMERA_MODEL_BLUR_SIMPLE,
+	CAMERA_MODEL_BLUR_FOCAL,
+	CAMERA_MODEL_ORTHOGRAPHIC
+}				t_camera_model;
 
 typedef enum	e_cameramode
 {
-	CAMERA_MODE_NONE,
+	CAMERA_MODE_NONE = 0,
 	CAMERA_MODE_ROTATE,
 	CAMERA_MODE_TILT,
 	CAMERA_MODE_PAN,
 }				t_cameramode;
-
-typedef enum	e_camera_model
-{
-	CAMERA_MODEL_TMP,
-	CAMERA_MODEL_PINHOLE,
-	CAMERA_MODEL_FOCAL,
-	CAMERA_MODEL_ORTHOGRAPHIC
-}				t_camera_model;
 
 /*
 ** CAMERA
@@ -191,9 +195,9 @@ typedef enum		e_primitive
 	plane,
 	rectangle,
 	disk,
+	saddle,
 	paraboloid,
 	hyperboloid,
-	saddle,
 	infcylinder,
 	infcone,
 	obj_mesh,
@@ -290,7 +294,8 @@ typedef struct		s_object
 	cl_float3		pos;
 	cl_float3		rot;
 	cl_float3		scale;
-	t_bbox			bbox;
+	t_bbox			bbox_os;
+	t_bbox			bbox_ws;
 //	cl_float3		specul;
 	cl_float		refrac;//refraction index for snell-descartes
 	cl_float		roughness;
@@ -309,11 +314,12 @@ typedef struct		s_scene
 	t_object		objects[OBJECT_MAX_AMOUNT];
 	size_t			object_amount;
 	cl_float		render_dist;
-	t_bbox			bbox;
+	t_bbox			bbox_ws;
 	cl_uint			max_ray_depth;
 	cl_uint			mc_raysamp_size;
 	cl_uint			random_seed_time;
 	t_rendermode	render_mode;
+	size_t			work_dim[2];
 }					t_scene;
 
 #endif

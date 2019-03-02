@@ -32,9 +32,11 @@
 
 # define UI_WIDTH_TILES	30
 # define UI_WIDTH		TILE * UI_WIDTH_TILES
+
 # define MENU_MAX_ITEMS	8
 # define MENUBAR_ITEMS_W	10
 # define MENUBAR_ITEMS_H	3
+
 # define MENUBAR_ITEM_FILE	0
 # define MENUBAR_ITEM_EDIT	1
 # define MENUBAR_ITEM_VIEW	2
@@ -42,8 +44,10 @@
 # define MENUBAR_LABEL_FILE	"File"
 # define MENUBAR_LABEL_EDIT	"Edit"
 # define MENUBAR_LABEL_VIEW	"View"
+
 # define DROPDOWN_ITEMS_W		30
 # define DROPDOWN_ITEMS_H		2
+
 # define DROPDOWN_FILE_OPEN		0
 # define DROPDOWN_FILE_IMPORT	1
 # define DROPDOWN_FILE_SAVE		2
@@ -53,6 +57,7 @@
 # define DROPDOWN_LABEL_FILE_IMPORT	"Import file..."
 # define DROPDOWN_LABEL_FILE_SAVE	"Save"
 # define DROPDOWN_LABEL_FILE_SAVEAS	"Save as..."
+
 # define DROPDOWN_EDIT_UNDO		0
 # define DROPDOWN_EDIT_REDO		1
 # define DROPDOWN_EDIT_CUT		2
@@ -64,14 +69,16 @@
 # define DROPDOWN_LABEL_EDIT_CUT	"Cut"
 # define DROPDOWN_LABEL_EDIT_COPY	"Copy"
 # define DROPDOWN_LABEL_EDIT_PASTE	"Paste"
+
 # define DROPDOWN_VIEW_ORTHOGONAL	0
 # define DROPDOWN_VIEW_DIFFUSE		1
 # define DROPDOWN_VIEW_SPECULAR		2
 # define DROPDOWN_VIEW_GLOBAL_I		3
 # define DROPDOWN_ITEMS_VIEW		4
+
 # define OBJECT_PROPERTY_H		4
-# define OBJECT_PROPERTIES		5
-# define OBJECT_PROPERTIES_H	OBJECT_PROPERTY_H * OBJECT_PROPERTIES
+# define OBJECT_PROPERTIES		6
+# define OBJECT_PROPERTIES_H	OBJECT_PROPERTY_H * (OBJECT_PROPERTIES + 1)
 
 typedef struct	s_menu
 {
@@ -186,43 +193,46 @@ SDL_Surface		*ui_set_tileset(t_u8 const *chr, size_t length);
 /*
 **	ui_menu_file.c
 */
-void			ui_menu_file_open();
-void			ui_menu_file_import();
-void			ui_menu_file_save();
-void			ui_menu_file_saveas();
+void			ui_menu_file_open(void);
+void			ui_menu_file_import(void);
+void			ui_menu_file_save(void);
+void			ui_menu_file_saveas(void);
 
 /*
 **	ui_edit_file.c
 */
-void			ui_menu_edit_undo();
-void			ui_menu_edit_redo();
-void			ui_menu_edit_cut();
-void			ui_menu_edit_copy();
-void			ui_menu_edit_paste();
+void			ui_menu_edit_undo(void);
+void			ui_menu_edit_redo(void);
+void			ui_menu_edit_cut(void);
+void			ui_menu_edit_copy(void);
+void			ui_menu_edit_paste(void);
 
 /*
 **	ui_view_file.c
 */
-void			ui_menu_view_orthogonal();
+void			ui_menu_view_orthogonal(void);
 
 /*
 **	ui_render.c
 */
-void			ui_render_prompt();
-void			ui_render_objects();
-void			ui_render_menubar();
+void			ui_render_menubar(void);
 void			ui_render_dropdown(t_menu *dropdown);
-void			ui_render_caminfo(t_camera *camera);
+void			ui_render_objectlist(void);
 void			ui_render_scrollbar(t_scrollbar *scrollbar);
+void			ui_render_prompt(void);
+void			ui_render_caminfo(t_camera *camera);
+void			ui_render_loading_bar(void);
 
 /*
 **	ui_mouse.c
+**	ui_mouse_objectlist.c
 */
+void			ui_mouse_menu();
 void			ui_mouse_menubar();
 void			ui_mouse_dropdown(t_menu *dropdown);
-void			ui_mouse_objectlist();
-void			ui_mouse_scrollbar();
-void			ui_mouse_prompt();
+void			ui_mouse_objectlist(void);
+void			ui_mouse_scrollbar(void);
+void			ui_mouse_prompt(void);
 
 void			ui_scrollbar_setscroll(t_scrollbar *scrollbar, t_s32 scroll);
 

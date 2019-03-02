@@ -120,19 +120,19 @@ static void	ui_init_dropdown_view(void)
 static void	ui_init_objectlist(void)
 {
 	rt.ui.objects.rect.x = 0;
-	rt.ui.objects.rect.y = 4;
+	rt.ui.objects.rect.y = 10;
 	rt.ui.objects.rect.w = UI_WIDTH_TILES - 2;
 	rt.ui.objects.rect.h = rt.sdl.window_h - rt.ui.objects.rect.y;
 	rt.ui.objects.scrollbar.clicked = scrollclick_none;
 	rt.ui.objects.scrollbar.button_up = (SDL_Rect)
-		{ UI_WIDTH - TILE * 2, TILE * MENUBAR_ITEMS_H, TILE * 2, TILE * 2 };
+		{ UI_WIDTH - TILE * 2, TILE * rt.ui.objects.rect.y, TILE * 2, TILE * 2 };
 	rt.ui.objects.scrollbar.button_down = (SDL_Rect)
 		{ UI_WIDTH - TILE * 2, rt.sdl.window_h - TILE * 2, TILE * 2, TILE * 2 };
 	rt.ui.objects.scrollbar.bar = (SDL_Rect)
-		{ UI_WIDTH - TILE * 2, TILE * (MENUBAR_ITEMS_H + 2), TILE * 2, rt.ui.objects.scrollbar.button_down.y - (TILE * (MENUBAR_ITEMS_H + 2)) };
+		{ UI_WIDTH - TILE * 2, TILE * (rt.ui.objects.rect.y + 2), TILE * 2, rt.ui.objects.scrollbar.button_down.y - (TILE * (rt.ui.objects.rect.y + 2)) };
 	rt.ui.objects.scrollbar.scroll = 0;
 	rt.ui.objects.scrollbar.scroll_max = 0;
-	rt.ui.objects.scrollbar.scroll_view = (rt.sdl.window_h - MENUBAR_ITEMS_H);
+	rt.ui.objects.scrollbar.scroll_view = (rt.sdl.window_h - rt.ui.objects.rect.y);
 }
 
 int			ui_init(void)

@@ -17,19 +17,19 @@ inline char *rt_get_str_primitive(t_primitive primitive)
 {
 	static char	*primitives[] = {
 		"N/A",
-		"SPHERE     ",
-		"CUBE       ",
-		"CYLINDER   ",
-		"CONE       ",
-		"PLANE      ",
-		"RECTANGLE  ",
-		"DISK       ",
-		"OBJ MESH   ",
-		"PARABOLOID ",
+		"SPHERE",
+		"CUBE",
+		"CYLINDER",
+		"CONE",
+		"PLANE",
+		"RECTANGLE",
+		"DISK",
+		"SADDLE",
+		"PARABOLOID",
 		"HYPERBOLOID",
-		"SADDLE     ",
 		"INFCYLINDER",
-		"INFCONE    ",
+		"INFCONE",
+		"OBJ MESH",
 	};
 
 	return (primitives[primitive]);
@@ -38,11 +38,34 @@ inline char *rt_get_str_primitive(t_primitive primitive)
 inline char *rt_get_str_material(t_material material)
 {
 	static char	*materials[] = {
-		"LIGHT      ",
-		"DIFFUSE    ",
+		"LIGHT",
+		"DIFFUSE",
 		"TRANSPARENT",
-		"SPECULAR   ",
+		"SPECULAR",
 	};
 
 	return (materials[material]);
+}
+
+inline char	*rt_get_str_rendermode(t_rendermode rendermode)
+{
+	static char	*rendermodes[RENDER_MODES] = {
+		"MONTE-CARLO",
+		"BOUNDINGBOX",
+		"SOLID COLOR",
+	};
+
+	return (rendermodes[rendermode]);
+}
+
+inline char	*rt_get_str_cameramodel(t_rendermode cameramodel)
+{
+	static char	*cameramodels[CAMERA_MODELS] = {
+		"PINHOLE",
+		"BLUR SIMPLE",
+		"BLUR FOCAL",
+		"ORTHOGRAPHIC"
+	};
+
+	return (cameramodels[cameramodel]);
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rt_cl_primitives_2d.cl                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
+/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 /*
 ** The primitive is the xz-plane.
 **
@@ -51,7 +63,7 @@ static t_intersection		rt_cl_disk_intersect
 /*
 ** The square primitive is [-0.5, 0.5]_x × [-0.5, 0.5]_z
 */
-static t_intersection		rt_cl_square_intersect
+static t_intersection		rt_cl_rectangle_intersect
 (
 							float *		res,
 							t_ray		ray

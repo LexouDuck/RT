@@ -51,7 +51,7 @@ static t_intersection		rt_cl_disk_intersect
 /*
 ** The square primitive is [-0.5, 0.5]_x × [-0.5, 0.5]_z
 */
-static t_intersection		rt_cl_square_intersect
+static t_intersection		rt_cl_rectangle_intersect
 (
 							float *		res,
 							t_ray		ray

@@ -100,6 +100,13 @@ int				opencl_set_device_info(void)
 	return (OK);
 }
 
+void		opencl_refresh_gpu_memory_buffers(void)
+{
+	clReleaseMemObject(rt.ocl.gpu_buf.canvas_pixels);
+	clReleaseMemObject(rt.ocl.gpu_buf.scene);
+	opencl_init_gpu_memory();
+}
+
 void		opencl_freeall(void)
 {
 	int		i;

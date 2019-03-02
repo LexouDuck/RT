@@ -131,12 +131,6 @@ typedef struct	s_bbox
 	float3	vi;
 	float3	vf;
 }				t_bbox;
-/*
-typedef struct	s_bvh
-{
-	cl_bst_node	*root;
-}				t_bvh;
-*/
 
 /*
 ** PRIMITIVES
@@ -251,4 +245,5 @@ typedef struct	s_scene
 	uint			mc_raysamp_size;
 	uint			random_seed_time;
 	t_rendermode	render_mode;
+	size_t			work_dim[2];
 }				t_scene;

@@ -58,7 +58,8 @@ static t_intersection		rt_cl_trace_ray_to_scene
 )
 {
 	__constant t_object *		obj;
-	t_intersection				bbox_inter;
+	t_intersection				bbox_ws_inter;
+	t_intersection				bbox_os_inter;
 	t_intersection				prim_inter;
 	float						tmax;
 	float						new_tbbox;
@@ -71,15 +72,15 @@ static t_intersection		rt_cl_trace_ray_to_scene
 	for (uint i = 0; i < scene->object_amount; ++i)
 	{
 		obj = &(scene->objects[i]);
-		bbox_inter = rt_cl_ray_intersect_bbox(*ray, obj->bbox_ws, 0., tmax, &new_tbbox);
-		if (bbox_inter) 
+		bbox_ws_inter = rt_cl_ray_intersect_bbox(*ray, obj->bbox_ws, 0., tmax, &new_tbbox);
+		if (bbox_ws_inter) 
 		{
 			if (scene->render_mode == RENDERMODE_BBOX)
 			{
 				tmax = new_tbbox;
 				ray->t = new_tbbox;
 				ray->hit_obj_id = i;
-				prim_inter = bbox_inter;
+				prim_inter = bbox_ws_inter;
 			}
 			else
 			{
@@ -88,38 +89,41 @@ static t_intersection		rt_cl_trace_ray_to_scene
 				ray_os.pos = rt_cl_apply_homogeneous_matrix(obj->w_to_o, ray_os.pos);
 				ray_os.dir = rt_cl_apply_linear_matrix(obj->w_to_o, ray_os.dir);//DO NOT NORMALIZE: YOU NEED TO KEEP ray.t CONSISTENT
 
-				if (obj->type == sphere)
-					ray_os.inter_type = rt_cl_sphere_intersect(&new_t, ray_os);
-				else if (obj->type == plane)
-					ray_os.inter_type = rt_cl_plane_intersect(&new_t, ray_os);
-				else if (obj->type == disk)
-					ray_os.inter_type = rt_cl_disk_intersect(&new_t, ray_os);
-				else if (obj->type == rectangle)
-					ray_os.inter_type = rt_cl_square_intersect(&new_t, ray_os);
-				else if (obj->type == cylinder)
-					ray_os.inter_type = rt_cl_cylinder_intersect(&new_t, ray_os);
-				else if (obj->type == cone)
-					ray_os.inter_type = rt_cl_cone_intersect(&new_t, ray_os);
-				else if (obj->type == infcylinder)
-					ray_os.inter_type = rt_cl_infcylinder_intersect(&new_t, ray_os);
-				else if (obj->type == infcone)
-					ray_os.inter_type = rt_cl_infcone_intersect(&new_t, ray_os);
-				else if (obj->type == cube)
-					ray_os.inter_type = rt_cl_cube_intersect(&new_t, ray_os);
-				else if (obj->type == paraboloid)
-					ray_os.inter_type = rt_cl_paraboloid_intersect(&new_t, ray_os);
-				else if (obj->type == hyperboloid)
-					ray_os.inter_type = rt_cl_hyperboloid_intersect(&new_t, ray_os);
-				else
-					ray_os.inter_type = rt_cl_sphere_intersect(&new_t, ray_os);
-
-				if (ray_os.inter_type && new_t > EPS && new_t < ray->t)
+				bbox_os_inter = rt_cl_ray_intersect_bbox(*ray, obj->bbox_os, 0., tmax, &new_tbbox);
+				if (bbox_os_inter)
 				{
-					prim_inter = ray_os.inter_type;
-					result_ray_os = ray_os;
-					result_ray_os.hit_obj_id = i;
-					ray->t = new_t;
-					result_ray_os.t = new_t;
+					if (obj->type == sphere)
+						ray_os.inter_type = rt_cl_sphere_intersect(&new_t, ray_os);
+					else if (obj->type == plane)
+						ray_os.inter_type = rt_cl_plane_intersect(&new_t, ray_os);
+					else if (obj->type == disk)
+						ray_os.inter_type = rt_cl_disk_intersect(&new_t, ray_os);
+					else if (obj->type == rectangle)
+						ray_os.inter_type = rt_cl_square_intersect(&new_t, ray_os);
+					else if (obj->type == cylinder)
+						ray_os.inter_type = rt_cl_cylinder_intersect(&new_t, ray_os);
+					else if (obj->type == cone)
+						ray_os.inter_type = rt_cl_cone_intersect(&new_t, ray_os);
+					else if (obj->type == infcylinder)
+						ray_os.inter_type = rt_cl_infcylinder_intersect(&new_t, ray_os);
+					else if (obj->type == infcone)
+						ray_os.inter_type = rt_cl_infcone_intersect(&new_t, ray_os);
+					else if (obj->type == cube)
+						ray_os.inter_type = rt_cl_cube_intersect(&new_t, ray_os);
+					else if (obj->type == paraboloid)
+						ray_os.inter_type = rt_cl_paraboloid_intersect(&new_t, ray_os);
+					else if (obj->type == hyperboloid)
+						ray_os.inter_type = rt_cl_hyperboloid_intersect(&new_t, ray_os);
+					else
+						ray_os.inter_type = rt_cl_sphere_intersect(&new_t, ray_os);
+					if (ray_os.inter_type && new_t > EPS && new_t < ray->t)
+					{
+						prim_inter = ray_os.inter_type;
+						result_ray_os = ray_os;
+						result_ray_os.hit_obj_id = i;
+						ray->t = new_t;
+						result_ray_os.t = new_t;
+					}
 				}
 			}
 		}

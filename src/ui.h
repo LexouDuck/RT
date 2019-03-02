@@ -193,44 +193,45 @@ SDL_Surface		*ui_set_tileset(t_u8 const *chr, size_t length);
 /*
 **	ui_menu_file.c
 */
-void			ui_menu_file_open();
-void			ui_menu_file_import();
-void			ui_menu_file_save();
-void			ui_menu_file_saveas();
+void			ui_menu_file_open(void);
+void			ui_menu_file_import(void);
+void			ui_menu_file_save(void);
+void			ui_menu_file_saveas(void);
 
 /*
 **	ui_edit_file.c
 */
-void			ui_menu_edit_undo();
-void			ui_menu_edit_redo();
-void			ui_menu_edit_cut();
-void			ui_menu_edit_copy();
-void			ui_menu_edit_paste();
+void			ui_menu_edit_undo(void);
+void			ui_menu_edit_redo(void);
+void			ui_menu_edit_cut(void);
+void			ui_menu_edit_copy(void);
+void			ui_menu_edit_paste(void);
 
 /*
 **	ui_view_file.c
 */
-void			ui_menu_view_orthogonal();
+void			ui_menu_view_orthogonal(void);
 
 /*
 **	ui_render.c
 */
-void			ui_render_menubar();
+void			ui_render_menubar(void);
 void			ui_render_dropdown(t_menu *dropdown);
-void			ui_render_objectlist();
+void			ui_render_objectlist(void);
 void			ui_render_scrollbar(t_scrollbar *scrollbar);
-void			ui_render_prompt();
+void			ui_render_prompt(void);
 void			ui_render_caminfo(t_camera *camera);
+void			ui_render_loading_bar(void);
 
 /*
 **	ui_mouse.c
 **	ui_mouse_objectlist.c
 */
-void			ui_mouse_menubar();
+void			ui_mouse_menubar(void);
 void			ui_mouse_dropdown(t_menu *dropdown);
-void			ui_mouse_objectlist();
-void			ui_mouse_scrollbar();
-void			ui_mouse_prompt();
+void			ui_mouse_objectlist(void);
+void			ui_mouse_scrollbar(void);
+void			ui_mouse_prompt(void);
 
 void			ui_scrollbar_setscroll(t_scrollbar *scrollbar, t_s32 scroll);
 

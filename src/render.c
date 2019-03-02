@@ -219,8 +219,7 @@ static int			render_piecewise_2d_kernel(cl_kernel krnl)
 	work_offsets_array[0] = 0;
 	work_offsets_array[1] = 0;
 	rt.ocl.render_progress = 0.;
-	while (//work_offsets_array[0] < work_dim_array[0] &&
-		work_offsets_array[1] < (size_t)rt.scene.work_dim[1])
+	while (work_offsets_array[1] < (size_t)rt.scene.work_dim[1])
 	{ 
 		if ((err = clEnqueueNDRangeKernel(rt.ocl.cmd_queue, krnl,
 			work_dim_amount, work_offsets_array, work_dim_array, NULL, 0, NULL, NULL)) < 0)

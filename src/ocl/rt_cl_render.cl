@@ -115,6 +115,8 @@ static t_intersection		rt_cl_trace_ray_to_scene
 						ray_os.inter_type = rt_cl_paraboloid_intersect(&new_t, ray_os);
 					else if (obj->type == hyperboloid)
 						ray_os.inter_type = rt_cl_hyperboloid_intersect(&new_t, ray_os);
+					else if (obj->type == saddle)
+						ray_os.inter_type = rt_cl_saddle_intersect(&new_t, ray_os);
 					else
 						ray_os.inter_type = rt_cl_sphere_intersect(&new_t, ray_os);
 					if (ray_os.inter_type && new_t > EPS && new_t < ray->t)

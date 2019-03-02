@@ -20,7 +20,7 @@
 #include "ui.h"
 #include "rt_scene.h"
 
-static void	update_window(void)
+static void		update_window(void)
 {
 	SDL_Rect	dest;
 
@@ -39,7 +39,7 @@ static void	update_window(void)
 	if (rt.must_render)
 	{
 	// Do the 3d render if needed
-		render();
+		render();//TODO: thread call to render with an SDL call ?
 	}
 	dest = rt.sdl.window_surface->clip_rect;
 	dest.x += UI_WIDTH;
@@ -47,6 +47,7 @@ static void	update_window(void)
 	if (SDL_BlitSurface(rt.canvas, &rt.canvas->clip_rect, rt.sdl.window_surface, &dest))
 		debug_output_error("Error during update_window() -> render blit: ", TRUE);
 	ui_render_caminfo(&rt.scene.camera);
+	ui_render_loading_bar();//TODO SNIF
 	if (SDL_UpdateTexture(rt.sdl.window_texture, NULL,
 		rt.sdl.window_surface->pixels, rt.sdl.window_surface->pitch))
 	{
@@ -66,7 +67,7 @@ static void	update_window(void)
 **	Runs at 60fps (the 3 first lines of code inside the loop do this)
 */
 
-static int	main_loop(void)
+static int		main_loop(void)
 {
 	t_u32	frame_wait;
 
@@ -106,7 +107,7 @@ static int	main_loop(void)
 #undef main
 #endif
 
-int			main(int argc, char *argv[])
+int				main(int argc, char *argv[])
 {
 	int	i;
 //printf("debug: init debug\n");

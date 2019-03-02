@@ -90,7 +90,10 @@ void	event_mouse_release(SDL_Event *event)
 			if (rt.ui.menubar.selection >= 0)
 				ui_mouse_dropdown(&rt.ui.dropdowns[rt.ui.menubar.selection]);
 			else
+			{
 				ui_mouse_objectlist();
+				ui_mouse_menu();
+			}
 			ui_mouse_menubar();
 		}
 	}

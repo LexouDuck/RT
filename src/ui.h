@@ -77,8 +77,8 @@
 # define DROPDOWN_ITEMS_VIEW		4
 
 # define OBJECT_PROPERTY_H		4
-# define OBJECT_PROPERTIES		7
-# define OBJECT_PROPERTIES_H	OBJECT_PROPERTY_H * OBJECT_PROPERTIES
+# define OBJECT_PROPERTIES		6
+# define OBJECT_PROPERTIES_H	OBJECT_PROPERTY_H * (OBJECT_PROPERTIES + 1)
 
 typedef struct	s_menu
 {
@@ -226,6 +226,7 @@ void			ui_render_caminfo(t_camera *camera);
 **	ui_mouse.c
 **	ui_mouse_objectlist.c
 */
+void			ui_mouse_menu();
 void			ui_mouse_menubar();
 void			ui_mouse_dropdown(t_menu *dropdown);
 void			ui_mouse_objectlist();

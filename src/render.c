@@ -267,10 +267,10 @@ int			render_read_gpu_buffer(void)
 int			render(void)
 {
 //	int		err;
-	rt.scene.render_mode = RENDERMODE_MCPT;
+//	rt.scene.render_mode = RENDERMODE_MCPT;
 //rt.scene.objects[2].material = glassy;
 //rt.scene.objects[4].material = glossy;
-	rt.scene.camera.model = CAMERA_MODEL_TMP;
+//	rt.scene.camera.model = CAMERA_MODEL_TMP;
 //	rt.scene.camera.model = CAMERA_MODEL_FOCAL;
 //	rt.scene.camera.model = CAMERA_MODEL_PINHOLE;
 	rt.scene.camera.aperture = .1;

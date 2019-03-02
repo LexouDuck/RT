@@ -27,7 +27,7 @@
 
 typedef enum		e_rendermode
 {
-	RENDERMODE_BBOX,
+	RENDERMODE_BBOX = 0,
 	RENDERMODE_SOLIDCOLOR,
 	RENDERMODE_MCPT
 }					t_rendermode;
@@ -51,7 +51,7 @@ typedef enum		e_rendermode
 
 typedef enum	e_cameramode
 {
-	CAMERA_MODE_NONE,
+	CAMERA_MODE_NONE = 0,
 	CAMERA_MODE_ROTATE,
 	CAMERA_MODE_TILT,
 	CAMERA_MODE_PAN,
@@ -228,8 +228,8 @@ typedef struct	s_object
 	float3			pos;
 	float3			rot;
 	float3			scale;
-	t_bbox			bbox_ws;
 	t_bbox			bbox_os;
+	t_bbox			bbox_ws;
 //	float3			specul;
 	float			refrac;//refraction index for snell-descartes
 	float			roughness;

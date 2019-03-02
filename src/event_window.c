@@ -18,7 +18,7 @@
 
 void	event_window_resize(t_s32 window_w, t_s32 window_h)
 {
-	t_bool maximized;
+	t_bool		maximized;
 
 	maximized = (SDL_GetWindowFlags(rt.sdl.window) & SDL_WINDOW_MAXIMIZED);
 	config_set(CONFIG_INDEX_MAXIMIZED, FT_Bool_To_String(maximized, FALSE));

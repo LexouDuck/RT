@@ -62,7 +62,8 @@ static t_intersection		rt_cl_trace_ray_to_scene
 	t_intersection				bbox_os_inter;
 	t_intersection				prim_inter;
 	float						tmax;
-	float						new_tbbox;
+	float						new_tbbox_ws;
+	float						new_tbbox_os;
 	float						new_t;
 	t_ray						ray_os;
 	t_ray						result_ray_os;
@@ -72,13 +73,13 @@ static t_intersection		rt_cl_trace_ray_to_scene
 	for (uint i = 0; i < scene->object_amount; ++i)
 	{
 		obj = &(scene->objects[i]);
-		bbox_ws_inter = rt_cl_ray_intersect_bbox(*ray, obj->bbox_ws, 0., tmax, &new_tbbox);
+		bbox_ws_inter = rt_cl_ray_intersect_bbox(*ray, obj->bbox_ws, 0., tmax, &new_tbbox_ws);
 		if (bbox_ws_inter) 
 		{
 			if (scene->render_mode == RENDERMODE_BBOX)
 			{
-				tmax = new_tbbox;
-				ray->t = new_tbbox;
+				tmax = new_tbbox_ws;
+				ray->t = new_tbbox_ws;
 				ray->hit_obj_id = i;
 				prim_inter = bbox_ws_inter;
 			}
@@ -89,7 +90,8 @@ static t_intersection		rt_cl_trace_ray_to_scene
 				ray_os.pos = rt_cl_apply_homogeneous_matrix(obj->w_to_o, ray_os.pos);
 				ray_os.dir = rt_cl_apply_linear_matrix(obj->w_to_o, ray_os.dir);//DO NOT NORMALIZE: YOU NEED TO KEEP ray.t CONSISTENT
 
-				if (ray_os.inter_type && new_t > EPS && new_t < ray->t)
+				bbox_os_inter = rt_cl_ray_intersect_bbox(ray_os, obj->bbox_os, 0., tmax, &new_tbbox_os);
+				if (bbox_os_inter)
 				{
 					if (obj->type == sphere)
 						ray_os.inter_type = rt_cl_sphere_intersect(&new_t, ray_os);
@@ -98,7 +100,7 @@ static t_intersection		rt_cl_trace_ray_to_scene
 					else if (obj->type == disk)
 						ray_os.inter_type = rt_cl_disk_intersect(&new_t, ray_os);
 					else if (obj->type == rectangle)
-						ray_os.inter_type = rt_cl_square_intersect(&new_t, ray_os);
+						ray_os.inter_type = rt_cl_rectangle_intersect(&new_t, ray_os);
 					else if (obj->type == cylinder)
 						ray_os.inter_type = rt_cl_cylinder_intersect(&new_t, ray_os);
 					else if (obj->type == cone)

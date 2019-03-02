@@ -30,10 +30,15 @@ static void		update_window(void)
 			"Error during update_window() -> Screen clear: ", TRUE);
 	// display the UI
 	if (rt.ui.current_prompt.name)
+	{
+		ui_render_menubar();
 		ui_render_prompt();
+	}
 	else
+	{
 		ui_render_objectlist();
-	ui_render_menubar();
+		ui_render_menubar();
+	}
 	if (rt.ui.menubar.selection != -1)
 		ui_render_dropdown(&rt.ui.dropdowns[rt.ui.menubar.selection]);
 	if (rt.must_render)
@@ -50,8 +55,7 @@ static void		update_window(void)
 	ui_render_loading_bar();//TODO SNIF
 	if (SDL_UpdateTexture(rt.sdl.window_texture, NULL,
 		rt.sdl.window_surface->pixels, rt.sdl.window_surface->pitch))
-	{
-	// and update the window display
+	{ // and update the window display
 		debug_output_error("Error during window update: ", TRUE);
 	}
 	//	if (SDL_RenderClear(rt.sdl.window_renderer))

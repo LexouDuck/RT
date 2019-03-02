@@ -71,8 +71,8 @@ static t_intersection		rt_cl_trace_ray_to_scene
 	for (uint i = 0; i < scene->object_amount; ++i)
 	{
 		obj = &(scene->objects[i]);
-		bbox_inter = rt_cl_ray_intersect_bbox(*ray, obj->bbox, 0., tmax, &new_tbbox);
-		if (bbox_inter)
+		bbox_inter = rt_cl_ray_intersect_bbox(*ray, obj->bbox_ws, 0., tmax, &new_tbbox);
+		if (bbox_inter) 
 		{
 			if (scene->render_mode == RENDERMODE_BBOX)
 			{

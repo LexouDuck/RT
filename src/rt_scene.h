@@ -269,12 +269,13 @@ typedef struct		s_object
 	cl_float3		pos;
 	cl_float3		rot;
 	cl_float3		scale;
-	t_bbox			bbox;
+	t_bbox			bbox_ws;//
+	t_bbox			bbox_os;
 //	cl_float3		specul;
 	cl_float		refrac;//refraction index for snell-descartes
 	cl_float		roughness;
 //	t_float			intensity;//intensity for lightsource objects, 1. for other objects //or reflectivity ??
-	cl_float16		o_to_w;
+	cl_float16		o_to_w;//
 	cl_float16		w_to_o;
 	cl_float16		n_to_w;
 }					t_object;
@@ -287,7 +288,7 @@ typedef struct		s_scene
 	t_object		objects[OBJECT_MAX_AMOUNT];
 	size_t			object_amount;
 	cl_float		render_dist;
-	t_bbox			bbox;
+	t_bbox			bbox_ws;
 	cl_uint			max_ray_depth;
 	cl_uint			mc_raysamp_size;
 	cl_uint			random_seed_time;

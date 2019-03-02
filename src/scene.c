@@ -25,11 +25,11 @@ void		init_scene(void)
 		(DEFAULT_BG_COLOR & 0x0000FF) }};
 	rt.scene.object_amount = 0;
 	rt.scene.render_dist = DEFAULT_RENDER_DIST;
-	rt.scene.bbox.vi = (cl_float3){{
+	rt.scene.bbox_ws.vi = (cl_float3){{
 		-DEFAULT_RENDER_DIST,
 		-DEFAULT_RENDER_DIST,
 		-DEFAULT_RENDER_DIST }};
-	rt.scene.bbox.vf = (cl_float3){{
+	rt.scene.bbox_ws.vf = (cl_float3){{
 		DEFAULT_RENDER_DIST,
 		DEFAULT_RENDER_DIST,
 		DEFAULT_RENDER_DIST }};

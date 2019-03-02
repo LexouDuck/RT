@@ -1,4 +1,16 @@
 
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rt_save.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
+/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../rt.h"
 #include "debug.h"
 #include "libft_convert.h"
@@ -80,6 +92,8 @@ void		rt_save(int fd)
 			print_float3_to_str(fd, &object->pos, "pos:");
 			print_float3_to_str(fd, &object->rot, "rot:");
 			print_float3_to_str(fd, &object->scale, "scale:");
+			print_float3_to_str(fd, &object->bbox_os.vi, "bbox_vi:");
+			print_float3_to_str(fd, &object->bbox_os.vf, "bbox_vf:");
 			FT_Write_Char(fd, '\n');
 		}
 		i++;

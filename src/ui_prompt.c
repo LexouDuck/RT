@@ -46,6 +46,7 @@ void	ui_mouse_prompt(void)
 			else if (ft_strequ(rt.ui.current_prompt.name, DROPDOWN_LABEL_FILE_SAVEAS))
 				rt_file_save(rt.ui.current_prompt.text);
 			ui_leave_prompt();
+			rt.must_render = TRUE;
 		}
 		else
 			ui_mouse_control_textbox(&rt.ui.current_textinput, &rt.ui.current_prompt.text, 2, 8);

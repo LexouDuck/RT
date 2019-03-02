@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rt_cl_build_scene.cl                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
+/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 static float16			rt_cl_build_cam_matrix
 (
 				t_camera	camera
@@ -134,6 +146,21 @@ static t_bbox			rt_cl_build_object_bbox
 		objspace_bbox = (t_bbox){(float3)(-sqrt(render_dist), 0., -sqrt(render_dist)),
 									(float3)(sqrt(render_dist), render_dist, sqrt(render_dist))};
 	}
+	else if (type == hyperboloid)
+	{
+		objspace_bbox = (t_bbox){(float3)(-render_dist, -render_dist, -render_dist),
+							(float3)(render_dist, render_dist, render_dist)};
+	}
+	else if (type == cone)
+	{
+		objspace_bbox = (t_bbox){(float3)(-1., 0, -1.),
+									(float3)(1., 1, 1.)};
+	}
+	else if (type == infcone)
+	{
+		objspace_bbox = (t_bbox){(float3)(-render_dist, -render_dist, -render_dist),
+							(float3)(render_dist, render_dist, render_dist)};
+	}
 	else
 	{
 		return ((t_bbox){(float3)(-render_dist, -render_dist, -render_dist),
@@ -146,7 +173,6 @@ static t_bbox			rt_cl_build_object_bbox
 	{
 		objspace_bbox_vertices[i] = rt_cl_apply_homogeneous_matrix(o_to_w, objspace_bbox_vertices[i]);
 	}
-
 	result.vf = result.vi = objspace_bbox_vertices[0];
 	#pragma unroll
 	for (int i = 1; i < 8; ++i)
@@ -169,7 +195,7 @@ __kernel void	rt_cl_build_scene
 
 	scene->camera.c_to_w = rt_cl_build_cam_matrix(scene->camera);
 	rt_cl_build_object_matrices(obj);
-	obj->bbox = rt_cl_build_object_bbox(obj->type, obj->o_to_w, /*obj->bbox,*/ scene->render_dist);
+	obj->bbox_ws = rt_cl_build_object_bbox(obj->type, obj->o_to_w, /*obj->bbox_ws,*/ scene->render_dist);
 
 //debug_print_object(obj);
 }

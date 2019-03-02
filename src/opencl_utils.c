@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft_convert.h"
+
 #include "../rt.h"
 #include "debug.h"
 
@@ -82,21 +84,20 @@ int				opencl_set_device_info(void)
 	clGetDeviceInfo(rt.ocl.gpu.id, CL_DEVICE_MAX_WORK_ITEM_SIZES,
 						sizeof(size_t) * rt.ocl.gpu.max_nd_range,
 						&(rt.ocl.gpu.max_witems_per_dim), NULL);
-	printf("Platform chosen: %s (index %d) | Device: %s | Version: %s\n\t"
-		"- global mem size (nb of bytes): "OPENCL_LLU64"\n\t"//"- global mem size (nb of bytes): %#lx\n\t"
-		"- compute unit nb: %u\n\t"
-		"- max kernel args size: "OPENCL_LU64"\n\t"
-		"- max work items per group: "OPENCL_LU64"\n\t"
-		"- max nD range: %u\n\t"
-		"- max_witems_per_dim: ("OPENCL_LU64", "OPENCL_LU64", "OPENCL_LU64")\n",
-		platform_name, rt.ocl.gpu_platform_index, gpu_name, gpu_ocl_version,
-		rt.ocl.gpu.global_mem_size,
-		rt.ocl.gpu.comp_unit_nb,
-		rt.ocl.gpu.max_kernel_args_size,
-		rt.ocl.gpu.max_witems_per_wgroup,
-		rt.ocl.gpu.max_nd_range,
-		rt.ocl.gpu.max_witems_per_dim[0], rt.ocl.gpu.max_witems_per_dim[1], rt.ocl.gpu.max_witems_per_dim[2]
-	);
+
+	debug_output_value("Platform index: ", ft_u32_to_str(rt.ocl.gpu_platform_index), TRUE);
+	debug_output_value("Platform name: ", platform_name, FALSE);
+	debug_output_value("Device name: ", gpu_name, FALSE);
+	debug_output_value("Version n° ", gpu_ocl_version, FALSE);
+	debug_output_value("- global mem size: 0x", ft_u64_to_hex(rt.ocl.gpu.global_mem_size), TRUE);
+	debug_output_value("- compute units: 0x", ft_u32_to_hex(rt.ocl.gpu.comp_unit_nb), TRUE);
+	debug_output_value("- max kernel args size: 0x", ft_u64_to_hex(rt.ocl.gpu.max_kernel_args_size), TRUE);
+	debug_output_value("- max work items per group: 0x", ft_u64_to_hex(rt.ocl.gpu.max_witems_per_wgroup), TRUE);
+	debug_output_value("- max nD range: 0x", ft_u32_to_hex(rt.ocl.gpu.max_nd_range), TRUE);
+	debug_output("- max work items per dim:\n");
+	debug_output_value("\t- x: 0x", ft_u64_to_hex(rt.ocl.gpu.max_witems_per_dim[0]), TRUE);
+	debug_output_value("\t- y: 0x", ft_u64_to_hex(rt.ocl.gpu.max_witems_per_dim[1]), TRUE);
+	debug_output_value("\t- z: 0x", ft_u64_to_hex(rt.ocl.gpu.max_witems_per_dim[2]), TRUE);
 	return (OK);
 }
 

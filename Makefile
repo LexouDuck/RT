@@ -125,10 +125,11 @@ SRCS	= 	main.c				\
 			ui_menu_file.c		\
 			ui_menu_edit.c		\
 			ui_menu_view.c		\
-			ui_render.c			\
 			ui_render_util.c	\
+			ui_render.c			\
 			ui_mouse.c			\
 			ui_mouse_objectlist.c	\
+			ui_render_objectlist.c	\
 			ui_control_numberbox.c	\
 			ui_control_textbox.c	\
 			ui_scrollbar.c		\

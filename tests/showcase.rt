@@ -46,3 +46,53 @@ SPHERE #c6275b
 pos:(-3, 6,	0)
 rot:{2,	2,	2}
 scale:[1,	1,	1]
+
+
+BG #FFFFFF
+
+SPHERE #FFFFFF
+pos:(0, 10, 0)
+rot:{0, 0, 0}
+scale:[1, 1, 1]
+material:LIGHT
+
+
+CUBE #FFFFFF
+pos:(0,-1, 0)
+rot:{0, 0, 0}
+scale:[10, 1, 10]
+
+CUBE #27acc6
+pos:(0, 5, -10)
+rot:{0, 0, 0}
+scale:[10, 10, 1]
+
+
+CUBE #FF0000
+pos:(0,	7,	0)
+rot:{0,	0,	0}
+scale:[1,	1,	1]
+
+
+CUBE #FF0000
+pos:(0,	0,	40)
+rot:{0, 0, 0}
+scale:[1,	1,	1]
+
+
+SPHERE #27c6bb
+pos:(3,	6,	0)
+rot:{2,	2,	2}
+scale:[1,	1,	1]
+
+
+SPHERE #27c63c
+pos:(0,	4,	0)
+rot:{2,	2,	2}
+scale:[1,	1,	1]
+
+
+SPHERE #c6275b
+pos:(-3, 6,	0)
+rot:{2,	2,	2}
+scale:[1,	1,	1]

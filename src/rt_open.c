@@ -45,6 +45,8 @@ void		rt_output_readfile(void)
 		debug_output_value(" -   pos:", cl_float3_to_str(&object->pos, 3), TRUE);
 		debug_output_value(" -   rot:", cl_float3_to_str(&object->rot, 3), TRUE);
 		debug_output_value(" - scale:", cl_float3_to_str(&object->scale, 3), TRUE);
+		debug_output_value(" - bbox_vi:", cl_float3_to_str(&object->bbox_os.vi, 3), TRUE);
+		debug_output_value(" - bbox_vf:", cl_float3_to_str(&object->bbox_os.vf, 3), TRUE);
 		++i;
 	}
 }

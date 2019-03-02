@@ -123,3 +123,18 @@ void	ui_render_caminfo(t_camera *camera)
 	if (tmp)
 		free(tmp);
 }
+
+void	ui_render_loading_bar(void)
+{
+	float	percent;
+	char	*tmp;
+
+	percent = rt.ocl.render_progress * 100.;
+	tmp = ft_f32_to_str(percent, 3);
+	tmp[ft_strlen(tmp) - 2] = ' ';
+	tmp[ft_strlen(tmp) - 1] = '%';
+	ui_render_text("Render", UI_WIDTH_TILES + 2, 11, FALSE);
+	ui_render_text(tmp, UI_WIDTH_TILES + 8, 11, FALSE);
+	if (tmp)
+		free(tmp);
+}

@@ -93,7 +93,7 @@ void		rt_save(int fd)
 			print_float3_to_str(fd, &object->rot, "rot:");
 			print_float3_to_str(fd, &object->scale, "scale:");
 			print_float3_to_str(fd, &object->bbox_os.vi, "bbox_vi:");
-			print_float3_to_str(fd, &object->bbox_os.vi, "bbox_vf:");
+			print_float3_to_str(fd, &object->bbox_os.vf, "bbox_vf:");
 			FT_Write_Char(fd, '\n');
 		}
 		i++;

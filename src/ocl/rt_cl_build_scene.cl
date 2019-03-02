@@ -195,7 +195,7 @@ __kernel void	rt_cl_build_scene
 
 	scene->camera.c_to_w = rt_cl_build_cam_matrix(scene->camera);
 	rt_cl_build_object_matrices(obj);
-	obj->bbox = rt_cl_build_object_bbox(obj->type, obj->o_to_w, /*obj->bbox,*/ scene->render_dist);
+	obj->bbox_ws = rt_cl_build_object_bbox(obj->type, obj->o_to_w, /*obj->bbox_ws,*/ scene->render_dist);
 
 //debug_print_object(obj);
 }

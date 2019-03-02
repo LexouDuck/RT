@@ -1,0 +1,319 @@
+Norme: ./src/config_access.c
+Norme: ./src/config.c
+Error (line 64): C++ comment
+Norme: ./src/camera.c
+Norme: ./src/cl_float3_util.c
+Norme: ./src/debug.c
+Error (line 42): declarations must be followed by one empty line in debug_output
+Error (line 46): preprocessor block must be followed by one empty line
+Error (line 48): preprocessor block must be followed by one empty line
+Error (line 67): declarations must be followed by one empty line in debug_output_value
+Error (line 71): preprocessor block must be followed by one empty line
+Error (line 74): preprocessor block must be followed by one empty line
+Error (line 96): function debug_output_error has 35 lines
+Error (line 96): declarations must be followed by one empty line in debug_output_error
+Error (line 100): preprocessor block must be followed by one empty line
+Error (line 110): preprocessor block must be followed by one empty line
+Error (line 135): declarations must be followed by one empty line in debug_perror
+Error (line 139): preprocessor block must be followed by one empty line
+Error (line 142): preprocessor block must be followed by one empty line
+Norme: ./src/event.c
+Error (line 39): line has 86 characters
+Error (line 70): C++ comment
+Norme: ./src/config_ini.c
+Norme: ./src/event_key.c
+Error (line 18): function event_check_keydown has 73 lines
+Error (line 18): declarations in event_check_keydown must be at the top of the function
+Error (line 18): declarations must be followed by one empty line in event_check_keydown
+Error (line 22): C++ comment
+Error (line 42, col 9): tmp is instanciated during declaration
+Error (line 43): bad indentation
+Error (line 43): must begin only by tabulations
+Error (line 53): C++ comment
+Error (line 62): C++ comment
+Error (line 65): bad indentation
+Error (line 65): C++ comment
+Error (line 68): bad indentation
+Error (line 68): C++ comment
+Error (line 78): line has 103 characters
+Error (line 80): C++ comment
+Error (line 99): C++ comment
+Norme: ./src/init_sdl.c
+Error (line 57): function init_window_display has 33 lines
+Norme: ./src/event_window.c
+Error (line 40): line has 83 characters
+Error (line 41): line has 88 characters
+Error (line 52): line has 83 characters
+Norme: ./src/main.c
+Error (line 23): function update_window has 42 lines
+Error (line 27): C++ comment
+Error (line 31): C++ comment
+Error (line 46): C++ comment
+Error (line 47): C++ comment
+Error (line 52): line has 89 characters
+Error (line 53): line has 83 characters
+Error (line 55): C++ comment
+Error (line 58): C++ comment
+Error (line 58, col 1): no newline after block
+Error (line 61): C++ comment
+Error (line 62): C++ comment
+Error (line 63): line has 83 characters
+Error (line 74): function main_loop has 26 lines
+Error (line 111): wrong number of spaces in preprocessor indentation
+Error (line 114): function main has 35 lines
+Error (line 117): C++ comment
+Error (line 120): C++ comment
+Error (line 123): C++ comment
+Error (line 126): C++ comment
+Error (line 144): C++ comment
+Error (line 147): C++ comment
+Norme: ./src/opencl_utils.c
+Error: global scope bad aligned
+Error (line 29): line has 87 characters
+Error (line 31): line has 84 characters
+Error (line 32): line has 85 characters
+Error (line 64): function opencl_set_device_info has 36 lines
+Error (line 74): line has 82 characters
+Error (line 77): line has 82 characters
+Error (line 80): line has 82 characters
+Error (line 82): line has 88 characters
+Error (line 87): Empty line
+Error (line 88): line has 92 characters
+Error (line 92): line has 98 characters
+Error (line 93): line has 93 characters
+Error (line 94): line has 108 characters
+Error (line 95): line has 113 characters
+Error (line 96): line has 92 characters
+Error (line 98): line has 92 characters
+Error (line 99): line has 92 characters
+Error (line 100): line has 92 characters
+Norme: ./src/event_mouse.c
+Error (line 18): declarations in event_mouse_wheel must be at the top of the function
+Error (line 18): declarations must be followed by one empty line in event_mouse_wheel
+Error (line 27): line has 90 characters
+Error (line 30): line has 87 characters
+Error (line 31): line has 84 characters
+Error (line 54): line has 88 characters
+Error (line 68): function event_mouse_release has 32 lines
+Error (line 104): function event_mouse_motion has 27 lines
+Error (line 104): declarations in event_mouse_motion must be at the top of the function
+Error (line 104): declarations must be followed by one empty line in event_mouse_motion
+Norme: ./src/rt_get_str.c
+Error (line 16): Space before function name
+Error (line 38): Space before function name
+Norme: ./src/opencl_init.c
+Error (line 15): preprocessor block must be followed by one empty line
+Error (line 16): C++ comment
+Error (line 22): function opencl_get_platform_and_gpu has 33 lines
+Error (line 32): bad indentation
+Error (line 37): line has 83 characters
+Error (line 43): bad indentation
+Error (line 51): bad indentation
+Error (line 63): line has 83 characters
+Error (line 64): C++ comment
+Error (line 67): line has 85 characters
+Error (line 98): C++ comment
+Error (line 98): line has 122 characters
+Error (line 100): line has 87 characters
+Error (line 106): line has 107 characters
+Error (line 111): line has 96 characters
+Error (line 114): C++ comment
+Error (line 114): line has 122 characters
+Error (line 133): line has 82 characters
+Error (line 142): line has 91 characters
+Error (line 144): line has 90 characters
+Error (line 148): line has 88 characters
+Error (line 149): C++ comment
+Error (line 150): C++ comment
+Error (line 150): line has 105 characters
+Error (line 151): C++ comment
+Error (line 154): line has 84 characters
+Error (line 157): line has 84 characters
+Norme: ./src/rt_file.c
+Error: 42 header must be followed by one empty line
+Error (line 71): declarations in rt_file_save must be at the top of the function
+Norme: ./src/rt_open_util.c
+Norme: ./src/rt_save.c
+Error: global scope bad aligned
+Error: 42 header not at top of the file
+Error (line 12): comment not well formatted
+Error (line 22): Bad spacing for argument fd
+Error (line 38): spaces at the end of line
+Error (line 46, col 20): bad character after ,
+Error (line 62): Space before function name
+Error (line 62, col 11): bad spacing
+Error (line 67): spaces at the end of line
+Error (line 67, col 1): no newline after block
+Error (line 78): declarations in rt_save are bad aligned
+Error (line 80, col 7): bad spacing
+Error (line 81, col 9): space after pointer
+Error (line 81, col 10): bad spacing
+Norme: ./src/scene.c
+Error (line 19): C++ comment
+Error (line 20): C++ comment
+Error (line 42): missing void in function update_scene
+Norme: ./src/ui.c
+Error (line 53): line has 90 characters
+Error (line 57): function ui_set_tileset has 45 lines
+Error (line 57, col 0): ui_set_tileset has 8 variables
+Error (line 79): line has 95 characters
+Error (line 85): line has 82 characters
+Error (line 87): line has 82 characters
+Error (line 96): line has 128 characters
+Norme: ./src/render.c
+Error: global scope bad aligned
+Error: 6 functions in the file
+Error (line 25): line has 83 characters
+Error (line 33): function get_error_string has 137 lines
+Error (line 35): switch detected
+Error (line 77): C++ comment
+Error (line 156): C++ comment
+Error (line 182): line has 83 characters
+Error (line 183): line has 89 characters
+Error (line 185): line has 87 characters
+Error (line 208): declarations must be followed by one empty line in render_piecewise_2d_kernel
+Error (line 214): C++ comment
+Error (line 215): Empty line
+Error (line 218): C++ comment
+Error (line 223): spaces at the end of line
+Error (line 223, col 1): no newline after block
+Error (line 225): line has 92 characters
+Error (line 228): line has 83 characters
+Error (line 231): line has 88 characters
+Error (line 247): C++ comment
+Error (line 247): line has 144 characters
+Error (line 250): C++ comment
+Error (line 251): line has 87 characters
+Error (line 267): C++ comment
+Error (line 268): C++ comment
+Error (line 276): bad indentation
+Error (line 278): C++ comment
+Error (line 279): C++ comment
+Error (line 280): C++ comment
+Error (line 281): C++ comment
+Error (line 282): C++ comment
+Error (line 288): C++ comment
+Error (line 289): C++ comment
+Error (line 290): C++ comment
+Error (line 291): C++ comment
+Error (line 292): C++ comment
+Error (line 293): C++ comment
+Error (line 296): C++ comment
+Error (line 297): C++ comment
+Error (line 298): C++ comment
+Error (line 299): C++ comment
+Error (line 299): line has 175 characters
+Norme: ./src/ui_control_numberbox.c
+Error (line 61): function ui_mouse_control_numberbox has 28 lines
+Error (line 61): line has 90 characters
+Error (line 77): line has 86 characters
+Error (line 104): line has 86 characters
+Norme: ./src/ui_control_textbox.c
+Error (line 45): line has 85 characters
+Error (line 71): line has 86 characters
+Norme: ./src/ui_menu_edit.c
+Norme: ./src/ui_menu_file.c
+Error (line 32): line has 86 characters
+Norme: ./src/ui_menu_view.c
+Norme: ./src/rt_open.c
+Error: 6 functions in the file
+Error (line 43): line has 88 characters
+Error (line 46): line has 82 characters
+Error (line 47): line has 82 characters
+Error (line 48): line has 84 characters
+Error (line 49): line has 91 characters
+Error (line 50): line has 91 characters
+Error (line 55): function rt_object_init_bbox has 31 lines
+Error (line 60): line has 84 characters
+Error (line 90): function rt_read_object has 30 lines
+Error (line 124): function rt_read_command has 42 lines
+Norme: ./src/rt_open_read.c
+Error: 6 functions in the file
+Error (line 18): function rt_read_arg_name has 28 lines
+Error (line 47): line has 84 characters
+Error (line 77): line has 82 characters
+Error (line 101): line has 85 characters
+Error (line 107): line has 88 characters
+Error (line 111): line has 92 characters
+Error (line 127): function rt_read_arg_color has 41 lines
+Error (line 127): line has 84 characters
+Error (line 172): line has 88 characters
+Error (line 177): line has 88 characters
+Error (line 181): line has 97 characters
+Norme: ./src/ui_mouse.c
+Error: global scope bad aligned
+Error (line 24): line has 93 characters
+Error (line 31): line has 93 characters
+Error (line 46): line has 97 characters
+Error (line 53): line has 97 characters
+Norme: ./src/ui_prompt.c
+Error (line 32): function ui_mouse_prompt has 27 lines
+Error (line 44): line has 93 characters
+Error (line 45): line has 85 characters
+Error (line 47): line has 87 characters
+Error (line 49): line has 85 characters
+Error (line 51): line has 87 characters
+Error (line 57): line has 98 characters
+Norme: ./src/ui_render.c
+Error (line 20): function ui_render_menubar has 26 lines
+Error (line 75): line has 82 characters
+Error (line 85): function ui_render_caminfo has 38 lines
+Norme: ./src/ui_init.c
+Error: 6 functions in the file
+Error (line 128): line has 82 characters
+Error (line 132): line has 155 characters
+Error (line 135): line has 84 characters
+Error (line 138): function ui_init has 29 lines
+Error (line 138): declarations in ui_init must be at the top of the function
+Error (line 138): declarations must be followed by one empty line in ui_init
+Error (line 147): preprocessor block must be followed by one empty line
+Error (line 148, col 11): size is instanciated during declaration
+Error (line 154): preprocessor block must be followed by one empty line
+Error (line 156): preprocessor block must be followed by one empty line
+Norme: ./src/ui_mouse_objectlist.c
+Warning: /Users/aduquesn/Documents/08-rt/src/ui_mouse_objectlist.c may not compile or is invalid for some reasons.
+Norme: ./src/ui_scrollbar.c
+Error (line 30): line has 87 characters
+Error (line 31): line has 87 characters
+Error (line 62): function ui_render_scrollbar has 51 lines
+Error (line 90): line has 84 characters
+Norme: ./src/ui_render_objectlist.c
+Error (line 33): line has 119 characters
+Error (line 34): line has 118 characters
+Error (line 35): line has 118 characters
+Error (line 37): line has 127 characters
+Error (line 38): line has 126 characters
+Error (line 39): line has 126 characters
+Error (line 47): function ui_render_expandedproperties has 39 lines
+Error (line 81, col 28): space after (
+Error (line 85, col 28): space after (
+Error (line 90): function ui_render_objectlist has 37 lines
+Error (line 112): line has 82 characters
+Error (line 127): line has 82 characters
+Norme: ./src/ui_render_util.c
+Error: 7 functions in the file
+Error (line 21): line has 86 characters
+Error (line 102): function ui_render_rect_corners has 29 lines
+Error (line 104, col 17): rect_UL not unixcase
+Error (line 105, col 17): rect_UR not unixcase
+Error (line 106, col 17): rect_DL not unixcase
+Error (line 107, col 17): rect_DR not unixcase
+Error (line 114): C++ comment
+Error (line 119): C++ comment
+Error (line 123): C++ comment
+Error (line 128): C++ comment
+Error (line 135): function ui_render_rect_edges_h has 27 lines
+Error (line 137, col 17): rect_U not unixcase
+Error (line 138, col 17): rect_D not unixcase
+Error (line 144): C++ comment
+Error (line 150): line has 83 characters
+Error (line 154): C++ comment
+Error (line 160): line has 83 characters
+Error (line 166): function ui_render_rect_edges_v has 27 lines
+Error (line 168, col 17): rect_R not unixcase
+Error (line 169, col 17): rect_L not unixcase
+Error (line 175): C++ comment
+Error (line 181): line has 83 characters
+Error (line 185): C++ comment
+Error (line 191): line has 83 characters
+Error (line 219): line has 85 characters

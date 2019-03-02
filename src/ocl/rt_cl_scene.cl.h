@@ -49,14 +49,6 @@ typedef enum		e_rendermode
 **						 rays in world space)
 */
 
-typedef enum	e_cameramode
-{
-	CAMERA_MODE_NONE = 0,
-	CAMERA_MODE_ROTATE,
-	CAMERA_MODE_TILT,
-	CAMERA_MODE_PAN,
-}				t_cameramode;
-
 
 typedef enum		e_camera_model
 {
@@ -65,6 +57,14 @@ typedef enum		e_camera_model
 	CAMERA_MODEL_FOCAL,
 	CAMERA_MODEL_ORTHOGRAPHIC
 }					t_camera_model;
+
+typedef enum	e_cameramode
+{
+	CAMERA_MODE_NONE = 0,
+	CAMERA_MODE_ROTATE,
+	CAMERA_MODE_TILT,
+	CAMERA_MODE_PAN,
+}				t_cameramode;
 
 /*
 ** c_to_w.s012 is axis_x, .s456 is axis_y, .s89A is axis_z and .sCDE is world_pos
@@ -131,12 +131,6 @@ typedef struct	s_bbox
 	float3	vi;
 	float3	vf;
 }				t_bbox;
-/*
-typedef struct	s_bvh
-{
-	cl_bst_node	*root;
-}				t_bvh;
-*/
 
 /*
 ** PRIMITIVES
@@ -252,4 +246,5 @@ typedef struct	s_scene
 	uint			mc_raysamp_size;
 	uint			random_seed_time;
 	t_rendermode	render_mode;
+	size_t			work_dim[2];
 }				t_scene;

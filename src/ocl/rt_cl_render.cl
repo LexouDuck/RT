@@ -58,10 +58,12 @@ static t_intersection		rt_cl_trace_ray_to_scene
 )
 {
 	__constant t_object *		obj;
-	t_intersection				bbox_inter;
+	t_intersection				bbox_ws_inter;
+	t_intersection				bbox_os_inter;
 	t_intersection				prim_inter;
 	float						tmax;
-	float						new_tbbox;
+	float						new_tbbox_ws;
+	float						new_tbbox_os;
 	float						new_t;
 	t_ray						ray_os;
 	t_ray						result_ray_os;
@@ -71,15 +73,15 @@ static t_intersection		rt_cl_trace_ray_to_scene
 	for (uint i = 0; i < scene->object_amount; ++i)
 	{
 		obj = &(scene->objects[i]);
-		bbox_inter = rt_cl_ray_intersect_bbox(*ray, obj->bbox_ws, 0., tmax, &new_tbbox);
-		if (bbox_inter) 
+		bbox_ws_inter = rt_cl_ray_intersect_bbox(*ray, obj->bbox_ws, 0., tmax, &new_tbbox_ws);
+		if (bbox_ws_inter) 
 		{
 			if (scene->render_mode == RENDERMODE_BBOX)
 			{
-				tmax = new_tbbox;
-				ray->t = new_tbbox;
+				tmax = new_tbbox_ws;
+				ray->t = new_tbbox_ws;
 				ray->hit_obj_id = i;
-				prim_inter = bbox_inter;
+				prim_inter = bbox_ws_inter;
 			}
 			else
 			{
@@ -88,38 +90,41 @@ static t_intersection		rt_cl_trace_ray_to_scene
 				ray_os.pos = rt_cl_apply_homogeneous_matrix(obj->w_to_o, ray_os.pos);
 				ray_os.dir = rt_cl_apply_linear_matrix(obj->w_to_o, ray_os.dir);//DO NOT NORMALIZE: YOU NEED TO KEEP ray.t CONSISTENT
 
-				if (obj->type == sphere)
-					ray_os.inter_type = rt_cl_sphere_intersect(&new_t, ray_os);
-				else if (obj->type == plane)
-					ray_os.inter_type = rt_cl_plane_intersect(&new_t, ray_os);
-				else if (obj->type == disk)
-					ray_os.inter_type = rt_cl_disk_intersect(&new_t, ray_os);
-				else if (obj->type == rectangle)
-					ray_os.inter_type = rt_cl_square_intersect(&new_t, ray_os);
-				else if (obj->type == cylinder)
-					ray_os.inter_type = rt_cl_cylinder_intersect(&new_t, ray_os);
-				else if (obj->type == cone)
-					ray_os.inter_type = rt_cl_cone_intersect(&new_t, ray_os);
-				else if (obj->type == infcylinder)
-					ray_os.inter_type = rt_cl_infcylinder_intersect(&new_t, ray_os);
-				else if (obj->type == infcone)
-					ray_os.inter_type = rt_cl_infcone_intersect(&new_t, ray_os);
-				else if (obj->type == cube)
-					ray_os.inter_type = rt_cl_cube_intersect(&new_t, ray_os);
-				else if (obj->type == paraboloid)
-					ray_os.inter_type = rt_cl_paraboloid_intersect(&new_t, ray_os);
-				else if (obj->type == hyperboloid)
-					ray_os.inter_type = rt_cl_hyperboloid_intersect(&new_t, ray_os);
-				else
-					ray_os.inter_type = rt_cl_sphere_intersect(&new_t, ray_os);
-
-				if (ray_os.inter_type && new_t > EPS && new_t < ray->t)
+				bbox_os_inter = rt_cl_ray_intersect_bbox(ray_os, obj->bbox_os, 0., tmax, &new_tbbox_os);
+				if (bbox_os_inter)
 				{
-					prim_inter = ray_os.inter_type;
-					result_ray_os = ray_os;
-					result_ray_os.hit_obj_id = i;
-					ray->t = new_t;
-					result_ray_os.t = new_t;
+					if (obj->type == sphere)
+						ray_os.inter_type = rt_cl_sphere_intersect(&new_t, ray_os);
+					else if (obj->type == plane)
+						ray_os.inter_type = rt_cl_plane_intersect(&new_t, ray_os);
+					else if (obj->type == disk)
+						ray_os.inter_type = rt_cl_disk_intersect(&new_t, ray_os);
+					else if (obj->type == rectangle)
+						ray_os.inter_type = rt_cl_rectangle_intersect(&new_t, ray_os);
+					else if (obj->type == cylinder)
+						ray_os.inter_type = rt_cl_cylinder_intersect(&new_t, ray_os);
+					else if (obj->type == cone)
+						ray_os.inter_type = rt_cl_cone_intersect(&new_t, ray_os);
+					else if (obj->type == infcylinder)
+						ray_os.inter_type = rt_cl_infcylinder_intersect(&new_t, ray_os);
+					else if (obj->type == infcone)
+						ray_os.inter_type = rt_cl_infcone_intersect(&new_t, ray_os);
+					else if (obj->type == cube)
+						ray_os.inter_type = rt_cl_cube_intersect(&new_t, ray_os);
+					else if (obj->type == paraboloid)
+						ray_os.inter_type = rt_cl_paraboloid_intersect(&new_t, ray_os);
+					else if (obj->type == hyperboloid)
+						ray_os.inter_type = rt_cl_hyperboloid_intersect(&new_t, ray_os);
+					else
+						ray_os.inter_type = rt_cl_sphere_intersect(&new_t, ray_os);
+					if (ray_os.inter_type && new_t > EPS && new_t < ray->t)
+					{
+						prim_inter = ray_os.inter_type;
+						result_ray_os = ray_os;
+						result_ray_os.hit_obj_id = i;
+						ray->t = new_t;
+						result_ray_os.t = new_t;
+					}
 				}
 			}
 		}
@@ -160,8 +165,10 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 		normal = rt_cl_cube_get_normal(hitpos);
 	else if (obj->type == paraboloid)
 		normal = rt_cl_paraboloid_get_normal(hitpos);
-	else if (obj->type == paraboloid)
+	else if (obj->type == hyperboloid)
 		normal = rt_cl_hyperboloid_get_normal(hitpos);
+	else if (obj->type == saddle)
+		normal = rt_cl_saddle_get_normal(hitpos);
 	else
 		normal = rt_cl_sphere_get_normal(hitpos);
 	normal = normalize(rt_cl_apply_linear_matrix(obj->n_to_w, normal)) * ray.inter_type; //sphere formula, normal == hitpos
@@ -295,8 +302,8 @@ static t_ray			rt_cl_create_camray
 {
 	int const			x_id = get_global_id(0);
 	int const			y_id = get_global_id(1);
-	int const			width = get_global_size(0);
-	int const			height = get_global_size(1);
+	int const			width = scene->work_dim[0];
+	int const			height = scene->work_dim[1];
 	float16	const		cam_mat44 = scene->camera.c_to_w;
 	float const			fov_val = -width / (2 * tan(scene->camera.hrz_fov));
 	t_ray				camray;
@@ -404,7 +411,7 @@ __kernel void			rt_cl_render
 	int const			x_id = get_global_id(0); /* x-coordinate of the current pixel */
 	int const			y_id = get_global_id(1); /* y-coordinate of the current pixel */
 //	int const			sample_id = get_global_id(2); /* id of the current ray thread amongst the MC simulation for the current pixel*/
-	int const			work_item_id = y_id * get_global_size(0) + x_id;
+	int const			work_item_id = y_id * scene->work_dim[0] + x_id;//get_global_size(0) + x_id;
 	uint2				random_seeds;
 
 	random_seeds.x = x_id;// ^ scene->random_seed_time;

@@ -121,57 +121,18 @@ static void			rt_cl_get_vertices_for_bbox
 
 static t_bbox			rt_cl_build_object_bbox
 (
-							t_primitive		type,
-							float16			o_to_w,
-						/*	t_bbox			objspace_bbox,*/
-							float			render_dist
+				__global	t_object *		obj
 )
 {
 	float3		objspace_bbox_vertices[8];
 	t_bbox		result;
-	t_bbox		objspace_bbox;
-
-	if (type == sphere || type == cube || type == cylinder)
-	{
-		objspace_bbox = (t_bbox){(float3)(-1., -1., -1.),
-									(float3)(1., 1., 1.)};
-	}
-	else if (type == infcylinder)
-	{
-		objspace_bbox = (t_bbox){(float3)(-1., -render_dist, -1.),
-									(float3)(1., render_dist, 1.)};
-	}
-	else if (type == paraboloid)
-	{
-		objspace_bbox = (t_bbox){(float3)(-sqrt(render_dist), 0., -sqrt(render_dist)),
-									(float3)(sqrt(render_dist), render_dist, sqrt(render_dist))};
-	}
-	else if (type == hyperboloid)
-	{
-		objspace_bbox = (t_bbox){(float3)(-render_dist, -render_dist, -render_dist),
-							(float3)(render_dist, render_dist, render_dist)};
-	}
-	else if (type == cone)
-	{
-		objspace_bbox = (t_bbox){(float3)(-1., 0, -1.),
-									(float3)(1., 1, 1.)};
-	}
-	else if (type == infcone)
-	{
-		objspace_bbox = (t_bbox){(float3)(-render_dist, -render_dist, -render_dist),
-							(float3)(render_dist, render_dist, render_dist)};
-	}
-	else
-	{
-		return ((t_bbox){(float3)(-render_dist, -render_dist, -render_dist),
-							(float3)(render_dist, render_dist, render_dist)});
-	}
-	rt_cl_get_vertices_for_bbox(objspace_bbox_vertices, objspace_bbox);
+	
+	rt_cl_get_vertices_for_bbox(objspace_bbox_vertices, obj->bbox_os);
 
 	#pragma unroll
 	for (int i = 0; i < 8; ++i)
 	{
-		objspace_bbox_vertices[i] = rt_cl_apply_homogeneous_matrix(o_to_w, objspace_bbox_vertices[i]);
+		objspace_bbox_vertices[i] = rt_cl_apply_homogeneous_matrix(obj->o_to_w, objspace_bbox_vertices[i]);
 	}
 	result.vf = result.vi = objspace_bbox_vertices[0];
 	#pragma unroll
@@ -195,7 +156,7 @@ __kernel void	rt_cl_build_scene
 
 	scene->camera.c_to_w = rt_cl_build_cam_matrix(scene->camera);
 	rt_cl_build_object_matrices(obj);
-	obj->bbox_ws = rt_cl_build_object_bbox(obj->type, obj->o_to_w, /*obj->bbox_ws,*/ scene->render_dist);
+	obj->bbox_ws = rt_cl_build_object_bbox(obj);
 
 //debug_print_object(obj);
 }

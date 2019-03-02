@@ -18,7 +18,7 @@
 
 void	event_window_resize(t_s32 window_w, t_s32 window_h)
 {
-	t_bool maximized;
+	t_bool		maximized;
 
 	maximized = (SDL_GetWindowFlags(rt.sdl.window) & SDL_WINDOW_MAXIMIZED);
 	config_set(CONFIG_INDEX_MAXIMIZED, FT_Bool_To_String(maximized, FALSE));
@@ -33,6 +33,9 @@ void	event_window_resize(t_s32 window_w, t_s32 window_h)
 		SDL_DestroyTexture(rt.sdl.window_texture);
 		SDL_FreeSurface(rt.sdl.window_surface);
 		init_window_display();
+		rt.scene.work_dim[0] = rt.canvas_w;
+		rt.scene.work_dim[1] = rt.canvas_h;
+		opencl_refresh_gpu_memory_buffers();
 		rt.ui.objects.rect.h = rt.sdl.window_h - rt.ui.objects.rect.y;
 		rt.ui.objects.scrollbar.scroll_view = (rt.sdl.window_h - MENUBAR_ITEMS_H);
 		rt.ui.objects.scrollbar.bar.h = (rt.sdl.window_h - MENUBAR_ITEMS_H) - TILE * 4;

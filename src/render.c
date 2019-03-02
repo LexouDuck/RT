@@ -171,20 +171,18 @@ const char	*get_error_string(cl_int error)
 	}
 }
 
-int			render_launch_kernel0_build_scene(void)
+static int		render_launch_kernel0_build_scene(void)
 {
 	int err;
 
 	err = CL_SUCCESS;
-	// KERNEL 0: build_scene
-	err = clEnqueueWriteBuffer(rt.ocl.cmd_queue, rt.ocl.gpu_buf.scene, CL_TRUE, 0,
-			sizeof(t_scene), &(rt.scene), 0, NULL, NULL);
+	err = clEnqueueWriteBuffer(rt.ocl.cmd_queue, rt.ocl.gpu_buf.scene, CL_TRUE,
+			0, sizeof(t_scene), &(rt.scene), 0, NULL, NULL);
 	if (err < 0)
 		return (debug_perror("Couldn't enqueue write to gpu for "RT_CL_KERNEL_0));
 	err = clSetKernelArg(rt.ocl.kernels[0], 0, sizeof(cl_mem), &(rt.ocl.gpu_buf.scene));
 	if (err < 0)
 		return (debug_perror("Couldn't create a kernel argument for "RT_CL_KERNEL_0));
-// NULL or dim_offsets, NULL or &local_size
 	err = clEnqueueNDRangeKernel(rt.ocl.cmd_queue, rt.ocl.kernels[0], 1, NULL,
 				&(rt.scene.object_amount), NULL, 0, NULL, NULL);
 	if (err < 0)
@@ -197,36 +195,63 @@ int			render_launch_kernel0_build_scene(void)
 	return (OK);
 }
 
-int			render_launch_kernel1_rendermain(void)
+/*
+** The formula for calculating global id is:
+**		(gx , gy) = (wx * Sx + sx + Fx, wy * Sy + sy + Fy)
+**
+** w{x,y} = work-group id{0, 1}
+** S{x,y} = work-group size{0, 1}
+** s{x,y} = local id{0, 1}
+** F{x,y} = global ID offset{0, 1}
+*/
+
+static int			render_piecewise_2d_kernel(cl_kernel krnl)
 {
 	int		err;
 	int		work_dim_amount;
 	size_t	work_dim_array[2];
+	size_t	work_offsets_array[2];
+//	size_t	work_buffer_end[2];
+
+	work_dim_amount = 2;
+	work_dim_array[0] = rt.scene.work_dim[0];
+	work_dim_array[1] = 1;//(size_t)rt.canvas_h;
+	work_offsets_array[0] = 0;
+	work_offsets_array[1] = 0;
+	rt.ocl.render_progress = 0.;
+	while (//work_offsets_array[0] < work_dim_array[0] &&
+		work_offsets_array[1] < (size_t)rt.scene.work_dim[1])
+	{ 
+		if ((err = clEnqueueNDRangeKernel(rt.ocl.cmd_queue, krnl,
+			work_dim_amount, work_offsets_array, work_dim_array, NULL, 0, NULL, NULL)) < 0)
+		{
+			debug_perror(get_error_string(err));
+			return (debug_perror("Couldn't enqueue a kernel for "RT_CL_KERNEL_1));
+		}
+		++work_offsets_array[1];
+		rt.ocl.render_progress = ((float)work_offsets_array[1]) / rt.scene.work_dim[1];
+	}
+	return (OK);
+}
+
+static int			render_launch_kernel1_rendermain(void)
+{
+	int		err;
 	int		kernel_arg_nbr;
 
 	err = 0;
-	work_dim_amount = 2;
-	work_dim_array[0] = (size_t)rt.canvas_w;
-	work_dim_array[1] = (size_t)rt.canvas_h;
-
-	// KERNEL 1: Launch camera rays and return color values
 	kernel_arg_nbr = -1;
-	err = clSetKernelArg(rt.ocl.kernels[1], ++kernel_arg_nbr, sizeof(cl_mem), &(rt.ocl.gpu_buf.canvas_pixels));
-	err |= clSetKernelArg(rt.ocl.kernels[1], ++kernel_arg_nbr, sizeof(cl_mem), &(rt.ocl.gpu_buf.scene));
+	err = clSetKernelArg(rt.ocl.kernels[1], ++kernel_arg_nbr, sizeof(cl_mem),
+							&(rt.ocl.gpu_buf.canvas_pixels));
+	err |= clSetKernelArg(rt.ocl.kernels[1], ++kernel_arg_nbr, sizeof(cl_mem),
+							&(rt.ocl.gpu_buf.scene));
 //	err |= clSetKernelArg(rt.ocl.kernels[1], ++kernel_arg_nbr, sizeof(cl_uint), NULL); TODO: check if adding this fixes work group seed problem
 	if (err < 0)
 	{
 //		debug_perror(get_error_string(err));
 		return (debug_perror("Couldn't create a kernel argument for "RT_CL_KERNEL_1));
 	}
-	// NULL or dim_offsets, NULL or &local_size
-	err = clEnqueueNDRangeKernel(rt.ocl.cmd_queue, rt.ocl.kernels[1], work_dim_amount, NULL, work_dim_array,
-			NULL, 0, NULL, NULL);
-	if (err < 0)
-	{
-		debug_perror(get_error_string(err));
-		return (debug_perror("Couldn't enqueue the kernel for "RT_CL_KERNEL_1));
-	}
+	render_piecewise_2d_kernel(rt.ocl.kernels[1]);
 	if ((err = clFinish(rt.ocl.cmd_queue)) < 0)
 	{
 		debug_perror(get_error_string(err));
@@ -242,12 +267,14 @@ int			render_read_gpu_buffer(void)
 	err = 0;
 //assign group size and work dim etc //fat data buffers
 //kernels //setting args is done later ? //clCreateKernelsInProgram
-	err = clEnqueueReadBuffer(rt.ocl.cmd_queue, rt.ocl.gpu_buf.canvas_pixels, CL_TRUE, 0,
-			sizeof(t_u32) * rt.canvas_pixel_amount, rt.canvas->pixels, 0, NULL, NULL);
+	err = clEnqueueReadBuffer(rt.ocl.cmd_queue, rt.ocl.gpu_buf.canvas_pixels,
+		CL_TRUE, 0, sizeof(t_u32) * rt.canvas_pixel_amount,
+		rt.canvas->pixels, 0, NULL, NULL);
 	if (err < 0)
 	{
 		debug_perror(get_error_string(err));
-		return (debug_perror("Couldn't read the buffer for "RT_CL_KERNEL_1));
+		return (debug_perror("render_read_gpu_buffer:"
+			" couldn't read the buffer for "RT_CL_KERNEL_1));
 	}
 //	clReleaseKernel(rt.ocl.kernels[1]);
 //	clReleaseKernel(rt.ocl.kernels[0]);
@@ -257,22 +284,14 @@ int			render_read_gpu_buffer(void)
 	return (OK);
 }
 
-/*
-** Camera models :
-** 		CAMERA_MODEL_TMP,
-** 		CAMERA_MODEL_PINHOLE,
-** 		CAMERA_MODEL_FOCAL,
-** 		CAMERA_MODEL_ORTHOGRAPHIC
-*/
 int			render(void)
 {
 //	int		err;
 //	rt.scene.render_mode = RENDERMODE_MCPT;
-//rt.scene.objects[2].material = glassy;
-//rt.scene.objects[4].material = glossy;
 //	rt.scene.camera.model = CAMERA_MODEL_TMP;
 //	rt.scene.camera.model = CAMERA_MODEL_FOCAL;
 //	rt.scene.camera.model = CAMERA_MODEL_PINHOLE;
+//	rt.scene.camera.model = CAMERA_MODEL_ORTHOGRAPHIC;
 	rt.scene.camera.aperture = .1;
 	rt.scene.camera.focal_length = 50.;
 //rt.scene.render_mode = RENDERMODE_SOLIDCOLOR;

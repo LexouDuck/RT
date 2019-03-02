@@ -95,26 +95,27 @@ static int		opencl_read_and_build_program(void)
 	size_t		file_len;
 
 	if ((fd = open(RT_CL_PROGRAM_SOURCE, O_RDONLY)) == -1)
-		return (debug_perror("build_cl_program: file couldn't be opened"));//TODO add errno to debug_perror?
+		return (debug_perror("opencl_read_and_build_program: file couldn't be opened"));//TODO add errno to debug_perror?
 	if (FT_Read_File(fd, &file_buf))
-		return (debug_perror("build_cl_program: file couldn't be read"));
+		return (debug_perror("opencl_read_and_build_program: file couldn't be read"));
 	file_len = FT_StringLength(file_buf);
-	rt.ocl.program = clCreateProgramWithSource(rt.ocl.context, 1, (char const **)(&file_buf),
-						&file_len, &err);
+	rt.ocl.program = clCreateProgramWithSource(rt.ocl.context, 1,
+							(char const **)(&file_buf), &file_len, &err);
 	free(file_buf);
 	if (err < 0)
-		return (debug_perror("build_cl_program: clCreateProgramWithSource returned error."));
-	if ((err = clBuildProgram(rt.ocl.program, 1, &(rt.ocl.gpu.id), RT_CL_PROGRAM_OPTIONS, NULL, NULL)) < 0)
+		return (debug_perror("opencl_read_and_build_program: clCreateProgramWithSource returned error."));
+	if ((err = clBuildProgram(rt.ocl.program, 1, &(rt.ocl.gpu.id),
+								RT_CL_PROGRAM_OPTIONS, NULL, NULL)) < 0)
 	{
 		opencl_log_compiler();
-		return (debug_perror("build_cl_program: clBuildProgram returned error."));
+		return (debug_perror("opencl_read_and_build_program: clBuildProgram returned error."));
 	}
 	if (close(fd) == -1)
-		return (debug_perror("build_cl_program: file closed improperly"));//TODO add errno to debug_perror ?
+		return (debug_perror("opencl_read_and_build_program: file closed improperly"));//TODO add errno to debug_perror ?
 	return (OK);
 }
 
-static int		opencl_init_gpu_memory(void)
+int				opencl_init_gpu_memory(void)
 {
 	int		err;
 
@@ -126,7 +127,8 @@ static int		opencl_init_gpu_memory(void)
 		return (debug_perror("Couldn't create read buffer for "RT_CL_KERNEL_0));
 	rt.ocl.gpu_buf.canvas_pixels = clCreateBuffer(rt.ocl.context,
 		CL_MEM_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,
-		sizeof(t_u32) * rt.canvas_pixel_amount, rt.canvas->pixels, &err);
+		sizeof(t_u32) * rt.scene.work_dim[0] * rt.scene.work_dim[1],
+		rt.canvas->pixels, &err);
 	if (err < 0)
 		return (debug_perror("Couldn't create write buffer for "RT_CL_KERNEL_1));
 	return (OK);

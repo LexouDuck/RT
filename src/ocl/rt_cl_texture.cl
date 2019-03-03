@@ -99,7 +99,7 @@ static t_texture	rt_cl_get_texture_properties
 //	obj.pattern = vertical_stripe;
 //	obj.pattern = checkerboard;
 //	obj.pattern = hue;
-	obj.pattern = noise;
+//	obj.pattern = noise;
 	if (obj.type == sphere)
 	{
 		texture.uv_pos.x = 0.5f + atan2((float)(hitpos.z), (float)(hitpos.x)) * (0.5f * INV_PI);

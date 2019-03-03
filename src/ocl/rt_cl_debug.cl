@@ -57,7 +57,7 @@ static void			debug_print_object
 			"\tobj->n_to_w: \n%10g %10g %10g %10g\n%10g %10g %10g %10g\n%10g %10g %10g %10g\n%10g %10g %10g %10g\n"
 			,
 	//obj->pos.x, obj->pos.y, obj->pos.z, obj->scale.x, obj->scale.y, obj->scale.z, obj->rot.x, obj->rot.y, obj->rot.z,
-	obj->color, obj->rgb.x, obj->rgb.y, obj->rgb.z,
+	obj->color_a, obj->rgb_a.x, obj->rgb_a.y, obj->rgb_a.z,
 	obj->type, obj->material, obj->bbox_ws.vi.x, obj->bbox_ws.vi.y, obj->bbox_ws.vi.z, obj->bbox_ws.vf.x, obj->bbox_ws.vf.y, obj->bbox_ws.vf.z,
 //	ow.s0, ow.s1, ow.s2, ow.s3, ow.s4, ow.s5, ow.s6, ow.s7, ow.s8, ow.s9, ow.sA, ow.sB, ow.sC, ow.sD, ow.sE, ow.sF//,
 //	wo.s0, wo.s1, wo.s2, wo.s3, wo.s4, wo.s5, wo.s6, wo.s7, wo.s8, wo.s9, wo.sA, wo.sB, wo.sC, wo.sD, wo.sE, wo.sF//,

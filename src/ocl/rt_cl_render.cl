@@ -312,7 +312,7 @@ static float3			rt_cl_get_pixel_color_from_mc_sampling
 				}
 				else
 				{
-					return (scene->objects[ray_i.hit_obj_id].rgb);
+					return (scene->objects[ray_i.hit_obj_id].rgb_a);
 				}
 			}
 			else

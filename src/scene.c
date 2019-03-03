@@ -49,8 +49,12 @@ void		update_scene()
 
 void		update_object(t_object *object)
 {
-	object->color = ft_color_argb32_set(0.,
-		object->rgb.x * 255.,
-		object->rgb.y * 255.,
-		object->rgb.z * 255.);
+	object->color_a = ft_color_argb32_set(0.,
+		object->rgb_a.x * 255.,
+		object->rgb_a.y * 255.,
+		object->rgb_a.z * 255.);
+	object->color_b = ft_color_argb32_set(0.,
+		object->rgb_b.x * 255.,
+		object->rgb_b.y * 255.,
+		object->rgb_b.z * 255.);
 }

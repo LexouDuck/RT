@@ -37,7 +37,7 @@
 # define DEFAULT_RENDER_DIST	100000.
 # define DEFAULT_BG_COLOR		0xFF555555
 
-# define OBJECT_ARGS_AMOUNT		7
+# define OBJECT_ARGS_AMOUNT		9
 # define OBJECT_NAME_MAXLENGTH	24
 # define OBJECT_MAX_AMOUNT		32
 # define DEFAULT_RAYSAMP_SIZE	16
@@ -232,7 +232,17 @@ typedef	enum		e_pattern
 	checkerboard,
 	hue,
 	noise,
+	marble,
+	wood,
 }					t_pattern;
+
+typedef	enum		e_uv_projection
+{
+	planar = 0,
+	spherical,
+	cubic,
+	cylindrical,
+}					t_uv_projection;
 
 typedef struct		s_texture
 {
@@ -289,8 +299,10 @@ typedef struct		s_object
 	t_primitive		type;
 	t_material		material;
 	char			name[OBJECT_NAME_MAXLENGTH];
-	cl_uint			color;
-	cl_float3		rgb;
+	cl_uint			color_a;
+	cl_uint			color_b;
+	cl_float3		rgb_a;
+	cl_float3		rgb_b;
 	cl_float3		pos;
 	cl_float3		rot;
 	cl_float3		scale;
@@ -304,6 +316,7 @@ typedef struct		s_object
 	cl_float16		w_to_o;
 	cl_float16		n_to_w;
 	t_pattern		pattern;
+	t_uv_projection	uv_projection;
 }					t_object;
 
 typedef struct		s_scene

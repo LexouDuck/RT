@@ -1,0 +1,39 @@
+Norme: ./src/config.h
+Norme: ./src/debug.h
+Norme: ./src/event.h
+Norme: ./src/rt_cl.h
+Error (line 70): C++ comment
+Error (line 77): C++ comment
+Error (line 99): C++ comment
+Norme: ./src/rt_scene.h
+Error (line 46): preprocessor block must be followed by one empty line
+Error (line 54): preprocessor block must be followed by one empty line
+Error (line 74): line has 87 characters
+Error (line 75): line has 98 characters
+Error (line 76): line has 83 characters
+Error (line 77): line has 84 characters
+Error (line 80): line has 90 characters
+Error (line 81): line has 90 characters
+Error (line 82): line has 90 characters
+Error (line 87): line has 90 characters
+Error (line 107): C++ comment
+Error (line 111): line has 82 characters
+Error (line 129): line has 86 characters
+Error (line 160): C++ comment
+Error (line 214): C++ comment
+Error (line 216): C++ comment
+Error (line 218): C++ comment
+Error (line 220): C++ comment
+Error (line 222): C++ comment
+Error (line 278): C++ comment
+Error (line 279): C++ comment
+Error (line 281): C++ comment
+Error (line 281): line has 109 characters
+Norme: ./src/ui.h
+Error (line 109): C++ comment
+Error (line 111): C++ comment
+Error (line 113): C++ comment
+Error (line 142): C++ comment
+Error (line 144): C++ comment
+Error (line 146): C++ comment
+Error (line 148): C++ comment

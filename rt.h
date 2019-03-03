@@ -133,7 +133,7 @@ void		ui_menu_view_orthogonal();
 char		*rt_get_str_primitive(t_primitive primitive);
 char		*rt_get_str_material(t_material material);
 char		*rt_get_str_rendermode(t_rendermode rendermode);
-char		*rt_get_str_cameramodel(t_rendermode cameramodel);
+char		*rt_get_str_cameramodel(t_camera_model cameramodel);
 
 /*
 **	rt_file.c

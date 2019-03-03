@@ -162,7 +162,7 @@ typedef struct	s_prompt
 	SDL_Rect	rect;
 }				t_prompt;
 
-# define PROMPT					(SDL_Rect){ 0, MENUBAR_ITEMS_H + 1, UI_WIDTH_TILES, 12 }
+# define PROMPT					(SDL_Rect){ 0, 4, UI_WIDTH_TILES, 12 }
 # define PROMPT_BUTTON_OK		(SDL_Rect){ 5, 12, 8, 3 }
 # define PROMPT_BUTTON_CANCEL	(SDL_Rect){ 17,12, 8, 3 }
 
@@ -250,16 +250,23 @@ void			ui_render_rect(SDL_Rect rect, t_bool filled);
 /*
 **	ui_control_numberbox.c
 */
-void			ui_keypress_control_numberbox(t_textinput *textinput, t_bool up);
-void			ui_mouse_control_numberbox(t_textinput *textinput, cl_float *value, int x, int y);
-void			ui_leave_control_numberbox(t_textinput *textinput);
-void			ui_render_control_numberbox(int x, int y, cl_float *value);
+void			ui_keypress_control_numberbox(
+				t_textinput *textinput, t_bool up);
+void			ui_mouse_control_numberbox(
+				t_textinput *textinput, cl_float *value, int x, int y);
+void			ui_leave_control_numberbox(
+				t_textinput *textinput);
+void			ui_render_control_numberbox(
+				int x, int y, cl_float *value);
 
 /*
 **	ui_control_textbox.c
 */
-void			ui_leave_control_textbox(t_textinput *textinput);
-void			ui_mouse_control_textbox(t_textinput *textinput, char **value, int x, int y);
-void			ui_render_control_textbox(int x, int y, char *value);
+void			ui_leave_control_textbox(
+				t_textinput *textinput);
+void			ui_mouse_control_textbox(
+				t_textinput *textinput, char **value, int x, int y);
+void			ui_render_control_textbox(
+				int x, int y, char *value);
 
 #endif

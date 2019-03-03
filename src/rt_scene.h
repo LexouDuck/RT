@@ -41,7 +41,7 @@
 # define OBJECT_NAME_MAXLENGTH	24
 # define OBJECT_MAX_AMOUNT		32
 # define DEFAULT_RAYSAMP_SIZE	16
-# define DEFAULT_MAX_RAY_DEPTH	8
+# define DEFAULT_MAX_RAY_DEPTH	16
 
 # define RENDER_MODES	3
 typedef enum	e_rendermode
@@ -221,7 +221,7 @@ typedef enum		e_material
 // 	skybox ?
 }					t_material;
 
-typedef	enum		e_texture
+typedef	enum		e_pattern
 {
 	solid = 0,
 	horizontal_wave,
@@ -231,17 +231,17 @@ typedef	enum		e_texture
 	vertical_stripe,
 	checkerboard,
 	hue,
-	noisy,
-}					t_texture;
+	noise,
+}					t_pattern;
 
-typedef struct		s_color
+typedef struct		s_texture
 {
-	t_texture		texture;
+	t_pattern		pattern;
 	cl_float		light_map;
 	cl_float2		uv_pos;
 	cl_float2		uv_scale;
 	cl_float3		rgb;
-}					t_color;
+}					t_texture;
 
 /*
 ** This struct is used to translate, rotate and scale our object into position
@@ -303,7 +303,7 @@ typedef struct		s_object
 	cl_float16		o_to_w;
 	cl_float16		w_to_o;
 	cl_float16		n_to_w;
-	t_texture		texture;
+	t_pattern		pattern;
 }					t_object;
 
 typedef struct		s_scene

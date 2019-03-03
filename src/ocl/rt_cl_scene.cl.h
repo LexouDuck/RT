@@ -171,7 +171,7 @@ typedef enum	e_material
 // 	skybox ?
 }				t_material;
 
-typedef	enum	e_texture
+typedef	enum	e_pattern
 {
 	solid = 0,
 	horizontal_wave,
@@ -181,17 +181,17 @@ typedef	enum	e_texture
 	vertical_stripe,
 	checkerboard,
 	hue,
-	noisy,
-}				t_texture;
+	noise,
+}				t_pattern;
 
-typedef struct	s_color
+typedef struct	s_texture
 {
-	t_texture	texture;
+	t_pattern	pattern;
 	float		light_map;
 	float2		uv_pos;
 	float2		uv_scale;
 	float3		rgb;
-}				t_color;
+}				t_texture;
 
 /*
 ** This struct is used to translate, rotate and scale our object into position
@@ -253,7 +253,7 @@ typedef struct	s_object
 	float16			o_to_w;
 	float16			w_to_o;
 	float16			n_to_w;
-	t_texture		texture;
+	t_pattern		pattern;
 }				t_object;
 
 typedef struct	s_scene

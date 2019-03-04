@@ -158,5 +158,5 @@ __kernel void	rt_cl_build_scene
 	rt_cl_build_object_matrices(obj);
 	obj->bbox_ws = rt_cl_build_object_bbox(obj);
 
-//debug_print_object(obj);
+//	debug_print_object(obj);
 }

@@ -9,6 +9,7 @@ correc.*
 *.cl-e
 
 # Program
+libft/test
 RT
 RT.exe
 log.txt

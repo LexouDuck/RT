@@ -5,7 +5,9 @@
 
 void	print_map()
 {
+	FT_Write_String(fd, "BG #")
 	FT_Write_String("color:");
+	
 	FT_Write_String("pos:");
 	FT_Write_String("rot:");
 	FT_Write_String("scale:");

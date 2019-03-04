@@ -20,12 +20,11 @@ static t_intersection		rt_cl_infcylinder_intersect
 	float2		roots;
 
 	quadpoly.x = rt_cl_float3_ynull_dot(ray.dir, ray.dir);
-	quadpoly.y = 2. * rt_cl_float3_ynull_dot(ray.dir, ray.pos);
-	quadpoly.z = rt_cl_float3_ynull_dot(ray.pos, ray.pos) - 1.;
+	quadpoly.y = 2.f * rt_cl_float3_ynull_dot(ray.dir, ray.pos);
+	quadpoly.z = rt_cl_float3_ynull_dot(ray.pos, ray.pos) - 1.f;
 	if (!(rt_cl_get_realroots_quadpoly(&roots, quadpoly)))
 		return (INTER_NONE);
-	if ((roots.x <= 0. && roots.y <= 0.) ||
-		(roots.x > ray.t && roots.y > ray.t))
+	if (roots.x <= 0.f && roots.y <= 0.f)
 		return (INTER_NONE);
 	else if (roots.x <= 0.)
 	{
@@ -79,22 +78,21 @@ static t_intersection		rt_cl_cylinder_intersect
 	bool			is_in_vrt_area;
 	t_intersection	inter;
 
-	is_in_hrz_area = (-0.5 <= ray.pos.y && ray.pos.y <= 0.5);
-	is_in_vrt_area = (rt_cl_float3_ynull_dot(ray.pos, ray.pos) <= 1.);
-	tmp = 1. / 0.;
+	is_in_hrz_area = (-1.f <= ray.pos.y && ray.pos.y <= 1.f);
+	is_in_vrt_area = (rt_cl_float3_ynull_dot(ray.pos, ray.pos) <= 1.f);
+	tmp = 1.f / 0.f;
 	tmp_ray = ray;
 	tmp_ray.inter_type = rt_cl_infcylinder_intersect(res, tmp_ray);
 	if (tmp_ray.inter_type)
 	{
 		tmp_ray.t = *res;
-		tmp_ray.t = *res;
-		if (fabs((float)(tmp_ray.pos.y + tmp_ray.t * tmp_ray.dir.y)) < 0.5)
+		if (fabs((float)(tmp_ray.pos.y + tmp_ray.t * tmp_ray.dir.y)) < 1.f)
 		{
 			tmp = tmp_ray.t;
 		}
 	}
 	tmp_ray.t = ray.t;
-	tmp_ray.pos.y -= 0.5;
+	tmp_ray.pos.y -= 1.f;
 	tmp_ray.inter_type = rt_cl_disk_intersect(res, tmp_ray);
 	if (tmp_ray.inter_type)
 	{
@@ -102,7 +100,7 @@ static t_intersection		rt_cl_cylinder_intersect
 		tmp = fmin(tmp, tmp_ray.t);
 	}
 	tmp_ray.t = ray.t;
-	tmp_ray.pos.y += 1.;
+	tmp_ray.pos.y += 2.f;
 	tmp_ray.inter_type = rt_cl_disk_intersect(res, tmp_ray);
 	if (tmp_ray.inter_type)
 	{
@@ -131,10 +129,10 @@ static float3				rt_cl_cylinder_get_normal
 							float3		hitpos
 )
 {
-	if (fabs((float)(hitpos.y - 0.5)) < EPS)
-		return ((float3)(0., 1., 0.));
-	else if (fabs((float)(hitpos.y + 0.5)) < EPS)
-		return ((float3)(0., -1., 0.));
+	if (fabs((float)(hitpos.y - 1.f)) < EPS)
+		return ((float3)(0.f, 1.f, 0.f));
+	else if (fabs((float)(hitpos.y + 1.f)) < EPS)
+		return ((float3)(0.f, -1.f, 0.f));
 	else
-		return ((float3)(hitpos.x, 0., hitpos.z));
+		return ((float3)(hitpos.x, 0.f, hitpos.z));
 }

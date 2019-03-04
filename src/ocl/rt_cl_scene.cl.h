@@ -22,13 +22,15 @@
 ** # define INV_TAU		0x1.45f306dc9c883p-3
 */
 
+# define PI						0x1.921fb54442d18p1
 # define TAU 					0x1.921fb54442d18p2
 # define INV_PI					0x1.45f306dc9c883p-2
 
 typedef enum		e_rendermode
 {
 	RENDERMODE_MCPT = 0,
-	RENDERMODE_BBOX,
+	RENDERMODE_BBOX_OS,
+	RENDERMODE_BBOX_WS,
 	RENDERMODE_SOLIDCOLOR,
 }					t_rendermode;
 
@@ -48,8 +50,6 @@ typedef enum		e_rendermode
 ** c_to_w			: the camera's view/cam-to-world matrix (useful to put
 **						 rays in world space)
 */
-
-
 typedef enum		e_camera_model
 {
 	CAMERA_MODEL_PINHOLE = 0,
@@ -171,6 +171,38 @@ typedef enum	e_material
 // 	skybox ?
 }				t_material;
 
+typedef	enum	e_pattern
+{
+	solid = 0,
+	horizontal_wave,
+	vertical_wave,
+	wave,
+	horizontal_stripe,
+	vertical_stripe,
+	checkerboard,
+	hue,
+	noise,
+	marble,
+	wood,
+}				t_pattern;
+
+typedef	enum		e_uv_projection
+{
+	planar = 0,
+	spherical,
+	cubic,
+	cylindrical,
+}					t_uv_projection;
+
+typedef struct	s_texture
+{
+	t_pattern	pattern;
+	float		light_map;
+	float2		uv_pos;
+	float2		uv_scale;
+	float3		rgb;
+}				t_texture;
+
 /*
 ** This struct is used to translate, rotate and scale our object into position
 **	in the world space.
@@ -217,8 +249,10 @@ typedef struct	s_object
 	t_primitive		type;
 	t_material		material;
 	char			name[OBJECT_NAME_MAXLENGTH];
-	uint			color;
-	float3			rgb;
+	uint			color_a;
+	uint			color_b;
+	float3			rgb_a;
+	float3			rgb_b;
 	float3			pos;
 	float3			rot;
 	float3			scale;
@@ -231,6 +265,8 @@ typedef struct	s_object
 	float16			o_to_w;
 	float16			w_to_o;
 	float16			n_to_w;
+	t_pattern		pattern;
+	t_uv_projection	uv_projection;
 }				t_object;
 
 typedef struct	s_scene

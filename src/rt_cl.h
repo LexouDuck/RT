@@ -43,36 +43,39 @@
 
 /*
 ** see clBuildProgram in OpenCL API for details
+** TODO experiment with optimization options
 */
-
-// TODO experiment with optimization options
 # define RT_CL_PLATFORM_MAX_AMOUNT		2
 # define RT_CL_PLATFORM_UNINITIALIZED	-1
-//# define RT_CL_PROGRAM_SOURCE			"src/rt_cl_build_scene"//"tmp_srcs/opencl_sandbox/qjulia_kernel.cl"//
-# define RT_CL_PROGRAM_SOURCE			"concat.cl"//"src/rt_cl_render.cl"
-# define RT_CL_PROGRAM_OPTIONS			"-Werror"//-cl-opt-disable"//-Werror"// -g" //-cl-nv-verbose" //-cl-kernel-arg-info" //-cl-fast-relaxed-math" //-cl-unsafe-math-optimizations //-cl-mad-enable
+
+/*
+**	-cl-opt-disable
+**	-Werror
+**	-g
+**	-cl-nv-verbose
+**	-cl-kernel-arg-info
+**	-cl-fast-relaxed-math
+**	-cl-unsafe-math-optimizations
+**	-cl-mad-enable
+*/
+# define RT_CL_PROGRAM_OPTIONS			"-Werror"
+# define RT_CL_PROGRAM_SOURCE			"concat.cl"
+
 # define RT_CL_KERNEL_AMOUNT			2
 # define RT_CL_KERNEL_0					"rt_cl_build_scene"
 # define RT_CL_KERNEL_1					"rt_cl_render"
-# define RT_CL_KERNEL_1_DIM_0_STEP		720 //1440 ?
-# define RT_CL_KERNEL_1_DIM_1_STEP		4
-
 
 typedef struct	s_gpu
 {
-	//gpu info
+//	gpu info
 	cl_device_id	id;
 	cl_ulong		global_mem_size;
 	cl_uint			comp_unit_nb;
 	size_t			max_kernel_args_size;
 	size_t			max_witems_per_wgroup;
 	cl_uint			max_nd_range;
-	size_t			max_witems_per_dim[16];//should be replaced by value of max_nd_range
-	//gpu mem
-	//t_u8			*in_buf_hostptr;
-	//t_u8			*out_buf_hostptr;
-	//cl_mem		in_buf;
-	//cl_mem		out_buf;
+	// should be replaced by value of max_nd_range
+	size_t			max_witems_per_dim[4];
 }				t_gpu;
 
 typedef	struct	s_gpu_buffers

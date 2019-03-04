@@ -37,17 +37,18 @@
 # define DEFAULT_RENDER_DIST	100000.
 # define DEFAULT_BG_COLOR		0xFF555555
 
-# define OBJECT_ARGS_AMOUNT		7
+# define OBJECT_ARGS_AMOUNT		11
 # define OBJECT_NAME_MAXLENGTH	24
 # define OBJECT_MAX_AMOUNT		32
 # define DEFAULT_RAYSAMP_SIZE	16
-# define DEFAULT_MAX_RAY_DEPTH	8
+# define DEFAULT_MAX_RAY_DEPTH	16
 
-# define RENDER_MODES	3
+# define RENDER_MODES	4
 typedef enum	e_rendermode
 {
 	RENDERMODE_MCPT = 0,
-	RENDERMODE_BBOX,
+	RENDERMODE_BBOX_OS,
+	RENDERMODE_BBOX_WS,
 	RENDERMODE_SOLIDCOLOR,
 }				t_rendermode;
 
@@ -161,7 +162,6 @@ typedef struct		s_ray
 	cl_float3		lum_mask;
 	cl_float3		lum_acc;
 	t_intersection	inter_type;
-	cl_float2		uv_coordinates;
 }					t_ray;
 
 /*
@@ -186,6 +186,7 @@ typedef struct		s_bbox
 ** All primitives are considered to be centered near the origin with default
 ** unit dimensions.
 */
+# define			PRIMITIVES	14
 typedef enum		e_primitive
 {
 	none = 0,
@@ -209,6 +210,7 @@ typedef enum		e_primitive
 ** primtive (ie, how they interact with or produce light). Normals play
 ** a major role here.
 */
+# define			MATERIALS	4
 typedef enum		e_material
 {
 // 	emits light
@@ -221,6 +223,40 @@ typedef enum		e_material
 	specular,
 // 	skybox ?
 }					t_material;
+
+# define			TEXTURE_PATTERNS	11
+typedef	enum		e_pattern
+{
+	solid = 0,
+	horizontal_wave,
+	vertical_wave,
+	wave,
+	horizontal_stripe,
+	vertical_stripe,
+	checkerboard,
+	hue,
+	noise,
+	marble,
+	wood,
+}					t_pattern;
+
+# define			TEXTURE_PROJECTIONS	4
+typedef	enum		e_uv_projection
+{
+	planar = 0,
+	spherical,
+	cubic,
+	cylindrical,
+}					t_uv_projection;
+
+typedef struct		s_texture
+{
+	t_pattern		pattern;
+	cl_float		light_map;
+	cl_float2		uv_pos;
+	cl_float2		uv_scale;
+	cl_float3		rgb;
+}					t_texture;
 
 /*
 ** This struct is used to translate, rotate and scale our object into position
@@ -268,8 +304,10 @@ typedef struct		s_object
 	t_primitive		type;
 	t_material		material;
 	char			name[OBJECT_NAME_MAXLENGTH];
-	cl_uint			color;
-	cl_float3		rgb;
+	cl_uint			color_a;
+	cl_uint			color_b;
+	cl_float3		rgb_a;
+	cl_float3		rgb_b;
 	cl_float3		pos;
 	cl_float3		rot;
 	cl_float3		scale;
@@ -282,6 +320,8 @@ typedef struct		s_object
 	cl_float16		o_to_w;
 	cl_float16		w_to_o;
 	cl_float16		n_to_w;
+	t_pattern		pattern;
+	t_uv_projection	uv_projection;
 }					t_object;
 
 typedef struct		s_scene

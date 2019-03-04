@@ -156,22 +156,24 @@ char		*rt_read_arg_color(t_rtparser *p, cl_float3 *result, char const *label)
 		if (result->x < 0.)
 			result->x = 0.;
 		else if (result->x > 1.)
-			result->x = 0.;
+			result->x = 1.;
 		if (result->y < 0.)
 			result->y = 0.;
 		else if (result->y > 1.)
-			result->y = 0.;
+			result->y = 1.;
 		if (result->z < 0.)
 			result->z = 0.;
 		else if (result->z > 1.)
-			result->z = 0.;
+			result->z = 1.;
 		return (str);
 	}
 }
 
 char		*rt_read_arg_material(t_rtparser *p, t_material *result, char const *label)
 {
-	size_t	length;
+	char const	*str;
+	size_t		length;
+	size_t		i;
 
 	rt_read_whitespace(p);
 	if (!p->file[p->index] || !ft_strnequ(p->file + p->index, label, ft_strlen(label)))
@@ -180,16 +182,77 @@ char		*rt_read_arg_material(t_rtparser *p, t_material *result, char const *label
 	if (p->file[p->index] != ':')
 		return (rt_read_error(':', "without spaces before material string", p->file[p->index]));
 	++(p->index);
-	if (ft_strnequ(p->file + p->index, "DIFFUSE", (length = 7)))
-		*result = diffuse;
-	else if (ft_strnequ(p->file + p->index, "LIGHT", (length = 5)))
-		*result = light;
-	else if (ft_strnequ(p->file + p->index, "TRANSPARENT", (length = 11)))
-		*result = transparent;
-	else if (ft_strnequ(p->file + p->index, "SPECULAR", (length = 8)))
-		*result = specular;
-	else
-		return ("No valid material enum label encountered");
-	p->index += length;
-	return (NULL);
+	i = 0;
+	while (i < MATERIALS)
+	{
+		str = rt_get_str_material((t_material)i);
+		length = ft_strlen(str);
+		if (ft_strnequ(p->file + p->index, str, length))
+		{
+			*result = (t_material)i;
+			p->index += length;
+			return (NULL);
+		}
+		++i;
+	}
+	return ("No valid material enum label encountered");
+}
+
+char		*rt_read_arg_pattern(t_rtparser *p, t_pattern *result, char const *label)
+{
+	char const	*str;
+	size_t		length;
+	size_t		i;
+
+	rt_read_whitespace(p);
+	if (!p->file[p->index] || !ft_strnequ(p->file + p->index, label, ft_strlen(label)))
+		return (NULL);
+	p->index += ft_strlen(label);
+	if (p->file[p->index] != ':')
+		return (rt_read_error(':', "without spaces before texture pattern string", p->file[p->index]));
+	++(p->index);
+	i = 0;
+	while (i < TEXTURE_PATTERNS)
+	{
+		str = rt_get_str_pattern((t_pattern)i);
+		length = ft_strlen(str);
+		if (ft_strnequ(p->file + p->index, str, length))
+		{
+			*result = (t_pattern)i;
+			p->index += length;
+			return (NULL);
+		}
+		++i;
+	}
+	return ("No valid texture pattern enum label encountered");
+}
+
+
+char		*rt_read_arg_projection(t_rtparser *p, t_uv_projection *result, char const *label)
+{
+	char const	*str;
+	size_t		length;
+	size_t		i;
+
+	rt_read_whitespace(p);
+	if (!p->file[p->index] || !ft_strnequ(p->file + p->index, label, ft_strlen(label)))
+		return (NULL);
+	p->index += ft_strlen(label);
+	if (p->file[p->index] != ':')
+		return (rt_read_error(':', "without spaces before texture projection string", p->file[p->index]));
+	++(p->index);
+	i = 0;
+	while (i < TEXTURE_PROJECTIONS)
+	{
+		str = rt_get_str_projection((t_uv_projection)i);
+		length = ft_strlen(str);
+		if (ft_strnequ(p->file + p->index, str, length))
+		{
+			*result = (t_uv_projection)i;
+			p->index += length;
+			return (NULL);
+		}
+		++i;
+	}
+	return ("No valid texture projection enum label encountered");
 }

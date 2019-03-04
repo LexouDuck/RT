@@ -24,7 +24,7 @@ static t_bool	ui_mouse_objectlist_expandedproperties_primitive(
 	rect.y = y + 0;
 	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
 	{
-		*primitive = (int)(*primitive == 1) ? 12 : (*primitive - 1);
+		*primitive = (int)(*primitive == 1) ? PRIMITIVES - 1 : (*primitive - 1);
 		rt.must_render = TRUE;
 		return (TRUE);
 	}
@@ -32,7 +32,7 @@ static t_bool	ui_mouse_objectlist_expandedproperties_primitive(
 	rect.y = y + 0;
 	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
 	{
-		*primitive = (int)(*primitive == 12) ? 1 : (*primitive + 1);
+		*primitive = (int)(*primitive == PRIMITIVES - 1) ? 1 : (*primitive + 1);
 		rt.must_render = TRUE;
 		return (TRUE);
 	}
@@ -48,7 +48,7 @@ static t_bool	ui_mouse_objectlist_expandedproperties_material(
 	rect.y = y + 2;
 	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
 	{
-		*material = (int)(*material == 0) ? 3 : (*material - 1);
+		*material = (int)(*material == 0) ? MATERIALS - 1 : (*material - 1);
 		rt.must_render = TRUE;
 		return (TRUE);
 	}
@@ -56,7 +56,55 @@ static t_bool	ui_mouse_objectlist_expandedproperties_material(
 	rect.y = y + 2;
 	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
 	{
-		*material = (int)(*material == 3) ? 0 : (*material + 1);
+		*material = (int)(*material == MATERIALS - 1) ? 0 : (*material + 1);
+		rt.must_render = TRUE;
+		return (TRUE);
+	}
+	return (FALSE);
+}
+
+static t_bool	ui_mouse_objectlist_expandedproperties_pattern(
+	t_pattern *pattern, t_s32 y)
+{
+	static SDL_Rect	rect = { 0, 0, 1, 1 };
+
+	rect.x = 12;
+	rect.y = y + 4;
+	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+	{
+		*pattern = (int)(*pattern == 0) ? TEXTURE_PATTERNS - 1 : (*pattern - 1);
+		rt.must_render = TRUE;
+		return (TRUE);
+	}
+	rect.x = 24;
+	rect.y = y + 4;
+	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+	{
+		*pattern = (int)(*pattern == TEXTURE_PATTERNS - 1) ? 0 : (*pattern + 1);
+		rt.must_render = TRUE;
+		return (TRUE);
+	}
+	return (FALSE);
+}
+
+static t_bool	ui_mouse_objectlist_expandedproperties_projection(
+	t_uv_projection *projection, t_s32 y)
+{
+	static SDL_Rect	rect = { 0, 0, 1, 1 };
+
+	rect.x = 12;
+	rect.y = y + 6;
+	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+	{
+		*projection = (int)(*projection == 0) ? TEXTURE_PROJECTIONS - 1 : (*projection - 1);
+		rt.must_render = TRUE;
+		return (TRUE);
+	}
+	rect.x = 24;
+	rect.y = y + 6;
+	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+	{
+		*projection = (int)(*projection == TEXTURE_PROJECTIONS - 1) ? 0 : (*projection + 1);
 		rt.must_render = TRUE;
 		return (TRUE);
 	}
@@ -69,10 +117,12 @@ static void	ui_mouse_objectlist_expandedproperties(t_object *object, t_s32 y)
 	t_u8			i;
 
 	if (ui_mouse_objectlist_expandedproperties_primitive(&object->type, y) ||
-		ui_mouse_objectlist_expandedproperties_material(&object->material, y))
+		ui_mouse_objectlist_expandedproperties_material(&object->material, y) ||
+		ui_mouse_objectlist_expandedproperties_pattern(&object->pattern, y) ||
+		ui_mouse_objectlist_expandedproperties_projection(&object->uv_projection, y))
 		return ;
-	y += 4;
-	ptr = &object->rgb;
+	y += 8;
+	ptr = &object->rgb_a;
 	i = 0;
 	while (i < OBJECT_PROPERTIES)
 	{

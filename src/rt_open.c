@@ -25,6 +25,7 @@
 #include "debug.h"
 #include "rt_scene.h"
 
+//TODO Add texture debug output value
 void		rt_output_readfile(void)
 {
 	t_object			*object;
@@ -41,8 +42,10 @@ void		rt_output_readfile(void)
 		debug_output("\t-> ");
 		debug_output_value("NAME: ", object->name, FALSE);
 		debug_output_value("MATERIAL: ", rt_get_str_material(object->material), FALSE);
-		debug_output_value("-> #", ft_u32_to_hex(object->color), TRUE);
-		debug_output_value(" - ", cl_float3_to_str(&object->rgb, 3), TRUE);
+		debug_output_value("-> #", ft_u32_to_hex(object->color_a), TRUE);
+		debug_output_value("-> #", ft_u32_to_hex(object->color_b), TRUE);
+		debug_output_value(" - ", cl_float3_to_str(&object->rgb_a, 3), TRUE);
+		debug_output_value(" - ", cl_float3_to_str(&object->rgb_b, 3), TRUE);
 		debug_output_value(" -   pos:", cl_float3_to_str(&object->pos, 3), TRUE);
 		debug_output_value(" -   rot:", cl_float3_to_str(&object->rot, 3), TRUE);
 		debug_output_value(" - scale:", cl_float3_to_str(&object->scale, 3), TRUE);
@@ -95,9 +98,13 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 
 	object.type = shape;
 	object.material = diffuse;
+	object.pattern = solid;
+	object.uv_projection = planar;
 	ft_memclr(&object.name, OBJECT_NAME_MAXLENGTH);
-	object.color = 0xFFFFFF;
-	object.rgb = (cl_float3){{ 1., 1., 1. }};
+	object.color_a = 0xFFFFFF;
+	object.color_b = 0x000000;
+	object.rgb_a = (cl_float3){{ 1., 1., 1. }};
+	object.rgb_b = (cl_float3){{ 0., 0., 0. }};
 	object.pos = (cl_float3){{ 0., 0., 0. }};
 	object.rot = (cl_float3){{ 0., 0., 0. }};
 	object.scale = (cl_float3){{ 1., 1., 1. }};
@@ -106,11 +113,14 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 	while (++i < OBJECT_ARGS_AMOUNT)
 	{
 		if ((error = rt_read_arg_name(p, (char *)&object.name)) ||
-			(error = rt_read_arg_color(p, &object.rgb, "color")) ||
+			(error = rt_read_arg_material(p, &object.material, "material")) ||
+			(error = rt_read_arg_pattern(p, &object.pattern, "pattern")) ||
+			(error = rt_read_arg_projection(p, &object.uv_projection, "projection")) ||
+			(error = rt_read_arg_color(p, &object.rgb_a, "color")) ||
+			(error = rt_read_arg_color(p, &object.rgb_b, "color2")) ||
 			(error = rt_read_arg_vector(p, &object.pos, "pos")) ||
 			(error = rt_read_arg_vector(p, &object.rot, "rot")) ||
 			(error = rt_read_arg_vector(p, &object.scale, "scale")) ||
-			(error = rt_read_arg_material(p, &object.material, "material")) ||
 			(error = rt_read_arg_vector(p, &object.bbox_os.vi, "bbox_vi")) ||
 			(error = rt_read_arg_vector(p, &object.bbox_os.vf, "bbox_vf")))
 			return (error);

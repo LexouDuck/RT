@@ -98,6 +98,8 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 
 	object.type = shape;
 	object.material = diffuse;
+	object.pattern = solid;
+	object.uv_projection = planar;
 	ft_memclr(&object.name, OBJECT_NAME_MAXLENGTH);
 	object.color_a = 0xFFFFFF;
 	object.color_b = 0x000000;
@@ -111,14 +113,14 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 	while (++i < OBJECT_ARGS_AMOUNT)
 	{
 		if ((error = rt_read_arg_name(p, (char *)&object.name)) ||
-			(error = rt_read_arg_color(p, &object.color_a, "color_a")) ||
-			(error = rt_read_arg_color(p, &object.color_b, "color_b")) ||
-			(error = rt_read_arg_vector(p, &object.pos, "pos")) ||
-			(error = rt_read_arg_vector(p, &object.rot, "rot")) ||
-			(error = rt_read_arg_vector(p, &object.scale, "scale")) ||
 			(error = rt_read_arg_material(p, &object.material, "material")) ||
 			(error = rt_read_arg_pattern(p, &object.pattern, "pattern")) ||
 			(error = rt_read_arg_projection(p, &object.uv_projection, "projection")) ||
+			(error = rt_read_arg_color(p, &object.rgb_a, "color")) ||
+			(error = rt_read_arg_color(p, &object.rgb_b, "color2")) ||
+			(error = rt_read_arg_vector(p, &object.pos, "pos")) ||
+			(error = rt_read_arg_vector(p, &object.rot, "rot")) ||
+			(error = rt_read_arg_vector(p, &object.scale, "scale")) ||
 			(error = rt_read_arg_vector(p, &object.bbox_os.vi, "bbox_vi")) ||
 			(error = rt_read_arg_vector(p, &object.bbox_os.vf, "bbox_vf")))
 			return (error);

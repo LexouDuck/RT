@@ -70,3 +70,35 @@ inline char	*rt_get_str_cameramodel(t_camera_model cameramodel)
 
 	return (cameramodels[cameramodel]);
 }
+
+inline char	*rt_get_str_pattern(t_pattern pattern)
+{
+	static char	*patterns[TEXTURE_PATTERNS] = {
+		"SOLID",
+		"WAVE_H",
+		"WAVE_V",
+		"WAVE",
+		"STRIPE_H",
+		"STRIPE_V",
+		"CHECKER",
+		"HUE",
+		"NOISE",
+		"MARBLE",
+		"WOOD",
+	};
+
+	return (patterns[pattern]);
+}
+
+
+inline char	*rt_get_str_projection(t_uv_projection projection)
+{
+	static char	*projections[TEXTURE_PROJECTIONS] = {
+		"PLANAR",
+		"SPHERICAL",
+		"CUBIC",
+		"CYLINDRICAL",
+	};
+
+	return (projections[projection]);
+}

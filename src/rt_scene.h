@@ -37,7 +37,7 @@
 # define DEFAULT_RENDER_DIST	100000.
 # define DEFAULT_BG_COLOR		0xFF555555
 
-# define OBJECT_ARGS_AMOUNT		9
+# define OBJECT_ARGS_AMOUNT		11
 # define OBJECT_NAME_MAXLENGTH	24
 # define OBJECT_MAX_AMOUNT		32
 # define DEFAULT_RAYSAMP_SIZE	16
@@ -186,6 +186,7 @@ typedef struct		s_bbox
 ** All primitives are considered to be centered near the origin with default
 ** unit dimensions.
 */
+# define			PRIMITIVES	14
 typedef enum		e_primitive
 {
 	none = 0,
@@ -209,6 +210,7 @@ typedef enum		e_primitive
 ** primtive (ie, how they interact with or produce light). Normals play
 ** a major role here.
 */
+# define			MATERIALS	4
 typedef enum		e_material
 {
 // 	emits light
@@ -222,6 +224,7 @@ typedef enum		e_material
 // 	skybox ?
 }					t_material;
 
+# define			TEXTURE_PATTERNS	11
 typedef	enum		e_pattern
 {
 	solid = 0,
@@ -237,6 +240,7 @@ typedef	enum		e_pattern
 	wood,
 }					t_pattern;
 
+# define			TEXTURE_PROJECTIONS	4
 typedef	enum		e_uv_projection
 {
 	planar = 0,

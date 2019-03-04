@@ -134,6 +134,8 @@ char		*rt_get_str_primitive(t_primitive primitive);
 char		*rt_get_str_material(t_material material);
 char		*rt_get_str_rendermode(t_rendermode rendermode);
 char		*rt_get_str_cameramodel(t_camera_model cameramodel);
+char		*rt_get_str_pattern(t_pattern pattern);
+char		*rt_get_str_projection(t_uv_projection projection);
 
 /*
 **	rt_file.c

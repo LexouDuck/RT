@@ -57,11 +57,11 @@ void	ui_render_expandedproperties(t_object *object, t_s32 y)
 	ui_render_text("\x12", 12, y + 4, FALSE);
 	ui_render_text("\x13", 24, y + 4, FALSE);
 	ui_render_text("Texture:", 1, y + 6, FALSE);
-	ui_render_text(rt_get_str_material(object->pattern), 13, y + 6, FALSE);
+	ui_render_text(rt_get_str_pattern(object->pattern), 13, y + 6, FALSE);
 	ui_render_text("\x12", 12, y + 6, FALSE);
 	ui_render_text("\x13", 24, y + 6, FALSE);
 	ui_render_text("Projection:", 1, y + 8, FALSE);
-	ui_render_text(rt_get_str_material(object->uv_projection), 13, y + 8, FALSE);
+	ui_render_text(rt_get_str_projection(object->uv_projection), 13, y + 8, FALSE);
 	ui_render_text("\x12", 12, y + 8, FALSE);
 	ui_render_text("\x13", 24, y + 8, FALSE);
 	if ((tmp = ft_u32_to_hex(object->color_a)))

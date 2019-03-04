@@ -2,10 +2,57 @@
 #include "debug.h"
 #include <time.h>
 
+#define type_obj 1
+#define type_float3 0
+
+void	chose_alea_nb(bool	type, int	nb)
+{
+	srand(time(NULL));
+	if (type == type_obj)
+	{
+		nb = rand()%116;
+	}
+	else if (type == type_float3)
+	{
+		nb.x = rand()%11;
+
+	}
+}
 
 void	chose_objtype()
 {
-	FT_Write_String()
+	int		nb;
+
+	srand(time(NULL));
+	nb = rand()%116;
+	if (nb >= 0 && nb <= 15)
+	{
+		FT_Write_String(fd, "Sphere");
+	}
+	else if (nb > 15 && nb <= 30)
+	{	
+		FT_Write_String(fd, "Cube");
+	}
+	else if (nb > 30 && nb <= 45)
+	{
+		FT_Write_String(fd, "Cone");
+	}
+	else if (nb > 45 && nb <= 60)
+	{
+		FT_Write_String(fd, "Cylinder");
+	}
+	else if (nb > 60 && nb <= 75)
+	{
+		FT_Write_String(fd, "hyperboloid");
+	}
+	else if (nb > 75 && nb <= 100)
+	{
+		FT_Write_String(fd, "Paraboloid");
+	}
+	else
+	{
+		FT_Write_String(fd, "Infcone");
+	}
 }
 
 void	print_map()

@@ -1,18 +1,27 @@
 #include "../rt.h"
 #include "debug.h"
+#include <time.h>
 
 
+void	chose_objtype()
+{
+	FT_Write_String()
+}
 
 void	print_map()
 {
 	FT_Write_String(fd, "BG #")
-	FT_Write_String("color:");
-	
-	FT_Write_String("pos:");
-	FT_Write_String("rot:");
-	FT_Write_String("scale:");
-	FT_Write_String("bbox_vi:");
-	FT_Write_String("bbox_vf:");
+	FT_Write_String(fd, "808080");
+
+	chose_objtype();
+
+	FT_Write_String(fd, "color:");
+
+	FT_Write_String(fd, "pos:");
+	FT_Write_String(fd, "rot:");
+	FT_Write_String(fd, "scale:");
+	FT_Write_String(fd, "bbox_vi:");
+	FT_Write_String(fd, "bbox_vf:");
 
 }
 

@@ -239,7 +239,10 @@ static t_ray			rt_cl_create_camray
 		camray.pos = (float3)(rt_cl_frand_neg1half_to_pos1half(random_seeds), rt_cl_frand_neg1half_to_pos1half(random_seeds), 0.);
 		camray.pos *= (float3)(scene->camera.aperture);
 		camray.dir = (float3)(x_id - width / 2, y_id - height / 2, fov_val);
-		camray.dir += (float3)(rt_cl_frand_neg1half_to_pos1half(random_seeds) * 0.1f, rt_cl_frand_neg1half_to_pos1half(random_seeds) * 0.1f, 0.); //TODO, replace 0.1 by appropriate value; add and fix for depth of field
+		camray.dir += (float3)(
+			rt_cl_frand_neg1half_to_pos1half(random_seeds) * scene->camera.focal_dist,
+			rt_cl_frand_neg1half_to_pos1half(random_seeds) * scene->camera.focal_dist,
+			0.); //TODO, replace 0.1 by appropriate value; add and fix for depth of field
 	}
 	else if (scene->camera.model == CAMERA_MODEL_BLUR_FOCAL)
 	{
@@ -251,7 +254,7 @@ static t_ray			rt_cl_create_camray
 		aperture.x = rt_cl_frand_0_to_1(random_seeds) * scene->camera.aperture;
 		aperture.y = rt_cl_frand_0_to_1(random_seeds) * scene->camera.aperture;
 		camray.pos = (float3)(aperture.x, aperture.y, 0.);
-		camray.dir = (scene->camera.focal_length * camray.dir) - camray.pos;
+		camray.dir = (scene->camera.focal_dist * camray.dir) - camray.pos;
 	}
 	else if (scene->camera.model == CAMERA_MODEL_ORTHOGRAPHIC)
 	{

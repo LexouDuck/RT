@@ -17,7 +17,7 @@ static t_bool	ui_mouse_menu_rendermode(t_rendermode *rendermode)
 {
 	static SDL_Rect	rect = { 0, 0, 1, 1 };
 
-	rect.y = 6;
+	rect.y = 3;
 	rect.x = 14;
 	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
 	{
@@ -39,7 +39,7 @@ static t_bool	ui_mouse_menu_cameramodel(t_camera_model *cameramodel)
 {
 	static SDL_Rect	rect = { 0, 0, 1, 1 };
 
-	rect.y = 8;
+	rect.y = 5;
 	rect.x = 14;
 	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
 	{
@@ -63,6 +63,9 @@ void	ui_mouse_menu(void)
 		return ;
 	if (ui_mouse_menu_cameramodel(&rt.scene.camera.model))
 		return ;
+	ui_mouse_control_numberbox(&rt.ui.current_textinput, &rt.scene.camera.hrz_fov,     1, 6);
+	ui_mouse_control_numberbox(&rt.ui.current_textinput, &rt.scene.camera.aperture,   10, 6);
+	ui_mouse_control_numberbox(&rt.ui.current_textinput, &rt.scene.camera.focal_dist, 19, 6);
 }
 
 void	ui_mouse_menubar(void)

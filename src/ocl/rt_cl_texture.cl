@@ -82,8 +82,7 @@ static t_texture	rt_cl_get_texture_properties
 					__constant	t_scene	*	scene,
 								uint2 *		random_seeds,
 								t_object	obj,
-								float3		hitpos,
-								float3		normal
+								float3		hitpos
 )
 {
 	t_texture	texture;
@@ -98,13 +97,13 @@ static t_texture	rt_cl_get_texture_properties
 //	obj.pattern = vertical_stripe;
 //	obj.pattern = checkerboard;
 //	obj.pattern = hue;
-	obj.pattern = noise;
-	if (obj.type == sphere)
+//	obj.pattern = noise;
+	if (obj.uv_projection == spherical)
 	{
 		texture.uv_pos.x = 0.5f + atan2((float)(hitpos.z), (float)(hitpos.x)) * (0.5f * INV_PI);
 		texture.uv_pos.y = 0.5f - asin((float)(hitpos.y)) * INV_PI;
 	}
-	if (obj.type == cube)
+	else if (obj.uv_projection == cubic)
 	{
 		if (fabs((float)(hitpos.x - 1.f)) <= EPS)
 		{
@@ -137,10 +136,15 @@ static t_texture	rt_cl_get_texture_properties
 			texture.uv_pos.y = (hitpos.y + 1.f) * 0.5f;
 		}
 	}
-	if (obj.type == cylinder)
+	else if (obj.uv_projection == cylindrical)
 	{
 		texture.uv_pos.x = acos(hitpos.x) * (0.5f * INV_PI);
 		texture.uv_pos.y = (hitpos.z + 1.f) * 0.5f;
+	}
+	else
+	{
+			texture.uv_pos.x = 0.5f + atan2((float)(hitpos.z), (float)(hitpos.x)) * (0.5f * INV_PI);
+		texture.uv_pos.y = 0.5f - asin((float)(hitpos.y)) * INV_PI;
 	}
 	if (obj.pattern == solid)
 		texture.light_map = 1.f;
@@ -173,8 +177,12 @@ static t_texture	rt_cl_get_texture_properties
 	}
 	else if (obj.pattern == noise)
 	{
+		texture.light_map = rt_cl_perlin_noise_2d(texture.uv_pos * 10, 0.7f, 8, 42);
+	}
+	else if (obj.pattern == wood)
+	{
 		texture.light_map = (sin((float)((texture.uv_pos.x + rt_cl_perlin_noise_2d(texture.uv_pos * 10, 0.7f, 8, 42) * 100) * 4 * TAU / 200.f)) + 1) / 2.f;
 	}
-	texture.rgb = texture.light_map * obj.rgb_a;
+	texture.rgb = obj.rgb_a * texture.light_map + obj.rgb_b * (1 - texture.light_map);
 	return (texture);
 }

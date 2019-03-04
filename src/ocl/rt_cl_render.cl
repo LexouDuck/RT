@@ -123,8 +123,14 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 				t_ray		new_ray;
 				float3		hitpos;
 				float3		normal;
+				float3		normal_alongx;
+				float3		normal_alongy;
 				t_texture	texture;
+				float 		bump_scale;
+				float3		bump_a;
+				float3		bump_b;
 
+//	bump_scale = 1.f;
 	hitpos = ray.pos + ((float3)ray.t) * ray.dir;
 	if (obj->type == sphere)
 		normal = rt_cl_sphere_get_normal(hitpos);
@@ -149,9 +155,26 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 	else
 		normal = rt_cl_sphere_get_normal(hitpos);
 	normal = normal * ray.inter_type;
-	texture = rt_cl_get_texture_properties(scene, random_seeds, *obj, hitpos, normal);
-
-
+/*
+	texture = rt_cl_get_texture_properties(scene, random_seeds, *obj, (float3)(hitpos.x - bump_scale, hitpos.y, hitpos.z));
+	bump_a.x = texture.light_map;
+	texture = rt_cl_get_texture_properties(scene, random_seeds, *obj, (float3)(hitpos.x + bump_scale, hitpos.y, hitpos.z));
+	bump_b.x = texture.light_map;
+	texture = rt_cl_get_texture_properties(scene, random_seeds, *obj, (float3)(hitpos.x, hitpos.y - bump_scale, hitpos.z));
+	bump_a.y = texture.light_map;
+	texture = rt_cl_get_texture_properties(scene, random_seeds, *obj, (float3)(hitpos.x, hitpos.y + bump_scale, hitpos.z));
+	bump_b.y = texture.light_map;
+	texture = rt_cl_get_texture_properties(scene, random_seeds, *obj, (float3)(hitpos.x, hitpos.y, hitpos.z - bump_scale));
+	bump_a.z = texture.light_map;
+	texture = rt_cl_get_texture_properties(scene, random_seeds, *obj, (float3)(hitpos.x, hitpos.y, hitpos.z + bump_scale));
+	bump_b.z = texture.light_map;
+	normal = (float3)(bump_a.x - bump_b.x, bump_a.y - bump_b.y, bump_a.z - bump_b.z);
+*/
+	texture = rt_cl_get_texture_properties(scene, random_seeds, *obj, hitpos);
+//	normal_alongx = (float3)(1.f, 0.f, texture.pattern * 5.f);
+//	normal_alongy = (float3)(0.f, 1.f, texture.pattern * 5.f);
+//	normal = normalize(cross(normal_alongx, normal_alongy));
+//	normal = normalize((float3)(normal));
 	new_ray.hit_obj_id = -1;
 	new_ray.inter_type = INTER_NONE;
 	new_ray.t = scene->render_dist;

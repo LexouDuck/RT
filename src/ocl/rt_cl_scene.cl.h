@@ -182,7 +182,17 @@ typedef	enum	e_pattern
 	checkerboard,
 	hue,
 	noise,
+	marble,
+	wood,
 }				t_pattern;
+
+typedef	enum		e_uv_projection
+{
+	planar = 0,
+	spherical,
+	cubic,
+	cylindrical,
+}					t_uv_projection;
 
 typedef struct	s_texture
 {
@@ -239,8 +249,10 @@ typedef struct	s_object
 	t_primitive		type;
 	t_material		material;
 	char			name[OBJECT_NAME_MAXLENGTH];
-	uint			color;
-	float3			rgb;
+	uint			color_a;
+	uint			color_b;
+	float3			rgb_a;
+	float3			rgb_b;
 	float3			pos;
 	float3			rot;
 	float3			scale;
@@ -254,6 +266,7 @@ typedef struct	s_object
 	float16			w_to_o;
 	float16			n_to_w;
 	t_pattern		pattern;
+	t_uv_projection	uv_projection;
 }				t_object;
 
 typedef struct	s_scene

@@ -29,15 +29,15 @@ void	ui_render_icon_object(t_object *object, t_s32 y)
 
 	if (object->type == none)
 		return ;
-	palette[1] = object->color;
+	palette[1] = object->color_a;
 	palette[1] = (ft_color_argb32_get_r(palette[1]) < shade) ? (palette[1] & 0x00FFFF) : (palette[1] - (shade << 16));
 	palette[1] = (ft_color_argb32_get_g(palette[1]) < shade) ? (palette[1] & 0xFF00FF) : (palette[1] - (shade << 8));
 	palette[1] = (ft_color_argb32_get_b(palette[1]) < shade) ? (palette[1] & 0xFFFF00) : (palette[1] - (shade << 0));
-	palette[3] = object->color;
+	palette[3] = object->color_a;
 	palette[3] = (ft_color_argb32_get_r(palette[3]) >= 0xFF - light) ? (palette[3] | 0xFF0000) : (palette[3] + (light << 16));
 	palette[3] = (ft_color_argb32_get_g(palette[3]) >= 0xFF - light) ? (palette[3] | 0x00FF00) : (palette[3] + (light << 8));
 	palette[3] = (ft_color_argb32_get_b(palette[3]) >= 0xFF - light) ? (palette[3] | 0x0000FF) : (palette[3] + (light << 0));
-	palette[2] = object->color;
+	palette[2] = object->color_a;
 	if (!ui_set_palette(rt.ui.tileset, palette))
 		return ;
 	ui_render_icon((int)object->type - 1, 1, y * TILE, TRUE);
@@ -56,35 +56,52 @@ void	ui_render_expandedproperties(t_object *object, t_s32 y)
 	ui_render_text(rt_get_str_material(object->material), 13, y + 4, FALSE);
 	ui_render_text("\x12", 12, y + 4, FALSE);
 	ui_render_text("\x13", 24, y + 4, FALSE);
-	if ((tmp = ft_u32_to_hex(object->color)))
+	ui_render_text("Texture:", 1, y + 6, FALSE);
+	ui_render_text(rt_get_str_material(object->pattern), 13, y + 6, FALSE);
+	ui_render_text("\x12", 12, y + 6, FALSE);
+	ui_render_text("\x13", 24, y + 6, FALSE);
+	ui_render_text("Projection:", 1, y + 8, FALSE);
+	ui_render_text(rt_get_str_material(object->uv_projection), 13, y + 8, FALSE);
+	ui_render_text("\x12", 12, y + 8, FALSE);
+	ui_render_text("\x13", 24, y + 8, FALSE);
+	if ((tmp = ft_u32_to_hex(object->color_a)))
 	{
-		ui_render_text("Color: #", 1, y + 6, FALSE);
-		ui_render_text(tmp, 9, y + 6, FALSE);
+		ui_render_text("Color A: #", 1, y + 10, FALSE);
+		ui_render_text(tmp, 9, y + 10, FALSE);
 		free(tmp);
 	}
-	ui_render_control_numberbox(1, y + 7, &object->rgb.x);
-	ui_render_control_numberbox(10, y + 7, &object->rgb.y);
-	ui_render_control_numberbox(19, y + 7, &object->rgb.z);
-	ui_render_text("Pos:", 1, y + 10, FALSE);
-	ui_render_control_numberbox(1, y + 11, &object->pos.x);
-	ui_render_control_numberbox(10, y + 11, &object->pos.y);
-	ui_render_control_numberbox(19, y + 11, &object->pos.z);
-	ui_render_text("Rot:", 1, y + 14, FALSE);
-	ui_render_control_numberbox(1, y + 15, &object->rot.x);
-	ui_render_control_numberbox(10, y + 15, &object->rot.y);
-	ui_render_control_numberbox(19, y + 15, &object->rot.z);
-	ui_render_text("Scale:", 1, y + 18, FALSE);
-	ui_render_control_numberbox(1, y + 19, &object->scale.x);
-	ui_render_control_numberbox(10, y + 19, &object->scale.y);
-	ui_render_control_numberbox(19, y + 19, &object->scale.z);
-	ui_render_text("Bounding Box Corner VI:", 1, y + 22, FALSE);
-	ui_render_control_numberbox( 1, y + 23, &object->bbox_os.vi.x);
-	ui_render_control_numberbox(10, y + 23, &object->bbox_os.vi.y);
-	ui_render_control_numberbox(19, y + 23, &object->bbox_os.vi.z);
-	ui_render_text("Bounding Box Corner VF:", 1, y + 26, FALSE);
-	ui_render_control_numberbox( 1, y + 27, &object->bbox_os.vf.x);
-	ui_render_control_numberbox(10, y + 27, &object->bbox_os.vf.y);
-	ui_render_control_numberbox(19, y + 27, &object->bbox_os.vf.z);
+	ui_render_control_numberbox(1, y + 11, &object->rgb_a.x);
+	ui_render_control_numberbox(10, y + 11, &object->rgb_a.y);
+	ui_render_control_numberbox(19, y + 11, &object->rgb_a.z);
+	if ((tmp = ft_u32_to_hex(object->color_b)))
+	{
+		ui_render_text("Color B: #", 1, y + 14, FALSE);
+		ui_render_text(tmp, 9, y + 14, FALSE);
+		free(tmp);
+	}
+	ui_render_control_numberbox(1, y + 15, &object->rgb_b.x);
+	ui_render_control_numberbox(10, y + 15, &object->rgb_b.y);
+	ui_render_control_numberbox(19, y + 15, &object->rgb_b.z);
+	ui_render_text("Pos:", 1, y + 18, FALSE);
+	ui_render_control_numberbox(1, y + 19, &object->pos.x);
+	ui_render_control_numberbox(10, y + 19, &object->pos.y);
+	ui_render_control_numberbox(19, y + 19, &object->pos.z);
+	ui_render_text("Rot:", 1, y + 22, FALSE);
+	ui_render_control_numberbox(1, y + 23, &object->rot.x);
+	ui_render_control_numberbox(10, y + 23, &object->rot.y);
+	ui_render_control_numberbox(19, y + 23, &object->rot.z);
+	ui_render_text("Scale:", 1, y + 26, FALSE);
+	ui_render_control_numberbox(1, y + 27, &object->scale.x);
+	ui_render_control_numberbox(10, y + 27, &object->scale.y);
+	ui_render_control_numberbox(19, y + 27, &object->scale.z);
+	ui_render_text("Bounding Box Corner VI:", 1, y + 30, FALSE);
+	ui_render_control_numberbox( 1, y + 31, &object->bbox_os.vi.x);
+	ui_render_control_numberbox(10, y + 31, &object->bbox_os.vi.y);
+	ui_render_control_numberbox(19, y + 31, &object->bbox_os.vi.z);
+	ui_render_text("Bounding Box Corner VF:", 1, y + 34, FALSE);
+	ui_render_control_numberbox( 1, y + 35, &object->bbox_os.vf.x);
+	ui_render_control_numberbox(10, y + 35, &object->bbox_os.vf.y);
+	ui_render_control_numberbox(19, y + 35, &object->bbox_os.vf.z);
 }
 
 void	ui_render_objectlist(void)

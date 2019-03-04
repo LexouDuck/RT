@@ -90,7 +90,7 @@ static t_texture	rt_cl_get_texture_properties
 
 	texture.light_map = 0.f;
 	texture.uv_scale = (float2)(2.f, 2.f);
-	obj.pattern = solid;
+//	obj.pattern = solid;
 //	obj.pattern = horizontal_wave;
 //	obj.pattern = vertical_wave;
 //	obj.pattern = wave;
@@ -98,7 +98,7 @@ static t_texture	rt_cl_get_texture_properties
 //	obj.pattern = vertical_stripe;
 //	obj.pattern = checkerboard;
 //	obj.pattern = hue;
-//	obj.pattern = noise;
+	obj.pattern = noise;
 	if (obj.type == sphere)
 	{
 		texture.uv_pos.x = 0.5f + atan2((float)(hitpos.z), (float)(hitpos.x)) * (0.5f * INV_PI);
@@ -169,12 +169,12 @@ static t_texture	rt_cl_get_texture_properties
 	else if (obj.pattern == hue)
 	{
 		texture.light_map = 1.f;
-		obj.rgb = (float3)(texture.uv_pos.x, texture.uv_pos.y, 0.f);
+		obj.rgb_a = (float3)(texture.uv_pos.x, texture.uv_pos.y, 0.f);
 	}
 	else if (obj.pattern == noise)
 	{
-		texture.light_map = fabs(rt_cl_perlin_noise_2d(texture.uv_pos * 10, 0.7f, 8, 42));
+		texture.light_map = (sin((float)((texture.uv_pos.x + rt_cl_perlin_noise_2d(texture.uv_pos * 10, 0.7f, 8, 42) * 100) * 4 * TAU / 200.f)) + 1) / 2.f;
 	}
-	texture.rgb = texture.light_map * obj.rgb;
+	texture.rgb = texture.light_map * obj.rgb_a;
 	return (texture);
 }

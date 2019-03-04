@@ -193,3 +193,68 @@ char		*rt_read_arg_material(t_rtparser *p, t_material *result, char const *label
 	p->index += length;
 	return (NULL);
 }
+
+char		*rt_read_arg_pattern(t_rtparser *p, t_pattern *result, char const *label)
+{
+	size_t	length;
+
+	rt_read_whitespace(p);
+	if (!p->file[p->index] || !ft_strnequ(p->file + p->index, label, ft_strlen(label)))
+		return (NULL);
+	p->index += ft_strlen(label);
+	if (p->file[p->index] != ':')
+		return (rt_read_error(':', "without spaces before material string", p->file[p->index]));
+	++(p->index);
+	if (ft_strnequ(p->file + p->index, "SOLID", (length = 5)))
+		*result = solid;
+	else if (ft_strnequ(p->file + p->index, "H_WAVE", (length = 6)))
+		*result = horizontal_wave;
+	else if (ft_strnequ(p->file + p->index, "V_WAVE", (length = 6)))
+		*result = vertical_wave;
+	else if (ft_strnequ(p->file + p->index, "WAVE", (length = 4)))
+		*result = wave;
+	else if (ft_strnequ(p->file + p->index, "H_STRIPE", (length = 8)))
+		*result = horizontal_stripe;
+	else if (ft_strnequ(p->file + p->index, "V_STRIPE", (length = 8)))
+		*result = vertical_stripe;
+	else if (ft_strnequ(p->file + p->index, "CHECKER", (length = 7)))
+		*result = checkerboard;
+	else if (ft_strnequ(p->file + p->index, "HUE", (length = 3)))
+		*result = hue;
+	else if (ft_strnequ(p->file + p->index, "NOISE", (length = 5)))
+		*result = noise;
+	else if (ft_strnequ(p->file + p->index, "MARBLE", (length = 6)))
+		*result = marble;
+	else if (ft_strnequ(p->file + p->index, "WOOD", (length = 4)))
+		*result = wood;
+	else
+		return ("No valid material enum label encountered");
+	p->index += length;
+	return (NULL);
+}
+
+
+char		*rt_read_arg_projection(t_rtparser *p, t_uv_projection *result, char const *label)
+{
+	size_t	length;
+
+	rt_read_whitespace(p);
+	if (!p->file[p->index] || !ft_strnequ(p->file + p->index, label, ft_strlen(label)))
+		return (NULL);
+	p->index += ft_strlen(label);
+	if (p->file[p->index] != ':')
+		return (rt_read_error(':', "without spaces before material string", p->file[p->index]));
+	++(p->index);
+	if (ft_strnequ(p->file + p->index, "PLANAR", (length = 6)))
+		*result = planar;
+	else if (ft_strnequ(p->file + p->index, "SPHERICAL", (length = 9)))
+		*result = spherical;
+	else if (ft_strnequ(p->file + p->index, "CUBIC", (length = 5)))
+		*result = cubic;
+	else if (ft_strnequ(p->file + p->index, "CYLINDRICAL", (length = 11)))
+		*result = cylindrical;
+	else
+		return ("No valid material enum label encountered");
+	p->index += length;
+	return (NULL);
+}

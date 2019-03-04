@@ -72,7 +72,7 @@ static void	ui_mouse_objectlist_expandedproperties(t_object *object, t_s32 y)
 		ui_mouse_objectlist_expandedproperties_material(&object->material, y))
 		return ;
 	y += 4;
-	ptr = &object->rgb;
+	ptr = &object->rgb_a;
 	i = 0;
 	while (i < OBJECT_PROPERTIES)
 	{

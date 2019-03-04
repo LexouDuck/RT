@@ -51,7 +51,8 @@ inline char	*rt_get_str_rendermode(t_rendermode rendermode)
 {
 	static char	*rendermodes[RENDER_MODES] = {
 		"MONTE-CARLO",
-		"BOUNDINGBOX",
+		"OBJECT BBOX",
+		"WORLD  BBOX",
 		"SOLID COLOR",
 	};
 

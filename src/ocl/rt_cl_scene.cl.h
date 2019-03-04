@@ -22,13 +22,15 @@
 ** # define INV_TAU		0x1.45f306dc9c883p-3
 */
 
+# define PI						0x1.921fb54442d18p1
 # define TAU 					0x1.921fb54442d18p2
 # define INV_PI					0x1.45f306dc9c883p-2
 
 typedef enum		e_rendermode
 {
 	RENDERMODE_MCPT = 0,
-	RENDERMODE_BBOX,
+	RENDERMODE_BBOX_OS,
+	RENDERMODE_BBOX_WS,
 	RENDERMODE_SOLIDCOLOR,
 }					t_rendermode;
 
@@ -48,8 +50,6 @@ typedef enum		e_rendermode
 ** c_to_w			: the camera's view/cam-to-world matrix (useful to put
 **						 rays in world space)
 */
-
-
 typedef enum		e_camera_model
 {
 	CAMERA_MODEL_PINHOLE = 0,

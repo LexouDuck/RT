@@ -25,7 +25,7 @@ static float		rt_cl_interpolate
 {
 	float	f;
 
-	f = (1 - cos(x * 3.141593)) * 0.5;
+	f = (1 - cos((float)(x * PI))) * 0.5;
 	return (range.x * (1 - f) + range.y * f);
 }
 
@@ -67,9 +67,8 @@ static float		rt_cl_perlin_noise_2d
 	float	total = 0.0;
 	float	frequency = 1.0;
 	float	amplitude = 1.0;
-	int		i = 0;
 
-	for(i = 0; i < octaves; i++)
+	for (uint i = 0; i < octaves; i++)
 	{
 		total += rt_cl_smooth_noise_2d((float2)(pos.x * frequency, pos.y * frequency), i, seed) * amplitude;
 		frequency /= 2;
@@ -91,7 +90,7 @@ static t_texture	rt_cl_get_texture_properties
 
 	texture.light_map = 0.f;
 	texture.uv_scale = (float2)(2.f, 2.f);
-	obj.pattern = none;
+	obj.pattern = solid;
 //	obj.pattern = horizontal_wave;
 //	obj.pattern = vertical_wave;
 //	obj.pattern = wave;
@@ -143,7 +142,7 @@ static t_texture	rt_cl_get_texture_properties
 		texture.uv_pos.x = acos(hitpos.x) * (0.5f * INV_PI);
 		texture.uv_pos.y = (hitpos.z + 1.f) * 0.5f;
 	}
-	if (obj.pattern == none)
+	if (obj.pattern == solid)
 		texture.light_map = 1.f;
 	else if (obj.pattern == horizontal_wave)
 		texture.light_map = (sin((float)(texture.uv_pos.x * 2.f * TAU * texture.uv_scale.x)) + 1.f) * 0.5f;

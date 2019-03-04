@@ -10,16 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-static t_intersection		rt_cl_cube_intersect
+static t_intersection		rt_cl_ray_intersect_bbox
 (
-							float *		res,
-							t_ray		ray
+					t_ray		ray,
+					t_bbox		aabb,
+					float		tmin,
+					float		tmax,
+					float *		tres
 )
 {
-	float		tmin = 0.;
-	float		tmax = ray.t;
-	t_bbox		aabb = (t_bbox){(float3)(-1., -1., -1.),
-					(float3)(1., 1., 1.)};
 	t_intersection	inter;
 	float			tmax_old = tmax;
 	//TODO add aabb.vi.x < ray.pos.x < aabb.vf.x: if true for every coordinate, return INTER_INSIDE
@@ -31,7 +30,7 @@ static t_intersection		rt_cl_cube_intersect
 
 	//put all inferior bounds in tinf, and all superior bounds in tsup
 	float3	tinf = fmin(ti, tf);
-	float3	tsup  = fmax(ti, tf);
+	float3	tsup = fmax(ti, tf);
 
 	// get biggest inferorior bound tmin and smallest superior bound tmax.
 	tmin = fmax(tmin, fmax(tinf.x, fmax(tinf.y, tinf.z)));
@@ -39,12 +38,28 @@ static t_intersection		rt_cl_cube_intersect
 
 	//intersection iff no incoherence in all previous checks and tmin = Max(inferior bound) < Min(superior bound) = tmax
 	inter = tmin < tmax ? INTER_OUTSIDE : INTER_NONE;
-	*res = inter ? tmin : tmax_old;
-	if (*res < EPS)
+	*tres = inter ? tmin : tmax_old;
+	if (*tres < EPS)
 	{
-		*res = tmax;
+		*tres = tmax;
 		inter = INTER_INSIDE;
 	}
+	return (inter);
+}
+
+static t_intersection		rt_cl_cube_intersect
+(
+							float *		res,
+							t_ray		ray
+)
+{
+	float			tmin = 0.;
+	float			tmax = ray.t;
+	t_bbox			aabb = (t_bbox){(float3)(-1., -1., -1.),
+					(float3)(1., 1., 1.)};
+	t_intersection	inter;
+
+	inter = rt_cl_ray_intersect_bbox(ray, aabb, tmin, tmax, res);
 	return (inter);
 }
 

@@ -19,6 +19,9 @@
 ** ************************************************************************** *|
 */
 
+
+// TODO allow selecting render platform
+
 //# include <math.h>
 
 # include "SDL.h"

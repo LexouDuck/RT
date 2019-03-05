@@ -73,23 +73,34 @@ char						*t_float3_to_str
 
 typedef enum						e_random_type
 {
-	TYPE_OBJ 	= 1,
-	TYPE_FLOAT 	= 0
+	TYPE_FLOAT 	= 0,
+	TYPE_PRIMITIVE,
+	TYPE_MATERIAL,
+	TYPE_COLOR,
+	TYPE_BBOX,
+
 }									t_random_type;
 
 
 
 int									set_alea_nb
 (
-									t_random_type	type,
-									int				nb
+									t_random_type	type
 )
 {
-	if (type == TYPE_OBJ)
-		nb = rand() % 116;
+	int result;
+
+	if (type == TYPE_PRIMITIVE)
+		result = ((rand() % 5) + 1);
+	else if (type == TYPE_MATERIAL)
+		result = (rand() % MATERIALS);
 	else if (type == TYPE_FLOAT)
-		nb = (rand() % 21) - 10;
-	return (nb);
+		result = (rand() % 20001) - 10000;
+	else if (type == TYPE_COLOR)
+		result = (rand() % 1000);
+	else if (type == TYPE_BBOX)
+		result = (rand() %  2001) - 1000;
+	return (result);
 }
 
 
@@ -105,12 +116,12 @@ void								write_enums
 	char 	*primitives;
 
 	primitives = rt_get_str_primitive(
-		(t_primitive)((rand() % 5) + 1));
+		(t_primitive)set_alea_nb(TYPE_PRIMITIVE));
 	FT_Write_String(fd, primitives);
 	FT_Write_Char(fd, '\n');
 	FT_Write_String(fd,"material:");
 	FT_Write_String(fd, rt_get_str_material(
-		(t_material)(rand() % MATERIALS)));
+		(t_material)set_alea_nb(TYPE_MATERIAL)));
 	FT_Write_Char(fd, '\n');
 }
 
@@ -118,18 +129,13 @@ void								write_enums
 ** This function chose aleatory value to the object's vector
 */
 
-t_float3							set_float3_nb
-(
-									t_float 	x,
-									t_float		y,
-									t_float		z
-)
+t_float3							set_float3_nb(t_random_type type)
 {
 	t_float3 	nb;
 
-	nb.x = set_alea_nb(TYPE_FLOAT, nb.x);
-	nb.y = set_alea_nb(TYPE_FLOAT, nb.y);
-	nb.z = set_alea_nb(TYPE_FLOAT, nb.z);
+	nb.x = set_alea_nb(type) / 1000.0;
+	nb.y = set_alea_nb(type) / 1000.0;
+	nb.z = set_alea_nb(type) / 1000.0;
 
 	return (nb);
 }
@@ -141,14 +147,16 @@ t_float3							set_float3_nb
 void								write_float3
 (
 									int 	fd, 
-									char	*label
+									char	*label,
+									t_random_type type
+
 )
 {
 	char			*tmp;
 	t_float3		vector;
 
 	FT_Write_String(fd, label);
-	set_float3_nb(vector.x, vector.y, vector.z);
+	vector = set_float3_nb(type);
 	if ((tmp = t_float3_to_str(&vector, 5)))
 	{
 		FT_Write_String(fd, tmp);
@@ -173,13 +181,13 @@ void								write_scene
 	{
 		write_enums(fd);
 	
-		write_float3(fd, "color:");
-		write_float3(fd, "color_b:");
-		write_float3(fd, "pos:");
-		write_float3(fd, "rot:");
-		write_float3(fd, "scale:");
-		write_float3(fd, "bbox_vi:");
-		write_float3(fd, "bbox_vf:");
+		write_float3(fd, "color:", TYPE_COLOR);
+		write_float3(fd, "color2:", TYPE_COLOR);
+		write_float3(fd, "pos:", TYPE_FLOAT);
+		FT_Write_Line(fd, "rot:(0.00000 , 0.00000, 0.00000)");
+		write_float3(fd, "scale:", TYPE_FLOAT);
+		write_float3(fd, "bbox_vi:", TYPE_BBOX);
+		write_float3(fd, "bbox_vf:", TYPE_BBOX);
 		FT_Write_Char(fd, '\n');
 	}
 }

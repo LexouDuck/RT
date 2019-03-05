@@ -212,10 +212,12 @@ static int			render_piecewise_2d_kernel(cl_kernel krnl)
 	size_t	work_dim_array[2];
 	size_t	work_offsets_array[2];
 //	size_t	work_buffer_end[2];
+	int 	step;
 
+	step = 32;
 	work_dim_amount = 2;
 	work_dim_array[0] = rt.scene.work_dim[0];
-	work_dim_array[1] = 1;//(size_t)rt.canvas_h;
+	work_dim_array[1] = step; //(size_t)rt.canvas_h;
 	work_offsets_array[0] = 0;
 	work_offsets_array[1] = 0;
 	rt.ocl.render_progress = 0.;
@@ -227,7 +229,7 @@ static int			render_piecewise_2d_kernel(cl_kernel krnl)
 			debug_perror(get_error_string(err));
 			return (debug_perror("Couldn't enqueue a kernel for "RT_CL_KERNEL_1));
 		}
-		++work_offsets_array[1];
+		work_offsets_array[1] += step;
 		rt.ocl.render_progress = ((float)work_offsets_array[1]) / rt.scene.work_dim[1];
 	}
 	return (OK);

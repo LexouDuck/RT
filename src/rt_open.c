@@ -122,7 +122,10 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 			(error = rt_read_arg_vector(p, &object.rot, "rot")) ||
 			(error = rt_read_arg_vector(p, &object.scale, "scale")) ||
 			(error = rt_read_arg_vector(p, &object.bbox_os.vi, "bbox_vi")) ||
-			(error = rt_read_arg_vector(p, &object.bbox_os.vf, "bbox_vf")))
+			(error = rt_read_arg_vector(p, &object.bbox_os.vf, "bbox_vf")) ||
+			(error = rt_read_arg_number(p, &object.refrac, "refrac")) ||
+			(error = rt_read_arg_number(p, &object.roughness, "roughness")) ||
+			(error = rt_read_arg_number(p, &object.opacity, "opacity")))
 			return (error);
 	}
 	update_object(&object);

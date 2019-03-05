@@ -89,7 +89,7 @@ void		rt_save(int fd)
 		{
 			print_get_str(fd, object);
 			print_float3_to_str(fd, &object->rgb_a, "color:");
-			print_float3_to_str(fd, &object->rgb_b, "color_b:");
+			print_float3_to_str(fd, &object->rgb_b, "color2:");
 			print_float3_to_str(fd, &object->pos, "pos:");
 			print_float3_to_str(fd, &object->rot, "rot:");
 			print_float3_to_str(fd, &object->scale, "scale:");

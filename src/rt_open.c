@@ -117,7 +117,7 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 			(error = rt_read_arg_pattern(p, &object.pattern, "pattern")) ||
 			(error = rt_read_arg_projection(p, &object.uv_projection, "projection")) ||
 			(error = rt_read_arg_color(p, &object.rgb_a, "color")) ||
-			(error = rt_read_arg_color(p, &object.rgb_b, "color_b")) ||
+			(error = rt_read_arg_color(p, &object.rgb_b, "color2")) ||
 			(error = rt_read_arg_vector(p, &object.pos, "pos")) ||
 			(error = rt_read_arg_vector(p, &object.rot, "rot")) ||
 			(error = rt_read_arg_vector(p, &object.scale, "scale")) ||

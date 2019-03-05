@@ -16,8 +16,6 @@
 
 void		init_scene(void)
 {
-//	rt.scene.camera.c_to_w = (cl_float16){0., 0., 0., 0., 0., 0., 0., 0.,
-//										0., 0., 0., 0., 0., 0., 0., 0.};
 	rt.scene.bg_color = DEFAULT_BG_COLOR;
 	rt.scene.bg_rgb = (cl_float3){{
 		(DEFAULT_BG_COLOR & 0xFF0000) >> 16,

@@ -101,8 +101,6 @@ static void			rt_cl_build_object_matrices
 	#endif
 }
 
-
-
 static void			rt_cl_get_vertices_for_bbox
 (
 					float3 *	vertices,
@@ -144,7 +142,6 @@ static t_bbox			rt_cl_build_object_bbox
 
 	return (result);
 }
-
 
 __kernel void	rt_cl_build_scene
 (

@@ -4,7 +4,7 @@ static float		rt_cl_rawnoise
 )
 {
 	n = (n << 13) ^ n;
-	return (1.0 - ((n * (n * n * 15731 + 789221) + 1376312589) & 0x7fffffff) / 1073741824.0);
+	return (1.0 - ((n * (n * n * 15731 + 789221) + 1376312589) & 0x7fffffff) / 1073741824.0f);
 }
 
 static float		rt_cl_noise_2d
@@ -25,7 +25,7 @@ static float		rt_cl_interpolate
 {
 	float	f;
 
-	f = (1 - cos((float)(x * PI))) * 0.5;
+	f = (1 - cos((float)(x * PI))) * 0.5f;
 	return (range.x * (1 - f) + range.y * f);
 }
 

@@ -41,7 +41,7 @@
 # define OBJECT_NAME_MAXLENGTH	24
 # define OBJECT_MAX_AMOUNT		32
 # define DEFAULT_RAYSAMP_SIZE	16
-# define DEFAULT_MAX_RAY_DEPTH	16
+# define DEFAULT_MAX_RAY_DEPTH	6
 
 # define RENDER_MODES	4
 typedef enum	e_rendermode
@@ -158,6 +158,7 @@ typedef struct		s_ray
 	cl_float		t;
 	cl_bool			complete;
 	cl_int			hit_obj_id;
+	cl_float3		hitpos;
 //	cl_uint			depth;
 	cl_float3		lum_mask;
 	cl_float3		lum_acc;

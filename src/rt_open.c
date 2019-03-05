@@ -62,15 +62,15 @@ static void	rt_object_init_bbox(t_object *object)
 	render_dist = rt.scene.render_dist;
 	if (object->type == sphere || object->type == cube || object->type == cylinder)
 		object->bbox_os = (t_bbox){
-			(cl_float3){{-1., -1., -1.}},
-			(cl_float3){{1., 1., 1.}}};
+			(cl_float3){{-1. - EPS, -1. - EPS, -1. - EPS}},
+			(cl_float3){{1. + EPS, 1. + EPS, 1. + EPS}}};
 	else if (object->type == infcylinder)
 		object->bbox_os = (t_bbox){
-			(cl_float3){{-1., -render_dist, -1.}},
-			(cl_float3){{1., render_dist, 1.}}};
+			(cl_float3){{-1. - EPS, -render_dist, -1. - EPS}},
+			(cl_float3){{1. + EPS, render_dist, 1. + EPS}}};
 	else if (object->type == paraboloid)
 		object->bbox_os = (t_bbox){
-			(cl_float3){{-sqrt(render_dist), 0., -sqrt(render_dist)}},
+			(cl_float3){{-sqrt(render_dist), 0. - EPS, -sqrt(render_dist)}},
 			(cl_float3){{sqrt(render_dist), render_dist, sqrt(render_dist)}}};
 	else if (object->type == hyperboloid)
 		object->bbox_os = (t_bbox){
@@ -78,8 +78,8 @@ static void	rt_object_init_bbox(t_object *object)
 			(cl_float3){{render_dist, render_dist, render_dist}}};
 	else if (object->type == cone)
 		object->bbox_os = (t_bbox){
-			(cl_float3){{-1., 0, -1.}},
-			(cl_float3){{1., 1, 1.}}};
+			(cl_float3){{-1. - EPS, 0. - EPS, -1. - EPS}},
+			(cl_float3){{1. + EPS, 1. + EPS, 1. + EPS}}};
 	else if (object->type == infcone)
 		object->bbox_os = (t_bbox){
 			(cl_float3){{-render_dist, -render_dist, -render_dist}},

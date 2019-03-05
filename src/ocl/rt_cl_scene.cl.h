@@ -114,6 +114,7 @@ typedef struct	s_ray
 	float			t;
 	bool			complete;
 	int				hit_obj_id;
+	float3			hitpos;
 //	cl_uint			depth;
 	float3			lum_mask;
 	float3			lum_acc;

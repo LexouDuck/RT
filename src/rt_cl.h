@@ -113,4 +113,9 @@ void			opencl_refresh_gpu_memory_buffers(void);
 void			opencl_freeall(void);
 void			opencl_log_compiler(void);
 
+/*
+** opencl_get_error_str.c
+*/
+const char		*opencl_get_error_string(cl_int error);
+
 #endif

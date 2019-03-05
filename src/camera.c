@@ -33,6 +33,7 @@ void		init_camera(t_camera *camera)
 	camera->range_max = 1000000;
 	camera->hrz_fov = DEFAULT_CAM_FOV;
 	camera->aperture = DEFAULT_CAM_APERTURE;
+	camera->focal_dist = DEFAULT_CAM_FOCALDIST;
 	camera_update(camera);
 }
 

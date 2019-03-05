@@ -21,6 +21,7 @@ void	ui_render_menubar(void)
 {
 	t_bool		hover;
 	SDL_Rect	rect;
+	t_s32		y;
 	t_s32		i;
 
 	i = -1;
@@ -37,14 +38,26 @@ void	ui_render_menubar(void)
 	rect.w = UI_WIDTH_TILES;
 	rect.h = 7;
 	ui_render_fill(0, rect, FALSE);
-	ui_render_text("Render Mode:", 2, 6, FALSE);
-	ui_render_text("\x12", 14, 6, TRUE);
-	ui_render_text("\x13", 27, 6, TRUE);
-	ui_render_text(rt_get_str_rendermode(rt.scene.render_mode), 15, 6, FALSE);
-	ui_render_text("Camera Type:", 2, 8, FALSE);
-	ui_render_text("\x12", 14, 8, TRUE);
-	ui_render_text("\x13", 27, 8, TRUE);
-	ui_render_text(rt_get_str_cameramodel(rt.scene.camera.model), 15, 8, FALSE);
+	y = rect.y;
+	ui_render_text("Render Mode:", 2, y, FALSE);
+	ui_render_text("\x12", 14, y, TRUE);
+	ui_render_text("\x13", 27, y, TRUE);
+	ui_render_text(rt_get_str_rendermode(rt.scene.render_mode), 15, y, FALSE);
+	y += 2;
+	ui_render_text("Camera Type:", 2, y, FALSE);
+	ui_render_text("\x12", 14, y, TRUE);
+	ui_render_text("\x13", 27, y, TRUE);
+	ui_render_text(rt_get_str_cameramodel(rt.scene.camera.model), 15, y, FALSE);
+	y += 1;
+	ui_render_text("FOV:", 1, y, FALSE);
+	ui_render_text("Aperture:", 7, y, FALSE);
+	ui_render_text("FocalDist:", 18, y, FALSE);
+	y += 1;
+	ui_render_control_numberbox( 1, y, &rt.scene.camera.hrz_fov);
+	ui_render_control_numberbox(10, y, &rt.scene.camera.aperture);
+	ui_render_control_numberbox(19, y, &rt.scene.camera.focal_dist);
+
+
 }
 
 void	ui_render_dropdown(t_menu *dropdown)

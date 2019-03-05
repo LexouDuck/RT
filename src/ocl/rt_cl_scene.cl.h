@@ -85,7 +85,7 @@ typedef struct	s_camera
 	float				range_max;
 	float				hrz_fov;
 	float				aperture;
-	float				focal_length;
+	float				focal_dist;
 	t_camera_model		model;
 	float16				c_to_w;
 //	float16				w_to_c;

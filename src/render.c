@@ -291,8 +291,6 @@ int			render(void)
 //	rt.scene.camera.model = CAMERA_MODEL_FOCAL;
 //	rt.scene.camera.model = CAMERA_MODEL_PINHOLE;
 //	rt.scene.camera.model = CAMERA_MODEL_ORTHOGRAPHIC;
-	rt.scene.camera.aperture = .1;
-	rt.scene.camera.focal_length = 50.;
 //rt.scene.render_mode = RENDERMODE_SOLIDCOLOR;
 //rt.scene.objects[0].material = !lightsource;
 //float intensity = 1. / 255.;

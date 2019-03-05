@@ -27,11 +27,12 @@
 ** ************************************************************************** *|
 */
 
-# define DEFAULT_CAM_POS		((cl_float3){{ 3., 6.,-5. }})
+# define DEFAULT_CAM_POS		((cl_float3){{ 0., 0., 0. }})
 # define DEFAULT_CAM_ANCHOR		((cl_float3){{ 0., 0., 0. }})
 # define DEFAULT_CAM_TILT		0.
 # define DEFAULT_CAM_FOV		1.
 # define DEFAULT_CAM_APERTURE	2.
+# define DEFAULT_CAM_FOCALDIST	50.
 
 # define EPS					0.00003
 # define DEFAULT_RENDER_DIST	100000.
@@ -102,7 +103,7 @@ typedef struct		s_camera
 	cl_float		range_max;
 	cl_float		hrz_fov;
 	cl_float		aperture;
-	cl_float		focal_length;
+	cl_float		focal_dist;
 	t_camera_model	model;
 	cl_float16		c_to_w;
 //	cl_float16		w_to_c;

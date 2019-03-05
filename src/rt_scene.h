@@ -244,8 +244,7 @@ typedef	enum		e_pattern
 # define			TEXTURE_PROJECTIONS	4
 typedef	enum		e_uv_projection
 {
-	planar = 0,
-	spherical,
+	spherical = 0,
 	cubic,
 	cylindrical,
 }					t_uv_projection;
@@ -253,7 +252,7 @@ typedef	enum		e_uv_projection
 typedef struct		s_texture
 {
 	t_pattern		pattern;
-	cl_float		light_map;
+	cl_float		height_map;
 	cl_float2		uv_pos;
 	cl_float2		uv_scale;
 	cl_float3		rgb;

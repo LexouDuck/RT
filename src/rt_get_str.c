@@ -94,7 +94,6 @@ inline char	*rt_get_str_pattern(t_pattern pattern)
 inline char	*rt_get_str_projection(t_uv_projection projection)
 {
 	static char	*projections[TEXTURE_PROJECTIONS] = {
-		"PLANAR",
 		"SPHERICAL",
 		"CUBIC",
 		"CYLINDRICAL",

@@ -77,112 +77,107 @@ static float		rt_cl_perlin_noise_2d
 	return (total);
 }
 
+static float2		rt_cl_get_uv_position
+(
+					__constant	t_object *	obj,
+								float3		hitpos
+)
+{
+	float2	uv_pos;
+
+	if (obj->uv_projection == spherical)
+		uv_pos= (float2)((0.5f + atan2((float)(hitpos.z), (float)(hitpos.x)) * (0.5f * INV_PI)),
+		(0.5f - asin((float)(hitpos.y)) * INV_PI));
+	else if (obj->uv_projection == cubic)
+	{
+		if (fabs((float)(hitpos.x - 1.f)) <= EPS)
+			uv_pos = (float2)(((hitpos.z + 1.f) * 0.5f),
+			((hitpos.y + 1.f) * 0.5f));
+		else if (fabs((float)(hitpos.x + 1.f)) <= EPS)
+			uv_pos = (float2)(((-hitpos.z + 1.f) * 0.5f),
+			((hitpos.y + 1.f) * 0.5f));
+		else if (fabs((float)(hitpos.y - 1.f)) <= EPS)
+			uv_pos = (float2)(((hitpos.x + 1.f) * 0.5f),
+			((hitpos.z + 1.f) * 0.5f));
+		else if (fabs((float)(hitpos.y + 1.f)) <= EPS)
+			uv_pos = (float2)(((-hitpos.x + 1.f) * 0.5f),
+			((hitpos.z + 1.f) * 0.5f));
+		else if (fabs((float)(hitpos.z - 1.f)) <= EPS)
+			uv_pos = (float2)(((hitpos.x + 1.f) * 0.5f),
+			((hitpos.y + 1.f) * 0.5f));
+		else if (fabs((float)(hitpos.z + 1.f)) <= EPS)
+			uv_pos = (float2)(((-hitpos.x + 1.f) * 0.5f),
+			((hitpos.y + 1.f) * 0.5f));
+	}
+	else if (obj->uv_projection == cylindrical)
+		uv_pos = (float2)((0.5f + acos(hitpos.x) * (0.5f * INV_PI)),
+		((hitpos.z + 1.f) * 0.5f));
+	return (uv_pos);
+}
+
+static float		rt_cl_get_height_map
+(
+					__constant	t_object *	obj,
+								float2		uv_pos,
+								float2		uv_scale
+)
+{
+	float	height_map;
+
+	height_map = 0.f;
+	if (obj->pattern == solid)
+		height_map = 1.f;
+	else if (obj->pattern == horizontal_wave)
+		height_map = (sin((float)(uv_pos.x * 2.f * TAU * uv_scale.x)) + 1.f) * 0.5f;
+	else if (obj->pattern == vertical_wave)
+		height_map = (cos((float)(uv_pos.y * 2.f * TAU * uv_scale.y)) + 1.f) * 0.5f;
+	else if (obj->pattern == wave)
+		height_map = (cos((float)(uv_pos.y * 2.f * TAU * uv_scale.x)) + 1.f) * 0.5f
+		* (sin((float)(uv_pos.x * 2.f * TAU * uv_scale.y)) + 1.f) * 0.5f;
+	else if (obj->pattern == horizontal_stripe)
+	{
+		if (fmod((float)(uv_pos.x * uv_scale.x), 1.f) < 0.5f)
+			height_map = 1.f;
+	}
+	else if (obj->pattern == vertical_stripe)
+	{
+		if (fmod((float)(uv_pos.y * uv_scale.y), 1.f) < 0.5f)
+			height_map = 1.f;
+	}
+	else if (obj->pattern == checkerboard)
+	{
+		if (fmod((float)(uv_pos.x * uv_scale.x), 1.f) < 0.5f ^ fmod((float)(uv_pos.y * uv_scale.y), 1.f) < 0.5f)
+			height_map = 1.f;
+	}
+	else if (obj->pattern == hue)
+	{
+		height_map = 1.f;
+//		obj->rgb_a = (float3)(texture.uv_pos.x, texture.uv_pos.y, 0.f);
+	}
+	else if (obj->pattern == noise)
+	{
+		height_map = rt_cl_perlin_noise_2d(uv_pos * 10, 0.7f, 8, 42);
+	}
+	else if (obj->pattern == wood)
+	{
+		height_map = (sin((float)((uv_pos.x + rt_cl_perlin_noise_2d(uv_pos * 10, 0.7f, 8, 42) * 100) * 4 * TAU / 200.f)) + 1) / 2.f;
+	}
+	return (height_map);
+}
+
 static t_texture	rt_cl_get_texture_properties
 (
 					__constant	t_scene	*	scene,
 								uint2 *		random_seeds,
-								t_object	obj,
+					__constant	t_object *	obj,
 								float3		hitpos
 )
 {
 	t_texture	texture;
 
-	texture.light_map = 0.f;
 	texture.uv_scale = (float2)(2.f, 2.f);
-//	obj.pattern = solid;
-//	obj.pattern = horizontal_wave;
-//	obj.pattern = vertical_wave;
-//	obj.pattern = wave;
-//	obj.pattern = horizontal_stripe;
-//	obj.pattern = vertical_stripe;
-//	obj.pattern = checkerboard;
-//	obj.pattern = hue;
-//	obj.pattern = noise;
-	if (obj.uv_projection == spherical)
-	{
-		texture.uv_pos.x = 0.5f + atan2((float)(hitpos.z), (float)(hitpos.x)) * (0.5f * INV_PI);
-		texture.uv_pos.y = 0.5f - asin((float)(hitpos.y)) * INV_PI;
-	}
-	else if (obj.uv_projection == cubic)
-	{
-		if (fabs((float)(hitpos.x - 1.f)) <= EPS)
-		{
-			texture.uv_pos.x = (hitpos.z + 1.f) * 0.5f;
-			texture.uv_pos.y = (hitpos.y + 1.f) * 0.5f;
-		}
-		else if (fabs((float)(hitpos.x + 1.f)) <= EPS)
-		{
-			texture.uv_pos.x = (-hitpos.z + 1.f) * 0.5f;
-			texture.uv_pos.y = (hitpos.y + 1.f) * 0.5f;
-		}
-		else if (fabs((float)(hitpos.y - 1.f)) <= EPS)
-		{
-			texture.uv_pos.x = (hitpos.x + 1.f) * 0.5f;
-			texture.uv_pos.y = (hitpos.z + 1.f) * 0.5f;
-		}
-		else if (fabs((float)(hitpos.y + 1.f)) <= EPS)
-		{
-			texture.uv_pos.x = (-hitpos.x + 1.f) * 0.5f;
-			texture.uv_pos.y = (hitpos.z + 1.f) * 0.5f;
-		}
-		else if (fabs((float)(hitpos.z - 1.f)) <= EPS)
-		{
-			texture.uv_pos.x = (hitpos.x + 1.f) * 0.5f;
-			texture.uv_pos.y = (hitpos.y + 1.f) * 0.5f;
-		}
-		else
-		{
-			texture.uv_pos.x = (-hitpos.x + 1.f) * 0.5f;
-			texture.uv_pos.y = (hitpos.y + 1.f) * 0.5f;
-		}
-	}
-	else if (obj.uv_projection == cylindrical)
-	{
-		texture.uv_pos.x = acos(hitpos.x) * (0.5f * INV_PI);
-		texture.uv_pos.y = (hitpos.z + 1.f) * 0.5f;
-	}
-	else
-	{
-			texture.uv_pos.x = 0.5f + atan2((float)(hitpos.z), (float)(hitpos.x)) * (0.5f * INV_PI);
-		texture.uv_pos.y = 0.5f - asin((float)(hitpos.y)) * INV_PI;
-	}
-	if (obj.pattern == solid)
-		texture.light_map = 1.f;
-	else if (obj.pattern == horizontal_wave)
-		texture.light_map = (sin((float)(texture.uv_pos.x * 2.f * TAU * texture.uv_scale.x)) + 1.f) * 0.5f;
-	else if (obj.pattern == vertical_wave)
-		texture.light_map = (cos((float)(texture.uv_pos.y * 2.f * TAU * texture.uv_scale.y)) + 1.f) * 0.5f;
-	else if (obj.pattern == wave)
-		texture.light_map = (cos((float)(texture.uv_pos.y * 2.f * TAU * texture.uv_scale.x)) + 1.f) * 0.5f
-		* (sin((float)(texture.uv_pos.x * 2.f * TAU * texture.uv_scale.y)) + 1.f) * 0.5f;
-	else if (obj.pattern == horizontal_stripe)
-	{
-		if (fmod((float)(texture.uv_pos.x * texture.uv_scale.x), 1.f) < 0.5f)
-			texture.light_map = 1.f;
-	}
-	else if (obj.pattern == vertical_stripe)
-	{
-		if (fmod((float)(texture.uv_pos.y * texture.uv_scale.y), 1.f) < 0.5f)
-			texture.light_map = 1.f;
-	}
-	else if (obj.pattern == checkerboard)
-	{
-		if (fmod((float)(texture.uv_pos.x * texture.uv_scale.x), 1.f) < 0.5f ^ fmod((float)(texture.uv_pos.y * texture.uv_scale.y), 1.f) < 0.5f)
-			texture.light_map = 1.f;
-	}
-	else if (obj.pattern == hue)
-	{
-		texture.light_map = 1.f;
-		obj.rgb_a = (float3)(texture.uv_pos.x, texture.uv_pos.y, 0.f);
-	}
-	else if (obj.pattern == noise)
-	{
-		texture.light_map = rt_cl_perlin_noise_2d(texture.uv_pos * 10, 0.7f, 8, 42);
-	}
-	else if (obj.pattern == wood)
-	{
-		texture.light_map = (sin((float)((texture.uv_pos.x + rt_cl_perlin_noise_2d(texture.uv_pos * 10, 0.7f, 8, 42) * 100) * 4 * TAU / 200.f)) + 1) / 2.f;
-	}
-	texture.rgb = obj.rgb_a * texture.light_map + obj.rgb_b * (1 - texture.light_map);
+	texture.uv_pos = rt_cl_get_uv_position(obj, hitpos);
+	texture.height_map = rt_cl_get_height_map(obj, texture.uv_pos, texture.uv_scale);
+	texture.rgb = obj->rgb_a * texture.height_map + obj->rgb_b * (1 - texture.height_map);
 	return (texture);
 }

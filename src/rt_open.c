@@ -99,7 +99,7 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 	object.type = shape;
 	object.material = diffuse;
 	object.pattern = solid;
-	object.uv_projection = planar;
+	object.uv_projection = spherical;
 	ft_memclr(&object.name, OBJECT_NAME_MAXLENGTH);
 	object.color_a = 0xFFFFFF;
 	object.color_b = 0x000000;

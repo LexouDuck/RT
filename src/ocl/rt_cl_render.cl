@@ -127,7 +127,12 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 				t_ray		new_ray;
 				float3		hitpos;
 				float3		normal;
+//				float3		normal_alongx;
+//				float3		normal_alongy;
 				t_texture	texture;
+//				float 		bump_scale;
+//				float3		bump_a;
+//				float3		bump_b;
 
 	hitpos = ray.hitpos;
 	if (obj->type == sphere)
@@ -153,9 +158,26 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 	else
 		normal = rt_cl_sphere_get_normal(hitpos);
 	normal = normal * ray.inter_type;
-	texture = rt_cl_get_texture_properties(scene, random_seeds, *obj, hitpos, normal);
-
-
+/*
+	texture = rt_cl_get_texture_properties(scene, random_seeds, *obj, (float3)(hitpos.x - bump_scale, hitpos.y, hitpos.z));
+	bump_a.x = texture.light_map;
+	texture = rt_cl_get_texture_properties(scene, random_seeds, *obj, (float3)(hitpos.x + bump_scale, hitpos.y, hitpos.z));
+	bump_b.x = texture.light_map;
+	texture = rt_cl_get_texture_properties(scene, random_seeds, *obj, (float3)(hitpos.x, hitpos.y - bump_scale, hitpos.z));
+	bump_a.y = texture.light_map;
+	texture = rt_cl_get_texture_properties(scene, random_seeds, *obj, (float3)(hitpos.x, hitpos.y + bump_scale, hitpos.z));
+	bump_b.y = texture.light_map;
+	texture = rt_cl_get_texture_properties(scene, random_seeds, *obj, (float3)(hitpos.x, hitpos.y, hitpos.z - bump_scale));
+	bump_a.z = texture.light_map;
+	texture = rt_cl_get_texture_properties(scene, random_seeds, *obj, (float3)(hitpos.x, hitpos.y, hitpos.z + bump_scale));
+	bump_b.z = texture.light_map;
+	normal = (float3)(bump_a.x - bump_b.x, bump_a.y - bump_b.y, bump_a.z - bump_b.z);
+*/
+	texture = rt_cl_get_texture_properties(scene, random_seeds, *obj, hitpos);
+//	normal_alongx = (float3)(1.f, 0.f, texture.pattern * 5.f);
+//	normal_alongy = (float3)(0.f, 1.f, texture.pattern * 5.f);
+//	normal = normalize(cross(normal_alongx, normal_alongy));
+//	normal = normalize((float3)(normal));
 	new_ray.hit_obj_id = -1;
 	new_ray.inter_type = INTER_NONE;
 	new_ray.t = scene->render_dist;
@@ -206,7 +228,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 	}
 
 	hitpos = rt_cl_apply_homogeneous_matrix(obj->o_to_w, hitpos);
-	new_ray.pos = mad(EPS, normal, hitpos);//TODO fix normal isn't in world space is it ? @Hugo textures should take care of this call actually
+//	new_ray.pos = mad(EPS, normal, hitpos);//TODO fix normal isn't in world space is it ? @Hugo textures should take care of this call actually
 	new_ray.dir = rt_cl_apply_linear_matrix(obj->o_to_w, new_ray.dir);
 	return (new_ray);
 }
@@ -244,7 +266,10 @@ static t_ray			rt_cl_create_camray
 		camray.pos = (float3)(rt_cl_frand_neg1half_to_pos1half(random_seeds), rt_cl_frand_neg1half_to_pos1half(random_seeds), 0.);
 		camray.pos *= (float3)(scene->camera.aperture);
 		camray.dir = (float3)(x_id - width / 2, y_id - height / 2, fov_val);
-		camray.dir += (float3)(rt_cl_frand_neg1half_to_pos1half(random_seeds) * 0.1f, rt_cl_frand_neg1half_to_pos1half(random_seeds) * 0.1f, 0.); //TODO, replace 0.1 by appropriate value; add and fix for depth of field
+		camray.dir += (float3)(
+			rt_cl_frand_neg1half_to_pos1half(random_seeds) * scene->camera.focal_dist,
+			rt_cl_frand_neg1half_to_pos1half(random_seeds) * scene->camera.focal_dist,
+			0.);
 	}
 	else if (scene->camera.model == CAMERA_MODEL_BLUR_FOCAL)
 	{
@@ -256,7 +281,19 @@ static t_ray			rt_cl_create_camray
 		aperture.x = rt_cl_frand_0_to_1(random_seeds) * scene->camera.aperture;
 		aperture.y = rt_cl_frand_0_to_1(random_seeds) * scene->camera.aperture;
 		camray.pos = (float3)(aperture.x, aperture.y, 0.);
-		camray.dir = (scene->camera.focal_length * camray.dir) - camray.pos;
+		camray.dir = (scene->camera.focal_dist * camray.dir) - camray.pos;
+	}
+	else if (scene->camera.model == CAMERA_MODEL_AUTO_FOCUS)
+	{
+		seeds = (float2)(rt_cl_frand_0_to_1(random_seeds) / 2, rt_cl_frand_0_to_1(random_seeds) / 2);
+		box_muller_sample = (float2)(sqrt(-2 * log((float)(seeds.x))) * cos((float)(TAU * seeds.y)),
+								sqrt(-2 * log((float)(seeds.x))) * sin((float)(TAU * seeds.y)));
+		camray.dir = (float3)(x_id - width / 2 + box_muller_sample.x, y_id - height / 2 + box_muller_sample.y, fov_val);
+		camray.dir = normalize(camray.dir);
+		aperture.x = rt_cl_frand_0_to_1(random_seeds) * scene->camera.aperture;
+		aperture.y = rt_cl_frand_0_to_1(random_seeds) * scene->camera.aperture;
+		camray.pos = (float3)(aperture.x, aperture.y, 0.);
+		camray.dir = (scene->camera.zoom * camray.dir) - camray.pos;	
 	}
 	else if (scene->camera.model == CAMERA_MODEL_ORTHOGRAPHIC)
 	{

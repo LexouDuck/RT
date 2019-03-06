@@ -65,6 +65,7 @@ inline char	*rt_get_str_cameramodel(t_camera_model cameramodel)
 		"PINHOLE",
 		"BLUR SIMPLE",
 		"BLUR FOCAL",
+		"AUTO FOCUS",
 		"ORTHOGRAPHIC"
 	};
 

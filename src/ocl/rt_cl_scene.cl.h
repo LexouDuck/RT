@@ -55,6 +55,7 @@ typedef enum		e_camera_model
 	CAMERA_MODEL_PINHOLE = 0,
 	CAMERA_MODEL_BLUR_SIMPLE,
 	CAMERA_MODEL_BLUR_FOCAL,
+	CAMERA_MODEL_AUTO_FOCUS,
 	CAMERA_MODEL_ORTHOGRAPHIC
 }					t_camera_model;
 
@@ -85,7 +86,7 @@ typedef struct	s_camera
 	float				range_max;
 	float				hrz_fov;
 	float				aperture;
-	float				focal_length;
+	float				focal_dist;
 	t_camera_model		model;
 	float16				c_to_w;
 //	float16				w_to_c;

@@ -88,8 +88,8 @@ void		rt_save(int fd)
 		if (object)
 		{
 			print_get_str(fd, object);
-			print_float3_to_str(fd, &object->rgb_a, "color a:");
-			print_float3_to_str(fd, &object->rgb_b, "color b:");
+			print_float3_to_str(fd, &object->rgb_a, "color:");
+			print_float3_to_str(fd, &object->rgb_b, "color_b:");
 			print_float3_to_str(fd, &object->pos, "pos:");
 			print_float3_to_str(fd, &object->rot, "rot:");
 			print_float3_to_str(fd, &object->scale, "scale:");

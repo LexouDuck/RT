@@ -189,7 +189,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 		new_ray.lum_mask = (ray.inter_type == INTER_INSIDE) ?
 			ray.lum_mask * texture.rgb :
 			ray.lum_mask;
-		new_ray.dir = rt_cl_get_transmit_or_reflect(random_seeds, ray.dir, ray.inter_type == INTER_INSIDE, normal, 1.25);
+		new_ray.dir = rt_cl_get_transmit_or_reflect(random_seeds, ray.dir, ray.inter_type == INTER_INSIDE, normal, obj->refrac);
 		//	Position correction for transmission
 		hitpos = mad(-2 * EPS, normal, hitpos);//TODO @Hugo beware with textures for this call
 	}
@@ -200,13 +200,14 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 
 		float3 reflect = rt_cl_get_reflect(ray.dir, normal);
 		//Veach: phong exponent should be (1/roughness) - 1
-		new_ray.dir = rt_cl_rand_dir_coslobe(random_seeds, reflect, 7);
+		float phong = native_recip(obj->roughness) - 1.f;
+		new_ray.dir = rt_cl_rand_dir_coslobe(random_seeds, reflect, phong);
 
 		new_ray.lum_mask = ray.lum_mask * texture.rgb * (float3)(dot(normal, reflect));// * obj->rgb;//*dot(new_dir, reflect) ?
 	}
 
 	hitpos = rt_cl_apply_homogeneous_matrix(obj->o_to_w, hitpos);
-//	new_ray.pos = mad(EPS, normal, hitpos);//TODO fix normal isn't in world space is it ? @Hugo textures should take care of this call actually
+	new_ray.pos = mad(1.5 * EPS, normal, hitpos);//TODO fix normal isn't in world space is it ? @Hugo textures should take care of this call actually
 	new_ray.dir = rt_cl_apply_linear_matrix(obj->o_to_w, new_ray.dir);
 	return (new_ray);
 }

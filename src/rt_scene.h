@@ -27,24 +27,29 @@
 ** ************************************************************************** *|
 */
 
-# define DEFAULT_CAM_POS		((cl_float3){{ 0., 0., 0. }})
-# define DEFAULT_CAM_ANCHOR		((cl_float3){{ 0., 0., 0. }})
-# define DEFAULT_CAM_TILT		0.
-# define DEFAULT_CAM_FOV		1.
-# define DEFAULT_CAM_APERTURE	2.
-# define DEFAULT_CAM_FOCALDIST	50.
+# define DEFAULT_CAM_POS			((cl_float3){{ 0., 0., 0. }})
+# define DEFAULT_CAM_ANCHOR			((cl_float3){{ 0., 0., 0. }})
+# define DEFAULT_CAM_TILT			0.
+# define DEFAULT_CAM_FOV			0.4
+# define DEFAULT_CAM_APERTURE		0.4
+# define DEFAULT_CAM_FOCALDIST		0.02
 
-# define EPS					0.00003
-# define DEFAULT_RENDER_DIST	100000.
-# define DEFAULT_BG_COLOR		0xFF555555
+# define DEFAULT_OBJECT_REFRAC		1.
+# define DEFAULT_OBJECT_ROUGHNESS	0.0001
+# define DEFAULT_OBJECT_OPACITY		1.
 
-# define OBJECT_ARGS_AMOUNT		14
-# define OBJECT_NAME_MAXLENGTH	24
-# define OBJECT_MAX_AMOUNT		32
-# define DEFAULT_RAYSAMP_SIZE	16
-# define DEFAULT_MAX_RAY_DEPTH	6
+# define EPS						0.00003
+# define DEFAULT_RENDER_DIST		100000.
+# define DEFAULT_BG_COLOR			0xFF555555
 
-# define RENDER_MODES	4
+# define OBJECT_ARGS_AMOUNT			14
+# define OBJECT_NAME_MAXLENGTH		24
+# define OBJECT_MAX_AMOUNT			32
+# define DEFAULT_RAYSAMP_SIZE		128
+# define DEFAULT_MAX_RAY_DEPTH		6
+
+# define RENDER_MODES				4
+# define DEFAULT_RENDER_MODE		3
 typedef enum	e_rendermode
 {
 	RENDERMODE_MCPT = 0,

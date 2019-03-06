@@ -10,6 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+static bool					rt_cl_point_is_in_bbox
+(
+					float3		pos,
+					t_bbox		aabb
+)
+{
+	return (aabb.vi.x < pos.x && pos.x < aabb.vf.x &&
+			aabb.vi.y < pos.y && pos.y < aabb.vf.y &&
+			aabb.vi.z < pos.z && pos.z < aabb.vf.z);
+}
+
 static t_intersection		rt_cl_ray_intersect_bbox
 (
 					t_ray		ray,

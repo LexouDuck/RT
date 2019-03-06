@@ -62,15 +62,15 @@ static void	rt_object_init_bbox(t_object *object)
 	render_dist = rt.scene.render_dist;
 	if (object->type == sphere || object->type == cube || object->type == cylinder)
 		object->bbox_os = (t_bbox){
-			(cl_float3){{-1., -1., -1.}},
-			(cl_float3){{1., 1., 1.}}};
+			(cl_float3){{-1. - EPS, -1. - EPS, -1. - EPS}},
+			(cl_float3){{1. + EPS, 1. + EPS, 1. + EPS}}};
 	else if (object->type == infcylinder)
 		object->bbox_os = (t_bbox){
-			(cl_float3){{-1., -render_dist, -1.}},
-			(cl_float3){{1., render_dist, 1.}}};
+			(cl_float3){{-1. - EPS, -render_dist, -1. - EPS}},
+			(cl_float3){{1. + EPS, render_dist, 1. + EPS}}};
 	else if (object->type == paraboloid)
 		object->bbox_os = (t_bbox){
-			(cl_float3){{-sqrt(render_dist), 0., -sqrt(render_dist)}},
+			(cl_float3){{-sqrt(render_dist), 0. - EPS, -sqrt(render_dist)}},
 			(cl_float3){{sqrt(render_dist), render_dist, sqrt(render_dist)}}};
 	else if (object->type == hyperboloid)
 		object->bbox_os = (t_bbox){
@@ -78,8 +78,8 @@ static void	rt_object_init_bbox(t_object *object)
 			(cl_float3){{render_dist, render_dist, render_dist}}};
 	else if (object->type == cone)
 		object->bbox_os = (t_bbox){
-			(cl_float3){{-1., 0, -1.}},
-			(cl_float3){{1., 1, 1.}}};
+			(cl_float3){{-1. - EPS, 0. - EPS, -1. - EPS}},
+			(cl_float3){{1. + EPS, 1. + EPS, 1. + EPS}}};
 	else if (object->type == infcone)
 		object->bbox_os = (t_bbox){
 			(cl_float3){{-render_dist, -render_dist, -render_dist}},
@@ -99,7 +99,7 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 	object.type = shape;
 	object.material = diffuse;
 	object.pattern = solid;
-	object.uv_projection = planar;
+	object.uv_projection = spherical;
 	ft_memclr(&object.name, OBJECT_NAME_MAXLENGTH);
 	object.color_a = 0xFFFFFF;
 	object.color_b = 0x000000;
@@ -108,6 +108,9 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 	object.pos = (cl_float3){{ 0., 0., 0. }};
 	object.rot = (cl_float3){{ 0., 0., 0. }};
 	object.scale = (cl_float3){{ 1., 1., 1. }};
+	object.refrac = DEFAULT_OBJECT_REFRAC;
+	object.roughness = DEFAULT_OBJECT_ROUGHNESS;
+	object.opacity = DEFAULT_OBJECT_OPACITY;
 	rt_object_init_bbox(&object);
 	i = -1;
 	while (++i < OBJECT_ARGS_AMOUNT)
@@ -122,7 +125,10 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 			(error = rt_read_arg_vector(p, &object.rot, "rot")) ||
 			(error = rt_read_arg_vector(p, &object.scale, "scale")) ||
 			(error = rt_read_arg_vector(p, &object.bbox_os.vi, "bbox_vi")) ||
-			(error = rt_read_arg_vector(p, &object.bbox_os.vf, "bbox_vf")))
+			(error = rt_read_arg_vector(p, &object.bbox_os.vf, "bbox_vf")) ||
+			(error = rt_read_arg_number(p, &object.refrac, "refrac")) ||
+			(error = rt_read_arg_number(p, &object.roughness, "roughness")) ||
+			(error = rt_read_arg_number(p, &object.opacity, "opacity")))
 			return (error);
 	}
 	update_object(&object);

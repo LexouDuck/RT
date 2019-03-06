@@ -65,6 +65,7 @@ inline char	*rt_get_str_cameramodel(t_camera_model cameramodel)
 		"PINHOLE",
 		"BLUR SIMPLE",
 		"BLUR FOCAL",
+		"AUTO FOCUS",
 		"ORTHOGRAPHIC"
 	};
 
@@ -94,7 +95,6 @@ inline char	*rt_get_str_pattern(t_pattern pattern)
 inline char	*rt_get_str_projection(t_uv_projection projection)
 {
 	static char	*projections[TEXTURE_PROJECTIONS] = {
-		"PLANAR",
 		"SPHERICAL",
 		"CUBIC",
 		"CYLINDRICAL",

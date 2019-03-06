@@ -27,24 +27,29 @@
 ** ************************************************************************** *|
 */
 
-# define DEFAULT_CAM_POS		((cl_float3){{ 0., 0., 0. }})
-# define DEFAULT_CAM_ANCHOR		((cl_float3){{ 0., 0., 0. }})
-# define DEFAULT_CAM_TILT		0.
-# define DEFAULT_CAM_FOV		1.
-# define DEFAULT_CAM_APERTURE	2.
-# define DEFAULT_CAM_FOCALDIST	50.
+# define DEFAULT_CAM_POS			((cl_float3){{ 0., 0., 0. }})
+# define DEFAULT_CAM_ANCHOR			((cl_float3){{ 0., 0., 0. }})
+# define DEFAULT_CAM_TILT			0.
+# define DEFAULT_CAM_FOV			0.4
+# define DEFAULT_CAM_APERTURE		0.4
+# define DEFAULT_CAM_FOCALDIST		0.02
 
-# define EPS					0.00003
-# define DEFAULT_RENDER_DIST	100000.
-# define DEFAULT_BG_COLOR		0xFF555555
+# define DEFAULT_OBJECT_REFRAC		1.
+# define DEFAULT_OBJECT_ROUGHNESS	0.0001
+# define DEFAULT_OBJECT_OPACITY		1.
 
-# define OBJECT_ARGS_AMOUNT		11
-# define OBJECT_NAME_MAXLENGTH	24
-# define OBJECT_MAX_AMOUNT		32
-# define DEFAULT_RAYSAMP_SIZE	32
-# define DEFAULT_MAX_RAY_DEPTH	6
+# define EPS						0.00003
+# define DEFAULT_RENDER_DIST		100000.
+# define DEFAULT_BG_COLOR			0xFF555555
 
-# define RENDER_MODES	4
+# define OBJECT_ARGS_AMOUNT			14
+# define OBJECT_NAME_MAXLENGTH		24
+# define OBJECT_MAX_AMOUNT			32
+# define DEFAULT_RAYSAMP_SIZE		128
+# define DEFAULT_MAX_RAY_DEPTH		6
+
+# define RENDER_MODES				4
+# define DEFAULT_RENDER_MODE		3
 typedef enum	e_rendermode
 {
 	RENDERMODE_MCPT = 0,
@@ -53,12 +58,13 @@ typedef enum	e_rendermode
 	RENDERMODE_SOLIDCOLOR,
 }				t_rendermode;
 
-# define CAMERA_MODELS	4
+# define CAMERA_MODELS	5
 typedef enum	e_camera_model
 {
 	CAMERA_MODEL_PINHOLE = 0,
 	CAMERA_MODEL_BLUR_SIMPLE,
 	CAMERA_MODEL_BLUR_FOCAL,
+	CAMERA_MODEL_AUTO_FOCUS,
 	CAMERA_MODEL_ORTHOGRAPHIC
 }				t_camera_model;
 
@@ -159,6 +165,7 @@ typedef struct		s_ray
 	cl_float		t;
 	cl_bool			complete;
 	cl_int			hit_obj_id;
+	cl_float3		hitpos;
 //	cl_uint			depth;
 	cl_float3		lum_mask;
 	cl_float3		lum_acc;
@@ -244,8 +251,7 @@ typedef	enum		e_pattern
 # define			TEXTURE_PROJECTIONS	4
 typedef	enum		e_uv_projection
 {
-	planar = 0,
-	spherical,
+	spherical = 0,
 	cubic,
 	cylindrical,
 }					t_uv_projection;
@@ -253,7 +259,7 @@ typedef	enum		e_uv_projection
 typedef struct		s_texture
 {
 	t_pattern		pattern;
-	cl_float		light_map;
+	cl_float		height_map;
 	cl_float2		uv_pos;
 	cl_float2		uv_scale;
 	cl_float3		rgb;
@@ -314,10 +320,9 @@ typedef struct		s_object
 	cl_float3		scale;
 	t_bbox			bbox_os;
 	t_bbox			bbox_ws;
-//	cl_float3		specul;
 	cl_float		refrac;//refraction index for snell-descartes
 	cl_float		roughness;
-//	t_float			intensity;//intensity for lightsource objects, 1. for other objects //or reflectivity ??
+	cl_float		opacity;
 	cl_float16		o_to_w;
 	cl_float16		w_to_o;
 	cl_float16		n_to_w;

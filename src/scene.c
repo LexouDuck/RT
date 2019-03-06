@@ -16,8 +16,6 @@
 
 void		init_scene(void)
 {
-//	rt.scene.camera.c_to_w = (cl_float16){0., 0., 0., 0., 0., 0., 0., 0.,
-//										0., 0., 0., 0., 0., 0., 0., 0.};
 	rt.scene.bg_color = DEFAULT_BG_COLOR;
 	rt.scene.bg_rgb = (cl_float3){{
 		(DEFAULT_BG_COLOR & 0xFF0000) >> 16,
@@ -37,6 +35,7 @@ void		init_scene(void)
 	rt.scene.mc_raysamp_size = DEFAULT_RAYSAMP_SIZE;
 	rt.scene.work_dim[0] = rt.canvas_w;
 	rt.scene.work_dim[1] = rt.canvas_h;
+	rt.scene.render_mode = DEFAULT_RENDER_MODE;
 }
 
 void		update_scene()

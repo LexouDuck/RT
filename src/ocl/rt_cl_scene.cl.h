@@ -55,6 +55,7 @@ typedef enum		e_camera_model
 	CAMERA_MODEL_PINHOLE = 0,
 	CAMERA_MODEL_BLUR_SIMPLE,
 	CAMERA_MODEL_BLUR_FOCAL,
+	CAMERA_MODEL_AUTO_FOCUS,
 	CAMERA_MODEL_ORTHOGRAPHIC
 }					t_camera_model;
 
@@ -114,6 +115,7 @@ typedef struct	s_ray
 	float			t;
 	bool			complete;
 	int				hit_obj_id;
+	float3			hitpos;
 //	cl_uint			depth;
 	float3			lum_mask;
 	float3			lum_acc;
@@ -188,8 +190,7 @@ typedef	enum	e_pattern
 
 typedef	enum		e_uv_projection
 {
-	planar = 0,
-	spherical,
+	spherical = 0,
 	cubic,
 	cylindrical,
 }					t_uv_projection;
@@ -197,7 +198,7 @@ typedef	enum		e_uv_projection
 typedef struct	s_texture
 {
 	t_pattern	pattern;
-	float		light_map;
+	float		height_map;
 	float2		uv_pos;
 	float2		uv_scale;
 	float3		rgb;

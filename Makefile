@@ -100,41 +100,42 @@ HDRS	=	$(LFTDIR)libft.h 	\
 			$(SRCDIR)rt_scene.h	\
 
 # List of C source code files
-SRCS	= 	main.c				\
-			init_sdl.c			\
-			opencl_init.c		\
-			opencl_utils.c		\
-			debug.c				\
-			config.c			\
-			config_ini.c		\
-			config_access.c		\
-			event.c				\
-			event_window.c		\
-			event_mouse.c		\
-			event_key.c			\
-			rt_get_str.c		\
-			rt_file.c			\
-			rt_open.c			\
-			rt_open_util.c		\
-			rt_open_read.c		\
-			rt_save.c 			\
-			scene.c				\
-			camera.c			\
-			ui.c				\
-			ui_init.c			\
-			ui_menu_file.c		\
-			ui_menu_edit.c		\
-			ui_menu_view.c		\
-			ui_render_util.c	\
-			ui_render.c			\
-			ui_mouse.c			\
+SRCS	= 	main.c					\
+			init_sdl.c				\
+			opencl_init.c			\
+			opencl_utils.c			\
+			opencl_get_error_str.c	\
+			debug.c					\
+			config.c				\
+			config_ini.c			\
+			config_access.c			\
+			event.c					\
+			event_window.c			\
+			event_mouse.c			\
+			event_key.c				\
+			rt_get_str.c			\
+			rt_file.c				\
+			rt_open.c				\
+			rt_open_util.c			\
+			rt_open_read.c			\
+			rt_save.c 				\
+			scene.c					\
+			camera.c				\
+			ui.c					\
+			ui_init.c				\
+			ui_menu_file.c			\
+			ui_menu_edit.c			\
+			ui_menu_view.c			\
+			ui_render_util.c		\
+			ui_render.c				\
+			ui_mouse.c				\
 			ui_mouse_objectlist.c	\
 			ui_render_objectlist.c	\
 			ui_control_numberbox.c	\
 			ui_control_textbox.c	\
-			ui_scrollbar.c		\
-			ui_prompt.c			\
-			cl_float3_util.c	\
+			ui_scrollbar.c			\
+			ui_prompt.c				\
+			cl_float3_util.c		\
 			render.c
 
 SRCDIR_CL	= $(SRCDIR)ocl/

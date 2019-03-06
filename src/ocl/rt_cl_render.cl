@@ -94,11 +94,15 @@ static t_intersection		rt_cl_trace_ray_to_scene
 							ray_os.inter_type = rt_cl_sphere_intersect(&new_t, ray_os);
 						if (ray_os.inter_type && EPS < new_t && new_t < ray->t)
 						{
-							prim_inter = ray_os.inter_type;
-							result_ray_os = ray_os;
-							result_ray_os.hit_obj_id = i;
-							ray->t = new_t;
-							result_ray_os.t = new_t;
+							ray_os.hitpos = ray_os.pos + ((float3)new_t) * ray_os.dir;
+							if (rt_cl_point_is_in_bbox(ray_os.hitpos, obj->bbox_os))
+							{
+								prim_inter = ray_os.inter_type;
+								result_ray_os = ray_os;
+								result_ray_os.hit_obj_id = i;
+								ray->t = new_t;
+								result_ray_os.t = new_t;
+							}
 						}
 					}
 				}
@@ -123,15 +127,11 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 				t_ray		new_ray;
 				float3		hitpos;
 				float3		normal;
-				float3		normal_alongx;
-				float3		normal_alongy;
+//				float3		normal_alongx;
+//				float3		normal_alongy;
 				t_texture	texture;
-				float 		bump_scale;
-				float3		bump_a;
-				float3		bump_b;
 
-//	bump_scale = 1.f;
-	hitpos = ray.pos + ((float3)ray.t) * ray.dir;
+	hitpos = ray.hitpos;
 	if (obj->type == sphere)
 		normal = rt_cl_sphere_get_normal(hitpos);
 	else if (obj->type == plane || obj->type == disk || obj->type == rectangle)
@@ -155,26 +155,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 	else
 		normal = rt_cl_sphere_get_normal(hitpos);
 	normal = normal * ray.inter_type;
-/*
-	texture = rt_cl_get_texture_properties(scene, random_seeds, *obj, (float3)(hitpos.x - bump_scale, hitpos.y, hitpos.z));
-	bump_a.x = texture.light_map;
-	texture = rt_cl_get_texture_properties(scene, random_seeds, *obj, (float3)(hitpos.x + bump_scale, hitpos.y, hitpos.z));
-	bump_b.x = texture.light_map;
-	texture = rt_cl_get_texture_properties(scene, random_seeds, *obj, (float3)(hitpos.x, hitpos.y - bump_scale, hitpos.z));
-	bump_a.y = texture.light_map;
-	texture = rt_cl_get_texture_properties(scene, random_seeds, *obj, (float3)(hitpos.x, hitpos.y + bump_scale, hitpos.z));
-	bump_b.y = texture.light_map;
-	texture = rt_cl_get_texture_properties(scene, random_seeds, *obj, (float3)(hitpos.x, hitpos.y, hitpos.z - bump_scale));
-	bump_a.z = texture.light_map;
-	texture = rt_cl_get_texture_properties(scene, random_seeds, *obj, (float3)(hitpos.x, hitpos.y, hitpos.z + bump_scale));
-	bump_b.z = texture.light_map;
-	normal = (float3)(bump_a.x - bump_b.x, bump_a.y - bump_b.y, bump_a.z - bump_b.z);
-*/
-	texture = rt_cl_get_texture_properties(scene, random_seeds, *obj, hitpos);
-//	normal_alongx = (float3)(1.f, 0.f, texture.pattern * 5.f);
-//	normal_alongy = (float3)(0.f, 1.f, texture.pattern * 5.f);
-//	normal = normalize(cross(normal_alongx, normal_alongy));
-//	normal = normalize((float3)(normal));
+	texture = rt_cl_get_texture_properties(scene, random_seeds, obj, hitpos);
 	new_ray.hit_obj_id = -1;
 	new_ray.inter_type = INTER_NONE;
 	new_ray.t = scene->render_dist;
@@ -208,9 +189,9 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 		new_ray.lum_mask = (ray.inter_type == INTER_INSIDE) ?
 			ray.lum_mask * texture.rgb :
 			ray.lum_mask;
-		new_ray.dir = rt_cl_get_transmit_or_reflect(random_seeds, ray.dir, ray.inter_type == INTER_INSIDE, normal, 1.25);
+		new_ray.dir = rt_cl_get_transmit_or_reflect(random_seeds, ray.dir, ray.inter_type == INTER_INSIDE, normal, obj->refrac);
 		//	Position correction for transmission
-		hitpos = mad(-2 * EPS, normal, hitpos);
+		hitpos = mad(-2 * EPS, normal, hitpos);//TODO @Hugo beware with textures for this call
 	}
 	else if (obj->material == specular)
 	{
@@ -218,13 +199,15 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 		new_ray.lum_acc = ray.lum_acc;
 
 		float3 reflect = rt_cl_get_reflect(ray.dir, normal);
-		new_ray.dir = rt_cl_rand_dir_coslobe(random_seeds, reflect, 7);
+		//Veach: phong exponent should be (1/roughness) - 1
+		float phong = native_recip(obj->roughness) - 1.f;
+		new_ray.dir = rt_cl_rand_dir_coslobe(random_seeds, reflect, phong);
 
 		new_ray.lum_mask = ray.lum_mask * texture.rgb * (float3)(dot(normal, reflect));// * obj->rgb;//*dot(new_dir, reflect) ?
 	}
 
 	hitpos = rt_cl_apply_homogeneous_matrix(obj->o_to_w, hitpos);
-	new_ray.pos = mad(EPS, normal, hitpos);
+	new_ray.pos = mad(1.5 * EPS, normal, hitpos);//TODO fix normal isn't in world space is it ? @Hugo textures should take care of this call actually
 	new_ray.dir = rt_cl_apply_linear_matrix(obj->o_to_w, new_ray.dir);
 	return (new_ray);
 }
@@ -265,7 +248,7 @@ static t_ray			rt_cl_create_camray
 		camray.dir += (float3)(
 			rt_cl_frand_neg1half_to_pos1half(random_seeds) * scene->camera.focal_dist,
 			rt_cl_frand_neg1half_to_pos1half(random_seeds) * scene->camera.focal_dist,
-			0.); //TODO, replace 0.1 by appropriate value; add and fix for depth of field
+			0.);
 	}
 	else if (scene->camera.model == CAMERA_MODEL_BLUR_FOCAL)
 	{
@@ -278,6 +261,18 @@ static t_ray			rt_cl_create_camray
 		aperture.y = rt_cl_frand_0_to_1(random_seeds) * scene->camera.aperture;
 		camray.pos = (float3)(aperture.x, aperture.y, 0.);
 		camray.dir = (scene->camera.focal_dist * camray.dir) - camray.pos;
+	}
+	else if (scene->camera.model == CAMERA_MODEL_AUTO_FOCUS)
+	{
+		seeds = (float2)(rt_cl_frand_0_to_1(random_seeds) / 2, rt_cl_frand_0_to_1(random_seeds) / 2);
+		box_muller_sample = (float2)(sqrt(-2 * log((float)(seeds.x))) * cos((float)(TAU * seeds.y)),
+								sqrt(-2 * log((float)(seeds.x))) * sin((float)(TAU * seeds.y)));
+		camray.dir = (float3)(x_id - width / 2 + box_muller_sample.x, y_id - height / 2 + box_muller_sample.y, fov_val);
+		camray.dir = normalize(camray.dir);
+		aperture.x = rt_cl_frand_0_to_1(random_seeds) * scene->camera.aperture;
+		aperture.y = rt_cl_frand_0_to_1(random_seeds) * scene->camera.aperture;
+		camray.pos = (float3)(aperture.x, aperture.y, 0.);
+		camray.dir = (scene->camera.zoom * camray.dir) - camray.pos;	
 	}
 	else if (scene->camera.model == CAMERA_MODEL_ORTHOGRAPHIC)
 	{

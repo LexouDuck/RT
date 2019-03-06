@@ -38,7 +38,7 @@
 # define DEFAULT_RENDER_DIST	100000.
 # define DEFAULT_BG_COLOR		0xFF555555
 
-# define OBJECT_ARGS_AMOUNT		11
+# define OBJECT_ARGS_AMOUNT		14
 # define OBJECT_NAME_MAXLENGTH	24
 # define OBJECT_MAX_AMOUNT		32
 # define DEFAULT_RAYSAMP_SIZE	16
@@ -246,8 +246,7 @@ typedef	enum		e_pattern
 # define			TEXTURE_PROJECTIONS	4
 typedef	enum		e_uv_projection
 {
-	planar = 0,
-	spherical,
+	spherical = 0,
 	cubic,
 	cylindrical,
 }					t_uv_projection;
@@ -255,7 +254,7 @@ typedef	enum		e_uv_projection
 typedef struct		s_texture
 {
 	t_pattern		pattern;
-	cl_float		light_map;
+	cl_float		height_map;
 	cl_float2		uv_pos;
 	cl_float2		uv_scale;
 	cl_float3		rgb;
@@ -316,10 +315,9 @@ typedef struct		s_object
 	cl_float3		scale;
 	t_bbox			bbox_os;
 	t_bbox			bbox_ws;
-//	cl_float3		specul;
 	cl_float		refrac;//refraction index for snell-descartes
 	cl_float		roughness;
-//	t_float			intensity;//intensity for lightsource objects, 1. for other objects //or reflectivity ??
+	cl_float		opacity;
 	cl_float16		o_to_w;
 	cl_float16		w_to_o;
 	cl_float16		n_to_w;

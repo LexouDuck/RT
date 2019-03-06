@@ -99,7 +99,7 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 	object.type = shape;
 	object.material = diffuse;
 	object.pattern = solid;
-	object.uv_projection = planar;
+	object.uv_projection = spherical;
 	ft_memclr(&object.name, OBJECT_NAME_MAXLENGTH);
 	object.color_a = 0xFFFFFF;
 	object.color_b = 0x000000;
@@ -122,7 +122,10 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 			(error = rt_read_arg_vector(p, &object.rot, "rot")) ||
 			(error = rt_read_arg_vector(p, &object.scale, "scale")) ||
 			(error = rt_read_arg_vector(p, &object.bbox_os.vi, "bbox_vi")) ||
-			(error = rt_read_arg_vector(p, &object.bbox_os.vf, "bbox_vf")))
+			(error = rt_read_arg_vector(p, &object.bbox_os.vf, "bbox_vf")) ||
+			(error = rt_read_arg_number(p, &object.refrac, "refrac")) ||
+			(error = rt_read_arg_number(p, &object.roughness, "roughness")) ||
+			(error = rt_read_arg_number(p, &object.opacity, "opacity")))
 			return (error);
 	}
 	update_object(&object);

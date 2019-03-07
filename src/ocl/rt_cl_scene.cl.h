@@ -22,9 +22,11 @@
 ** # define INV_TAU		0x1.45f306dc9c883p-3
 */
 
-# define PI						0x1.921fb54442d18p1
-# define TAU 					0x1.921fb54442d18p2
-# define INV_PI					0x1.45f306dc9c883p-2
+# define PI						0x1.921fb54442d18p1f
+# define TAU 					0x1.921fb54442d18p2f
+# define TWOTAU					0x1.921fb54442d18p3f
+# define INV_PI					0x1.45f306dc9c883p-2f
+# define INV_TAU				0x1.45f306dc9c883p-3f
 
 typedef enum		e_rendermode
 {
@@ -198,9 +200,10 @@ typedef	enum		e_uv_projection
 typedef struct	s_texture
 {
 	t_pattern	pattern;
-	float		height_map;
-	float2		uv_pos;
-	float2		uv_scale;
+	float		texel_value;
+	float3		uvw_pos;
+	float3		uvw_scale;
+	float3		bump_normal;
 	float3		rgb;
 }				t_texture;
 
@@ -267,7 +270,7 @@ typedef struct	s_object
 	float16			w_to_o;
 	float16			n_to_w;
 	t_pattern		pattern;
-	t_uv_projection	uv_projection;
+	t_uv_projection	uvw_projection;
 }				t_object;
 
 typedef struct	s_scene

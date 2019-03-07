@@ -155,7 +155,10 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 	else
 		normal = rt_cl_sphere_get_normal(hitpos);
 	normal = normal * ray.inter_type;
-	texture = rt_cl_get_texture_properties(scene, random_seeds, obj, hitpos);
+	texture = rt_cl_get_texture_properties(scene, random_seeds, obj, hitpos, normal);
+
+	normal = texture.bump_normal;
+
 	new_ray.hit_obj_id = -1;
 	new_ray.inter_type = INTER_NONE;
 	new_ray.t = scene->render_dist;
@@ -313,7 +316,7 @@ static float3			rt_cl_get_pixel_color_from_mc_sampling
 				else
 				{
 					if (inter == INTER_INSIDE)
-						return ((float3)(1.f) - scene->objects[ray_i.hit_obj_id].rgb_a);
+						return (scene->objects[ray_i.hit_obj_id].rgb_b);
 					else
 						return (scene->objects[ray_i.hit_obj_id].rgb_a);
 				}
@@ -360,7 +363,7 @@ __kernel void			rt_cl_render
 }*/
 	rt_cl_rand(&random_seeds);
 	float3 vcolor3 = rt_cl_get_pixel_color_from_mc_sampling(scene, &random_seeds);//rt_cl_f3rand_neg1half_to_pos1half(random_seed) * (float3)(255.);//
-	vcolor3 = (float3)(255.) * fmin(vcolor3, (float3)(1.));
+	vcolor3 = (float3)(255.f) * fmin(vcolor3, (float3)(1.f));
 //	printf((__constant char *)"kernel %10g %10g %10g\n", vcolor3.x, vcolor3.y, vcolor3.z);
 	uint3 color3 = (uint3)(floor(vcolor3.x), floor(vcolor3.y), floor(vcolor3.z));
 //	printf((__constant char *)"kernel %u %u %u\n", color3.x, color3.y, color3.z);

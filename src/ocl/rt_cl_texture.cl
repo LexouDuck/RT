@@ -350,6 +350,7 @@ static float		rt_cl_get_texel_value
 )
 {
 	float	texel_value;
+	float3	uvw_offset = rt_cl_convert_os_to_uvw(obj, obj->bbox_os.vi);
 
 	texel_value = 0.f;
 	if (obj->pattern == solid)
@@ -358,29 +359,30 @@ static float		rt_cl_get_texel_value
 	}
 	else if (obj->pattern == horizontal_wave)
 	{
-		texel_value = (sin((float)(uvw_pos.x * 2.f * TAU * uvw_scale.x)) + 1.f) * 0.5f;
+		texel_value = (sin((float)(uvw_pos.x * TWOTAU * uvw_scale.x)) + 1.f) * 0.5f;
 	}
 	else if (obj->pattern == vertical_wave)
 	{
-		texel_value = (cos((float)(uvw_pos.y * 2.f * TAU * uvw_scale.y)) + 1.f) * 0.5f;
+		texel_value = (cos((float)(uvw_pos.y * TWOTAU * uvw_scale.y)) + 1.f) * 0.5f;
 	}
 	else if (obj->pattern == wave)
 	{
-		texel_value = (cos((float)(uvw_pos.y * 2.f * TAU * uvw_scale.x)) + 1.f)
-					* (sin((float)(uvw_pos.x * 2.f * TAU * uvw_scale.y)) + 1.f) * 0.25f;
+		texel_value = (cos((float)(uvw_pos.y * TWOTAU * uvw_scale.x)) + 1.f)
+					* (sin((float)(uvw_pos.x * TWOTAU * uvw_scale.y)) + 1.f) * 0.25f;
 	}
 	else if (obj->pattern == horizontal_stripe
-			&& fmod((float)(uvw_pos.x * uvw_scale.x), 1.f) < 0.5f)
+			&& fmod((float)((uvw_pos.x - uvw_offset.x) * uvw_scale.x), 1.f) < 0.5f)
 	{
 		texel_value = 1.f;
 	}
 	else if (obj->pattern == vertical_stripe
-			&& fmod((float)(uvw_pos.y * uvw_scale.y), 1.f) < 0.5f)
+			&& fmod((float)((uvw_pos.y - uvw_offset.y) * uvw_scale.y), 1.f) < 0.5f)
 	{
 		texel_value = 1.f;
 	}
 	else if (obj->pattern == checkerboard
-			&& fmod((float)(uvw_pos.x * uvw_scale.x), 1.f) < 0.5f ^ fmod((float)(uvw_pos.y * uvw_scale.y), 1.f) < 0.5f)
+			&& 	fmod((float)((uvw_pos.x - uvw_offset.x) * uvw_scale.x), 1.f) < 0.5f
+				^ fmod((float)((uvw_pos.y - uvw_offset.y) * uvw_scale.y), 1.f) < 0.5f)
 	{
 		texel_value = 1.f;
 	}
@@ -420,7 +422,7 @@ static float3		rt_cl_get_bump_normal
 	float		precision;
 
 	precision = 0.001f;
-	bump_normal = (float3)(0.f, 0.f, 0.f);
+	bump_normal = normal;//(float3)(0.f, 0.f, 0.f);
 	//if () //TODO add conditional to NOT use precalced w = f(u,v) for 3d texture projections
 	if (is_2d_proj)
 	{
@@ -454,7 +456,8 @@ static t_texture	rt_cl_get_texture_properties
 
 	is_2d_proj = false;
 	texture.uvw_scale = fabs(obj->bbox_os.vi - obj->bbox_os.vf);
-	texture.uvw_scale.yz = texture.uvw_scale.zy;
+	texture.uvw_scale = rt_cl_convert_os_to_uvw(obj, texture.uvw_scale);
+//	texture.uvw_scale.yz = texture.uvw_scale.zy;
 	texture.uvw_pos = rt_cl_convert_os_to_uvw(obj, hitpos);
 	texture.texel_value = rt_cl_get_texel_value(obj, texture.uvw_pos, texture.uvw_scale);
 	if (is_2d_proj) //TODO add conditional for 2d texturing vs 3d texturing

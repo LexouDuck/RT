@@ -90,6 +90,8 @@ typedef struct	s_camera
 	float				hrz_fov;
 	float				aperture;
 	float				focal_dist;
+	float3				rgb_shade;
+	float3				rgb_mask;
 	t_camera_model		model;
 	float16				c_to_w;
 //	float16				w_to_c;
@@ -154,6 +156,7 @@ typedef enum	e_primitive
 	plane,
 	rectangle,
 	disk,
+	triangle,
 	saddle,
 	paraboloid,
 	hyperboloid,

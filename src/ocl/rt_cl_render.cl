@@ -100,6 +100,7 @@ static t_intersection		rt_cl_trace_ray_to_scene
 	float						tmax;
 	float						new_tbbox_ws;
 	float						new_tbbox_os;
+	float						box_t;
 	float						new_t;
 	t_ray						ray_os;
 	t_ray						result_ray_os;
@@ -150,6 +151,16 @@ static t_intersection		rt_cl_trace_ray_to_scene
 								ray->t = new_t;
 								result_ray_os.t = new_t;
 							}
+							/*
+							else if (!rt_cl_point_is_in_bbox(ray_os.hitpos, obj->bbox_os))
+							{	
+								prim_inter = bbox_os_inter;
+								result_ray_os = ray_os;
+								result_ray_os.hit_obj_id = i;
+								ray->t = new_tbbox_os;
+								result_ray_os.t = new_t;
+							}
+							*/
 						}
 					}
 				}

@@ -157,6 +157,7 @@ SRCS_CL	=	rt_cl_scene.cl.h		\
 			rt_cl_debug.cl			\
 			rt_cl_build_scene.cl	\
 			rt_cl_perlin_noise.cl	\
+			rt_cl_patterns.cl		\
 			rt_cl_texture.cl		\
 			rt_cl_render.cl
 

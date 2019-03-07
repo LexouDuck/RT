@@ -111,6 +111,6 @@ static void			rt_cl_get_pattern_wood
 								float		*texel_value
 )
 {
-	*texel_value = (sin((float)(uvw_pos.x + rt_cl_perlin_noise_3d(uvw_pos * 4.f, 0.4f, 6, 42) * 100) * TAU * 0.02f)) * 0.5f;
+	*texel_value = (sin((float)(uvw_pos.x + rt_cl_perlin_noise_3d(uvw_pos * 2.f, 0.4f, 6, 42) * 100) * TAU * 0.02f)) * 0.5f;
 	return ;
 }

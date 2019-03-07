@@ -15,7 +15,7 @@
 
 inline char *rt_get_str_primitive(t_primitive primitive)
 {
-	static char	*primitives[] = {
+	static char	*primitives[PRIMITIVES] = {
 		"N/A",
 		"SPHERE",
 		"CUBE",
@@ -37,7 +37,7 @@ inline char *rt_get_str_primitive(t_primitive primitive)
 
 inline char *rt_get_str_material(t_material material)
 {
-	static char	*materials[] = {
+	static char	*materials[MATERIALS] = {
 		"LIGHT",
 		"DIFFUSE",
 		"TRANSPARENT",

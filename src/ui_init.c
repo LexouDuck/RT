@@ -12,6 +12,7 @@
 
 #include "libft_memory.h"
 #include "libft_convert.h"
+
 #include "../rt.h"
 #include "../assets.h"
 #include "debug.h"
@@ -25,7 +26,6 @@ static void	ui_init_menubar(void)
 	rt.ui.menubar.item_amount = MENUBAR_ITEMS;
 	rt.ui.menubar.item_labels[MENUBAR_ITEM_FILE] = MENUBAR_LABEL_FILE;
 	rt.ui.menubar.item_labels[MENUBAR_ITEM_EDIT] = MENUBAR_LABEL_EDIT;
-	rt.ui.menubar.item_labels[MENUBAR_ITEM_VIEW] = MENUBAR_LABEL_VIEW;
 	i = 0;
 	while (i < MENUBAR_ITEMS)
 	{
@@ -49,10 +49,14 @@ static void	ui_init_dropdown_file(void)
 	dropdown->item_labels[DROPDOWN_FILE_IMPORT] = DROPDOWN_LABEL_FILE_IMPORT;
 	dropdown->item_labels[DROPDOWN_FILE_SAVE] = DROPDOWN_LABEL_FILE_SAVE;
 	dropdown->item_labels[DROPDOWN_FILE_SAVEAS] = DROPDOWN_LABEL_FILE_SAVEAS;
+	dropdown->item_labels[DROPDOWN_FILE_RANDOM] = DROPDOWN_LABEL_FILE_RANDOM;
+	dropdown->item_labels[DROPDOWN_FILE_EXPORTBMP] = DROPDOWN_LABEL_FILE_EXPORTBMP;
 	dropdown->item_action[DROPDOWN_FILE_OPEN] = ui_menu_file_open;
 	dropdown->item_action[DROPDOWN_FILE_IMPORT] = ui_menu_file_import;
 	dropdown->item_action[DROPDOWN_FILE_SAVE] = ui_menu_file_save;
 	dropdown->item_action[DROPDOWN_FILE_SAVEAS] = ui_menu_file_saveas;
+	dropdown->item_action[DROPDOWN_FILE_RANDOM] = ui_menu_file_generate;
+	dropdown->item_action[DROPDOWN_FILE_EXPORTBMP] = ui_menu_file_exportbmp;
 	i = 0;
 	while (i < DROPDOWN_ITEMS_FILE)
 	{
@@ -84,30 +88,6 @@ static void	ui_init_dropdown_edit(void)
 	dropdown->item_action[DROPDOWN_EDIT_PASTE] = ui_menu_edit_paste;
 	i = 0;
 	while (i < DROPDOWN_ITEMS_EDIT)
-	{
-		dropdown->item_hitbox[i].x = 0;
-		dropdown->item_hitbox[i].y = 3 + DROPDOWN_ITEMS_H * i;
-		dropdown->item_hitbox[i].w = DROPDOWN_ITEMS_W;
-		dropdown->item_hitbox[i].h = DROPDOWN_ITEMS_H;
-		++i;
-	}
-}
-
-static void	ui_init_dropdown_view(void)
-{
-	t_menu	*dropdown;
-	int		i;
-
-	dropdown = &rt.ui.dropdowns[MENUBAR_ITEM_VIEW];
-	dropdown->selection = -1;
-	dropdown->item_amount = DROPDOWN_ITEMS_VIEW;
-	dropdown->item_labels[DROPDOWN_VIEW_ORTHOGONAL] = "Orthogonal projection";
-	dropdown->item_labels[DROPDOWN_VIEW_DIFFUSE] = "Diffuse lighting";
-	dropdown->item_labels[DROPDOWN_VIEW_SPECULAR] = "Specular lighting";
-	dropdown->item_labels[DROPDOWN_VIEW_GLOBAL_I] = "Global illumination";
-	dropdown->item_action[DROPDOWN_VIEW_ORTHOGONAL] = ui_menu_view_orthogonal;
-	i = 0;
-	while (i < DROPDOWN_ITEMS_VIEW)
 	{
 		dropdown->item_hitbox[i].x = 0;
 		dropdown->item_hitbox[i].y = 3 + DROPDOWN_ITEMS_H * i;
@@ -151,6 +131,8 @@ int			ui_init(void)
 	if (size != CHR_SIZE)
 		debug_output_value(
 			"Invalid binary size: ", FT_Size_To_String(size), TRUE);
+#elif (defined __WIN32__)
+	rt.ui.chr = binary___inc_ui_chr_start;
 #else
 	rt.ui.chr = _binary___inc_ui_chr_start;
 #endif
@@ -162,7 +144,6 @@ int			ui_init(void)
 	ui_init_menubar();
 	ui_init_dropdown_file();
 	ui_init_dropdown_edit();
-	ui_init_dropdown_view();
 	ui_init_objectlist();
 	SDL_StopTextInput();
 	return (OK);

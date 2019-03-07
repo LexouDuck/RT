@@ -101,25 +101,51 @@ int				opencl_set_device_info(void)
 	return (OK);
 }
 
-void		opencl_refresh_gpu_memory_buffers(void)
+int			opencl_refresh_gpu_memory_buffers(void)
 {
-	clReleaseMemObject(rt.ocl.gpu_buf.canvas_pixels);
-	clReleaseMemObject(rt.ocl.gpu_buf.scene);
-	opencl_init_gpu_memory();
+	cl_int	error;
+
+	debug_output("Updating OpenCL GPU memory buffers: ");
+	if (rt.ocl.gpu_buf.canvas_pixels && (error = clReleaseMemObject(rt.ocl.gpu_buf.canvas_pixels)))
+		return (debug_perror(opencl_get_error_string(error)));
+	rt.ocl.gpu_buf.canvas_pixels = NULL;
+	if (rt.ocl.gpu_buf.scene && (error = clReleaseMemObject(rt.ocl.gpu_buf.scene)))
+		return (debug_perror(opencl_get_error_string(error)));
+	rt.ocl.gpu_buf.scene = NULL;
+	if (opencl_init_gpu_memory())
+		return (debug_perror("Could not initialize GPU memory."));
+	debug_output("OK\n");
+	return (OK);
 }
 
-void		opencl_freeall(void)
+int			opencl_freeall(void)
 {
+	cl_int	error;
 	int		i;
 
+	debug_output("Releasing OpenCL GPU memory: ");
+	if ((error = clFinish(rt.ocl.cmd_queue)))
+		return (debug_perror(opencl_get_error_string(error)));
 	i = -1;
 	while (++i < RT_CL_KERNEL_AMOUNT)
-		clReleaseKernel(rt.ocl.kernels[i]);
-	clReleaseMemObject(rt.ocl.gpu_buf.canvas_pixels);
-	clReleaseMemObject(rt.ocl.gpu_buf.scene);
-	clReleaseCommandQueue(rt.ocl.cmd_queue);
-	clReleaseProgram(rt.ocl.program);
-	clReleaseContext(rt.ocl.context);
+	{
+		if ((error = clReleaseKernel(rt.ocl.kernels[i])))
+			return (debug_perror(opencl_get_error_string(error)));
+	}
+	if (rt.ocl.gpu_buf.canvas_pixels && (error = clReleaseMemObject(rt.ocl.gpu_buf.canvas_pixels)))
+		return (debug_perror(opencl_get_error_string(error)));
+	rt.ocl.gpu_buf.canvas_pixels = NULL;
+	if (rt.ocl.gpu_buf.scene && (error = clReleaseMemObject(rt.ocl.gpu_buf.scene)))
+		return (debug_perror(opencl_get_error_string(error)));
+	rt.ocl.gpu_buf.scene = NULL;
+	if ((error = clReleaseCommandQueue(rt.ocl.cmd_queue)))
+		return (debug_perror(opencl_get_error_string(error)));
+	if ((error = clReleaseContext(rt.ocl.context)))
+		return (debug_perror(opencl_get_error_string(error)));
+	if ((error = clReleaseProgram(rt.ocl.program)))
+		return (debug_perror(opencl_get_error_string(error)));
+	debug_output("OK\n");
+	return (OK);
 }
 
 void		opencl_log_compiler(void)

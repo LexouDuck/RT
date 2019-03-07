@@ -25,8 +25,8 @@ void	ui_leave_prompt(void)
 	rt.ui.menubar.selection = -1;
 	rt.ui.objects.scrollbar.scroll = 0;
 	rt.ui.objects.scrollbar.scroll_max = 0;
-	ft_memclr(&rt.ui.objects.selected, sizeof(rt.ui.objects.selected));
-	ft_memclr(&rt.ui.objects.expanded, sizeof(rt.ui.objects.expanded));
+	ft_memclr(&rt.ui.objects.selected, sizeof(t_bool) * OBJECT_MAX_AMOUNT);
+	ft_memclr(&rt.ui.objects.expanded, sizeof(t_bool) * OBJECT_MAX_AMOUNT);
 }
 
 void	ui_mouse_prompt(void)
@@ -50,6 +50,11 @@ void	ui_mouse_prompt(void)
 				rt_file_save(rt.ui.current_prompt.text);
 			else if (ft_strequ(rt.ui.current_prompt.name, DROPDOWN_LABEL_FILE_SAVEAS))
 				rt_file_save(rt.ui.current_prompt.text);
+			else if (ft_strequ(rt.ui.current_prompt.name, DROPDOWN_LABEL_FILE_RANDOM))
+			{}
+			else if (ft_strequ(rt.ui.current_prompt.name, DROPDOWN_LABEL_FILE_EXPORTBMP))
+				if (SDL_SaveBMP(rt.canvas, rt.ui.current_prompt.text))
+					debug_output_error("Could not save BMP image of the render: ", TRUE);
 			ui_leave_prompt();
 			rt.must_render = TRUE;
 		}

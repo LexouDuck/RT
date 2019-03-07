@@ -109,8 +109,8 @@ int				opencl_init(int platform_index);
 ** opencl_utils.c
 */
 int				opencl_set_device_info(void);
-void			opencl_refresh_gpu_memory_buffers(void);
-void			opencl_freeall(void);
+int				opencl_refresh_gpu_memory_buffers(void);
+int				opencl_freeall(void);
 void			opencl_log_compiler(void);
 
 /*

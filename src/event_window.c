@@ -37,8 +37,8 @@ void	event_window_resize(t_s32 window_w, t_s32 window_h)
 		rt.scene.work_dim[1] = rt.canvas_h;
 		opencl_refresh_gpu_memory_buffers();
 		rt.ui.objects.rect.h = rt.sdl.window_h - rt.ui.objects.rect.y;
-		rt.ui.objects.scrollbar.scroll_view = (rt.sdl.window_h - MENUBAR_ITEMS_H);
-		rt.ui.objects.scrollbar.bar.h = (rt.sdl.window_h - MENUBAR_ITEMS_H) - TILE * 4;
+		rt.ui.objects.scrollbar.scroll_view = (rt.sdl.window_h - rt.ui.objects.rect.y);
+		rt.ui.objects.scrollbar.bar.h = (rt.sdl.window_h - rt.ui.objects.rect.y) - TILE * 4;
 		rt.ui.objects.scrollbar.button_down.y = rt.sdl.window_h - TILE * 2;
 	}
 }

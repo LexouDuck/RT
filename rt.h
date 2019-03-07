@@ -19,11 +19,6 @@
 ** ************************************************************************** *|
 */
 
-
-// TODO allow selecting render platform
-
-//# include <math.h>
-
 # include "SDL.h"
 # include "libft.h"
 # include "libft_io.h"

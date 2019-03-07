@@ -41,17 +41,26 @@ static void		print_get_str(int fd, t_object *object)
 
 	if ((tmp = rt_get_str_primitive(object->type)))
 		FT_Write_Line(fd, tmp);
+	if (ft_strlen(object->name))
+	{
+		FT_Write_Char(fd, '"');
+		FT_Write_String(fd, object->name);
+		FT_Write_Line(fd, "\"");
+	}
 	if ((tmp = rt_get_str_material(object->material)))
 	{
 		FT_Write_String(fd,"material:");
 		FT_Write_Line(fd, tmp);
 	}
-	if (ft_strlen(object->name))
+	if ((tmp = rt_get_str_pattern(object->pattern)))
 	{
-		FT_Write_Char(fd, '"');
-		FT_Write_String(fd, object->name);
-		FT_Write_Char(fd, '"');
-		FT_Write_Char(fd, '\n');
+		FT_Write_String(fd,"pattern:");
+		FT_Write_Line(fd, tmp);
+	}
+	if ((tmp = rt_get_str_projection(object->uv_projection)))
+	{
+		FT_Write_String(fd,"projection:");
+		FT_Write_Line(fd, tmp);
 	}
 }
 
@@ -68,6 +77,7 @@ static void 	print_bg_color(int fd)
 		FT_Write_String(fd, "BG #");
 		FT_Write_Line(fd, tmp);
 		FT_Write_Char(fd, '\n');
+		free(tmp);
 	}
 }
 

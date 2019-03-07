@@ -24,6 +24,7 @@ inline char *rt_get_str_primitive(t_primitive primitive)
 		"PLANE",
 		"RECTANGLE",
 		"DISK",
+		"TRIANGLE",
 		"SADDLE",
 		"PARABOLOID",
 		"HYPERBOLOID",

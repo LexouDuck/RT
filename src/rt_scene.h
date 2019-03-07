@@ -33,6 +33,8 @@
 # define DEFAULT_CAM_FOV			0.4
 # define DEFAULT_CAM_APERTURE		0.4
 # define DEFAULT_CAM_FOCALDIST		0.02
+# define DEFAULT_CAM_RGB_MASK		((cl_float3){{ 1.6, 1.6, 1.6 }})
+# define DEFAULT_CAM_RGB_SHADE		((cl_float3){{ 0., 0., 0. }})
 
 # define DEFAULT_OBJECT_REFRAC		1.
 # define DEFAULT_OBJECT_ROUGHNESS	0.0001
@@ -111,6 +113,8 @@ typedef struct		s_camera
 	cl_float		hrz_fov;
 	cl_float		aperture;
 	cl_float		focal_dist;
+	cl_float3		rgb_shade;
+	cl_float3		rgb_mask;
 	t_camera_model	model;
 	cl_float16		c_to_w;
 //	cl_float16		w_to_c;
@@ -195,7 +199,7 @@ typedef struct		s_bbox
 ** All primitives are considered to be centered near the origin with default
 ** unit dimensions.
 */
-# define			PRIMITIVES	14
+# define			PRIMITIVES	15
 typedef enum		e_primitive
 {
 	none = 0,
@@ -206,6 +210,7 @@ typedef enum		e_primitive
 	plane,
 	rectangle,
 	disk,
+	triangle,
 	saddle,
 	paraboloid,
 	hyperboloid,

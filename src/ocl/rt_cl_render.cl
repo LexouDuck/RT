@@ -10,6 +10,79 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+static t_intersection		rt_cl_primitive_get_inter
+(
+									float *			new_t,
+									t_ray			ray_os,
+									t_primitive		type
+)
+{
+	t_intersection	inter;
+
+	if (type == sphere)
+		inter = rt_cl_sphere_intersect(new_t, ray_os);
+	else if (type == plane)
+		inter = rt_cl_plane_intersect(new_t, ray_os);
+	else if (type == disk)
+		inter = rt_cl_disk_intersect(new_t, ray_os);
+	else if (type == rectangle)
+		inter = rt_cl_rectangle_intersect(new_t, ray_os);
+	else if (type == triangle)
+		inter = rt_cl_triangle_intersect(new_t, ray_os);
+	else if (type == cylinder)
+		inter = rt_cl_cylinder_intersect(new_t, ray_os);
+	else if (type == cone)
+		inter = rt_cl_cone_intersect(new_t, ray_os);
+	else if (type == infcylinder)
+		inter = rt_cl_infcylinder_intersect(new_t, ray_os);
+	else if (type == infcone)
+		inter = rt_cl_infcone_intersect(new_t, ray_os);
+	else if (type == cube)
+		inter = rt_cl_cube_intersect(new_t, ray_os);
+	else if (type == paraboloid)
+		inter = rt_cl_paraboloid_intersect(new_t, ray_os);
+	else if (type == hyperboloid)
+		inter = rt_cl_hyperboloid_intersect(new_t, ray_os);
+	else if (type == saddle)
+		inter = rt_cl_saddle_intersect(new_t, ray_os);
+	else
+		inter = INTER_NONE;
+	return (inter);
+}
+
+static float3		rt_cl_primitive_get_normal
+(
+									float3			hitpos,
+									t_primitive		type
+)
+{
+	float3		normal_os;
+
+	if (type == sphere)
+		normal_os = rt_cl_sphere_get_normal(hitpos);
+	else if (type == plane || type == disk || type == rectangle|| type == triangle)
+		normal_os = rt_cl_plane_get_normal(hitpos);
+	else if (type == cylinder)
+		normal_os = rt_cl_cylinder_get_normal(hitpos);
+	else if (type == infcylinder)
+		normal_os = rt_cl_infcylinder_get_normal(hitpos);
+	else if (type == infcone)
+		normal_os = rt_cl_infcone_get_normal(hitpos);
+	else if (type == cone)
+		normal_os = rt_cl_cone_get_normal(hitpos);
+	else if (type == cube)
+		normal_os = rt_cl_cube_get_normal(hitpos);
+	else if (type == paraboloid)
+		normal_os = rt_cl_paraboloid_get_normal(hitpos);
+	else if (type == hyperboloid)
+		normal_os = rt_cl_hyperboloid_get_normal(hitpos);
+	else if (type == saddle)
+		normal_os = rt_cl_saddle_get_normal(hitpos);
+	else
+		normal_os = rt_cl_sphere_get_normal(hitpos);
+	return (normal_os);
+}
+
 /*
 ** If BBoxes have a non-empty intersection, you can't use new_t as tmax
 ** for ray_intersect_bbox.
@@ -54,7 +127,6 @@ static t_intersection		rt_cl_trace_ray_to_scene
 				ray_os.dir = rt_cl_apply_linear_matrix(obj->w_to_o, ray_os.dir);//DO NOT NORMALIZE: YOU NEED TO KEEP ray.t CONSISTENT
 
 				bbox_os_inter = rt_cl_ray_intersect_bbox(ray_os, obj->bbox_os, 0.f, tmax, &new_tbbox_os);
-
 				if (bbox_os_inter)
 				{
 					if (scene->render_mode == RENDERMODE_BBOX_OS)
@@ -66,32 +138,7 @@ static t_intersection		rt_cl_trace_ray_to_scene
 					}
 					else
 					{
-						if (obj->type == sphere)
-							ray_os.inter_type = rt_cl_sphere_intersect(&new_t, ray_os);
-						else if (obj->type == plane)
-							ray_os.inter_type = rt_cl_plane_intersect(&new_t, ray_os);
-						else if (obj->type == disk)
-							ray_os.inter_type = rt_cl_disk_intersect(&new_t, ray_os);
-						else if (obj->type == rectangle)
-							ray_os.inter_type = rt_cl_rectangle_intersect(&new_t, ray_os);
-						else if (obj->type == cylinder)
-							ray_os.inter_type = rt_cl_cylinder_intersect(&new_t, ray_os);
-						else if (obj->type == cone)
-							ray_os.inter_type = rt_cl_cone_intersect(&new_t, ray_os);
-						else if (obj->type == infcylinder)
-							ray_os.inter_type = rt_cl_infcylinder_intersect(&new_t, ray_os);
-						else if (obj->type == infcone)
-							ray_os.inter_type = rt_cl_infcone_intersect(&new_t, ray_os);
-						else if (obj->type == cube)
-							ray_os.inter_type = rt_cl_cube_intersect(&new_t, ray_os);
-						else if (obj->type == paraboloid)
-							ray_os.inter_type = rt_cl_paraboloid_intersect(&new_t, ray_os);
-						else if (obj->type == hyperboloid)
-							ray_os.inter_type = rt_cl_hyperboloid_intersect(&new_t, ray_os);
-						else if (obj->type == saddle)
-							ray_os.inter_type = rt_cl_saddle_intersect(&new_t, ray_os);
-						else
-							ray_os.inter_type = rt_cl_sphere_intersect(&new_t, ray_os);
+						ray_os.inter_type = rt_cl_primitive_get_inter(&new_t, ray_os, obj->type);
 						if (ray_os.inter_type && EPS < new_t && new_t < ray->t)
 						{
 							ray_os.hitpos = ray_os.pos + ((float3)new_t) * ray_os.dir;
@@ -127,34 +174,11 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 				t_ray		new_ray;
 				float3		hitpos;
 				float3		normal;
-//				float3		normal_alongx;
-//				float3		normal_alongy;
 				t_texture	texture;
 
 	hitpos = ray.hitpos;
-	if (obj->type == sphere)
-		normal = rt_cl_sphere_get_normal(hitpos);
-	else if (obj->type == plane || obj->type == disk || obj->type == rectangle)
-		normal = rt_cl_plane_get_normal(hitpos);
-	else if (obj->type == cylinder)
-		normal = rt_cl_cylinder_get_normal(hitpos);
-	else if (obj->type == infcylinder)
-		normal = rt_cl_infcylinder_get_normal(hitpos);
-	else if (obj->type == infcone)
-		normal = rt_cl_infcone_get_normal(hitpos);
-	else if (obj->type == cone)
-		normal = rt_cl_cone_get_normal(hitpos);
-	else if (obj->type == cube)
-		normal = rt_cl_cube_get_normal(hitpos);
-	else if (obj->type == paraboloid)
-		normal = rt_cl_paraboloid_get_normal(hitpos);
-	else if (obj->type == hyperboloid)
-		normal = rt_cl_hyperboloid_get_normal(hitpos);
-	else if (obj->type == saddle)
-		normal = rt_cl_saddle_get_normal(hitpos);
-	else
-		normal = rt_cl_sphere_get_normal(hitpos);
-	normal = normal * ray.inter_type;
+
+	normal = ray.inter_type * rt_cl_primitive_get_normal(hitpos, obj->type);
 	texture = rt_cl_get_texture_properties(scene, random_seeds, obj, hitpos, normal);
 
 	if (scene->render_mode == RENDERMODE_SOLIDTEXTURE)
@@ -237,15 +261,15 @@ static t_ray			rt_cl_create_camray
 	float2				box_muller_sample;
 	float3				aperture;
 
-	camray.lum_acc = (float3)(0.);
-	camray.lum_mask = (float3)(1.);
+	camray.lum_acc = scene->camera.rgb_shade;
+	camray.lum_mask = scene->camera.rgb_mask;
 	camray.t = scene->render_dist;
 	camray.complete = false;
 	camray.hit_obj_id = -1;
 	camray.inter_type = INTER_NONE;
 	if (scene->camera.model == CAMERA_MODEL_PINHOLE)
 	{
-		camray.pos = (float3)(0., 0., 0.);
+		camray.pos = (float3)(0.f, 0.f, 0.f);
 		camray.dir = (float3)(x_id - width / 2, y_id - height / 2, fov_val);
 	}
 	else if (scene->camera.model == CAMERA_MODEL_BLUR_SIMPLE)

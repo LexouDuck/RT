@@ -45,7 +45,7 @@
 # define OBJECT_ARGS_AMOUNT			14
 # define OBJECT_NAME_MAXLENGTH		24
 # define OBJECT_MAX_AMOUNT			32
-# define DEFAULT_RAYSAMP_SIZE		128
+# define DEFAULT_RAYSAMP_SIZE		64
 # define DEFAULT_MAX_RAY_DEPTH		6
 
 # define RENDER_MODES				4
@@ -248,20 +248,21 @@ typedef	enum		e_pattern
 	wood,
 }					t_pattern;
 
-# define			TEXTURE_PROJECTIONS	4
+# define			TEXTURE_PROJECTIONS	3
 typedef	enum		e_uv_projection
 {
-	spherical = 0,
-	cubic,
+	cubic = 0,
+	spherical,
 	cylindrical,
 }					t_uv_projection;
 
 typedef struct		s_texture
 {
 	t_pattern		pattern;
-	cl_float		height_map;
+	cl_float		texel_value;
 	cl_float2		uv_pos;
 	cl_float2		uv_scale;
+	cl_float3		bump_normal;
 	cl_float3		rgb;
 }					t_texture;
 

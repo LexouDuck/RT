@@ -79,8 +79,8 @@ static float		rt_cl_smooth_noise_2d
 	float4	v;
 	float2	level;
 
-	int_pos = (uint2)pos;
-	frac = pos - (float2)int_pos;
+	int_pos = (uint2)((uint)pos.x, (uint)pos.y);
+	frac = pos - (float2)((float)int_pos.x, (float)int_pos.y);
 	v.x = rt_cl_noise_2d(int_pos, octave, seed);
 	v.y = rt_cl_noise_2d((uint2)(int_pos.x + 1, int_pos.y), octave, seed);
 	v.z = rt_cl_noise_2d((uint2)(int_pos.x, int_pos.y + 1), octave, seed);
@@ -103,8 +103,8 @@ static float		rt_cl_smooth_noise_3d
 	float4	level;
 	float2	high_level;
 
-	int_pos = (uint3)pos;
-	frac = pos - (float3)int_pos;
+	int_pos = (uint3)((uint)pos.x, (uint)pos.y, (uint)pos.z);
+	frac = pos - (float3)((float)int_pos.x, (float)int_pos.y, (float)int_pos.z);
 	v.s0 = rt_cl_noise_3d(int_pos, octave, seed);
 	v.s1 = rt_cl_noise_3d((uint3)(int_pos.x + 1, int_pos.y, int_pos.z), octave, seed);
 	v.s2 = rt_cl_noise_3d((uint3)(int_pos.x, int_pos.y + 1, int_pos.z), octave, seed);
@@ -301,7 +301,7 @@ static float3		rt_cl_convert_os_to_uvw
 
 	if (obj->uvw_projection == spherical)
 	{
-		uvw_pos.z = sqrt((float)(pow(hitpos.x, 2) + pow(hitpos.z, 2)));
+		uvw_pos.z = sqrt((float)rt_cl_float3_ynull_dot(hitpos, hitpos));
 		uvw_pos.y = atan2(hitpos.z, hitpos.x) * INV_TAU;
 		uvw_pos.x = acos(hitpos.y / uvw_pos.z) * INV_PI;
 	}
@@ -309,7 +309,7 @@ static float3		rt_cl_convert_os_to_uvw
 		uvw_pos = hitpos.xzy;
 	else if (obj->uvw_projection == cylindrical)
 	{
-		uvw_pos.x = sqrt((float)(pow(hitpos.x, 2) + pow(hitpos.z, 2)));
+		uvw_pos.x = sqrt((float)rt_cl_float3_ynull_dot(hitpos, hitpos));
 		uvw_pos.y = atan2(hitpos.z, hitpos.x);
 		uvw_pos.z = hitpos.y;
 	}
@@ -433,7 +433,7 @@ static float3		rt_cl_get_bump_normal
 		vtan2 = rt_cl_convert_uvw_to_os(obj, vtan2);
 		bump_normal = normalize(cross(vtan1, vtan2));
 	}
-	if (obj->uvw_projection == cubic)
+	else if (obj->uvw_projection == cubic)
 	{
 		bump_normal = normal;
 	}

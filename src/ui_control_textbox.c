@@ -77,3 +77,9 @@ void	ui_render_control_textbox(int x, int y, char *value)
 		ui_render_text(value, rect.x + 1, rect.y + 1, FALSE);
 	}
 }
+
+void			ui_keypress_control_textbox(t_textinput *textinput)
+{
+	if (!textinput)
+		return ;
+}

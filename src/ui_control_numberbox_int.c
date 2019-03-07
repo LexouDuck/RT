@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ui_control_numberbox.c                             :+:      :+:    :+:   */
+/*   ui_control_numberbox_int.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,20 +11,21 @@
 /* ************************************************************************** */
 
 #include <math.h>
+
 #include "libft_string.h"
 #include "libft_convert.h"
+
 #include "../rt.h"
-#include "../assets.h"
 #include "debug.h"
 
-void	ui_leave_control_numberbox(t_textinput *textinput)
+void	ui_leave_control_numberbox_int(t_textinput *textinput)
 {
-	cl_float	*value;
+	cl_uint	*value;
 
 	if (textinput->value && rt.ui.current_textinput.value_changed)
 	{
-		value = (cl_float *)textinput->value;
-		*value = textinput->input ? ft_str_to_f32(textinput->input) : 0;
+		value = (cl_uint *)textinput->value;
+		*value = textinput->input ? ft_str_to_s32(textinput->input) : 0;
 		if (isnan(*value))
 			*value = 0;
 		rt.must_render = TRUE;
@@ -40,25 +41,25 @@ void	ui_leave_control_numberbox(t_textinput *textinput)
 	}
 }
 
-void	ui_keypress_control_numberbox(t_textinput *textinput, t_bool up)
+void	ui_keypress_control_numberbox_int(t_textinput *textinput, t_bool up)
 {
-	cl_float *value;
+	cl_uint *value;
 
-	value = (cl_float *)textinput->value;
+	value = (cl_uint *)textinput->value;
 	if (up)
-		*value += 1.;
+		*value += 1;
 	else
-		*value -= 1.0;
+		*value -= 1;
 	rt.must_render = TRUE;
-	ui_leave_control_numberbox(textinput);
-	textinput->type = texttype_number_float;
-	textinput->input = ft_f32_to_str(*value, 4);
+	ui_leave_control_numberbox_int(textinput);
+	textinput->type = texttype_number_int;
+	textinput->input = ft_s32_to_str(*value);
 	textinput->value = (void *)value;
 	rt.ui.current_textinput.value_changed = FALSE;
 	SDL_StartTextInput();
 }
 
-void	ui_mouse_control_numberbox(t_textinput *textinput, cl_float *value, int x, int y)
+void	ui_mouse_control_numberbox_int(t_textinput *textinput, cl_uint *value, int x, int y)
 {
 	static SDL_Rect	rect = { 0, 0, 9 * TILE, 3 * TILE };
 	static SDL_Rect	button = { 0, 0, 2 * TILE, 1 * TILE };
@@ -71,18 +72,18 @@ void	ui_mouse_control_numberbox(t_textinput *textinput, cl_float *value, int x, 
 		button.y = rect.y;
 		if (SDL_PointInRect(&rt.input.mouse, &button))
 		{
-			*value += 0.500;
+			*value += 1;
 			rt.must_render = TRUE;
 		}
 		else if ((button.y += 2 * TILE) && SDL_PointInRect(&rt.input.mouse, &button))
 		{
-			*value -= 0.500;
+			*value -= 1;
 			rt.must_render = TRUE;
 		}
 		else
 		{
-			textinput->type = texttype_number_float;
-			textinput->input = ft_f32_to_str(*value, 4);
+			textinput->type = texttype_number_int;
+			textinput->input = ft_s32_to_str(*value);
 			textinput->value = (void *)value;
 			rt.ui.current_textinput.value_changed = FALSE;
 			SDL_StartTextInput();
@@ -90,7 +91,7 @@ void	ui_mouse_control_numberbox(t_textinput *textinput, cl_float *value, int x, 
 	}
 }
 
-void	ui_render_control_numberbox(int x, int y, cl_float *value)
+void	ui_render_control_numberbox_int(int x, int y, cl_uint *value)
 {
 	static const size_t	str_max_length = 7;
 	static SDL_Rect		rect = { 0, 0, 9, 3 };
@@ -103,7 +104,7 @@ void	ui_render_control_numberbox(int x, int y, cl_float *value)
 	{
 		ui_render_text(rt.ui.current_textinput.input, rect.x + 1, rect.y + 1, FALSE);
 	}
-	else if ((str = ft_f32_to_str(*value, 4)))
+	else if ((str = ft_s32_to_str(*value)))
 	{
 		if (ft_strlen(str) > str_max_length)
 			str[str_max_length] = '\0';

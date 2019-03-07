@@ -70,50 +70,50 @@ void	ui_render_expandedproperties(t_object *object, t_s32 y)
 		ui_render_text(tmp, 11, y + 10, FALSE);
 		free(tmp);
 	}
-	ui_render_control_numberbox(1, y + 11, &object->rgb_a.x);
-	ui_render_control_numberbox(10, y + 11, &object->rgb_a.y);
-	ui_render_control_numberbox(19, y + 11, &object->rgb_a.z);
+	ui_render_control_numberbox_float(1, y + 11, &object->rgb_a.x);
+	ui_render_control_numberbox_float(10, y + 11, &object->rgb_a.y);
+	ui_render_control_numberbox_float(19, y + 11, &object->rgb_a.z);
 	if ((tmp = ft_u32_to_hex(object->color_b)))
 	{
 		ui_render_text("Color B: #", 1, y + 14, FALSE);
 		ui_render_text(tmp, 11, y + 14, FALSE);
 		free(tmp);
 	}
-	ui_render_control_numberbox(1, y + 15, &object->rgb_b.x);
-	ui_render_control_numberbox(10, y + 15, &object->rgb_b.y);
-	ui_render_control_numberbox(19, y + 15, &object->rgb_b.z);
+	ui_render_control_numberbox_float(1, y + 15, &object->rgb_b.x);
+	ui_render_control_numberbox_float(10, y + 15, &object->rgb_b.y);
+	ui_render_control_numberbox_float(19, y + 15, &object->rgb_b.z);
 	ui_render_text("Pos:", 1, y + 18, FALSE);
-	ui_render_control_numberbox(1, y + 19, &object->pos.x);
-	ui_render_control_numberbox(10, y + 19, &object->pos.y);
-	ui_render_control_numberbox(19, y + 19, &object->pos.z);
+	ui_render_control_numberbox_float(1, y + 19, &object->pos.x);
+	ui_render_control_numberbox_float(10, y + 19, &object->pos.y);
+	ui_render_control_numberbox_float(19, y + 19, &object->pos.z);
 	ui_render_text("Rot:", 1, y + 22, FALSE);
-	ui_render_control_numberbox(1, y + 23, &object->rot.x);
-	ui_render_control_numberbox(10, y + 23, &object->rot.y);
-	ui_render_control_numberbox(19, y + 23, &object->rot.z);
+	ui_render_control_numberbox_float(1, y + 23, &object->rot.x);
+	ui_render_control_numberbox_float(10, y + 23, &object->rot.y);
+	ui_render_control_numberbox_float(19, y + 23, &object->rot.z);
 	ui_render_text("Scale:", 1, y + 26, FALSE);
-	ui_render_control_numberbox(1, y + 27, &object->scale.x);
-	ui_render_control_numberbox(10, y + 27, &object->scale.y);
-	ui_render_control_numberbox(19, y + 27, &object->scale.z);
+	ui_render_control_numberbox_float(1, y + 27, &object->scale.x);
+	ui_render_control_numberbox_float(10, y + 27, &object->scale.y);
+	ui_render_control_numberbox_float(19, y + 27, &object->scale.z);
 	ui_render_text("Object BBox Corner VI:", 1, y + 30, FALSE);
-	ui_render_control_numberbox( 1, y + 31, &object->bbox_os.vi.x);
-	ui_render_control_numberbox(10, y + 31, &object->bbox_os.vi.y);
-	ui_render_control_numberbox(19, y + 31, &object->bbox_os.vi.z);
+	ui_render_control_numberbox_float( 1, y + 31, &object->bbox_os.vi.x);
+	ui_render_control_numberbox_float(10, y + 31, &object->bbox_os.vi.y);
+	ui_render_control_numberbox_float(19, y + 31, &object->bbox_os.vi.z);
 	ui_render_text("Object BBox Corner VF:", 1, y + 34, FALSE);
-	ui_render_control_numberbox( 1, y + 35, &object->bbox_os.vf.x);
-	ui_render_control_numberbox(10, y + 35, &object->bbox_os.vf.y);
-	ui_render_control_numberbox(19, y + 35, &object->bbox_os.vf.z);
+	ui_render_control_numberbox_float( 1, y + 35, &object->bbox_os.vf.x);
+	ui_render_control_numberbox_float(10, y + 35, &object->bbox_os.vf.y);
+	ui_render_control_numberbox_float(19, y + 35, &object->bbox_os.vf.z);
 	ui_render_text("World BBox Corner VI:", 1, y + 38, FALSE);
-	ui_render_control_numberbox( 1, y + 39, &object->bbox_ws.vi.x);
-	ui_render_control_numberbox(10, y + 39, &object->bbox_ws.vi.y);
-	ui_render_control_numberbox(19, y + 39, &object->bbox_ws.vi.z);
+	ui_render_control_numberbox_float( 1, y + 39, &object->bbox_ws.vi.x);
+	ui_render_control_numberbox_float(10, y + 39, &object->bbox_ws.vi.y);
+	ui_render_control_numberbox_float(19, y + 39, &object->bbox_ws.vi.z);
 	ui_render_text("World BBox Corner VF:", 1, y + 42, FALSE);
-	ui_render_control_numberbox( 1, y + 43, &object->bbox_ws.vf.x);
-	ui_render_control_numberbox(10, y + 43, &object->bbox_ws.vf.y);
-	ui_render_control_numberbox(19, y + 43, &object->bbox_ws.vf.z);
+	ui_render_control_numberbox_float( 1, y + 43, &object->bbox_ws.vf.x);
+	ui_render_control_numberbox_float(10, y + 43, &object->bbox_ws.vf.y);
+	ui_render_control_numberbox_float(19, y + 43, &object->bbox_ws.vf.z);
 	ui_render_text("Refrac:  Rough:   Opacity:", 1, y + 46, FALSE);
-	ui_render_control_numberbox( 1, y + 47, &object->refrac);
-	ui_render_control_numberbox(10, y + 47, &object->roughness);
-	ui_render_control_numberbox(19, y + 47, &object->opacity);
+	ui_render_control_numberbox_float( 1, y + 47, &object->refrac);
+	ui_render_control_numberbox_float(10, y + 47, &object->roughness);
+	ui_render_control_numberbox_float(19, y + 47, &object->opacity);
 }
 
 void	ui_render_objectlist(void)

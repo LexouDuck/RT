@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ui_control_numberbox.c                             :+:      :+:    :+:   */
+/*   ui_control_numberbox_float.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,13 +11,14 @@
 /* ************************************************************************** */
 
 #include <math.h>
+
 #include "libft_string.h"
 #include "libft_convert.h"
+
 #include "../rt.h"
-#include "../assets.h"
 #include "debug.h"
 
-void	ui_leave_control_numberbox(t_textinput *textinput)
+void	ui_leave_control_numberbox_float(t_textinput *textinput)
 {
 	cl_float	*value;
 
@@ -40,17 +41,17 @@ void	ui_leave_control_numberbox(t_textinput *textinput)
 	}
 }
 
-void	ui_keypress_control_numberbox(t_textinput *textinput, t_bool up)
+void	ui_keypress_control_numberbox_float(t_textinput *textinput, t_bool up)
 {
 	cl_float *value;
 
 	value = (cl_float *)textinput->value;
 	if (up)
-		*value += 1.;
+		*value += 1.0;
 	else
 		*value -= 1.0;
 	rt.must_render = TRUE;
-	ui_leave_control_numberbox(textinput);
+	ui_leave_control_numberbox_float(textinput);
 	textinput->type = texttype_number_float;
 	textinput->input = ft_f32_to_str(*value, 4);
 	textinput->value = (void *)value;
@@ -58,7 +59,7 @@ void	ui_keypress_control_numberbox(t_textinput *textinput, t_bool up)
 	SDL_StartTextInput();
 }
 
-void	ui_mouse_control_numberbox(t_textinput *textinput, cl_float *value, int x, int y)
+t_bool	ui_mouse_control_numberbox_float(t_textinput *textinput, cl_float *value, int x, int y)
 {
 	static SDL_Rect	rect = { 0, 0, 9 * TILE, 3 * TILE };
 	static SDL_Rect	button = { 0, 0, 2 * TILE, 1 * TILE };
@@ -87,10 +88,12 @@ void	ui_mouse_control_numberbox(t_textinput *textinput, cl_float *value, int x, 
 			rt.ui.current_textinput.value_changed = FALSE;
 			SDL_StartTextInput();
 		}
+		return (TRUE);
 	}
+	return (FALSE);
 }
 
-void	ui_render_control_numberbox(int x, int y, cl_float *value)
+void	ui_render_control_numberbox_float(int x, int y, cl_float *value)
 {
 	static const size_t	str_max_length = 7;
 	static SDL_Rect		rect = { 0, 0, 9, 3 };

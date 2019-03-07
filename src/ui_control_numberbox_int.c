@@ -18,6 +18,18 @@
 #include "../rt.h"
 #include "debug.h"
 
+static void	ui_change_control_numberbox_int(cl_uint *value)
+{
+	rt.must_render = TRUE;
+	if (value == &rt.ocl.gpu_platform_index)
+	{
+		if (*value >= rt.ocl.platform_amount)
+			*value = rt.ocl.platform_amount - 1;
+		opencl_freeall();
+		opencl_init(rt.ocl.gpu_platform_index);
+	}
+}
+
 void	ui_leave_control_numberbox_int(t_textinput *textinput)
 {
 	cl_uint	*value;
@@ -26,9 +38,7 @@ void	ui_leave_control_numberbox_int(t_textinput *textinput)
 	{
 		value = (cl_uint *)textinput->value;
 		*value = textinput->input ? ft_str_to_s32(textinput->input) : 0;
-		if (isnan(*value))
-			*value = 0;
-		rt.must_render = TRUE;
+		ui_change_control_numberbox_int(value);
 	}
 	if (textinput->input)
 		free(textinput->input);
@@ -59,7 +69,7 @@ void	ui_keypress_control_numberbox_int(t_textinput *textinput, t_bool up)
 	SDL_StartTextInput();
 }
 
-void	ui_mouse_control_numberbox_int(t_textinput *textinput, cl_uint *value, int x, int y)
+t_bool	ui_mouse_control_numberbox_int(t_textinput *textinput, cl_uint *value, int x, int y)
 {
 	static SDL_Rect	rect = { 0, 0, 9 * TILE, 3 * TILE };
 	static SDL_Rect	button = { 0, 0, 2 * TILE, 1 * TILE };
@@ -73,12 +83,12 @@ void	ui_mouse_control_numberbox_int(t_textinput *textinput, cl_uint *value, int 
 		if (SDL_PointInRect(&rt.input.mouse, &button))
 		{
 			*value += 1;
-			rt.must_render = TRUE;
+			ui_change_control_numberbox_int(value);
 		}
 		else if ((button.y += 2 * TILE) && SDL_PointInRect(&rt.input.mouse, &button))
 		{
 			*value -= 1;
-			rt.must_render = TRUE;
+			ui_change_control_numberbox_int(value);
 		}
 		else
 		{
@@ -88,7 +98,9 @@ void	ui_mouse_control_numberbox_int(t_textinput *textinput, cl_uint *value, int 
 			rt.ui.current_textinput.value_changed = FALSE;
 			SDL_StartTextInput();
 		}
+		return (TRUE);
 	}
+	return (FALSE);
 }
 
 void	ui_render_control_numberbox_int(int x, int y, cl_uint *value)

@@ -250,14 +250,14 @@ void			ui_render_rect(SDL_Rect rect, t_bool filled);
 /*
 **	ui_control_numberbox_int.c
 */
-void			ui_mouse_control_numberbox_int(t_textinput *textinput, cl_uint *value, int x, int y);
+t_bool			ui_mouse_control_numberbox_int(t_textinput *textinput, cl_uint *value, int x, int y);
 void			ui_leave_control_numberbox_int(t_textinput *textinput);
 void			ui_render_control_numberbox_int(int x, int y, cl_uint *value);
 void			ui_keypress_control_numberbox_int(t_textinput *textinput, t_bool up);
 /*
 **	ui_control_numberbox_float.c
 */
-void			ui_mouse_control_numberbox_float(t_textinput *textinput, cl_float *value, int x, int y);
+t_bool			ui_mouse_control_numberbox_float(t_textinput *textinput, cl_float *value, int x, int y);
 void			ui_leave_control_numberbox_float(t_textinput *textinput);
 void			ui_render_control_numberbox_float(int x, int y, cl_float *value);
 void			ui_keypress_control_numberbox_float(t_textinput *textinput, t_bool up);
@@ -265,8 +265,8 @@ void			ui_keypress_control_numberbox_float(t_textinput *textinput, t_bool up);
 /*
 **	ui_control_textbox.c
 */
+t_bool			ui_mouse_control_textbox(t_textinput *textinput, char **value, int x, int y);
 void			ui_leave_control_textbox(t_textinput *textinput);
-void			ui_mouse_control_textbox(t_textinput *textinput, char **value, int x, int y);
 void			ui_render_control_textbox(int x, int y, char *value);
 void			ui_keypress_control_textbox(t_textinput *textinput);
 

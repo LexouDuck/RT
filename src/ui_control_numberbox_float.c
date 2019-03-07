@@ -59,7 +59,7 @@ void	ui_keypress_control_numberbox_float(t_textinput *textinput, t_bool up)
 	SDL_StartTextInput();
 }
 
-void	ui_mouse_control_numberbox_float(t_textinput *textinput, cl_float *value, int x, int y)
+t_bool	ui_mouse_control_numberbox_float(t_textinput *textinput, cl_float *value, int x, int y)
 {
 	static SDL_Rect	rect = { 0, 0, 9 * TILE, 3 * TILE };
 	static SDL_Rect	button = { 0, 0, 2 * TILE, 1 * TILE };
@@ -88,7 +88,9 @@ void	ui_mouse_control_numberbox_float(t_textinput *textinput, cl_float *value, i
 			rt.ui.current_textinput.value_changed = FALSE;
 			SDL_StartTextInput();
 		}
+		return (TRUE);
 	}
+	return (FALSE);
 }
 
 void	ui_render_control_numberbox_float(int x, int y, cl_float *value)

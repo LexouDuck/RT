@@ -106,7 +106,7 @@ int									set_alea_nb
 	else if (type == TYPE_POS_X)
 		result = (rand() %  1901) - 9500;
 	else if (type == TYPE_POS_Y)
-		result = (rand() % 1001) - 5000;
+		result = (rand() % 4001);
 	else if (type == TYPE_POS_Z)
 		result = (rand() % 2001) - 1000;
 	return (result);

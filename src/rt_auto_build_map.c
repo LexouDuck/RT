@@ -78,6 +78,9 @@ typedef enum						e_random_type
 	TYPE_MATERIAL,
 	TYPE_COLOR,
 	TYPE_BBOX,
+	TYPE_POS_X,
+	TYPE_POS_Y,
+	TYPE_POS_Z,
 
 }									t_random_type;
 
@@ -100,6 +103,7 @@ int									set_alea_nb
 		result = (rand() % 1000);
 	else if (type == TYPE_BBOX)
 		result = (rand() %  2001) - 1000;
+	else if (type == )
 	return (result);
 }
 
@@ -165,6 +169,109 @@ void								write_float3
 	FT_Write_Char(fd, '\n');
 }
 
+void								build_fix_object
+(
+									int fd
+)
+{
+	FT_Write_Line(fd, 	"SPHERE");
+	FT_Write_Line(fd,	"material:LIGHT");
+	FT_Write_Line(fd,	"color:(1.00000, 1.00000, 1.00000)");
+	FT_Write_Line(fd,	"color2:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd,	"pos:(9.00000, 5.00000, 10.00000)");
+	FT_Write_Line(fd,	"rot:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd,	"scale:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd,	"bbox_vi:(-1.00000, -1.00000, -1.00000)");
+	FT_Write_Line(fd,	"bbox_vf:(1.00000, 1.00000, 1.00000)\n");
+		
+	FT_Write_Line(fd, 	"SPHERE");
+	FT_Write_Line(fd,	"material:LIGHT");
+	FT_Write_Line(fd,	"color:(1.00000, 1.00000, 1.00000)");
+	FT_Write_Line(fd,	"color2:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd,	"pos:(-9.00000, 5.00000, 10.00000)");
+	FT_Write_Line(fd,	"rot:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd,	"scale:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd,	"bbox_vi:(-1.00000, -1.00000, -1.00000)");
+	FT_Write_Line(fd,	"bbox_vf:(1.00000, 1.00000, 1.00000)\n");
+
+	FT_Write_Line(fd, 	"CUBE");
+	FT_Write_Line(fd,	"material:DIFFUSE");
+	FT_Write_Line(fd,	"\"floor\"");
+	FT_Write_Line(fd,	"color:(0.26666, 0.26666, 0.26666)");
+	FT_Write_Line(fd,	"color2:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd,	"pos:(0.00000, -1.00000, 0.00000)");
+	FT_Write_Line(fd,	"rot:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd,	"scale:(10.00000, -1.00000, 10.00000)");
+	FT_Write_Line(fd,	"bbox_vi:(-1.00000, -1.00000, -1.00000)");
+	FT_Write_Line(fd,	"bbox_vf:(1.00000, 1.00000, 1.00000)\n");
+
+	FT_Write_Line(fd, 	"CUBE");
+	FT_Write_Line(fd,	"material:DIFFUSE");
+	FT_Write_Line(fd,	"\"ceiling\"");
+	FT_Write_Line(fd,	"color:(0.26666, 0.26666, 0.26666)");
+	FT_Write_Line(fd,	"color2:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd,	"pos:(0.00000, 11.00000, 0.00000)");
+	FT_Write_Line(fd,	"rot:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd,	"scale:(10.00000, 2.00000, 10.00000)");
+	FT_Write_Line(fd,	"bbox_vi:(-1.00000, -1.00000, -1.00000)");
+	FT_Write_Line(fd,	"bbox_vf:(1.00000, 1.00000, 1.00000)\n");
+
+	FT_Write_Line(fd, 	"CUBE");
+	FT_Write_Line(fd,	"material:DIFFUSE");
+	FT_Write_Line(fd,	"\"walls back\"");
+	FT_Write_Line(fd,	"color:(0.19999, 0.53333, 1.00000)");
+	FT_Write_Line(fd,	"color2:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd,	"pos:(0.00000, 5.00000, -10.00000)");
+	FT_Write_Line(fd,	"rot:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd,	"scale:(10.00000, 7.00000, 1.00000)");
+	FT_Write_Line(fd,	"bbox_vi:(-1.00000, -1.00000, -1.00000)");
+	FT_Write_Line(fd,	"bbox_vf:(1.00000, 1.00000, 1.00000)\n");
+
+	FT_Write_Line(fd, 	"SPHERE");
+	FT_Write_Line(fd,	"material:DIFFUSE");
+	FT_Write_Line(fd,	"color:(1.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd,	"color2:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd,	"pos:(0.00000, 2.00000, 0.00000)");
+	FT_Write_Line(fd,	"rot:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd,	"scale:(1.00000, 1.00000, 1.00000)");
+	FT_Write_Line(fd,	"bbox_vi:(-1.00000, -1.00000, -1.00000)");
+	FT_Write_Line(fd,	"bbox_vf:(1.00000, 1.00000, 1.00000)\n");
+
+	FT_Write_Line(fd, 	"PLANE");
+	FT_Write_Line(fd,	"material:DIFFUSE");
+	FT_Write_Line(fd,	"\"Walls left\"");
+	FT_Write_Line(fd,	"color:(1.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd,	"color2:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd,	"pos:(-9.50000, 4.50000, 0.00000)");
+	FT_Write_Line(fd,	"rot:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd,	"scale:(0.50000, 5.00000, 10.00000)");
+	FT_Write_Line(fd,	"bbox_vi:(-1.00000, -1.00000, -1.00000)");
+	FT_Write_Line(fd,	"bbox_vf:(1.00000, 1.00000, 1.00000)\n");
+
+	FT_Write_Line(fd, 	"PLANE");
+	FT_Write_Line(fd,	"material:DIFFUSE");
+	FT_Write_Line(fd,	"\"Walls right\"");
+	FT_Write_Line(fd,	"color:(1.00000, 0.66666, 0.66666)");
+	FT_Write_Line(fd,	"color2:(0.00000, 3.50000, 0.00000)");
+	FT_Write_Line(fd,	"pos:(9.50000, 5.00000, 0.00000)");
+	FT_Write_Line(fd,	"rot:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd,	"scale:(0.50000, 5.00000, 10.00000)");
+	FT_Write_Line(fd,	"bbox_vi:(-1.00000, -1.00000, -1.00000)");
+	FT_Write_Line(fd,	"bbox_vf:(1.00000, 1.00000, 1.00000)\n");
+
+	FT_Write_Line(fd,	"RECTANGLE");
+	FT_Write_Line(fd,	"material:LIGHT");
+	FT_Write_Line(fd,	"\"light of the top\"");
+	FT_Write_Line(fd,	"color:(1.00000, 1.00000, 1.00000)");
+	FT_Write_Line(fd,	"color2:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd,	"pos:(0.00000, 9.00000, -2.00000)");
+	FT_Write_Line(fd,	"rot:(0.00000, 0.00000, -3.16000)");
+	FT_Write_Line(fd,	"scale:(4.00000, 8.00000, 8.00000)");
+	FT_Write_Line(fd,	"bbox_vi:(-1.00000, -1.00000, -1.00000)");
+	FT_Write_Line(fd,	"bbox_vf:(1.00000, 1.00000, 1.00000)\n");
+}
+
+
 void								write_scene
 (
 									int fd
@@ -175,6 +282,7 @@ void								write_scene
 	FT_Write_String(fd, "BG #");
 	FT_Write_Line(fd, "808080");
 	FT_Write_Char(fd, '\n');
+	build_fix_object(fd);
 
 	i = -1;
 	while (++i < 7) 

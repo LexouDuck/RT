@@ -103,7 +103,12 @@ int									set_alea_nb
 		result = (rand() % 1000);
 	else if (type == TYPE_BBOX)
 		result = (rand() %  2001) - 1000;
-	else if (type == )
+	else if (type == TYPE_POS_X)
+		result = (rand() %  1901) - 9500;
+	else if (type == TYPE_POS_Y)
+		result = (rand() % 1001) - 5000;
+	else if (type == TYPE_POS_Z)
+		result = (rand() % 2001) - 1000;
 	return (result);
 }
 
@@ -168,6 +173,7 @@ void								write_float3
 	}
 	FT_Write_Char(fd, '\n');
 }
+
 
 void								build_fix_object
 (
@@ -278,6 +284,7 @@ void								write_scene
 )
 {
 	int				i;
+	char 			*vec;
 
 	FT_Write_String(fd, "BG #");
 	FT_Write_Line(fd, "808080");
@@ -291,7 +298,16 @@ void								write_scene
 	
 		write_float3(fd, "color:", TYPE_COLOR);
 		write_float3(fd, "color2:", TYPE_COLOR);
-		write_float3(fd, "pos:", TYPE_FLOAT);
+		FT_Write_String(fd, "pos:(");
+		vec = FT_F32_To_String(set_alea_nb(TYPE_POS_X) / 1000, 5);
+		FT_Write_String(fd, vec);
+		FT_Write_String(fd, ", ");
+		vec = FT_F32_To_String(set_alea_nb(TYPE_POS_Y) / 1000, 5);
+		FT_Write_String(fd, vec);
+		FT_Write_String(fd, ", ");
+		vec = FT_F32_To_String(set_alea_nb(TYPE_POS_Z) / 1000, 5);
+		FT_Write_String(fd, vec);
+		FT_Write_String(fd, ")\n");
 		FT_Write_Line(fd, "rot:(0.00000 , 0.00000, 0.00000)");
 		write_float3(fd, "scale:", TYPE_FLOAT);
 		write_float3(fd, "bbox_vi:", TYPE_BBOX);

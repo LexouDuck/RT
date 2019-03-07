@@ -16,9 +16,9 @@ static bool					rt_cl_point_is_in_bbox
 					t_bbox		aabb
 )
 {
-	return (aabb.vi.x < pos.x && pos.x < aabb.vf.x &&
-			aabb.vi.y < pos.y && pos.y < aabb.vf.y &&
-			aabb.vi.z < pos.z && pos.z < aabb.vf.z);
+	return (aabb.vi.x - EPS < pos.x && pos.x < aabb.vf.x + EPS &&
+			aabb.vi.y - EPS < pos.y && pos.y < aabb.vf.y + EPS &&
+			aabb.vi.z - EPS < pos.z && pos.z < aabb.vf.z + EPS);
 }
 
 static t_intersection		rt_cl_ray_intersect_bbox

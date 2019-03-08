@@ -11,10 +11,9 @@ static float3		rt_cl_convert_os_to_uvw
 		return (
 					(float3)
 					(
-						//TODO remove division
-						atan2((float)hitpos.z, (float)hitpos.x) / (2 * PI) + 0.5,
-						- asin((float)hitpos.y) / PI + 0.5,
-						sqrt(hitpos.x * hitpos.x + hitpos.y * hitpos.y + hitpos.z * hitpos.z)
+						atan2((float)hitpos.z, (float)hitpos.x) * INV_TAU + 0.5,
+						- asin((float)hitpos.y) * INV_PI + 0.5,
+						sqrt(dot(hitpos, hitpos))
 					)
 				);
 	}
@@ -32,26 +31,17 @@ static float3		rt_cl_convert_os_to_uvw
 		return (
 					(float3)
 					(
-						//TODO remove division
-						atan2((float)hitpos.z, (float)hitpos.x) / (2 * PI) + 0.5,
+						atan2((float)hitpos.z, (float)hitpos.x) * INV_TAU + 0.5,
 						(hitpos.y + 1.f) * 0.5f,
-						sqrt(hitpos.x * hitpos.x + hitpos.z * hitpos.z)
+						sqrt(rt_cl_float3_ynull_dot(hitpos, hitpos))
 					)
 				);
-		/*
-		float	phi = atan2(hitpos.z, hitpos.x);
-
-		uvw_pos.x = phi * INV_TAU;
-		uvw_pos.y = (hitpos.y + 1.f) * 0.5f;
-		uvw_pos.z = sqrt((float)rt_cl_float3_ynull_dot(hitpos, hitpos));
-		*/
 	}
 	else 
 		return ((float3)(0.f, 0.f, 0.f));
 	return (uvw_pos);
 }
 
-//TODO Manage offset here
 static float3		rt_cl_convert_uvw_to_os
 (
 					__constant	t_object *	obj,
@@ -153,7 +143,6 @@ static float3		rt_cl_get_bump_normal
 
 	precision = 0.003f;
 	bumpiness = 1.f;
-	//if () //TODO add conditional to NOT use precalced w = f(u,v) for 3d texture projections
 	if (is_2d_proj)
 	{
 		vtan1 = (float3)(2 * precision, 0.f, rt_cl_get_texel_value(obj, (float3)(uvw_pos.x - precision, uvw_pos.y, uvw_pos.z), uvw_scale)
@@ -164,7 +153,6 @@ static float3		rt_cl_get_bump_normal
 		vtan2 = rt_cl_convert_uvw_to_os(obj, vtan2);
 		bump_normal = normalize(cross(vtan1, vtan2));
 	}
-	//TODO find jacobienne ?
 	else if (!is_2d_proj)
 	{
 		uvw_diff = 	(float3)
@@ -179,9 +167,8 @@ static float3		rt_cl_get_bump_normal
 		uvw_normal = rt_cl_convert_os_to_uvw(obj, normal);
 		uvw_normal = uvw_normal + (uvw_diff * (float3)(bumpiness));
 		bump_normal = rt_cl_convert_uvw_to_os(obj, uvw_normal);
-//		if(obj->uvw_projection == cylindrical)
-//			printf("normal : x : %f, y : %f, z : %f;\nuvw_normal : x : %f, y : %f, z : %f;\nbump_normal : x : %f, y : %f, z : %f;\n", 
-//			normal.x, normal.y, normal.z, uvw_normal.x, uvw_normal.y, uvw_normal.z, bump_normal.x, bump_normal.y, bump_normal.z);
+//		printf("normal : x : %f, y : %f, z : %f;\nuvw_normal : x : %f, y : %f, z : %f;\nbump_normal : x : %f, y : %f, z : %f;\n", 
+//		normal.x, normal.y, normal.z, uvw_normal.x, uvw_normal.y, uvw_normal.z, bump_normal.x, bump_normal.y, bump_normal.z);
 		bump_normal = normalize(bump_normal);
 	}
 	else
@@ -189,6 +176,7 @@ static float3		rt_cl_get_bump_normal
 	return (bump_normal);
 }
 
+//TODO Add UI for texture
 static t_texture	rt_cl_get_texture_properties
 (
 					__constant	t_scene	*	scene,
@@ -202,7 +190,7 @@ static t_texture	rt_cl_get_texture_properties
 	bool		is_2d_proj;
 	bool		is_bump;
 
-	is_bump = false;
+	is_bump = true;
 	is_2d_proj = false;
 	texture.uvw_offset = (float3)(0.f, 0.f, 0.f);
 	texture.uvw_scale = (float3)(1.f, 1.f, 1.f);

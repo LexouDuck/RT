@@ -88,7 +88,7 @@ static t_bool	ui_mouse_objectlist_expandedproperties_pattern(
 }
 
 static t_bool	ui_mouse_objectlist_expandedproperties_projection(
-	t_uv_projection *projection, t_s32 y)
+	t_uvw_projection *projection, t_s32 y)
 {
 	static SDL_Rect	rect = { 0, 0, 1, 1 };
 
@@ -119,7 +119,7 @@ static void	ui_mouse_objectlist_expandedproperties(t_object *object, t_s32 y)
 	if (ui_mouse_objectlist_expandedproperties_primitive(&object->type, y) ||
 		ui_mouse_objectlist_expandedproperties_material(&object->material, y) ||
 		ui_mouse_objectlist_expandedproperties_pattern(&object->pattern, y) ||
-		ui_mouse_objectlist_expandedproperties_projection(&object->uv_projection, y))
+		ui_mouse_objectlist_expandedproperties_projection(&object->uvw_projection, y))
 		return ;
 	y += 8;
 	ptr = &object->rgb_a;

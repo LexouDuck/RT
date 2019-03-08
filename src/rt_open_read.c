@@ -229,7 +229,7 @@ char		*rt_read_arg_pattern(t_rtparser *p, t_pattern *result, char const *label)
 }
 
 
-char		*rt_read_arg_projection(t_rtparser *p, t_uv_projection *result, char const *label)
+char		*rt_read_arg_projection(t_rtparser *p, t_uvw_projection *result, char const *label)
 {
 	char const	*str;
 	size_t		length;
@@ -245,11 +245,11 @@ char		*rt_read_arg_projection(t_rtparser *p, t_uv_projection *result, char const
 	i = 0;
 	while (i < TEXTURE_PROJECTIONS)
 	{
-		str = rt_get_str_projection((t_uv_projection)i);
+		str = rt_get_str_projection((t_uvw_projection)i);
 		length = ft_strlen(str);
 		if (ft_strnequ(p->file + p->index, str, length))
 		{
-			*result = (t_uv_projection)i;
+			*result = (t_uvw_projection)i;
 			p->index += length;
 			return (NULL);
 		}

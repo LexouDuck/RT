@@ -133,7 +133,7 @@ char		*rt_get_str_material(t_material material);
 char		*rt_get_str_rendermode(t_rendermode rendermode);
 char		*rt_get_str_cameramodel(t_camera_model cameramodel);
 char		*rt_get_str_pattern(t_pattern pattern);
-char		*rt_get_str_projection(t_uv_projection projection);
+char		*rt_get_str_projection(t_uvw_projection projection);
 
 /*
 **	rt_file.c
@@ -162,7 +162,7 @@ char		*rt_read_arg_vector(t_rtparser *p, cl_float3 *result, char const* label);
 char		*rt_read_arg_color(t_rtparser *p, cl_float3 *result, char const* label);
 char		*rt_read_arg_material(t_rtparser *p, t_material *result, char const *label);
 char		*rt_read_arg_pattern(t_rtparser *p, t_pattern *result, char const *label);
-char		*rt_read_arg_projection(t_rtparser *p, t_uv_projection *result, char const *label);
+char		*rt_read_arg_projection(t_rtparser *p, t_uvw_projection *result, char const *label);
 
 /*
 ** ************************************************************************** *|

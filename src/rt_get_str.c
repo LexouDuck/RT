@@ -93,7 +93,7 @@ inline char		*rt_get_str_pattern(t_pattern pattern)
 	return (patterns[pattern]);
 }
 
-inline char		*rt_get_str_projection(t_uv_projection projection)
+inline char		*rt_get_str_projection(t_uvw_projection projection)
 {
 	static char	*projections[TEXTURE_PROJECTIONS] = {
 		"SPHERICAL",

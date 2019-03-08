@@ -112,7 +112,7 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 	object.type = shape;
 	object.material = diffuse;
 	object.pattern = solid;
-	object.uv_projection = spherical;
+	object.uvw_projection = spherical;
 	ft_memclr(&object.name, OBJECT_NAME_MAXLENGTH);
 	object.color_a = 0xFFFFFF;
 	object.color_b = 0x000000;
@@ -131,7 +131,7 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 		if ((error = rt_read_arg_name(p, (char *)&object.name)) ||
 			(error = rt_read_arg_material(p, &object.material, "material")) ||
 			(error = rt_read_arg_pattern(p, &object.pattern, "pattern")) ||
-			(error = rt_read_arg_projection(p, &object.uv_projection, "projection")) ||
+			(error = rt_read_arg_projection(p, &object.uvw_projection, "projection")) ||
 			(error = rt_read_arg_color(p, &object.rgb_a, "color")) ||
 			(error = rt_read_arg_color(p, &object.rgb_b, "color2")) ||
 			(error = rt_read_arg_vector(p, &object.pos, "pos")) ||

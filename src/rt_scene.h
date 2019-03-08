@@ -259,12 +259,12 @@ typedef	enum		e_pattern
 }					t_pattern;
 
 # define			TEXTURE_PROJECTIONS	3
-typedef	enum		e_uv_projection
+typedef	enum		e_uvw_projection
 {
 	cubic = 0,
 	spherical,
 	cylindrical,
-}					t_uv_projection;
+}					t_uvw_projection;
 
 typedef struct		s_texture
 {
@@ -339,7 +339,9 @@ typedef struct		s_object
 	cl_float16		w_to_o;
 	cl_float16		n_to_w;
 	t_pattern		pattern;
-	t_uv_projection	uv_projection;
+	cl_float3		uvw_scale;
+	cl_float3		uvw_offset;
+	t_uvw_projection	uvw_projection;
 }					t_object;
 
 typedef struct		s_scene

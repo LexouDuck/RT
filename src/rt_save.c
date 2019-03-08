@@ -56,7 +56,7 @@ static void		print_get_str(int fd, t_object *object)
 		FT_Write_String(fd,"pattern:");
 		FT_Write_Line(fd, tmp);
 	}
-	if ((tmp = rt_get_str_projection(object->uv_projection)))
+	if ((tmp = rt_get_str_projection(object->uvw_projection)))
 	{
 		FT_Write_String(fd,"projection:");
 		FT_Write_Line(fd, tmp);

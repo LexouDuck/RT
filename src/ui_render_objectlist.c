@@ -61,7 +61,7 @@ void	ui_render_expandedproperties(t_object *object, t_s32 y)
 	ui_render_text("\x12", 12, y + 6, FALSE);
 	ui_render_text("\x13", 24, y + 6, FALSE);
 	ui_render_text("Projection:", 1, y + 8, FALSE);
-	ui_render_text(rt_get_str_projection(object->uv_projection), 13, y + 8, FALSE);
+	ui_render_text(rt_get_str_projection(object->uvw_projection), 13, y + 8, FALSE);
 	ui_render_text("\x12", 12, y + 8, FALSE);
 	ui_render_text("\x13", 24, y + 8, FALSE);
 	if ((tmp = ft_u32_to_hex(object->color_a)))
@@ -114,6 +114,17 @@ void	ui_render_expandedproperties(t_object *object, t_s32 y)
 	ui_render_control_numberbox_float( 1, y + 47, &object->refrac);
 	ui_render_control_numberbox_float(10, y + 47, &object->roughness);
 	ui_render_control_numberbox_float(19, y + 47, &object->opacity);
+	//TODO Add texture UI here
+	/*
+	ui_render_text("UVW Scale:", 1, y + 50, FALSE);
+	ui_render_control_numberbox_float( 1, y + 51, &object->uvw_scale.x);
+	ui_render_control_numberbox_float(10, y + 51, &object->uvw_scale.y);
+	ui_render_control_numberbox_float(19, y + 51, &object->uvw_scale.z);
+	ui_render_text("UVW Offset:", 1, y + 54, FALSE);
+	ui_render_control_numberbox_float( 1, y + 55, &object->uvw_offset.x);
+	ui_render_control_numberbox_float(10, y + 55, &object->uvw_offset.y);
+	ui_render_control_numberbox_float(19, y + 55, &object->uvw_offset.z);
+	*/
 }
 
 void	ui_render_objectlist(void)

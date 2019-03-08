@@ -125,7 +125,7 @@ typedef struct	s_ray
 	float3			lum_mask;
 	float3			lum_acc;
 	t_intersection	inter_type;
-	float2			uv_coordinates;
+	float2			uvw_coordinates;
 }				t_ray;
 
 /*
@@ -194,12 +194,12 @@ typedef	enum	e_pattern
 	wood,
 }				t_pattern;
 
-typedef	enum		e_uv_projection
+typedef	enum		e_uvw_projection
 {
 	spherical = 0,
 	cubic,
 	cylindrical,
-}					t_uv_projection;
+}					t_uvw_projection;
 
 typedef struct	s_texture
 {
@@ -275,7 +275,9 @@ typedef struct	s_object
 	float16			w_to_o;
 	float16			n_to_w;
 	t_pattern		pattern;
-	t_uv_projection	uvw_projection;
+	float3			uvw_scale;
+	float3			uvw_offset;
+	t_uvw_projection	uvw_projection;
 }				t_object;
 
 typedef struct	s_scene

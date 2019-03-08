@@ -8,12 +8,15 @@ static float3		rt_cl_convert_os_to_uvw
 
 	if (obj->uvw_projection == spherical)
 	{
-		float	theta = acos(hitpos.y / uvw_pos.z);
-		float	phi = atan2(hitpos.z, hitpos.x);
-
-		uvw_pos.x = phi * INV_TAU;
-		uvw_pos.y = theta * INV_PI;
-		uvw_pos.z = sqrt((float)dot(hitpos, hitpos));
+		return (
+					(float3)
+					(
+						//TODO remove division
+						atan2((float)hitpos.z, (float)hitpos.x) / (2 * PI) + 0.5,
+						- asin((float)hitpos.y) / PI + 0.5,
+						sqrt(hitpos.x * hitpos.x + hitpos.y * hitpos.y + hitpos.z * hitpos.z)
+					)
+				);
 	}
 	else if (obj->uvw_projection == cubic)
 		return (
@@ -26,11 +29,22 @@ static float3		rt_cl_convert_os_to_uvw
 				);
 	else if (obj->uvw_projection == cylindrical)
 	{
+		return (
+					(float3)
+					(
+						//TODO remove division
+						atan2((float)hitpos.z, (float)hitpos.x) / (2 * PI) + 0.5,
+						(hitpos.y + 1.f) * 0.5f,
+						sqrt(hitpos.x * hitpos.x + hitpos.z * hitpos.z)
+					)
+				);
+		/*
 		float	phi = atan2(hitpos.z, hitpos.x);
 
 		uvw_pos.x = phi * INV_TAU;
 		uvw_pos.y = (hitpos.y + 1.f) * 0.5f;
 		uvw_pos.z = sqrt((float)rt_cl_float3_ynull_dot(hitpos, hitpos));
+		*/
 	}
 	else 
 		return ((float3)(0.f, 0.f, 0.f));
@@ -44,36 +58,43 @@ static float3		rt_cl_convert_uvw_to_os
 								float3		uvw_pos
 )
 {
+	float	theta;
+	float	phi;
+
 	float2	sincos_th;
 	float2	sincos_phi;
 
 	if (obj->uvw_projection == cubic)
-		return ((uvw_pos.xzy - (float3)(1.f)) * 2.f);
-	else if (obj->uvw_projection == spherical)
+		return (
+					(float3)
+					(
+						uvw_pos.x * 2.f - 1,
+						uvw_pos.z * 2.f - 1,
+						uvw_pos.y * 2.f - 1
+					)
+				);
+	if (obj->uvw_projection == spherical)
 	{
-		sincos_th = (float2)(sin((float)(uvw_pos.y * PI)), cos((float)(uvw_pos.y * PI)));
-		sincos_phi = (float2)(sin((float)(uvw_pos.x * TAU)), cos((float)(uvw_pos.x * TAU)));
-
+		theta = TAU * uvw_pos.x;
+		phi = PI * uvw_pos.y;
 		return	(
-					(float3)(uvw_pos.z) *
-						(float3)
-						(
-							sincos_th.x * sincos_phi.y,
-							sincos_th.y,
-							sincos_th.x * sincos_phi.x
-						)
+					(float3)
+					(
+						- cos((float)theta) * sin((float)phi) * uvw_pos.z,
+						cos((float)phi) * uvw_pos.z,
+						- sin((float)theta) * sin((float)phi) * uvw_pos.z
+					)
 				);
 	}
 	else if (obj->uvw_projection == cylindrical)
 	{
-		sincos_phi = (float2)(sin((float)(uvw_pos.x * TAU)), cos((float)(uvw_pos.x * TAU)));
-
+		theta = TAU * uvw_pos.x;
 		return	(
 					(float3)
 					(
-						uvw_pos.z * sincos_phi.y,
-						(uvw_pos.y - 1.f) * 2.f,
-						uvw_pos.z * sincos_phi.x
+						- cos((float)theta) * uvw_pos.z,
+						uvw_pos.y * 2.f - 1,
+						- sin((float)theta) * uvw_pos.z
 					)
 				);
 	}
@@ -122,13 +143,16 @@ static float3		rt_cl_get_bump_normal
 								bool		is_2d_proj
 )
 {
+	float3		uvw_normal;
 	float3		bump_normal;
+	float3		uvw_diff;
 	float3		vtan1;
 	float3		vtan2;
 	float		precision;
+	float		bumpiness;
 
-	precision = 0.001f;
-	bump_normal = (float3)(0.f, 0.f, 0.f);
+	precision = 0.003f;
+	bumpiness = 1.f;
 	//if () //TODO add conditional to NOT use precalced w = f(u,v) for 3d texture projections
 	if (is_2d_proj)
 	{
@@ -140,11 +164,26 @@ static float3		rt_cl_get_bump_normal
 		vtan2 = rt_cl_convert_uvw_to_os(obj, vtan2);
 		bump_normal = normalize(cross(vtan1, vtan2));
 	}
-	//TODO find jacobienne
-	else if (obj->uvw_projection == cubic)
-		bump_normal = normal;
-	else if (obj->uvw_projection == spherical)
-		bump_normal = normal;
+	//TODO find jacobienne ?
+	else if (!is_2d_proj)
+	{
+		uvw_diff = 	(float3)
+					(
+						(float)(rt_cl_get_texel_value(obj, (float3)(uvw_pos.x - precision, uvw_pos.y, uvw_pos.z), uvw_scale)
+						- rt_cl_get_texel_value(obj, (float3)(uvw_pos.x + precision, uvw_pos.y, uvw_pos.z), uvw_scale)),
+						(float)(rt_cl_get_texel_value(obj, (float3)(uvw_pos.x, uvw_pos.y - precision, uvw_pos.z), uvw_scale)
+						- rt_cl_get_texel_value(obj, (float3)(uvw_pos.x, uvw_pos.y + precision, uvw_pos.z), uvw_scale)),
+						(float)(rt_cl_get_texel_value(obj, (float3)(uvw_pos.x, uvw_pos.y, uvw_pos.z - precision), uvw_scale)
+						- rt_cl_get_texel_value(obj, (float3)(uvw_pos.x, uvw_pos.y, uvw_pos.z + precision), uvw_scale))
+					);
+		uvw_normal = rt_cl_convert_os_to_uvw(obj, normal);
+		uvw_normal = uvw_normal + (uvw_diff * (float3)(bumpiness));
+		bump_normal = rt_cl_convert_uvw_to_os(obj, uvw_normal);
+//		if(obj->uvw_projection == cylindrical)
+//			printf("normal : x : %f, y : %f, z : %f;\nuvw_normal : x : %f, y : %f, z : %f;\nbump_normal : x : %f, y : %f, z : %f;\n", 
+//			normal.x, normal.y, normal.z, uvw_normal.x, uvw_normal.y, uvw_normal.z, bump_normal.x, bump_normal.y, bump_normal.z);
+		bump_normal = normalize(bump_normal);
+	}
 	else
 		return (normal);
 	return (bump_normal);
@@ -161,7 +200,9 @@ static t_texture	rt_cl_get_texture_properties
 {
 	t_texture	texture;
 	bool		is_2d_proj;
+	bool		is_bump;
 
+	is_bump = false;
 	is_2d_proj = false;
 	texture.uvw_offset = (float3)(0.f, 0.f, 0.f);
 	texture.uvw_scale = (float3)(1.f, 1.f, 1.f);
@@ -171,7 +212,10 @@ static t_texture	rt_cl_get_texture_properties
 	//TODO add conditional for 2d texturing vs 3d texturing
 	if (is_2d_proj)
 		texture.uvw_pos.z = texture.texel_value;
-	texture.bump_normal = rt_cl_get_bump_normal(obj, texture.uvw_pos, texture.uvw_scale, normal, is_2d_proj);
+	if (is_bump)
+		texture.bump_normal = rt_cl_get_bump_normal(obj, texture.uvw_pos, texture.uvw_scale, normal, is_2d_proj);
+	else
+		texture.bump_normal = normal;
 	texture.rgb = obj->rgb_a * texture.texel_value + obj->rgb_b * (1 - texture.texel_value);
 	return (texture);
 }

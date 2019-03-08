@@ -6,7 +6,7 @@ static void			rt_cl_get_pattern_horizontal_waves
 								float		*texel_value
 )
 {
-	*texel_value = cos((float)(uvw_pos.x * TWOTAU * uvw_scale.x));
+	*texel_value = cos((float)(uvw_pos.x * TWOTAU * uvw_scale.x * 2.f));
 	return ;
 }
 
@@ -18,7 +18,7 @@ static void			rt_cl_get_pattern_vertical_waves
 								float		*texel_value
 )
 {
-	*texel_value = cos((float)(uvw_pos.y * TWOTAU * uvw_scale.y));
+	*texel_value = cos((float)(uvw_pos.y * TWOTAU * uvw_scale.y * 2.f));
 	return ;
 }
 
@@ -30,8 +30,8 @@ static void			rt_cl_get_pattern_double_waves
 								float		*texel_value
 )
 {
-	*texel_value = cos((float)(uvw_pos.x * TWOTAU * uvw_scale.x))
-				* cos((float)(uvw_pos.y * TWOTAU * uvw_scale.y));
+	*texel_value = cos((float)(uvw_pos.x * TWOTAU * uvw_scale.x * 2.f))
+				* cos((float)(uvw_pos.y * TWOTAU * uvw_scale.y * 2.f));
 	return ;
 }
 
@@ -43,7 +43,7 @@ static void			rt_cl_get_pattern_horizontal_stripes
 								float		*texel_value
 )
 {
-	if (fmod((float)((uvw_pos.x) * uvw_scale.x), 0.4f) < 0.2f)
+	if (fmod((float)((uvw_pos.x) * uvw_scale.x), 0.2f) < 0.1f)
 		*texel_value = 1.f;
 	else
 		*texel_value = 0;
@@ -58,7 +58,7 @@ static void			rt_cl_get_pattern_vertical_stripes
 								float		*texel_value
 )
 {
-	if (fmod((float)((uvw_pos.y) * uvw_scale.y), 0.4f) < 0.2f)
+	if (fmod((float)((uvw_pos.y) * uvw_scale.y), 0.2f) < 0.1f)
 		*texel_value = 1.f;
 	else
 		*texel_value = 0;
@@ -99,7 +99,7 @@ static void			rt_cl_get_pattern_perlin
 								float		*texel_value
 )
 {
-	*texel_value = rt_cl_perlin_noise_3d(uvw_pos * 4.f, 0.4f, 6, 42);
+	*texel_value = rt_cl_perlin_noise_3d(uvw_pos * uvw_scale * 8.f, 0.4f, 6, 42);
 	return ;
 }
 
@@ -111,6 +111,6 @@ static void			rt_cl_get_pattern_wood
 								float		*texel_value
 )
 {
-	*texel_value = (sin((float)(uvw_pos.x + rt_cl_perlin_noise_3d(uvw_pos * 2.f, 0.4f, 6, 42) * 100) * TAU * 0.02f)) * 0.5f;
+	*texel_value = sin((float)(uvw_pos.x * uvw_scale.x + rt_cl_perlin_noise_3d(uvw_pos * uvw_scale * 4.f, 0.4f, 6, 42) * 100) * PI * 0.02f) * 0.75f;
 	return ;
 }

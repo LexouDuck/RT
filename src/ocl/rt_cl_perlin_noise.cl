@@ -37,7 +37,7 @@ static float		rt_cl_noise_3d
 	return (rt_cl_rawnoise(pos.x * 1919 + pos.y * 31337 + pos.z * 7669 + octave * 3463 + seed * 13397));
 }
 
-static float		rt_cl_interpolate
+static float		rt_cl_cos_interpolate
 (
 					float2	range,
 					float	x
@@ -45,8 +45,8 @@ static float		rt_cl_interpolate
 {
 	float	f;
 
-	f = (1 - cos((float)(x * PI))) * 0.5f;
-	return (range.x * (1 - f) + range.y * f);
+	f = (1.f - cos((float)(x * PI))) * 0.5f;
+	return (range.x * (1.f - f) + range.y * f);
 }
 
 static float		rt_cl_smooth_noise_1d
@@ -58,13 +58,13 @@ static float		rt_cl_smooth_noise_1d
 {
 	uint	int_x;
 	float	frac;
-	float	v[2];
+	float2	v;
 
 	int_x = (uint)x;
 	frac = x - int_x;
-	v[0] = rt_cl_noise_1d(x, octave, seed);
-	v[1] = rt_cl_noise_1d(x + 1, octave, seed);
-	return (rt_cl_interpolate((float2)(v[0], v[1]), frac));
+	v.x = rt_cl_noise_1d(x, octave, seed);
+	v.y = rt_cl_noise_1d(x + 1, octave, seed);
+	return (rt_cl_cos_interpolate((float2)(v.x, v.y), frac));
 }
 
 static float		rt_cl_smooth_noise_2d
@@ -85,9 +85,9 @@ static float		rt_cl_smooth_noise_2d
 	v.y = rt_cl_noise_2d((uint2)(int_pos.x + 1, int_pos.y), octave, seed);
 	v.z = rt_cl_noise_2d((uint2)(int_pos.x, int_pos.y + 1), octave, seed);
 	v.w = rt_cl_noise_2d((uint2)(int_pos.x + 1, int_pos.y + 1), octave, seed);
-	level.x = rt_cl_interpolate((float2)(v.x, v.y), frac.x);
-	level.y = rt_cl_interpolate((float2)(v.z, v.w), frac.x);
-	return (rt_cl_interpolate(level, frac.y));
+	level.x = rt_cl_cos_interpolate((float2)(v.x, v.y), frac.x);
+	level.y = rt_cl_cos_interpolate((float2)(v.z, v.w), frac.x);
+	return (rt_cl_cos_interpolate(level, frac.y));
 }
 
 static float		rt_cl_smooth_noise_3d
@@ -113,13 +113,13 @@ static float		rt_cl_smooth_noise_3d
 	v.s5 = rt_cl_noise_3d((uint3)(int_pos.x + 1, int_pos.y, int_pos.z + 1), octave, seed);
 	v.s6 = rt_cl_noise_3d((uint3)(int_pos.x, int_pos.y + 1, int_pos.z + 1), octave, seed);
 	v.s7 = rt_cl_noise_3d((uint3)(int_pos.x + 1, int_pos.y + 1, int_pos.z + 1), octave, seed);
-	level.s0 = rt_cl_interpolate(v.s01, frac.x);
-	level.s1 = rt_cl_interpolate(v.s23, frac.x);
-	level.s2 = rt_cl_interpolate(v.s45, frac.x);
-	level.s3 = rt_cl_interpolate(v.s67, frac.x);
-	high_level.s0 = rt_cl_interpolate(level.s01, frac.y);
-	high_level.s1 = rt_cl_interpolate(level.s23, frac.y);
-	return (rt_cl_interpolate(high_level, frac.z));
+	level.s0 = rt_cl_cos_interpolate(v.s01, frac.x);
+	level.s1 = rt_cl_cos_interpolate(v.s23, frac.x);
+	level.s2 = rt_cl_cos_interpolate(v.s45, frac.x);
+	level.s3 = rt_cl_cos_interpolate(v.s67, frac.x);
+	high_level.s0 = rt_cl_cos_interpolate(level.s01, frac.y);
+	high_level.s1 = rt_cl_cos_interpolate(level.s23, frac.y);
+	return (rt_cl_cos_interpolate(high_level, frac.z));
 }
 
 static float		rt_cl_perlin_noise_1d
@@ -130,14 +130,14 @@ static float		rt_cl_perlin_noise_1d
 					uint	seed
 )
 {
-	float	total = 0.0;
-	float	frequency = 1.0;
-	float	amplitude = 1.0;
+	float	total = 0.0f;
+	float	frequency = 1.0f;
+	float	amplitude = 1.0f;
 
 	for (uint i = 0; i < octaves; i++)
 	{
 		total += rt_cl_smooth_noise_1d(x * frequency, i, seed) * amplitude;
-		frequency *= 0.5;
+		frequency *= 0.5f;
 		amplitude *= persistence;
 	}
 	return (total);
@@ -151,9 +151,9 @@ static float		rt_cl_perlin_noise_2d
 					uint	seed
 )
 {
-	float	total = 0.0;
-	float	frequency = 1.0;
-	float	amplitude = 1.0;
+	float	total = 0.0f;
+	float	frequency = 1.0f;
+	float	amplitude = 1.0f;
 
 	for (uint i = 0; i < octaves; i++)
 	{
@@ -172,9 +172,9 @@ static float		rt_cl_perlin_noise_3d
 					uint	seed
 )
 {
-	float	total = 0.0;
-	float	frequency = 1.0;
-	float	amplitude = 1.0;
+	float	total = 0.0f;
+	float	frequency = 1.0f;
+	float	amplitude = 1.0f;
 
 	for (uint i = 0; i < octaves; i++)
 	{

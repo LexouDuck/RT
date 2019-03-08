@@ -19,9 +19,9 @@ static float3		rt_cl_convert_os_to_uvw
 		return (
 					(float3)
 					(
-						(hitpos.x + 1.f) * 0.5,
-						(hitpos.z + 1.f) * 0.5,
-						(hitpos.y + 1.f) * 0.5
+						(hitpos.x + 1.f) * 0.5f,
+						(hitpos.z + 1.f) * 0.5f,
+						(hitpos.y + 1.f) * 0.5f
 					)
 				);
 	else if (obj->uvw_projection == cylindrical)
@@ -33,7 +33,7 @@ static float3		rt_cl_convert_os_to_uvw
 		uvw_pos.z = sqrt((float)rt_cl_float3_ynull_dot(hitpos, hitpos));
 	}
 	else 
-		return ((float3)(0., 0., 0.));
+		return ((float3)(0.f, 0.f, 0.f));
 	return (uvw_pos);
 }
 

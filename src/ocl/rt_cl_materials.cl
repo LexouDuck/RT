@@ -45,7 +45,7 @@ static float3		rt_cl_get_transmit_or_reflect
 	float		dot_i_n;
 	float		refrac_ratio;
 	float		schlick;
-	float		n1 = is_inter_inside ? refrac : 1.;
+	float		n1 = is_inter_inside ? refrac : 1.;//TODO fix with max refraction index system and transmit iff new refraction ? color contrib only if medium refraction is !- 1.f 
 	float		n2 = is_inter_inside ? 1. : refrac;
 	float		schlick_r0;
 	float		fresnel;

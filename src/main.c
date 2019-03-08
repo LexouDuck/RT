@@ -90,11 +90,13 @@ static int		main_loop(void)
 		free(rt.ui.current_textinput.input);
 		rt.ui.current_textinput.input = NULL;
 	}
+	debug_output("Attempting to close program...\n");
 	config_save();
 	config_free();
 	opencl_freeall();
 	SDL_DestroyWindow(rt.sdl.window);
 	SDL_Quit();
+	debug_output("Program closed successfully.\n");
 	return (OK);
 }
 
@@ -111,16 +113,13 @@ static int		main_loop(void)
 int				main(int argc, char *argv[])
 {
 	int	i;
-//printf("debug: init debug\n");
+
 	if (debug_init())
 		return (ERROR);
-//printf("debug: init config\n");
 	if (config_init())
 		return (ERROR);
-//printf("debug: init sdl\n");
 	if (init_sdl())
 		return (ERROR);
-//printf("debug: init window\n");
 	if (init_window())
 		return (ERROR);
 	if (init_window_display())
@@ -138,10 +137,8 @@ int				main(int argc, char *argv[])
 			rt_file_import(argv[i]);
 		}
 	}
-//printf("debug: init ui\n");
 	if (ui_init())
 		return (ERROR);
-//printf("debug: init opencl\n");
 	if (opencl_init(RT_CL_PLATFORM_UNINITIALIZED))
 		return (ERROR);
 	return (main_loop());

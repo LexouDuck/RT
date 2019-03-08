@@ -90,6 +90,8 @@ typedef struct	s_camera
 	float				hrz_fov;
 	float				aperture;
 	float				focal_dist;
+	float3				rgb_shade;
+	float3				rgb_mask;
 	t_camera_model		model;
 	float16				c_to_w;
 //	float16				w_to_c;
@@ -154,6 +156,7 @@ typedef enum	e_primitive
 	plane,
 	rectangle,
 	disk,
+	triangle,
 	saddle,
 	paraboloid,
 	hyperboloid,
@@ -181,12 +184,12 @@ typedef	enum	e_pattern
 	solid = 0,
 	horizontal_wave,
 	vertical_wave,
-	wave,
+	double_wave,
 	horizontal_stripe,
 	vertical_stripe,
 	checkerboard,
 	hue,
-	noise,
+	perlin,
 	marble,
 	wood,
 }				t_pattern;
@@ -204,6 +207,7 @@ typedef struct	s_texture
 	float		texel_value;
 	float3		uvw_pos;
 	float3		uvw_scale;
+	float3		uvw_offset;
 	float3		bump_normal;
 	float3		rgb;
 }				t_texture;

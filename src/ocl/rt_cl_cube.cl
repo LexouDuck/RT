@@ -32,7 +32,6 @@ static t_intersection		rt_cl_ray_intersect_bbox
 {
 	t_intersection	inter;
 	float			tmax_old = tmax;
-	//TODO add aabb.vi.x < ray.pos.x < aabb.vf.x: if true for every coordinate, return INTER_INSIDE
 
 	float3	inv_dir = native_recip(ray.dir);
 	//get all plane intersections
@@ -64,10 +63,10 @@ static t_intersection		rt_cl_cube_intersect
 							t_ray		ray
 )
 {
-	float			tmin = 0.;
+	float			tmin = 0.f;
 	float			tmax = ray.t;
-	t_bbox			aabb = (t_bbox){(float3)(-1., -1., -1.),
-					(float3)(1., 1., 1.)};
+	t_bbox			aabb = (t_bbox){(float3)(-1.f, -1.f, -1.f),
+					(float3)(1.f, 1.f, 1.f)};
 	t_intersection	inter;
 
 	inter = rt_cl_ray_intersect_bbox(ray, aabb, tmin, tmax, res);
@@ -79,18 +78,18 @@ static float3				rt_cl_cube_get_normal
 							float3 hitpos
 )
 {
-	if (fabs((float)(hitpos.x - 1.)) <= EPS)
-		return ((float3)(1., 0., 0.));
+	if (fabs((float)(hitpos.x - 1.f)) <= EPS)
+		return ((float3)(1.f, 0.f, 0.f));
 	else if (fabs((float)(hitpos.x + 1.)) <= EPS)
-		return ((float3)(-1., 0., 0.));
-	else if (fabs((float)(hitpos.y - 1.)) <= EPS)
-		return ((float3)(0., 1., 0.));
+		return ((float3)(-1.f, 0.f, 0.f));
+	else if (fabs((float)(hitpos.y - 1.f)) <= EPS)
+		return ((float3)(0.f, 1.f, 0.f));
 	else if (fabs((float)(hitpos.y + 1.)) <= EPS)
-		return ((float3)(0., -1., 0.));
-	else if (fabs((float)(hitpos.z - 1.)) <= EPS)
-		return ((float3)(0., 0., 1.));
-	else if (fabs((float)(hitpos.z + 1.)) <= EPS)
-		return ((float3)(0., 0., -1.));
+		return ((float3)(0.f, -1.f, 0.f));
+	else if (fabs((float)(hitpos.z - 1.f)) <= EPS)
+		return ((float3)(0.f, 0.f, 1.f));
+	else if (fabs((float)(hitpos.z + 1.f)) <= EPS)
+		return ((float3)(0.f, 0.f, -1.f));
 	else
-		return ((float3)(0., 0., 0.));
+		return ((float3)(0.f, 0.f, 0.f));
 }

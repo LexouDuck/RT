@@ -66,7 +66,7 @@ static float3			rt_cl_infcone_get_normal
 {
 	float3 	normal;
 
-	normal = (float3)(hitpos.x, - hitpos.y, hitpos.z);	
+	normal = (float3)(hitpos.x, -hitpos.y, hitpos.z);	
 	normal = normalize(normal);
 
 	return (normal);

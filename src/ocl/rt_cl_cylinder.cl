@@ -26,12 +26,12 @@ static t_intersection		rt_cl_infcylinder_intersect
 		return (INTER_NONE);
 	if (roots.x <= 0.f && roots.y <= 0.f)
 		return (INTER_NONE);
-	else if (roots.x <= 0.)
+	else if (roots.x <= 0.f)
 	{
 		*res = roots.y;
 		return (INTER_INSIDE);
 	}
-	else if (roots.y <= 0.)
+	else if (roots.y <= 0.f)
 	{
 		*res = roots.x;
 		return (INTER_INSIDE);
@@ -48,7 +48,7 @@ static float3				rt_cl_infcylinder_get_normal
 							float3 hitpos
 )
 {
-	return ((float3)(hitpos.x, 0, hitpos.y));
+	return ((float3)(hitpos.x, 0.f, hitpos.z));
 }
 
 

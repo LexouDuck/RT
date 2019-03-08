@@ -34,7 +34,7 @@ static t_intersection		rt_cl_paraboloid_intersect
 	float2		roots;
 
 	quadpoly.x = rt_cl_float3_ynull_dot(ray.dir, ray.dir);
-	quadpoly.y = 2 * rt_cl_float3_ynull_dot(ray.dir, ray.pos) - ray.dir.y;
+	quadpoly.y = 2.f * rt_cl_float3_ynull_dot(ray.dir, ray.pos) - ray.dir.y;
 	quadpoly.z = rt_cl_float3_ynull_dot(ray.pos, ray.pos) - ray.pos.y;
 	if (!(rt_cl_get_realroots_quadpoly(&roots, quadpoly)))
 		return (INTER_NONE);
@@ -71,7 +71,7 @@ static float3			rt_cl_paraboloid_get_normal
 {
 	float3		normal;
 
-	normal = (float3)(2 * hitpos.x, -1.f, 2 * hitpos.z);
+	normal = (float3)(2.f * hitpos.x, -1.f, 2.f * hitpos.z);
 	normal = normalize(normal);
 	return (normal);
 }
@@ -102,19 +102,19 @@ static t_intersection			rt_cl_saddle_intersect
 	bool		is_inter_inside;
 
 	quadpoly.x = ray.dir.x * ray.dir.x - ray.dir.z * ray.dir.z;
-	quadpoly.y = 2 * (ray.dir.x * ray.pos.x - ray.dir.z * ray.pos.z) - ray.dir.y;
+	quadpoly.y = 2.f * (ray.dir.x * ray.pos.x - ray.dir.z * ray.pos.z) - ray.dir.y;
 	quadpoly.z = ray.pos.x * ray.pos.x - ray.pos.z * ray.pos.z - ray.pos.y;
 	if (!(rt_cl_get_realroots_quadpoly(&roots, quadpoly)))
 		return (INTER_NONE);
-	if (roots.x <= 0. && roots.y <= 0.)
+	if (roots.x <= 0.f && roots.y <= 0.f)
 		return (INTER_NONE);
-	is_inter_inside = quadpoly.z < 0.;
-	if (roots.x <= 0.)
+	is_inter_inside = quadpoly.z < 0.f;
+	if (roots.x <= 0.f)
 	{
 		*res = roots.y;
 		return (is_inter_inside ? INTER_INSIDE : INTER_OUTSIDE);
 	}
-	else if (roots.y <= 0.)
+	else if (roots.y <= 0.f)
 	{
 		*res = roots.x;
 		return (is_inter_inside ? INTER_INSIDE : INTER_OUTSIDE);
@@ -137,7 +137,7 @@ static float3			rt_cl_saddle_get_normal
 {
 	float3		normal;
 
-	normal = (float3)(2 * hitpos.x, -1.f, -2 * hitpos.z);
+	normal = (float3)(2.f * hitpos.x, -1.f, -2.f * hitpos.z);
 	normal = normalize(normal);
 	return (normal);
 }

@@ -2,7 +2,7 @@ NAME	=	RT
 
 # Compiler
 CC	= _
-CC_WIN	= x86_64-w64-mingw32-gcc
+CC_WIN	= i686-w64-mingw32-gcc
 CC_LIN	= gcc
 CC_MAC	= gcc
 
@@ -16,7 +16,7 @@ CFLAGS_MAC	=
 
 # Linker (for embedding binary files inside the program)
 LD	= _
-LD_WIN	= x86_64-w64-mingw32-ld -r -b binary
+LD_WIN	= i686-w64-mingw32-ld -r -b binary
 LD_LIN	= ld -r -b binary
 LD_MAC	= ld -r -sectcreate __DATA __inc_ui_chr
 
@@ -125,7 +125,6 @@ SRCS	= 	main.c							\
 			ui_init.c						\
 			ui_menu_file.c					\
 			ui_menu_edit.c					\
-			ui_menu_view.c					\
 			ui_render_util.c				\
 			ui_render.c						\
 			ui_mouse.c						\
@@ -156,6 +155,8 @@ SRCS_CL	=	rt_cl_scene.cl.h		\
 			rt_cl_hyperboloid.cl 	\
 			rt_cl_debug.cl			\
 			rt_cl_build_scene.cl	\
+			rt_cl_perlin_noise.cl	\
+			rt_cl_patterns.cl		\
 			rt_cl_texture.cl		\
 			rt_cl_render.cl
 

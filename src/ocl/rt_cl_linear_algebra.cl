@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-static float				rt_cl_float3_ynull_dot
+static inline float		rt_cl_float3_ynull_dot
 (
 							float3 v1,
 							float3 v2
@@ -23,7 +23,7 @@ static float				rt_cl_float3_ynull_dot
 	return (v1.x * v2.x + v1.z * v2.z);
 }
 
-static inline float			rt_cl_float3_yneg_dot
+static inline float		rt_cl_float3_yneg_dot
 (							float3 v1, 
 							float3 v2
 )
@@ -40,13 +40,13 @@ static bool				rt_cl_get_realroots_quadpoly
 	float		delta;
 	float		one_over_two_a;
 
-	delta = quadpoly.y * quadpoly.y - 4 * quadpoly.x * quadpoly.z;
-	if (delta < 0.)
+	delta = quadpoly.y * quadpoly.y - 4.f * quadpoly.x * quadpoly.z;
+	if (delta < 0.f)
 	{
-		roots->x = roots->y = 0. / 0.;
+		roots->x = roots->y = 0.f / 0.f;
 		return (false);
 	}
-	one_over_two_a = 0.5 / quadpoly.x;
+	one_over_two_a = 0.5f / quadpoly.x;
 	delta = sqrt(delta);
 	roots->x = (-quadpoly.y + delta) * one_over_two_a;
 	roots->y = (-quadpoly.y - delta) * one_over_two_a;
@@ -77,7 +77,7 @@ static float3			rt_cl_apply_homogeneous_matrix(float16 mat44, float3 vec3)
 	float3		res;
 
 	tmp.xyz = vec3;
-	tmp.w = 1.;
+	tmp.w = 1.f;
 	res.x = dot(mat44.s048C, tmp);
 	res.y = dot(mat44.s159D, tmp);
 	res.z = dot(mat44.s26AE, tmp);
@@ -87,9 +87,9 @@ static float3			rt_cl_apply_homogeneous_matrix(float16 mat44, float3 vec3)
 
 static float16			rt_cl_build_diagonal_mat33in44(float3 diag)
 {
-	float16		result = (float16)(0.);
+	float16		result = (float16)(0.f);
 
-	result.s05AF = (float4)(diag.x, diag.y, diag.z, 1.);
+	result.s05AF = (float4)(diag.x, diag.y, diag.z, 1.f);
 	return (result);
 }
 
@@ -100,7 +100,7 @@ static float16			rt_cl_build_rotation_mat33in44(float theta, int axis)
 	float		c_th;
 	float		s_th;
 
-	result = rt_cl_build_diagonal_mat33in44((float3)(1., 1., 1.));
+	result = rt_cl_build_diagonal_mat33in44((float3)(1.f, 1.f, 1.f));
 	axis = axis % 3;
 	s_th = sincos(theta, &c_th);
 	if (axis == 0)
@@ -158,7 +158,7 @@ static float16			rt_cl_mat33in44_inv(float16 const mat33)
 	float16		result;
 
 	if (fabs((det = rt_cl_mat33in44_det(mat33))) < EPS)
-		return ((float16)(0. / 0.));
+		return ((float16)(0.f / 0.f));
 	result.s0 = mat33.s5 * mat33.sA - mat33.s6 * mat33.s9;
 	result.s4 = mat33.s6 * mat33.s8 - mat33.s4 * mat33.sA;
 	result.s8 = mat33.s4 * mat33.s9 - mat33.s5 * mat33.s8;
@@ -168,10 +168,8 @@ static float16			rt_cl_mat33in44_inv(float16 const mat33)
 	result.s2 = mat33.s1 * mat33.s6 - mat33.s2 * mat33.s5;
 	result.s6 = mat33.s2 * mat33.s4 - mat33.s0 * mat33.s6;
 	result.sA = mat33.s0 * mat33.s5 - mat33.s1 * mat33.s4;
-	result = (float16)(1. / det) * (result); //TODO use native_recip ?
-	result.s37B = (float3)(0., 0., 0.);
-	result.sCDEF = (float4)(0., 0., 0., 1.);                                                                                                                      
+	result = (float16)(1.f / det) * (result); //TODO use native_recip ?
+	result.s37B = (float3)(0.f, 0.f, 0.f);
+	result.sCDEF = (float4)(0.f, 0.f, 0.f, 1.f);                                                                                                                      
 	return (result);
 }
-
-

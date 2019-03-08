@@ -38,7 +38,7 @@ void		init_scene(void)
 	rt.scene.render_mode = DEFAULT_RENDER_MODE;
 }
 
-void		update_scene()
+void		update_scene(void)
 {
 	rt.scene.bg_color = ft_color_argb32_set(0.,
 		rt.scene.bg_rgb.x * 255.,

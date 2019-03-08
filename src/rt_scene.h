@@ -33,6 +33,8 @@
 # define DEFAULT_CAM_FOV			0.4
 # define DEFAULT_CAM_APERTURE		0.4
 # define DEFAULT_CAM_FOCALDIST		0.02
+# define DEFAULT_CAM_RGB_MASK		((cl_float3){{ 1.6, 1.6, 1.6 }})
+# define DEFAULT_CAM_RGB_SHADE		((cl_float3){{ 0., 0., 0. }})
 
 # define DEFAULT_OBJECT_REFRAC		1.
 # define DEFAULT_OBJECT_ROUGHNESS	0.0001
@@ -45,8 +47,12 @@
 # define OBJECT_ARGS_AMOUNT			14
 # define OBJECT_NAME_MAXLENGTH		24
 # define OBJECT_MAX_AMOUNT			32
-# define DEFAULT_RAYSAMP_SIZE		64
-# define DEFAULT_MAX_RAY_DEPTH		6
+
+# define DEFAULT_RAYSAMP_SIZE		16
+# define DEFAULT_MAX_RAY_DEPTH		4
+
+# define MAXIMUM_RAYSAMP_SIZE		0x10000
+# define MAXIMUM_MAX_RAY_DEPTH		0x1000
 
 # define RENDER_MODES				5
 # define DEFAULT_RENDER_MODE		4
@@ -111,6 +117,8 @@ typedef struct		s_camera
 	cl_float		hrz_fov;
 	cl_float		aperture;
 	cl_float		focal_dist;
+	cl_float3		rgb_shade;
+	cl_float3		rgb_mask;
 	t_camera_model	model;
 	cl_float16		c_to_w;
 //	cl_float16		w_to_c;
@@ -195,7 +203,7 @@ typedef struct		s_bbox
 ** All primitives are considered to be centered near the origin with default
 ** unit dimensions.
 */
-# define			PRIMITIVES	14
+# define			PRIMITIVES	15
 typedef enum		e_primitive
 {
 	none = 0,
@@ -206,6 +214,7 @@ typedef enum		e_primitive
 	plane,
 	rectangle,
 	disk,
+	triangle,
 	saddle,
 	paraboloid,
 	hyperboloid,
@@ -239,12 +248,12 @@ typedef	enum		e_pattern
 	solid = 0,
 	horizontal_wave,
 	vertical_wave,
-	wave,
+	double_wave,
 	horizontal_stripe,
 	vertical_stripe,
 	checkerboard,
 	hue,
-	noise,
+	perlin,
 	marble,
 	wood,
 }					t_pattern;
@@ -263,6 +272,7 @@ typedef struct		s_texture
 	cl_float		texel_value;
 	cl_float3		uvw_pos;
 	cl_float3		uvw_scale;
+	cl_float3		uvw_offset;
 	cl_float3		bump_normal;
 	cl_float3		rgb;
 }					t_texture;

@@ -20,7 +20,6 @@
 
 static void	ui_change_control_numberbox_int(cl_uint *value)
 {
-	rt.must_render = TRUE;
 	if (value == &rt.ocl.gpu_platform_index)
 	{
 		if (*value >= rt.ocl.platform_amount)
@@ -28,6 +27,21 @@ static void	ui_change_control_numberbox_int(cl_uint *value)
 		opencl_freeall();
 		opencl_init(rt.ocl.gpu_platform_index);
 	}
+	else if (value == &rt.scene.mc_raysamp_size)
+	{
+		if (*value > MAXIMUM_RAYSAMP_SIZE)
+			*value = MAXIMUM_RAYSAMP_SIZE;
+		else if (*value < 1)
+			*value = 1;
+	}
+	else if (value == &rt.scene.max_ray_depth)
+	{
+		if (*value > MAXIMUM_MAX_RAY_DEPTH)
+			*value = MAXIMUM_MAX_RAY_DEPTH;
+		else if (*value < 1)
+			*value = 1;
+	}
+	rt.must_render = TRUE;
 }
 
 void	ui_leave_control_numberbox_int(t_textinput *textinput)

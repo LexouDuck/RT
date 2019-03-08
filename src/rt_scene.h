@@ -47,8 +47,12 @@
 # define OBJECT_ARGS_AMOUNT			14
 # define OBJECT_NAME_MAXLENGTH		24
 # define OBJECT_MAX_AMOUNT			32
-# define DEFAULT_RAYSAMP_SIZE		64
-# define DEFAULT_MAX_RAY_DEPTH		6
+
+# define DEFAULT_RAYSAMP_SIZE		16
+# define DEFAULT_MAX_RAY_DEPTH		4
+
+# define MAXIMUM_RAYSAMP_SIZE		0x10000
+# define MAXIMUM_MAX_RAY_DEPTH		0x1000
 
 # define RENDER_MODES				5
 # define DEFAULT_RENDER_MODE		4
@@ -244,12 +248,12 @@ typedef	enum		e_pattern
 	solid = 0,
 	horizontal_wave,
 	vertical_wave,
-	wave,
+	double_wave,
 	horizontal_stripe,
 	vertical_stripe,
 	checkerboard,
 	hue,
-	noise,
+	perlin,
 	marble,
 	wood,
 }					t_pattern;
@@ -268,6 +272,7 @@ typedef struct		s_texture
 	cl_float		texel_value;
 	cl_float3		uvw_pos;
 	cl_float3		uvw_scale;
+	cl_float3		uvw_offset;
 	cl_float3		bump_normal;
 	cl_float3		rgb;
 }					t_texture;

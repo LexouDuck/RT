@@ -184,12 +184,12 @@ typedef	enum	e_pattern
 	solid = 0,
 	horizontal_wave,
 	vertical_wave,
-	wave,
+	double_wave,
 	horizontal_stripe,
 	vertical_stripe,
 	checkerboard,
 	hue,
-	noise,
+	perlin,
 	marble,
 	wood,
 }				t_pattern;
@@ -207,6 +207,7 @@ typedef struct	s_texture
 	float		texel_value;
 	float3		uvw_pos;
 	float3		uvw_scale;
+	float3		uvw_offset;
 	float3		bump_normal;
 	float3		rgb;
 }				t_texture;

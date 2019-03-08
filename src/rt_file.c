@@ -27,7 +27,7 @@ int		rt_file_open(char *filepath)
 		return (ERROR);
 	if (parser.file)
 	{
-		ft_memclr(rt.scene.objects, sizeof(rt.scene.objects));
+		ft_memclr(rt.scene.objects, sizeof(t_object) * OBJECT_MAX_AMOUNT);
 		rt.scene.object_amount = 0;
 		if ((error = rt_read_file(&parser)))
 		{

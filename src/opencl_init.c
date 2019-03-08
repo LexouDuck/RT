@@ -19,10 +19,10 @@
 
 static int		opencl_initialize_platforms(void)
 {
-	cl_int		err;
+	cl_int		error;
 	t_bool		has_gpu;
 
-	if ((err = clGetPlatformIDs(RT_CL_PLATFORM_MAX_AMOUNT,
+	if ((error = clGetPlatformIDs(RT_CL_PLATFORM_MAX_AMOUNT,
 		rt.ocl.platforms, &(rt.ocl.platform_amount))) != CL_SUCCESS)
 		return (debug_perror("opencl_get_platform_and_gpu:"
 							" could not get platform IDs."));
@@ -30,9 +30,12 @@ static int		opencl_initialize_platforms(void)
 	rt.ocl.gpu_platform_index = -1;
 	while (!has_gpu && ++rt.ocl.gpu_platform_index < rt.ocl.platform_amount)
 	{
-		if ((err = clGetDeviceIDs(rt.ocl.platforms[rt.ocl.gpu_platform_index],
+		if ((error = clGetDeviceIDs(rt.ocl.platforms[rt.ocl.gpu_platform_index],
 			CL_DEVICE_TYPE_GPU, 1, &(rt.ocl.gpu.id), NULL)) == CL_SUCCESS)
 			has_gpu = TRUE;
+		else
+			debug_output_value("No GPU found for platform -> ",
+				(char *)opencl_get_error_string(error), FALSE);
 	}
 	if (!has_gpu)
 		return (debug_perror("opencl_get_platform_and_gpu:"
@@ -42,18 +45,19 @@ static int		opencl_initialize_platforms(void)
 
 static int		opencl_get_platform_and_gpu(int platform_index)
 {
-	cl_int		err;
+	cl_int		error;
 
 	if (platform_index == RT_CL_PLATFORM_UNINITIALIZED)
 	{
 		if (opencl_initialize_platforms())
+
 			return (debug_perror("opencl_get_platform_and_gpu:"
 								" error while querying available platforms."));
 	}
 	else
 	{
 		rt.ocl.gpu_platform_index = platform_index;
-		if ((err = clGetDeviceIDs(rt.ocl.platforms[rt.ocl.gpu_platform_index],
+		if ((error = clGetDeviceIDs(rt.ocl.platforms[rt.ocl.gpu_platform_index],
 			CL_DEVICE_TYPE_GPU, 1, &(rt.ocl.gpu.id), NULL)) < 0)
 			return (debug_perror("opencl_get_platform_and_gpu:"
 								" error getting selected platform's GPU."));

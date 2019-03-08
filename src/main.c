@@ -90,11 +90,13 @@ static int		main_loop(void)
 		free(rt.ui.current_textinput.input);
 		rt.ui.current_textinput.input = NULL;
 	}
+	debug_output("Attempting to close program...\n");
 	config_save();
 	config_free();
 	opencl_freeall();
 	SDL_DestroyWindow(rt.sdl.window);
 	SDL_Quit();
+	debug_output("Program closed successfully.\n");
 	return (OK);
 }
 

@@ -24,6 +24,17 @@ void	ui_render_menubar(void)
 	t_s32		y;
 	t_s32		i;
 
+	rect.x = 0;
+	rect.y = 0;
+	rect.w = UI_WIDTH_TILES;
+	rect.h = 14;
+	ui_render_fill(0, rect, FALSE);
+	ui_render_icon(26,
+		TILE * (UI_WIDTH_TILES - 8),
+		TILE * 1, FALSE);
+	ui_render_icon(27,
+		TILE * (UI_WIDTH_TILES - 4),
+		TILE * 1, FALSE);
 	i = -1;
 	while (++i < MENUBAR_ITEMS)
 	{
@@ -33,12 +44,7 @@ void	ui_render_menubar(void)
 		ui_render_text(rt.ui.menubar.item_labels[i],
 			rt.ui.menubar.item_hitbox[i].x + 2, 1, TRUE);
 	}
-	rect.x = 0;
-	rect.y = MENUBAR_ITEMS_H;
-	rect.w = UI_WIDTH_TILES;
-	rect.h = 7;
-	ui_render_fill(0, rect, FALSE);
-	y = rect.y;
+	y = MENUBAR_ITEMS_H;
 	ui_render_text("Platform", 1, y, FALSE);
 	ui_render_text("Rays", 11, y, FALSE);
 	ui_render_text("Depth", 20, y, FALSE);

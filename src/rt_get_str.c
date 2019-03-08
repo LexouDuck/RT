@@ -15,7 +15,7 @@
 
 inline char		*rt_get_str_primitive(t_primitive primitive)
 {
-	static char	*primitives[] = {
+	static char	*primitives[PRIMITIVES] = {
 		"N/A",
 		"SPHERE",
 		"CUBE",
@@ -38,7 +38,7 @@ inline char		*rt_get_str_primitive(t_primitive primitive)
 
 inline char		*rt_get_str_material(t_material material)
 {
-	static char	*materials[] = {
+	static char	*materials[MATERIALS] = {
 		"LIGHT",
 		"DIFFUSE",
 		"TRANSPARENT",
@@ -78,14 +78,14 @@ inline char		*rt_get_str_pattern(t_pattern pattern)
 {
 	static char	*patterns[TEXTURE_PATTERNS] = {
 		"SOLID",
-		"WAVE_H",
-		"WAVE_V",
-		"WAVE",
-		"STRIPE_H",
-		"STRIPE_V",
+		"H_WAVES",
+		"V_WAVES",
+		"D_WAVES",
+		"H_STRIPES",
+		"V_STRIPES",
 		"CHECKER",
 		"HUE",
-		"NOISE",
+		"PERLIN",
 		"MARBLE",
 		"WOOD",
 	};

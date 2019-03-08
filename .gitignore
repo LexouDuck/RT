@@ -12,9 +12,14 @@ correc.*
 libft/test
 RT
 RT.exe
+RT.EXE
 log.txt
+log.TXT
 config.ini
+config.INI
+concat.cl
 concat.CL
+src/random_scene
 
 # Macintosh files
 *.DS_Store

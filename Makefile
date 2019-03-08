@@ -223,6 +223,8 @@ clean:
 	@make -C $(LFTDIR) clean
 	@printf "Deleting object files...\n"
 	@rm -f $(OBJS)
+	@rm -f log.txt
+	@rm -f config.ini
 	@rm -f assets.o
 	@rm -f concat.cl
 

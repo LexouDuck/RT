@@ -54,6 +54,7 @@ inline char	*rt_get_str_rendermode(t_rendermode rendermode)
 		"OBJECT BBOX",
 		"WORLD  BBOX",
 		"SOLID COLOR",
+		"SLD TEXTURE"
 	};
 
 	return (rendermodes[rendermode]);

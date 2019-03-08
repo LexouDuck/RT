@@ -21,6 +21,7 @@ pos:(-9.00000, 0.00000, 0.00000)
 rot:(0.00000, 0.00000, 0.00000)
 scale:(1.00000, 6.00000, 10.00000)
 "Brick Side Left"
+refrac:1.25
 
 CUBE       
 material:TRANSPARENT
@@ -29,6 +30,7 @@ pos:(9.00000, 0.00000, 0.00000)
 rot:(0.00000, 0.00000, 0.00000)
 scale:(1.00000, 6.00000, 10.00000)
 "Brick Side Right"
+refrac:1.25
 
 CUBE       
 material:TRANSPARENT
@@ -37,6 +39,7 @@ pos:(0.00000, 0.00000, -9.00000)
 rot:(0.00000, 0.00000, 0.00000)
 scale:(10.00000, 6.00000, 1.00000)
 "Brick Side Near"
+refrac:1.25
 
 CUBE       
 material:TRANSPARENT
@@ -45,6 +48,7 @@ pos:(0.00000, 0.00000, 9.00000)
 rot:(0.00000, 0.00000, 0.00000)
 scale:(10.00000, 6.00000, 1.00000)
 "Brick Side Far"
+refrac:1.25
 
 CUBE       
 material:TRANSPARENT
@@ -53,6 +57,7 @@ pos:(0.00000, 6.00000, 0.00000)
 rot:(0.00000, 0.00000, 0.00000)
 scale:(10.00000, 1.00000, 10.00000)
 "Brick Top"
+refrac:1.25
 
 CYLINDER   
 material:TRANSPARENT
@@ -61,6 +66,7 @@ pos:(5.00000, 8.00000, 5.00000)
 rot:(0.00000, 0.00000, 0.00000)
 scale:(3.00000, 2.00000, 3.00000)
 "Brick Stud TL"
+refrac:1.25
 
 CYLINDER   
 material:TRANSPARENT
@@ -69,6 +75,7 @@ pos:(5.00000, 8.00000, -5.00000)
 rot:(0.00000, 0.00000, 0.00000)
 scale:(3.00000, 2.00000, 3.00000)
 "Brick Stud TR"
+refrac:1.25
 
 CYLINDER   
 material:TRANSPARENT
@@ -77,6 +84,7 @@ pos:(-5.00000, 8.00000, 5.00000)
 rot:(0.00000, 0.00000, 0.00000)
 scale:(3.00000, 2.00000, 3.00000)
 "Brick Stud BL"
+refrac:1.25
 
 CYLINDER   
 material:TRANSPARENT
@@ -85,6 +93,16 @@ pos:(-5.00000, 8.00000, -5.00000)
 rot:(0.00000, 0.00000, 0.00000)
 scale:(3.00000, 2.00000, 3.00000)
 "Brick Stud BR"
+refrac:1.25
+
+CYLINDER   
+material:TRANSPARENT
+color:(1.00000, 0.00000, 0.00000)
+pos:(0.00000, 1.00000, 0.00000)
+rot:(0.00000, 0.00000, 0.00000)
+scale:(4.06999, 6.0000, 4.06999)
+"Bottom Pillar"
+refrac:1.25
 
 PLANE      
 material:DIFFUSE    
@@ -92,11 +110,3 @@ color:(1.00000, 1.00000, 1.00000)
 pos:(3.00000, -10.00000, 3.00000)
 rot:(0.00000, 0.50000, 0.00000)
 scale:(1.00000, 1.00000, 1.00000)
-
-CYLINDER   
-material:TRANSPARENT
-color:(1.00000, 0.00000, 0.00000)
-pos:(0.00000, 5.00000, 0.00000)
-rot:(0.00000, 0.00000, 0.00000)
-scale:(4.06999, 1.50000, 4.06999)
-"Bottom Pillar"

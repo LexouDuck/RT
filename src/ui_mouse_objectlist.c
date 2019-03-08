@@ -126,9 +126,10 @@ static void	ui_mouse_objectlist_expandedproperties(t_object *object, t_s32 y)
 	i = 0;
 	while (i < OBJECT_PROPERTIES)
 	{
-		ui_mouse_control_numberbox(&rt.ui.current_textinput, &ptr->x, 1, y + 1);
-		ui_mouse_control_numberbox(&rt.ui.current_textinput, &ptr->y, 10, y + 1);
-		ui_mouse_control_numberbox(&rt.ui.current_textinput, &ptr->z, 19, y + 1);
+		if (ui_mouse_control_numberbox_float(&rt.ui.current_textinput, &ptr->x, 1, y + 1) ||
+			ui_mouse_control_numberbox_float(&rt.ui.current_textinput, &ptr->y, 10, y + 1) ||
+			ui_mouse_control_numberbox_float(&rt.ui.current_textinput, &ptr->z, 19, y + 1))
+			return ;
 		y += OBJECT_PROPERTY_H;
 		++ptr;
 		++i;

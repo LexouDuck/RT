@@ -13,11 +13,11 @@
 #include "../rt.h"
 #include "debug.h"
 
-static t_bool	ui_mouse_menu_rendermode(t_rendermode *rendermode)
+static t_bool	ui_mouse_menu_rendermode(t_rendermode *rendermode, t_s32 y)
 {
 	static SDL_Rect	rect = { 0, 0, 1, 1 };
 
-	rect.y = 3;
+	rect.y = y;
 	rect.x = 14;
 	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
 	{
@@ -35,11 +35,11 @@ static t_bool	ui_mouse_menu_rendermode(t_rendermode *rendermode)
 	return (FALSE);
 }
 
-static t_bool	ui_mouse_menu_cameramodel(t_camera_model *cameramodel)
+static t_bool	ui_mouse_menu_cameramodel(t_camera_model *cameramodel, t_s32 y)
 {
 	static SDL_Rect	rect = { 0, 0, 1, 1 };
 
-	rect.y = 5;
+	rect.y = y;
 	rect.x = 14;
 	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
 	{
@@ -59,13 +59,24 @@ static t_bool	ui_mouse_menu_cameramodel(t_camera_model *cameramodel)
 
 void	ui_mouse_menu(void)
 {
-	if (ui_mouse_menu_rendermode(&rt.scene.render_mode))
+	t_s32	y;
+
+	y = MENUBAR_ITEMS_H + 1;
+	if (ui_mouse_control_numberbox_int(&rt.ui.current_textinput, &rt.ocl.gpu_platform_index, 1, y) ||
+		ui_mouse_control_numberbox_int(&rt.ui.current_textinput, &rt.scene.mc_raysamp_size, 10, y) ||
+		ui_mouse_control_numberbox_int(&rt.ui.current_textinput, &rt.scene.max_ray_depth,   19, y))
 		return ;
-	if (ui_mouse_menu_cameramodel(&rt.scene.camera.model))
+	y += 3;
+	if (ui_mouse_menu_rendermode(&rt.scene.render_mode, y))
 		return ;
-	ui_mouse_control_numberbox(&rt.ui.current_textinput, &rt.scene.camera.hrz_fov,     1, 6);
-	ui_mouse_control_numberbox(&rt.ui.current_textinput, &rt.scene.camera.aperture,   10, 6);
-	ui_mouse_control_numberbox(&rt.ui.current_textinput, &rt.scene.camera.focal_dist, 19, 6);
+	y += 2;
+	if (ui_mouse_menu_cameramodel(&rt.scene.camera.model, y))
+		return ;
+	y += 2;
+	if (ui_mouse_control_numberbox_float(&rt.ui.current_textinput, &rt.scene.camera.hrz_fov,     1, y) ||
+		ui_mouse_control_numberbox_float(&rt.ui.current_textinput, &rt.scene.camera.aperture,   10, y) ||
+		ui_mouse_control_numberbox_float(&rt.ui.current_textinput, &rt.scene.camera.focal_dist, 19, y))
+		return ;
 }
 
 void	ui_mouse_menubar(void)

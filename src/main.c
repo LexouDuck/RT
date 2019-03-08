@@ -30,10 +30,7 @@ static void		update_window(void)
 			"Error during update_window() -> Screen clear: ", TRUE);
 	// display the UI
 	if (rt.ui.current_prompt.name)
-	{
-		ui_render_menubar();
 		ui_render_prompt();
-	}
 	else
 	{
 		ui_render_objectlist();

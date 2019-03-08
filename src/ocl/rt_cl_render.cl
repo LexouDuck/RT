@@ -157,6 +157,11 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 	normal = normal * ray.inter_type;
 	texture = rt_cl_get_texture_properties(scene, random_seeds, obj, hitpos, normal);
 
+	if (scene->render_mode == RENDERMODE_SOLIDTEXTURE)
+	{
+		ray.lum_acc = texture.rgb;
+		return (ray);
+	}
 	normal = texture.bump_normal;
 
 	new_ray.hit_obj_id = -1;
@@ -280,7 +285,7 @@ static t_ray			rt_cl_create_camray
 	else if (scene->camera.model == CAMERA_MODEL_ORTHOGRAPHIC)
 	{
 		camray.pos = (float3)(x_id - width / 2, y_id - height / 2, 0.f);
-		camray.pos *= (float3)(scene->camera.aperture);
+		camray.pos *= (float3)(scene->camera.aperture / scene->camera.zoom);
 		camray.dir = (float3)(0.f, 0.f, -1.f);
 	}
 	camray.pos = rt_cl_apply_homogeneous_matrix(cam_mat44, camray.pos);
@@ -312,6 +317,11 @@ static float3			rt_cl_get_pixel_color_from_mc_sampling
 				if (scene->render_mode == RENDERMODE_MCPT)
 				{
 					ray_i = rt_cl_accumulate_lum_and_bounce_ray(scene, random_seeds, ray_i, i, depth);
+				}
+				else if (scene->render_mode == RENDERMODE_SOLIDTEXTURE)
+				{
+					ray_i = rt_cl_accumulate_lum_and_bounce_ray(scene, random_seeds, ray_i, i, depth);
+					return (ray_i.lum_acc);
 				}
 				else
 				{

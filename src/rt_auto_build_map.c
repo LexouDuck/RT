@@ -5,6 +5,7 @@
 # include <fcntl.h>
 # include <errno.h>
 # include <string.h>
+# include <stdio.h>
 
 # include "libft.h"
 # include "libft_io.h"
@@ -101,14 +102,21 @@ int									set_alea_nb
 		result = (rand() % 20001) - 10000;
 	else if (type == TYPE_COLOR)
 		result = (rand() % 1000);
-	else if (type == TYPE_BBOX)
-		result = (rand() %  2001) - 1000;
 	else if (type == TYPE_POS_X)
-		result = (rand() %  1901) - 9500;
+	{
+		result = (rand() %  20001) - 10000;
+		printf("resuslt_x = : %d\n", result);
+	}
 	else if (type == TYPE_POS_Y)
+	{
 		result = (rand() % 4001);
+		printf("resuslt_y = : %d\n", result);
+	}
 	else if (type == TYPE_POS_Z)
+	{
 		result = (rand() % 2001) - 1000;
+		printf("resuslt_z = : %d\n", result);
+	}
 	return (result);
 }
 
@@ -203,11 +211,11 @@ void								build_fix_object
 	FT_Write_Line(fd, 	"CUBE");
 	FT_Write_Line(fd,	"material:DIFFUSE");
 	FT_Write_Line(fd,	"\"floor\"");
-	FT_Write_Line(fd,	"color:(0.26666, 0.26666, 0.26666)");
+	FT_Write_Line(fd,	"color:(1.00000, 1.00000, 1.00000)");
 	FT_Write_Line(fd,	"color2:(0.00000, 0.00000, 0.00000)");
-	FT_Write_Line(fd,	"pos:(0.00000, -1.00000, 0.00000)");
+	FT_Write_Line(fd,	"pos:(0.00000, -7.00000, 0.00000)");
 	FT_Write_Line(fd,	"rot:(0.00000, 0.00000, 0.00000)");
-	FT_Write_Line(fd,	"scale:(10.00000, -1.00000, 10.00000)");
+	FT_Write_Line(fd,	"scale:(20.00000, 1.00000, 20.00000)");
 	FT_Write_Line(fd,	"bbox_vi:(-1.00000, -1.00000, -1.00000)");
 	FT_Write_Line(fd,	"bbox_vf:(1.00000, 1.00000, 1.00000)\n");
 
@@ -216,52 +224,42 @@ void								build_fix_object
 	FT_Write_Line(fd,	"\"ceiling\"");
 	FT_Write_Line(fd,	"color:(0.26666, 0.26666, 0.26666)");
 	FT_Write_Line(fd,	"color2:(0.00000, 0.00000, 0.00000)");
-	FT_Write_Line(fd,	"pos:(0.00000, 11.00000, 0.00000)");
+	FT_Write_Line(fd,	"pos:(0.00000, 17.00000, 0.00000)");
 	FT_Write_Line(fd,	"rot:(0.00000, 0.00000, 0.00000)");
-	FT_Write_Line(fd,	"scale:(10.00000, 2.00000, 10.00000)");
+	FT_Write_Line(fd,	"scale:(20.00000, 2.00000, 20.00000)");
 	FT_Write_Line(fd,	"bbox_vi:(-1.00000, -1.00000, -1.00000)");
 	FT_Write_Line(fd,	"bbox_vf:(1.00000, 1.00000, 1.00000)\n");
 
 	FT_Write_Line(fd, 	"CUBE");
 	FT_Write_Line(fd,	"material:DIFFUSE");
-	FT_Write_Line(fd,	"\"walls back\"");
-	FT_Write_Line(fd,	"color:(0.19999, 0.53333, 1.00000)");
+	FT_Write_Line(fd,	"\"walls Blue\"");
+	FT_Write_Line(fd,	"color:(0.01000, 0.01000, 1.00000)");
 	FT_Write_Line(fd,	"color2:(0.00000, 0.00000, 0.00000)");
-	FT_Write_Line(fd,	"pos:(0.00000, 5.00000, -10.00000)");
+	FT_Write_Line(fd,	"pos:(0.00000, 4.45000, -19.50000)");
 	FT_Write_Line(fd,	"rot:(0.00000, 0.00000, 0.00000)");
-	FT_Write_Line(fd,	"scale:(10.00000, 7.00000, 1.00000)");
+	FT_Write_Line(fd,	"scale:(19.00000, 11.0000, 0.50000)");
 	FT_Write_Line(fd,	"bbox_vi:(-1.00000, -1.00000, -1.00000)");
 	FT_Write_Line(fd,	"bbox_vf:(1.00000, 1.00000, 1.00000)\n");
 
-	FT_Write_Line(fd, 	"SPHERE");
+	FT_Write_Line(fd, 	"CUBE");
 	FT_Write_Line(fd,	"material:DIFFUSE");
-	FT_Write_Line(fd,	"color:(1.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd,	"\"Walls Red\"");
+	FT_Write_Line(fd,	"color:(1.00000, 0.01000, 0.01000)");
 	FT_Write_Line(fd,	"color2:(0.00000, 0.00000, 0.00000)");
-	FT_Write_Line(fd,	"pos:(0.00000, 2.00000, 0.00000)");
+	FT_Write_Line(fd,	"pos:(-19.70000, 4.50000, 0.00000)");
 	FT_Write_Line(fd,	"rot:(0.00000, 0.00000, 0.00000)");
-	FT_Write_Line(fd,	"scale:(1.00000, 1.00000, 1.00000)");
+	FT_Write_Line(fd,	"scale:(0.30000, 10.50000, 20.00000)");
 	FT_Write_Line(fd,	"bbox_vi:(-1.00000, -1.00000, -1.00000)");
 	FT_Write_Line(fd,	"bbox_vf:(1.00000, 1.00000, 1.00000)\n");
 
-	FT_Write_Line(fd, 	"PLANE");
+	FT_Write_Line(fd, 	"CUBE");
 	FT_Write_Line(fd,	"material:DIFFUSE");
-	FT_Write_Line(fd,	"\"Walls left\"");
-	FT_Write_Line(fd,	"color:(1.00000, 0.00000, 0.00000)");
-	FT_Write_Line(fd,	"color2:(0.00000, 0.00000, 0.00000)");
-	FT_Write_Line(fd,	"pos:(-9.50000, 4.50000, 0.00000)");
-	FT_Write_Line(fd,	"rot:(0.00000, 0.00000, 0.00000)");
-	FT_Write_Line(fd,	"scale:(0.50000, 5.00000, 10.00000)");
-	FT_Write_Line(fd,	"bbox_vi:(-1.00000, -1.00000, -1.00000)");
-	FT_Write_Line(fd,	"bbox_vf:(1.00000, 1.00000, 1.00000)\n");
-
-	FT_Write_Line(fd, 	"PLANE");
-	FT_Write_Line(fd,	"material:DIFFUSE");
-	FT_Write_Line(fd,	"\"Walls right\"");
-	FT_Write_Line(fd,	"color:(1.00000, 0.66666, 0.66666)");
+	FT_Write_Line(fd,	"\"Walls Green\"");
+	FT_Write_Line(fd,	"color:(0.01000, 1.00000, 0.01000)");
 	FT_Write_Line(fd,	"color2:(0.00000, 3.50000, 0.00000)");
-	FT_Write_Line(fd,	"pos:(9.50000, 5.00000, 0.00000)");
+	FT_Write_Line(fd,	"pos:(19.70000, 4.45000, 0.00000)");
 	FT_Write_Line(fd,	"rot:(0.00000, 0.00000, 0.00000)");
-	FT_Write_Line(fd,	"scale:(0.50000, 5.00000, 10.00000)");
+	FT_Write_Line(fd,	"scale:(0.30000, 10.50000, 20.00000)");
 	FT_Write_Line(fd,	"bbox_vi:(-1.00000, -1.00000, -1.00000)");
 	FT_Write_Line(fd,	"bbox_vf:(1.00000, 1.00000, 1.00000)\n");
 
@@ -270,11 +268,11 @@ void								build_fix_object
 	FT_Write_Line(fd,	"\"light of the top\"");
 	FT_Write_Line(fd,	"color:(1.00000, 1.00000, 1.00000)");
 	FT_Write_Line(fd,	"color2:(0.00000, 0.00000, 0.00000)");
-	FT_Write_Line(fd,	"pos:(0.00000, 9.00000, -2.00000)");
-	FT_Write_Line(fd,	"rot:(0.00000, 0.00000, -3.16000)");
-	FT_Write_Line(fd,	"scale:(4.00000, 8.00000, 8.00000)");
-	FT_Write_Line(fd,	"bbox_vi:(-1.00000, -1.00000, -1.00000)");
-	FT_Write_Line(fd,	"bbox_vf:(1.00000, 1.00000, 1.00000)\n");
+	FT_Write_Line(fd,	"pos:(0.00000, 14.90000, 0.00000)");
+	FT_Write_Line(fd,	"rot:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd,	"scale:(31.00000, 1.00000, 31.00000)");
+	FT_Write_Line(fd,	"bbox_vi:(-0.50000, -0.50000, -0.50000)");
+	FT_Write_Line(fd,	"bbox_vf:(0.50000, 0.50000, 0.50000)\n");
 }
 
 
@@ -299,19 +297,19 @@ void								write_scene
 		write_float3(fd, "color:", TYPE_COLOR);
 		write_float3(fd, "color2:", TYPE_COLOR);
 		FT_Write_String(fd, "pos:(");
-		vec = FT_F32_To_String(set_alea_nb(TYPE_POS_X) / 1000, 5);
+		vec = FT_F32_To_String(set_alea_nb(TYPE_POS_X) / 1000.0, 5);
 		FT_Write_String(fd, vec);
 		FT_Write_String(fd, ", ");
-		vec = FT_F32_To_String(set_alea_nb(TYPE_POS_Y) / 1000, 5);
+		vec = FT_F32_To_String(set_alea_nb(TYPE_POS_Y) / 1000.0, 5);
 		FT_Write_String(fd, vec);
 		FT_Write_String(fd, ", ");
-		vec = FT_F32_To_String(set_alea_nb(TYPE_POS_Z) / 1000, 5);
+		vec = FT_F32_To_String(set_alea_nb(TYPE_POS_Z) / 1000.0, 5);
 		FT_Write_String(fd, vec);
 		FT_Write_String(fd, ")\n");
 		FT_Write_Line(fd, "rot:(0.00000 , 0.00000, 0.00000)");
 		write_float3(fd, "scale:", TYPE_FLOAT);
-		write_float3(fd, "bbox_vi:", TYPE_BBOX);
-		write_float3(fd, "bbox_vf:", TYPE_BBOX);
+		FT_Write_Line(fd, "bbox_vi:(-1.00000, -1.00000, -1.00000)");
+		FT_Write_Line(fd, "bbox_vf:(1.00000, 1.00000, 1.00000)");
 		FT_Write_Char(fd, '\n');
 	}
 }

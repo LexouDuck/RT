@@ -78,10 +78,12 @@ void	event_mouse_release(SDL_Event *event)
 	{
 		if (rt.ui.current_textinput.type)
 		{
-			if (rt.ui.current_textinput.type == texttype_number_float)
-				ui_leave_control_numberbox(&rt.ui.current_textinput);
-			else if (rt.ui.current_textinput.type == texttype_text)
+			if (rt.ui.current_textinput.type == texttype_text)
 				ui_leave_control_textbox(&rt.ui.current_textinput);
+			else if (rt.ui.current_textinput.type == texttype_number_int)
+				ui_leave_control_numberbox_int(&rt.ui.current_textinput);
+			else if (rt.ui.current_textinput.type == texttype_number_float)
+				ui_leave_control_numberbox_float(&rt.ui.current_textinput);
 		}
 		if (rt.ui.current_prompt.name)
 			ui_mouse_prompt();

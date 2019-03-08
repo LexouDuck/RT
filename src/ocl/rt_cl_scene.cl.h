@@ -34,6 +34,7 @@ typedef enum		e_rendermode
 	RENDERMODE_BBOX_OS,
 	RENDERMODE_BBOX_WS,
 	RENDERMODE_SOLIDCOLOR,
+	RENDERMODE_SOLIDTEXTURE
 }					t_rendermode;
 
 /*

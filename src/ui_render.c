@@ -39,6 +39,14 @@ void	ui_render_menubar(void)
 	rect.h = 7;
 	ui_render_fill(0, rect, FALSE);
 	y = rect.y;
+	ui_render_text("Platform", 1, y, FALSE);
+	ui_render_text("Rays", 11, y, FALSE);
+	ui_render_text("Depth", 20, y, FALSE);
+	y += 1;
+	ui_render_control_numberbox_int( 1, y, &rt.ocl.gpu_platform_index);
+	ui_render_control_numberbox_int(10, y, &rt.scene.mc_raysamp_size);
+	ui_render_control_numberbox_int(19, y, &rt.scene.max_ray_depth);
+	y += 3;
 	ui_render_text("Render Mode:", 2, y, FALSE);
 	ui_render_text("\x12", 14, y, TRUE);
 	ui_render_text("\x13", 27, y, TRUE);
@@ -53,11 +61,9 @@ void	ui_render_menubar(void)
 	ui_render_text("Aperture:", 7, y, FALSE);
 	ui_render_text("FocalDist:", 18, y, FALSE);
 	y += 1;
-	ui_render_control_numberbox( 1, y, &rt.scene.camera.hrz_fov);
-	ui_render_control_numberbox(10, y, &rt.scene.camera.aperture);
-	ui_render_control_numberbox(19, y, &rt.scene.camera.focal_dist);
-
-
+	ui_render_control_numberbox_float( 1, y, &rt.scene.camera.hrz_fov);
+	ui_render_control_numberbox_float(10, y, &rt.scene.camera.aperture);
+	ui_render_control_numberbox_float(19, y, &rt.scene.camera.focal_dist);
 }
 
 void	ui_render_dropdown(t_menu *dropdown)

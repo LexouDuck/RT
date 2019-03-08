@@ -111,16 +111,13 @@ static int		main_loop(void)
 int				main(int argc, char *argv[])
 {
 	int	i;
-//printf("debug: init debug\n");
+
 	if (debug_init())
 		return (ERROR);
-//printf("debug: init config\n");
 	if (config_init())
 		return (ERROR);
-//printf("debug: init sdl\n");
 	if (init_sdl())
 		return (ERROR);
-//printf("debug: init window\n");
 	if (init_window())
 		return (ERROR);
 	if (init_window_display())
@@ -138,10 +135,8 @@ int				main(int argc, char *argv[])
 			rt_file_import(argv[i]);
 		}
 	}
-//printf("debug: init ui\n");
 	if (ui_init())
 		return (ERROR);
-//printf("debug: init opencl\n");
 	if (opencl_init(RT_CL_PLATFORM_UNINITIALIZED))
 		return (ERROR);
 	return (main_loop());

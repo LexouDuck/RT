@@ -25,12 +25,12 @@ static t_intersection		rt_cl_plane_intersect
 {
 	float		tmp;
 
-	if (ray.pos.y * ray.dir.y >= 0.)
+	if (ray.pos.y * ray.dir.y >= 0.f)
 		return (INTER_NONE);
 	if ((tmp = -ray.pos.y / ray.dir.y) >= ray.t)
 		return (INTER_NONE);
 	*res = tmp;
-	return (ray.pos.y > 0. ? INTER_OUTSIDE : INTER_INSIDE);
+	return (ray.pos.y > 0.f ? INTER_OUTSIDE : INTER_INSIDE);
 }
 
 /*
@@ -51,7 +51,7 @@ static t_intersection		rt_cl_disk_intersect
 		ray.t = *res;
 		tmp.x = ray.pos.x + ray.t * ray.dir.x;
 		tmp.z = ray.pos.z + ray.t * ray.dir.z;
-		if (tmp.x * tmp.x + tmp.z * tmp.z <= 1.)
+		if (tmp.x * tmp.x + tmp.z * tmp.z <= 1.f)
 		{
 			*res = ray.t;
 			return (ray.inter_type);
@@ -61,7 +61,7 @@ static t_intersection		rt_cl_disk_intersect
 }
 
 /*
-** The square primitive is [-0.5, 0.5]_x × [-0.5, 0.5]_z
+** The square primitive is [-1., 1.]_x × [-1., 1.]_z
 */
 static t_intersection		rt_cl_rectangle_intersect
 (
@@ -77,8 +77,8 @@ static t_intersection		rt_cl_rectangle_intersect
 		ray.t = *res;
 		tmp.x = ray.pos.x + ray.t * ray.dir.x;
 		tmp.z = ray.pos.z + ray.t * ray.dir.z;
-		if (-0.5 <= tmp.x && tmp.x <= 0.5 &&
-			-0.5 <= tmp.z && tmp.z <= 0.5)
+		if (-1.f <= tmp.x && tmp.x <= 1.f &&
+			-1.f <= tmp.z && tmp.z <= 1.f)
 		{
 			*res = ray.t;
 			return (ray.inter_type);
@@ -97,7 +97,7 @@ static t_intersection		rt_cl_triangle_intersect
 )
 {
 	float3		tmp;
-	float		tmp_zby2;
+	float		tmpz_by2;
 
 	ray.inter_type = rt_cl_plane_intersect(res, ray);
 	if (ray.inter_type)
@@ -105,9 +105,9 @@ static t_intersection		rt_cl_triangle_intersect
 		ray.t = *res;
 		tmp.x = ray.pos.x + ray.t * ray.dir.x;
 		tmp.z = ray.pos.z + ray.t * ray.dir.z;
-		tmp_zby2 = tmp.z / 2.;
-		if (0. <= tmp.z && tmp.z <= 1. &&
-			-tmp_zby2 <= tmp.x && tmp.x <= tmp_zby2)
+		tmpz_by2 = tmp.z * 0.5f;
+		if (0.f <= tmp.z && tmp.z <= 1.f &&
+			-tmpz_by2 <= tmp.x && tmp.x <= tmpz_by2)
 		{
 			*res = ray.t;
 			return (ray.inter_type);
@@ -124,6 +124,5 @@ static float3				rt_cl_plane_get_normal
 							float3 hitpos
 )
 {
-//	hitpos = get_ray_hitpos(hitpos, ray);
-	return ((float3)(0., 1., 0.));
+	return ((float3)(0.f, 1.f, 0.f));
 }

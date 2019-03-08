@@ -13,34 +13,42 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-// TODO remove stdio include
-#include <stdio.h>
 #include "libft_convert.h"
 #include "../rt.h"
 #include "debug.h"
 
+static int		opencl_initialize_platforms(void)
+{
+	cl_int		err;
+	t_bool		has_gpu;
+
+	if ((err = clGetPlatformIDs(RT_CL_PLATFORM_MAX_AMOUNT,
+		rt.ocl.platforms, &(rt.ocl.platform_amount))) != CL_SUCCESS)
+		return (debug_perror("opencl_get_platform_and_gpu:"
+							" could not get platform IDs."));
+	has_gpu = FALSE;
+	rt.ocl.gpu_platform_index = -1;
+	while (!has_gpu && ++rt.ocl.gpu_platform_index < rt.ocl.platform_amount)
+	{
+		if ((err = clGetDeviceIDs(rt.ocl.platforms[rt.ocl.gpu_platform_index],
+			CL_DEVICE_TYPE_GPU, 1, &(rt.ocl.gpu.id), NULL)) == CL_SUCCESS)
+			has_gpu = TRUE;
+	}
+	if (!has_gpu)
+		return (debug_perror("opencl_get_platform_and_gpu:"
+							" no GPU device found."));
+	return (OK);
+}
+
 static int		opencl_get_platform_and_gpu(int platform_index)
 {
-	int			err;
-	int			has_gpu;
+	cl_int		err;
 
 	if (platform_index == RT_CL_PLATFORM_UNINITIALIZED)
 	{
-		if ((err = clGetPlatformIDs(RT_CL_PLATFORM_MAX_AMOUNT, rt.ocl.platforms,
-									&(rt.ocl.platform_amount))) != CL_SUCCESS)
+		if (opencl_initialize_platforms())
 			return (debug_perror("opencl_get_platform_and_gpu:"
-								" could not get platform IDs."));
-		has_gpu = FALSE;
-		rt.ocl.gpu_platform_index = -1;
-		while (!has_gpu && ++rt.ocl.gpu_platform_index < rt.ocl.platform_amount)
-		{
-			if ((err = clGetDeviceIDs(rt.ocl.platforms[rt.ocl.gpu_platform_index],
-				CL_DEVICE_TYPE_GPU, 1, &(rt.ocl.gpu.id), NULL)) == CL_SUCCESS)
-				has_gpu = TRUE;
-		}
-		if (!has_gpu)
-			return (debug_perror("opencl_get_platform_and_gpu:"
-								" no GPU device found."));
+								" error while querying available platforms."));
 	}
 	else
 	{
@@ -58,15 +66,18 @@ static int		opencl_get_platform_and_gpu(int platform_index)
 
 static int		opencl_create_context_and_queue(void)
 {
-	int			err;
+	cl_int		err;
 
-	rt.ocl.context = clCreateContext(NULL, 1, &(rt.ocl.gpu.id), NULL, NULL, &err);
-//TODO: more precise error handling for OpenCL with flags etc
+	rt.ocl.context = clCreateContext(NULL, 1, &(rt.ocl.gpu.id),
+									NULL, NULL, &err);
 	if (err < 0)
-		return (debug_perror("OpenCL: could not create context."));
-	rt.ocl.cmd_queue = clCreateCommandQueue(rt.ocl.context, rt.ocl.gpu.id, 0, &err);
+		return (debug_perror("opencl_create_context_and_queue:"
+								" could not create context."));
+	rt.ocl.cmd_queue = clCreateCommandQueue(rt.ocl.context,
+											rt.ocl.gpu.id, 0, &err);
 	if (err < 0)
-		return (debug_perror("OpenCL: could not create command queue."));
+		return (debug_perror("opencl_create_context_and_queue:"
+								" could not create command queue."));
 	return (OK);
 }
 
@@ -85,6 +96,8 @@ static int		opencl_create_context_and_queue(void)
 ** 		void *user_data)
 **
 ** also see clGetProgramInfo and clGetProgramBuildInfo
+**
+** TODO add errno to debug_perror ?
 */
 
 static int		opencl_read_and_build_program(void)
@@ -95,65 +108,57 @@ static int		opencl_read_and_build_program(void)
 	size_t		file_len;
 
 	if ((fd = open(RT_CL_PROGRAM_SOURCE, O_RDONLY)) == -1)
-		return (debug_perror("opencl_read_and_build_program: file couldn't be opened"));//TODO add errno to debug_perror?
-	if (FT_Read_File(fd, &file_buf))
-		return (debug_perror("opencl_read_and_build_program: file couldn't be read"));
-	file_len = FT_StringLength(file_buf);
+		return (debug_perror("opencl_read_and_build_program: open failed."));
+	if (ft_readfile(fd, &file_buf))
+		return (debug_perror("opencl_read_and_build_program: read failed."));
+	file_len = ft_strlen(file_buf);
 	rt.ocl.program = clCreateProgramWithSource(rt.ocl.context, 1,
 							(char const **)(&file_buf), &file_len, &err);
 	free(file_buf);
 	if (err < 0)
-		return (debug_perror("opencl_read_and_build_program: clCreateProgramWithSource returned error."));
+		return (debug_perror("opencl_read_and_build_program:"
+							" clCreateProgramWithSource returned error."));
 	if ((err = clBuildProgram(rt.ocl.program, 1, &(rt.ocl.gpu.id),
 								RT_CL_PROGRAM_OPTIONS, NULL, NULL)) < 0)
 	{
 		opencl_log_compiler();
-		return (debug_perror("opencl_read_and_build_program: clBuildProgram returned error."));
+		return (debug_perror("opencl_read_and_build_program: build failed."));
 	}
 	if (close(fd) == -1)
-		return (debug_perror("opencl_read_and_build_program: file closed improperly"));//TODO add errno to debug_perror ?
+		return (debug_perror("opencl_read_and_build_program: close failed."));
 	return (OK);
 }
 
-int				opencl_init_gpu_memory(void)
-{
-	int		err;
-
-	err = CL_SUCCESS;
-	rt.ocl.gpu_buf.scene = clCreateBuffer(rt.ocl.context,
-		CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR,
-		sizeof(t_scene), &rt.scene, &err);
-	if (err < 0)
-		return (debug_perror("Couldn't create read buffer for "RT_CL_KERNEL_0));
-	rt.ocl.gpu_buf.canvas_pixels = clCreateBuffer(rt.ocl.context,
-		CL_MEM_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,
-		sizeof(t_u32) * rt.scene.work_dim[0] * rt.scene.work_dim[1],
-		rt.canvas->pixels, &err);
-	if (err < 0)
-		return (debug_perror("Couldn't create write buffer for "RT_CL_KERNEL_1));
-	return (OK);
-}
+/*
+** WATCH OUT the following function creates the kernel array in reverse order
+**	on Mac-Intel.
+**	if ((err = clCreateKernelsInProgram(rt.ocl.program,
+**		RT_CL_KERNEL_AMOUNT, rt.ocl.kernels, NULL)) < 0)
+**		return (debug_perror("opencl_init: could not init kernels."));
+*/
 
 int				opencl_init(int platform_index)
 {
 	int		err;
 
 	if (opencl_get_platform_and_gpu(platform_index))
-		return (debug_perror("opencl_init: could not find an appropriate GPU/platform."));
+		return (debug_perror("opencl_init:"
+							" could not find an appropriate GPU/platform."));
 	if (opencl_create_context_and_queue())
-		return (debug_perror("opencl_init: could not create device, context or queue."));
+		return (debug_perror("opencl_init:"
+							" could not create device, context or queue."));
 	if (opencl_read_and_build_program())
 		return (debug_perror("opencl_init: could not build program."));
 	if (opencl_init_gpu_memory())
-		return (debug_perror("opencl_init: could not initialize gpu memory buffers."));
-//WATCH OUT creates array in reverse order on mac.
-//	if ((err = clCreateKernelsInProgram(rt.ocl.program, RT_CL_KERNEL_AMOUNT, rt.ocl.kernels, NULL)) < 0)
-//		return (debug_perror("opencl_init: could not init kernels."));
+		return (debug_perror("opencl_init:"
+							" could not initialize gpu memory buffers."));
 	rt.ocl.kernels[0] = clCreateKernel(rt.ocl.program, RT_CL_KERNEL_0, &err);
 	if (err < 0)
-		return (debug_perror("opencl_init: could not init kernel "RT_CL_KERNEL_0));
+		return (debug_perror("opencl_init:"
+							" could not init kernel "RT_CL_KERNEL_0));
 	rt.ocl.kernels[1] = clCreateKernel(rt.ocl.program, RT_CL_KERNEL_1, &err);
 	if (err < 0)
-		return (debug_perror("opencl_init: could not init kernel "RT_CL_KERNEL_1));
+		return (debug_perror("opencl_init:"
+							" could not init kernel "RT_CL_KERNEL_1));
 	return (OK);
 }

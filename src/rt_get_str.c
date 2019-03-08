@@ -13,7 +13,7 @@
 #include "../rt.h"
 #include "rt_scene.h"
 
-inline char *rt_get_str_primitive(t_primitive primitive)
+inline char		*rt_get_str_primitive(t_primitive primitive)
 {
 	static char	*primitives[] = {
 		"N/A",
@@ -36,7 +36,7 @@ inline char *rt_get_str_primitive(t_primitive primitive)
 	return (primitives[primitive]);
 }
 
-inline char *rt_get_str_material(t_material material)
+inline char		*rt_get_str_material(t_material material)
 {
 	static char	*materials[] = {
 		"LIGHT",
@@ -48,7 +48,7 @@ inline char *rt_get_str_material(t_material material)
 	return (materials[material]);
 }
 
-inline char	*rt_get_str_rendermode(t_rendermode rendermode)
+inline char		*rt_get_str_rendermode(t_rendermode rendermode)
 {
 	static char	*rendermodes[RENDER_MODES] = {
 		"MONTE-CARLO",
@@ -61,7 +61,7 @@ inline char	*rt_get_str_rendermode(t_rendermode rendermode)
 	return (rendermodes[rendermode]);
 }
 
-inline char	*rt_get_str_cameramodel(t_camera_model cameramodel)
+inline char		*rt_get_str_cameramodel(t_camera_model cameramodel)
 {
 	static char	*cameramodels[CAMERA_MODELS] = {
 		"PINHOLE",
@@ -74,7 +74,7 @@ inline char	*rt_get_str_cameramodel(t_camera_model cameramodel)
 	return (cameramodels[cameramodel]);
 }
 
-inline char	*rt_get_str_pattern(t_pattern pattern)
+inline char		*rt_get_str_pattern(t_pattern pattern)
 {
 	static char	*patterns[TEXTURE_PATTERNS] = {
 		"SOLID",
@@ -93,8 +93,7 @@ inline char	*rt_get_str_pattern(t_pattern pattern)
 	return (patterns[pattern]);
 }
 
-
-inline char	*rt_get_str_projection(t_uv_projection projection)
+inline char		*rt_get_str_projection(t_uv_projection projection)
 {
 	static char	*projections[TEXTURE_PROJECTIONS] = {
 		"SPHERICAL",

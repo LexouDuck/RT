@@ -61,7 +61,35 @@
 ** CL_PLATFORM_VENDOR
 */
 
-int				opencl_set_device_info(void)
+static void		opencl_print_device_info(char *gpu_name,
+										char *platform_name,
+										char *gpu_ocl_version)
+{
+	debug_output_value("Platform index: ",
+		ft_u32_to_str(rt.ocl.gpu_platform_index), TRUE);
+	debug_output_value("Platform name: ", platform_name, FALSE);
+	debug_output_value("Device name: ", gpu_name, FALSE);
+	debug_output_value("Version n° ", gpu_ocl_version, FALSE);
+	debug_output_value("- global mem size: 0x",
+		ft_u64_to_hex(rt.ocl.gpu.global_mem_size), TRUE);
+	debug_output_value("- compute units: 0x",
+		ft_u32_to_hex(rt.ocl.gpu.comp_unit_nb), TRUE);
+	debug_output_value("- max kernel args size: 0x",
+		ft_u64_to_hex(rt.ocl.gpu.max_kernel_args_size), TRUE);
+	debug_output_value("- max work items per group: 0x",
+		ft_u64_to_hex(rt.ocl.gpu.max_witems_per_wgroup), TRUE);
+	debug_output_value("- max nD range: 0x",
+		ft_u32_to_hex(rt.ocl.gpu.max_nd_range), TRUE);
+	debug_output("- max work items per dim:\n");
+	debug_output_value("\t- x: 0x",
+		ft_u64_to_hex(rt.ocl.gpu.max_witems_per_dim[0]), TRUE);
+	debug_output_value("\t- y: 0x",
+		ft_u64_to_hex(rt.ocl.gpu.max_witems_per_dim[1]), TRUE);
+	debug_output_value("\t- z: 0x",
+		ft_u64_to_hex(rt.ocl.gpu.max_witems_per_dim[2]), TRUE);
+}
+
+int			opencl_set_device_info(void)
 {
 	char	gpu_name[256];
 	char	platform_name[256];
@@ -79,25 +107,32 @@ int				opencl_set_device_info(void)
 						&(rt.ocl.gpu.max_kernel_args_size), NULL);
 	clGetDeviceInfo(rt.ocl.gpu.id, CL_DEVICE_MAX_WORK_GROUP_SIZE, sizeof(size_t),
 						&(rt.ocl.gpu.max_witems_per_wgroup), NULL);
-	clGetDeviceInfo(rt.ocl.gpu.id, CL_DEVICE_MAX_WORK_ITEM_DIMENSIONS, sizeof(cl_uint),
+	clGetDeviceInfo(rt.ocl.gpu.id, CL_DEVICE_MAX_WORK_ITEM_DIMENSIONS,
+						sizeof(cl_uint),
 						&(rt.ocl.gpu.max_nd_range), NULL);
 	clGetDeviceInfo(rt.ocl.gpu.id, CL_DEVICE_MAX_WORK_ITEM_SIZES,
 						sizeof(size_t) * rt.ocl.gpu.max_nd_range,
 						&(rt.ocl.gpu.max_witems_per_dim), NULL);
+	opencl_print_device_info(gpu_name, platform_name, gpu_ocl_version);
+	return (OK);
+}
 
-	debug_output_value("Platform index: ", ft_u32_to_str(rt.ocl.gpu_platform_index), TRUE);
-	debug_output_value("Platform name: ", platform_name, FALSE);
-	debug_output_value("Device name: ", gpu_name, FALSE);
-	debug_output_value("Version n° ", gpu_ocl_version, FALSE);
-	debug_output_value("- global mem size: 0x", ft_u64_to_hex(rt.ocl.gpu.global_mem_size), TRUE);
-	debug_output_value("- compute units: 0x", ft_u32_to_hex(rt.ocl.gpu.comp_unit_nb), TRUE);
-	debug_output_value("- max kernel args size: 0x", ft_u64_to_hex(rt.ocl.gpu.max_kernel_args_size), TRUE);
-	debug_output_value("- max work items per group: 0x", ft_u64_to_hex(rt.ocl.gpu.max_witems_per_wgroup), TRUE);
-	debug_output_value("- max nD range: 0x", ft_u32_to_hex(rt.ocl.gpu.max_nd_range), TRUE);
-	debug_output("- max work items per dim:\n");
-	debug_output_value("\t- x: 0x", ft_u64_to_hex(rt.ocl.gpu.max_witems_per_dim[0]), TRUE);
-	debug_output_value("\t- y: 0x", ft_u64_to_hex(rt.ocl.gpu.max_witems_per_dim[1]), TRUE);
-	debug_output_value("\t- z: 0x", ft_u64_to_hex(rt.ocl.gpu.max_witems_per_dim[2]), TRUE);
+int			opencl_init_gpu_memory(void)
+{
+	int		err;
+
+	err = CL_SUCCESS;
+	rt.ocl.gpu_buf.scene = clCreateBuffer(rt.ocl.context,
+		CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR,
+		sizeof(t_scene), &rt.scene, &err);
+	if (err < 0)
+		return (debug_perror("Couldn't create read buffer for "RT_CL_KERNEL_0));
+	rt.ocl.gpu_buf.canvas_pixels = clCreateBuffer(rt.ocl.context,
+		CL_MEM_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,
+		sizeof(t_u32) * rt.scene.work_dim[0] * rt.scene.work_dim[1],
+		rt.canvas->pixels, &err);
+	if (err < 0)
+		return (debug_perror("Couldn't create write buffer for "RT_CL_KERNEL_1));
 	return (OK);
 }
 

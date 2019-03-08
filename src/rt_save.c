@@ -1,4 +1,3 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -75,7 +74,7 @@ static void 	print_bg_color(int fd)
 ** this function write a map and save in a new file or in the same file.
 */
 
-void		rt_save(int fd)
+void			rt_save(int fd)
 {
 	size_t 			i;
 	t_object* 		object;

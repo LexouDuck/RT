@@ -277,33 +277,37 @@ static t_ray			rt_cl_create_camray
 		camray.pos = (float3)(rt_cl_frand_neg1half_to_pos1half(random_seeds), rt_cl_frand_neg1half_to_pos1half(random_seeds), 0.);
 		camray.pos *= (float3)(scene->camera.aperture);
 		camray.dir = (float3)(x_id - width / 2, y_id - height / 2, fov_val);
-		camray.dir += (float3)(
-			rt_cl_frand_neg1half_to_pos1half(random_seeds) * scene->camera.focal_dist,
-			rt_cl_frand_neg1half_to_pos1half(random_seeds) * scene->camera.focal_dist,
-			0.);
+		camray.dir +=	(float3)
+						(
+							rt_cl_frand_neg1half_to_pos1half(random_seeds) * scene->camera.focal_dist,
+							rt_cl_frand_neg1half_to_pos1half(random_seeds) * scene->camera.focal_dist,
+							0.f
+						);
 	}
 	else if (scene->camera.model == CAMERA_MODEL_BLUR_FOCAL)
 	{
-		seeds = (float2)(rt_cl_frand_0_to_1(random_seeds) / 2, rt_cl_frand_0_to_1(random_seeds) / 2);
+		seeds = (float2)(rt_cl_frand_0_to_1(random_seeds) / 2,
+						rt_cl_frand_0_to_1(random_seeds) / 2);
 		box_muller_sample = (float2)(sqrt(-2 * log((float)(seeds.x))) * cos((float)(TAU * seeds.y)),
-								sqrt(-2 * log((float)(seeds.x))) * sin((float)(TAU * seeds.y)));
+									sqrt(-2 * log((float)(seeds.x))) * sin((float)(TAU * seeds.y)));
 		camray.dir = (float3)(x_id - width / 2 + box_muller_sample.x, y_id - height / 2 + box_muller_sample.y, fov_val);
 		camray.dir = normalize(camray.dir);
 		aperture.x = rt_cl_frand_0_to_1(random_seeds) * scene->camera.aperture;
 		aperture.y = rt_cl_frand_0_to_1(random_seeds) * scene->camera.aperture;
-		camray.pos = (float3)(aperture.x, aperture.y, 0.);
+		camray.pos = (float3)(aperture.x, aperture.y, 0.f);
 		camray.dir = (scene->camera.focal_dist * camray.dir) - camray.pos;
 	}
 	else if (scene->camera.model == CAMERA_MODEL_AUTO_FOCUS)
 	{
-		seeds = (float2)(rt_cl_frand_0_to_1(random_seeds) / 2, rt_cl_frand_0_to_1(random_seeds) / 2);
-		box_muller_sample = (float2)(sqrt(-2 * log((float)(seeds.x))) * cos((float)(TAU * seeds.y)),
-								sqrt(-2 * log((float)(seeds.x))) * sin((float)(TAU * seeds.y)));
+		seeds = (float2)(rt_cl_frand_0_to_1(random_seeds) / 2,
+						rt_cl_frand_0_to_1(random_seeds) / 2);
+		box_muller_sample = (float2)(sqrt(-2.f * log((float)(seeds.x))) * cos((float)(TAU * seeds.y)),
+									sqrt(-2.f * log((float)(seeds.x))) * sin((float)(TAU * seeds.y)));
 		camray.dir = (float3)(x_id - width / 2 + box_muller_sample.x, y_id - height / 2 + box_muller_sample.y, fov_val);
 		camray.dir = normalize(camray.dir);
 		aperture.x = rt_cl_frand_0_to_1(random_seeds) * scene->camera.aperture;
 		aperture.y = rt_cl_frand_0_to_1(random_seeds) * scene->camera.aperture;
-		camray.pos = (float3)(aperture.x, aperture.y, 0.);
+		camray.pos = (float3)(aperture.x, aperture.y, 0.f);
 		camray.dir = (scene->camera.zoom * camray.dir) - camray.pos;	
 	}
 	else if (scene->camera.model == CAMERA_MODEL_ORTHOGRAPHIC)

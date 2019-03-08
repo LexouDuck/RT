@@ -55,6 +55,7 @@ void		rt_output_readfile(void)
 	}
 }
 
+//TODO merge hyperboloid and infcone with else ?
 static void	rt_object_init_bbox(t_object *object)
 {
 	float	render_dist;
@@ -64,6 +65,18 @@ static void	rt_object_init_bbox(t_object *object)
 		object->bbox_os = (t_bbox){
 			(cl_float3){{-1.f - EPS, -1.f - EPS, -1.f - EPS}},
 			(cl_float3){{1.f + EPS, 1.f + EPS, 1.f + EPS}}};
+	else if (object->type == plane)
+		object->bbox_os = (t_bbox){
+			(cl_float3){{-render_dist, -EPS, -render_dist}},
+			(cl_float3){{render_dist, EPS, render_dist}}};
+	else if (object->type == rectangle || object->type == disk)
+		object->bbox_os = (t_bbox){
+			(cl_float3){{-1.f - EPS, -EPS, -1.f - EPS}},
+			(cl_float3){{1.f + EPS, EPS, 1.f + EPS}}};
+	else if (object->type == triangle)
+		object->bbox_os = (t_bbox){
+			(cl_float3){{-0.5f - EPS, -EPS, -EPS}},
+			(cl_float3){{0.5f + EPS, EPS, 1.f + EPS}}};
 	else if (object->type == infcylinder)
 		object->bbox_os = (t_bbox){
 			(cl_float3){{-1.f - EPS, -render_dist, -1.f - EPS}},
@@ -152,6 +165,8 @@ static char	*rt_read_command(t_rtparser *p, char *label)
 		shape = disk;
 	else if (ft_strequ(label, "RECTANGLE"))
 		shape = rectangle;
+	else if (ft_strequ(label, "TRIANGLE"))
+		shape = triangle;
 	else if (ft_strequ(label, "CUBE"))
 		shape = cube;
 	else if (ft_strequ(label, "SPHERE"))

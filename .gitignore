@@ -3,7 +3,6 @@ correc.*
 *.pdf
 *.zip
 *.tar
-*.gif
 *.c-e
 *.h-e
 *.cl-e

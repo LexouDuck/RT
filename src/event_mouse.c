@@ -15,76 +15,74 @@
 #include "event.h"
 #include "ui.h"
 
-void	event_mouse_wheel(SDL_Event *event)
+void		event_mouse_wheel(SDL_Event *event)
 {
-	t_camera	*camera;
-
-	camera = &rt.scene.camera;
-	if (event->wheel.y)
+	if (event->wheel.y == 0)
+		return ;
+	t_bool mouse_in_objectlist;
+	rt.ui.objects.rect.w += 2;
+	mouse_in_objectlist = SDL_PointInRect(
+		&rt.input.mouse_tile, &rt.ui.objects.rect);
+	rt.ui.objects.rect.w -= 2;
+	if (mouse_in_objectlist && (rt.ui.objects.scrollbar.scroll > 0 ||
+		rt.ui.objects.scrollbar.scroll_max >
+		rt.ui.objects.scrollbar.scroll_view))
+		ui_scrollbar_setscroll(&rt.ui.objects.scrollbar, event->wheel.y * -10);
+	else
 	{
-		t_bool mouse_in_objectlist;
-		rt.ui.objects.rect.w += 2;
-		mouse_in_objectlist = SDL_PointInRect(&rt.input.mouse_tile, &rt.ui.objects.rect);
-		rt.ui.objects.rect.w -= 2;
-		if (mouse_in_objectlist && (rt.ui.objects.scrollbar.scroll > 0 ||
-			rt.ui.objects.scrollbar.scroll_max > rt.ui.objects.scrollbar.scroll_view))
-			ui_scrollbar_setscroll(&rt.ui.objects.scrollbar, event->wheel.y * -10);
-		else
-		{
-			if (event->wheel.y > 0)
-				camera->zoom *= 0.9;
-			if (event->wheel.y < 0)
-				camera->zoom *= 1.1;
-			if (camera->zoom < EPS)
-				camera->zoom = EPS;
-			camera_update(camera);
-			rt.must_render = TRUE;
-		}
+		if (event->wheel.y > 0)
+			rt.scene.camera.zoom *= 0.9;
+		if (event->wheel.y < 0)
+			rt.scene.camera.zoom *= 1.1;
+		if (rt.scene.camera.zoom < EPS)
+			rt.scene.camera.zoom = EPS;
+		camera_update(&rt.scene.camera);
+		rt.must_render = TRUE;
 	}
 }
 
-void	event_mouse_press(SDL_Event *event)
+void		event_mouse_press(SDL_Event *event)
 {
-	t_camera	*camera;
-
-	camera = &rt.scene.camera;
 	if (event->button.x < UI_WIDTH)
 	{
-		if (event->button.button == SDL_BUTTON_LEFT &&
-			(rt.ui.objects.scrollbar.scroll_max > rt.ui.objects.scrollbar.scroll_view))
+		if (event->button.button == SDL_BUTTON_LEFT && (
+			rt.ui.objects.scrollbar.scroll_max >
+			rt.ui.objects.scrollbar.scroll_view))
 			ui_mouse_scrollbar();
 		return ;
 	}
 	else if (event->button.button == SDL_BUTTON_LEFT)
-		camera->mode = CAMERA_MODE_PAN;
+		rt.scene.camera.mode = CAMERA_MODE_PAN;
 	else if (event->button.button == SDL_BUTTON_MIDDLE)
-		camera->mode = CAMERA_MODE_TILT;
+		rt.scene.camera.mode = CAMERA_MODE_TILT;
 	else if (event->button.button == SDL_BUTTON_RIGHT)
-		camera->mode = CAMERA_MODE_ROTATE;
-	if (camera->mode && SDL_CaptureMouse(TRUE))
+		rt.scene.camera.mode = CAMERA_MODE_ROTATE;
+	if (rt.scene.camera.mode && SDL_CaptureMouse(TRUE))
 		debug_output_error("Unable to capture the mouse cursor input.", TRUE);
 }
 
-void	event_mouse_release(SDL_Event *event)
+static void	event_mouse_release_textinput()
 {
-	t_camera	*camera;
+	if (rt.ui.current_textinput.type)
+	{
+		if (rt.ui.current_textinput.type == texttype_text)
+			ui_leave_control_textbox(&rt.ui.current_textinput);
+		else if (rt.ui.current_textinput.type == texttype_number_int)
+			ui_leave_control_numberbox_int(&rt.ui.current_textinput);
+		else if (rt.ui.current_textinput.type == texttype_number_float)
+			ui_leave_control_numberbox_float(&rt.ui.current_textinput);
+	}
+}
 
+void		event_mouse_release(SDL_Event *event)
+{
 	rt.ui.objects.scrollbar.clicked = scrollclick_none;
-	camera = &rt.scene.camera;
-	if (camera->mode)
+	if (rt.scene.camera.mode)
 		rt.must_render = TRUE;
-	camera->mode = CAMERA_MODE_NONE;
+	rt.scene.camera.mode = CAMERA_MODE_NONE;
 	if (event->button.button == SDL_BUTTON_LEFT)
 	{
-		if (rt.ui.current_textinput.type)
-		{
-			if (rt.ui.current_textinput.type == texttype_text)
-				ui_leave_control_textbox(&rt.ui.current_textinput);
-			else if (rt.ui.current_textinput.type == texttype_number_int)
-				ui_leave_control_numberbox_int(&rt.ui.current_textinput);
-			else if (rt.ui.current_textinput.type == texttype_number_float)
-				ui_leave_control_numberbox_float(&rt.ui.current_textinput);
-		}
+		event_mouse_release_textinput();
 		if (rt.ui.current_prompt.name)
 			ui_mouse_prompt();
 		else
@@ -103,33 +101,30 @@ void	event_mouse_release(SDL_Event *event)
 		debug_output_error("Unable to release the mouse cursor input.", TRUE);
 }
 
-void	event_mouse_motion(SDL_Event *event)
+void		event_mouse_motion(SDL_Event *event)
 {
-	float		motion_x;
-	float		motion_y;
-	t_camera	*camera;
+	t_scrollbar	*scrollbar;
+	t_f32		ratio;
 
-	camera = &rt.scene.camera;
 	if (rt.ui.objects.scrollbar.clicked == scrollclick_bar)
 	{
-		t_scrollbar	*scrollbar;
-		t_f32		ratio;
 		scrollbar = &rt.ui.objects.scrollbar;
 		ratio = ((t_f32)scrollbar->scroll_max / (t_f32)scrollbar->bar.h);
 		ui_scrollbar_setscroll(scrollbar, event->motion.yrel * ratio);
 	}
-	else if (camera->mode != CAMERA_MODE_NONE &&
+	else if (rt.scene.camera.mode != CAMERA_MODE_NONE &&
 		(event->motion.xrel || event->motion.yrel))
 	{
-		motion_x = (float)(event->motion.xrel) * 0.1;
-		motion_y = (float)(event->motion.yrel) * 0.1;
-		if (camera->mode == CAMERA_MODE_TILT)
-			camera_zoom_tilt(camera, motion_x, motion_y);
-		else if (camera->mode == CAMERA_MODE_ROTATE)
-			camera_rotate(camera, motion_x, motion_y);
-		else if (camera->mode == CAMERA_MODE_PAN)
-			camera_pan(camera, motion_x, motion_y);
-		camera_update(camera);
+		if (rt.scene.camera.mode == CAMERA_MODE_TILT)
+			camera_zoom_tilt(&rt.scene.camera,
+				(event->motion.xrel) * 0.1, (event->motion.yrel) * 0.1);
+		else if (rt.scene.camera.mode == CAMERA_MODE_ROTATE)
+			camera_rotate(&rt.scene.camera,
+				(event->motion.xrel) * 0.1, (event->motion.yrel) * 0.1);
+		else if (rt.scene.camera.mode == CAMERA_MODE_PAN)
+			camera_pan(&rt.scene.camera,
+				(event->motion.xrel) * 0.1, (event->motion.yrel) * 0.1);
+		camera_update(&rt.scene.camera);
 		rt.must_render = TRUE;
 	}
 }

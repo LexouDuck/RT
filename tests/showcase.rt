@@ -1,98 +1,99 @@
 BG #FFFFFF
 
-SPHERE #FFFFFF
-pos:(0, 10, 0)
-rot:{0, 0, 0}
-scale:[1, 1, 1]
+SPHERE
 material:LIGHT
+pattern:SOLID
+projection:CUBIC
+color:(1.00000, 1.00000, 1.00000)
+color2:(0.00000, 0.00000, 0.00000)
+pos:(0.00000, 10.00000, 0.00000)
+rot:(0.00000, 0.00000, 0.00000)
+scale:(1.00000, 1.00000, 1.00000)
+bbox_vi:(-1.00003, -1.00003, -1.00003)
+bbox_vf:(1.00003, 1.00003, 1.00003)
+
+CUBE
+material:DIFFUSE
+pattern:SOLID
+projection:CUBIC
+color:(1.00000, 1.00000, 1.00000)
+color2:(0.00000, 0.00000, 0.00000)
+pos:(0.00000, -1.00000, 0.00000)
+rot:(0.00000, 0.00000, 0.00000)
+scale:(10.00000, 1.00000, 10.00000)
+bbox_vi:(-1.00003, -1.00003, -1.00003)
+bbox_vf:(1.00003, 1.00003, 1.00003)
+
+CUBE
+material:DIFFUSE
+pattern:SOLID
+projection:CUBIC
+color:(0.15294, 0.67450, 0.77647)
+color2:(0.00000, 0.00000, 0.00000)
+pos:(0.00000, 5.00000, -10.00000)
+rot:(0.00000, 0.00000, 0.00000)
+scale:(10.00000, 10.00000, 1.00000)
+bbox_vi:(-1.00003, -1.00003, -1.00003)
+bbox_vf:(1.00003, 1.00003, 1.00003)
+
+CUBE
+material:TRANSPARENT
+pattern:SOLID
+projection:CUBIC
+color:(0.20000, 0.50000, 0.20000)
+color2:(0.00000, 0.00000, 0.00000)
+pos:(0.00000, 7.00000, 0.00000)
+rot:(0.00000, 0.00000, 0.00000)
+scale:(1.00000, 1.00000, 1.00000)
+bbox_vi:(-1.00003, -1.00003, -1.00003)
+bbox_vf:(1.00003, 1.00003, 1.00003)
+
+CUBE
+material:DIFFUSE
+pattern:SOLID
+projection:CUBIC
+color:(1.00000, 0.00000, 0.00000)
+color2:(0.00000, 0.00000, 0.00000)
+pos:(0.00000, 0.00000, 40.00000)
+rot:(0.00000, 0.00000, 0.00000)
+scale:(1.00000, 1.00000, 1.00000)
+bbox_vi:(-1.00003, -1.00003, -1.00003)
+bbox_vf:(1.00003, 1.00003, 1.00003)
+
+SPHERE
+material:DIFFUSE
+pattern:SOLID
+projection:CUBIC
+color:(0.15294, 0.77647, 0.73333)
+color2:(0.00000, 0.00000, 0.00000)
+pos:(3.00000, 6.00000, 0.00000)
+rot:(2.00000, 2.00000, 2.00000)
+scale:(1.00000, 1.00000, 1.00000)
+bbox_vi:(-1.00003, -1.00003, -1.00003)
+bbox_vf:(1.00003, 1.00003, 1.00003)
+
+SPHERE
+material:DIFFUSE
+pattern:SOLID
+projection:CUBIC
+color:(0.15294, 0.77647, 0.23529)
+color2:(0.00000, 0.00000, 0.00000)
+pos:(0.00000, 4.00000, 0.00000)
+rot:(2.00000, 2.00000, 2.00000)
+scale:(1.00000, 1.00000, 1.00000)
+bbox_vi:(-1.00003, -1.00003, -1.00003)
+bbox_vf:(1.00003, 1.00003, 1.00003)
+
+SPHERE
+material:DIFFUSE
+pattern:SOLID
+projection:CUBIC
+color:(0.77647, 0.15294, 0.35686)
+color2:(0.00000, 0.00000, 0.00000)
+pos:(-3.00000, 6.00000, 0.00000)
+rot:(2.00000, 2.00000, 2.00000)
+scale:(1.00000, 1.00000, 1.00000)
+bbox_vi:(-1.00003, -1.00003, -1.00003)
+bbox_vf:(1.00003, 1.00003, 1.00003)
 
 
-CUBE #FFFFFF
-pos:(0,-1, 0)
-rot:{0, 0, 0}
-scale:[10, 1, 10]
-
-CUBE #27acc6
-pos:(0, 5, -10)
-rot:{0, 0, 0}
-scale:[10, 10, 1]
-
-
-CUBE #FF0000
-pos:(0,	7,	0)
-rot:{0,	0,	0}
-scale:[1,	1,	1]
-
-
-CUBE #FF0000
-pos:(0,	0,	40)
-rot:{0, 0, 0}
-scale:[1,	1,	1]
-
-
-SPHERE #27c6bb
-pos:(3,	6,	0)
-rot:{2,	2,	2}
-scale:[1,	1,	1]
-
-
-SPHERE #27c63c
-pos:(0,	4,	0)
-rot:{2,	2,	2}
-scale:[1,	1,	1]
-
-
-SPHERE #c6275b
-pos:(-3, 6,	0)
-rot:{2,	2,	2}
-scale:[1,	1,	1]
-
-
-BG #FFFFFF
-
-SPHERE #FFFFFF
-pos:(0, 10, 0)
-rot:{0, 0, 0}
-scale:[1, 1, 1]
-material:LIGHT
-
-
-CUBE #FFFFFF
-pos:(0,-1, 0)
-rot:{0, 0, 0}
-scale:[10, 1, 10]
-
-CUBE #27acc6
-pos:(0, 5, -10)
-rot:{0, 0, 0}
-scale:[10, 10, 1]
-
-
-CUBE #FF0000
-pos:(0,	7,	0)
-rot:{0,	0,	0}
-scale:[1,	1,	1]
-
-
-CUBE #FF0000
-pos:(0,	0,	40)
-rot:{0, 0, 0}
-scale:[1,	1,	1]
-
-
-SPHERE #27c6bb
-pos:(3,	6,	0)
-rot:{2,	2,	2}
-scale:[1,	1,	1]
-
-
-SPHERE #27c63c
-pos:(0,	4,	0)
-rot:{2,	2,	2}
-scale:[1,	1,	1]
-
-
-SPHERE #c6275b
-pos:(-3, 6,	0)
-rot:{2,	2,	2}
-scale:[1,	1,	1]

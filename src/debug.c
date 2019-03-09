@@ -14,7 +14,9 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <string.h>
+
 #include "libft_io.h"
+
 #include "debug.h"
 
 int		debug_init(void)

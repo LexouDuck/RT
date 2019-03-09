@@ -36,7 +36,8 @@ static void	event_check_textinput(SDL_Event *event)
 		(event->text.text[0] == 'v' || event->text.text[0] == 'V'))))
 	{
 		tmp = rt.ui.current_textinput.input;
-		rt.ui.current_textinput.input = ft_strjoin(tmp ? tmp : "", event->text.text);
+		rt.ui.current_textinput.input =
+			ft_strjoin(tmp ? tmp : "", event->text.text);
 		if (tmp)
 			free(tmp);
 		rt.ui.current_textinput.value_changed = TRUE;
@@ -67,7 +68,6 @@ void		event_checkevents(void)
 	rt.input.mouse_tile.y = (rt.input.mouse.y) / TILE;
 	while (SDL_PollEvent(&event))
 	{
-	// Handle events on queue
 		if (event.type == SDL_QUIT)
 		{
 			rt.sdl.loop = FALSE;

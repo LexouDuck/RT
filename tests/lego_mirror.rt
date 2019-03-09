@@ -1,0 +1,169 @@
+BG #888888
+
+SPHERE
+material:LIGHT
+pattern:SOLID
+projection:CUBIC
+color:(1.00000, 1.00000, 1.00000)
+color2:(0.00000, 0.00000, 0.00000)
+pos:(3.00000, 20.00000, 3.00000)
+rot:(0.00000, 0.00000, 0.00000)
+scale:(0.00000, 0.00000, 0.00000)
+bbox_vi:(-1.00003, -1.00003, -1.00003)
+bbox_vf:(1.00003, 1.00003, 1.00003)
+
+SPHERE
+material:LIGHT
+pattern:SOLID
+projection:CUBIC
+color:(1.00000, 1.00000, 1.00000)
+color2:(0.00000, 0.00000, 0.00000)
+pos:(3.00000, -10.00000, 3.00000)
+rot:(0.00000, 0.00000, 0.00000)
+scale:(0.00000, 0.00000, 0.00000)
+bbox_vi:(-1.00003, -1.00003, -1.00003)
+bbox_vf:(1.00003, 1.00003, 1.00003)
+
+CUBE
+"Brick Side Left"
+material:SPECULAR
+pattern:SOLID
+projection:CUBIC
+color:(0.50000, 0.50000, 0.50000)
+color2:(0.00000, 0.00000, 0.00000)
+pos:(-9.00000, 0.00000, 0.00000)
+rot:(0.00000, 0.00000, 0.00000)
+scale:(1.00000, 6.00000, 10.00000)
+bbox_vi:(-1.00003, -1.00003, -1.00003)
+bbox_vf:(1.00003, 1.00003, 1.00003)
+
+CUBE
+"Brick Side Right"
+material:SPECULAR
+pattern:SOLID
+projection:CUBIC
+color:(0.50000, 0.50000, 0.50000)
+color2:(0.00000, 0.00000, 0.00000)
+pos:(9.00000, 0.00000, 0.00000)
+rot:(0.00000, 0.00000, 0.00000)
+scale:(1.00000, 6.00000, 10.00000)
+bbox_vi:(-1.00003, -1.00003, -1.00003)
+bbox_vf:(1.00003, 1.00003, 1.00003)
+
+CUBE
+"Brick Side Near"
+material:SPECULAR
+pattern:SOLID
+projection:CUBIC
+color:(0.50000, 0.50000, 0.50000)
+color2:(0.00000, 0.00000, 0.00000)
+pos:(0.00000, 0.00000, -9.00000)
+rot:(0.00000, 0.00000, 0.00000)
+scale:(10.00000, 6.00000, 1.00000)
+bbox_vi:(-1.00003, -1.00003, -1.00003)
+bbox_vf:(1.00003, 1.00003, 1.00003)
+
+CUBE
+"Brick Side Far"
+material:SPECULAR
+pattern:SOLID
+projection:CUBIC
+color:(0.50000, 0.50000, 0.50000)
+color2:(0.00000, 0.00000, 0.00000)
+pos:(0.00000, 0.00000, 9.00000)
+rot:(0.00000, 0.00000, 0.00000)
+scale:(10.00000, 6.00000, 1.00000)
+bbox_vi:(-1.00003, -1.00003, -1.00003)
+bbox_vf:(1.00003, 1.00003, 1.00003)
+
+CUBE
+"Brick Top"
+material:SPECULAR
+pattern:SOLID
+projection:CUBIC
+color:(0.50000, 0.50000, 0.50000)
+color2:(0.00000, 0.00000, 0.00000)
+pos:(0.00000, 6.00000, 0.00000)
+rot:(0.00000, 0.00000, 0.00000)
+scale:(10.00000, 1.00000, 10.00000)
+bbox_vi:(-1.00003, -1.00003, -1.00003)
+bbox_vf:(1.00003, 1.00003, 1.00003)
+
+CYLINDER
+"Brick Stud TL"
+material:SPECULAR
+pattern:SOLID
+projection:CUBIC
+color:(0.50000, 0.50000, 0.50000)
+color2:(0.00000, 0.00000, 0.00000)
+pos:(5.00000, 8.00000, 5.00000)
+rot:(0.00000, 0.00000, 0.00000)
+scale:(3.00000, 2.00000, 3.00000)
+bbox_vi:(-1.00003, -1.00003, -1.00003)
+bbox_vf:(1.00003, 1.00003, 1.00003)
+
+CYLINDER
+"Brick Stud TR"
+material:SPECULAR
+pattern:SOLID
+projection:CUBIC
+color:(0.50000, 0.50000, 0.50000)
+color2:(0.00000, 0.00000, 0.00000)
+pos:(5.00000, 8.00000, -5.00000)
+rot:(0.00000, 0.00000, 0.00000)
+scale:(3.00000, 2.00000, 3.00000)
+bbox_vi:(-1.00003, -1.00003, -1.00003)
+bbox_vf:(1.00003, 1.00003, 1.00003)
+
+CYLINDER
+"Brick Stud BL"
+material:SPECULAR
+pattern:SOLID
+projection:CUBIC
+color:(0.50000, 0.50000, 0.50000)
+color2:(0.00000, 0.00000, 0.00000)
+pos:(-5.00000, 8.00000, 5.00000)
+rot:(0.00000, 0.00000, 0.00000)
+scale:(3.00000, 2.00000, 3.00000)
+bbox_vi:(-1.00003, -1.00003, -1.00003)
+bbox_vf:(1.00003, 1.00003, 1.00003)
+
+CYLINDER
+"Brick Stud BR"
+material:SPECULAR
+pattern:SOLID
+projection:CUBIC
+color:(0.50000, 0.50000, 0.50000)
+color2:(0.00000, 0.00000, 0.00000)
+pos:(-5.00000, 8.00000, -5.00000)
+rot:(0.00000, 0.00000, 0.00000)
+scale:(3.00000, 2.00000, 3.00000)
+bbox_vi:(-1.00003, -1.00003, -1.00003)
+bbox_vf:(1.00003, 1.00003, 1.00003)
+
+CYLINDER
+"Bottom Pillar"
+material:SPECULAR
+pattern:SOLID
+projection:CUBIC
+color:(0.50000, 0.50000, 0.50000)
+color2:(0.00000, 0.00000, 0.00000)
+pos:(0.00000, 1.00000, 0.00000)
+rot:(0.00000, 0.00000, 0.00000)
+scale:(4.06998, 6.00000, 4.06998)
+bbox_vi:(-1.00003, -1.00003, -1.00003)
+bbox_vf:(1.00003, 1.00003, 1.00003)
+
+PLANE
+material:SPECULAR
+pattern:SOLID
+projection:CUBIC
+color:(1.00000, 1.00000, 1.00000)
+color2:(0.00000, 0.00000, 0.00000)
+pos:(3.00000, -10.00000, 3.00000)
+rot:(0.00000, 0.50000, 0.00000)
+scale:(1.00000, 1.00000, 1.00000)
+bbox_vi:(-100000.00000, -0.00002, -100000.00000)
+bbox_vf:(100000.00000, 0.00002, 100000.00000)
+
+

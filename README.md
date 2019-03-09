@@ -1,6 +1,12 @@
 # RT
 A 3d raytracing program (42 team project)
 
+![rt.gif](GIF.gif)
+
+Exported BMP image of render by Monte-Carlo path tracing with a ray-per-pixel amount  of 1024 and a depth of 24
+
+![render_lego.bmp](render_lego.bmp)
+
 Below are the features (current features are marked with '•' and projected features are marked with '-'):
 
 # Features:

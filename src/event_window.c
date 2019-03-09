@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft_convert.h"
+
 #include "../rt.h"
 #include "config.h"
 #include "debug.h"
@@ -37,8 +38,10 @@ void	event_window_resize(t_s32 window_w, t_s32 window_h)
 		rt.scene.work_dim[1] = rt.canvas_h;
 		opencl_refresh_gpu_memory_buffers();
 		rt.ui.objects.rect.h = rt.sdl.window_h - rt.ui.objects.rect.y;
-		rt.ui.objects.scrollbar.scroll_view = (rt.sdl.window_h - rt.ui.objects.rect.y);
-		rt.ui.objects.scrollbar.bar.h = (rt.sdl.window_h - rt.ui.objects.rect.y) - TILE * 4;
+		rt.ui.objects.scrollbar.scroll_view =
+			(rt.sdl.window_h - rt.ui.objects.rect.y);
+		rt.ui.objects.scrollbar.bar.h =
+			(rt.sdl.window_h - rt.ui.objects.rect.y) - TILE * 4;
 		rt.ui.objects.scrollbar.button_down.y = rt.sdl.window_h - TILE * 2;
 	}
 }
@@ -49,7 +52,8 @@ void	event_window_fullscreen(t_bool fullscreen)
 	config_set(CONFIG_INDEX_FULLSCREEN, FT_Bool_To_String(fullscreen, FALSE));
 	if (fullscreen)
 	{
-		if (SDL_SetWindowFullscreen(rt.sdl.window, SDL_WINDOW_FULLSCREEN_DESKTOP))
+		if (SDL_SetWindowFullscreen(rt.sdl.window,
+			SDL_WINDOW_FULLSCREEN_DESKTOP))
 			debug_output_error(
 				"Error while trying to set fullscreen mode: ", TRUE);
 	}

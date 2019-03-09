@@ -9,12 +9,14 @@
 /*   Updated: 2019/02/28 15:03:29 by hbruvry          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <errno.h>
+
 #include "libft_memory.h"
 #include "libft_convert.h"
-#include <stdio.h>
+
 #include "../rt.h"
 #include "debug.h"
 
@@ -70,8 +72,7 @@ int		rt_file_import(char *filepath)
 
 int		rt_file_save(char *filepath)
 {
-
-	int			fd;
+	int		fd;
 
 	fd = open(filepath, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd < 0)
@@ -87,5 +88,6 @@ int		rt_file_save(char *filepath)
 		debug_output_value("close() -> ", strerror(errno), FALSE);
 		return (ERROR);
 	}
-	return (filepath ? OK : ERROR);
+	debug_output_value("Successfully saved file: ", filepath, FALSE);
+	return (OK);
 }

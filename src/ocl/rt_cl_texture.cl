@@ -176,6 +176,20 @@ static float3		rt_cl_get_bump_normal
 	return (bump_normal);
 }
 
+static float3		rt_cl_uint_to_float3
+(
+					uint		hex
+)
+{
+	return (
+				(float3)
+				(
+					0.f,
+					0.f,
+					0.f
+				)
+			);
+}
 //TODO Add UI for texture
 static t_texture	rt_cl_get_texture_properties
 (
@@ -189,21 +203,31 @@ static t_texture	rt_cl_get_texture_properties
 	t_texture	texture;
 	bool		is_2d_proj;
 	bool		is_bump;
+	bool		is_image_texture;
 
-	is_bump = true;
+	is_bump = false;
 	is_2d_proj = false;
+	is_image_texture = true;
 	texture.uvw_offset = (float3)(0.f, 0.f, 0.f);
 	texture.uvw_scale = (float3)(1.f, 1.f, 1.f);
 	texture.uvw_pos = rt_cl_convert_os_to_uvw(obj, hitpos);
 	texture.uvw_pos = fmod((float3)(texture.uvw_pos + texture.uvw_offset), 1.f);
-	texture.texel_value = rt_cl_get_texel_value(obj, texture.uvw_pos, texture.uvw_scale);
 	//TODO add conditional for 2d texturing vs 3d texturing
-	if (is_2d_proj)
+/*	if (is_image_texture)
+	{
+		texture.rgb = obj->rgb_texture[0];
+	}
+	else
+	{
+*/
+		texture.texel_value = rt_cl_get_texel_value(obj, texture.uvw_pos, texture.uvw_scale);
+		texture.rgb = obj->rgb_a * texture.texel_value + obj->rgb_b * (1 - texture.texel_value);
+//	}
+	if (is_bump && is_2d_proj)
 		texture.uvw_pos.z = texture.texel_value;
-	if (is_bump)
+	else if (is_bump)
 		texture.bump_normal = rt_cl_get_bump_normal(obj, texture.uvw_pos, texture.uvw_scale, normal, is_2d_proj);
 	else
 		texture.bump_normal = normal;
-	texture.rgb = obj->rgb_a * texture.texel_value + obj->rgb_b * (1 - texture.texel_value);
 	return (texture);
 }

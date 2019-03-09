@@ -151,6 +151,7 @@ void		rt_save(int	fd);
 **	rt_open_util.c
 **	rt_open_read.c
 */
+void		rt_create_rgb_texture(cl_float3 **rgb_texture);
 int			rt_open_file(char *filepath, t_rtparser *p);
 char		*rt_read_file(t_rtparser *p);
 void		rt_output_readfile();

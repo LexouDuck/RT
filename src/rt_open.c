@@ -121,6 +121,9 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 	object.pos = (cl_float3){{ 0., 0., 0. }};
 	object.rot = (cl_float3){{ 0., 0., 0. }};
 	object.scale = (cl_float3){{ 1., 1., 1. }};
+	rt_create_rgb_texture(&object.rgb_texture);
+	object.uvw_scale = (cl_float3){{ 1., 1., 1. }};
+	object.uvw_offset = (cl_float3){{ 0., 0., 0. }};
 	object.refrac = DEFAULT_OBJECT_REFRAC;
 	object.roughness = DEFAULT_OBJECT_ROUGHNESS;
 	object.opacity = DEFAULT_OBJECT_OPACITY;

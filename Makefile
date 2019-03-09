@@ -115,6 +115,7 @@ SRCS	= 	main.c							\
 			event_key.c						\
 			rt_get_str.c					\
 			rt_file.c						\
+			rt_create_texture.c				\
 			rt_open.c						\
 			rt_open_util.c					\
 			rt_open_read.c					\

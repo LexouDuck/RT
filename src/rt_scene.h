@@ -339,6 +339,7 @@ typedef struct		s_object
 	cl_float16		w_to_o;
 	cl_float16		n_to_w;
 	t_pattern		pattern;
+	cl_float3		*rgb_texture;
 	cl_float3		uvw_scale;
 	cl_float3		uvw_offset;
 	t_uvw_projection	uvw_projection;

@@ -12,7 +12,7 @@ CFLAGS	=	-Wall -Wextra $(CFLAGS_PLATFORM) -O2 -MMD -g
 CFLAGS_PLATFORM = _
 CFLAGS_WIN	= -mwindows -I./ -L./
 CFLAGS_LIN	= -Wno-unused-result #-fsanitize=address -ldl
-CFLAGS_MAC	=
+CFLAGS_MAC	= 
 
 # Linker (for embedding binary files inside the program)
 LD	= _
@@ -202,6 +202,7 @@ $(OBJDIR)%.o : $(SRCDIR)%.c $(HDRS)
 CL_FILES	=	$(addprefix $(SRCDIR_CL), $(SRCS_CL))
 
 concat.cl: $(CL_FILES)
+	@export CL_LOG_ERRORS="stdout"
 	@printf "Concatenating .cl files: "$@" -> "
 	@cat $(CL_FILES) > $@
 	@printf $(GREEN)"OK!"$(RESET)"\n"

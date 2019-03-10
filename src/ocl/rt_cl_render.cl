@@ -93,16 +93,16 @@ static t_intersection		rt_cl_trace_ray_to_scene
 									t_ray *		ray
 )
 {
-	__constant t_object *		obj;
-	t_intersection				bbox_ws_inter;
-	t_intersection				bbox_os_inter;
-	t_intersection				prim_inter;
-	float						tmax;
-	float						new_tbbox_ws;
-	float						new_tbbox_os;
-	float						new_t;
-	t_ray						ray_os;
-	t_ray						result_ray_os;
+	__constant	t_object *			obj;
+				t_intersection		bbox_ws_inter;
+				t_intersection		bbox_os_inter;
+				t_intersection		prim_inter;
+				float				tmax;
+				float				new_tbbox_ws;
+				float				new_tbbox_os;
+				float				new_t;
+				t_ray				ray_os;
+				t_ray				result_ray_os;
 
 	tmax = ray->t;
 	prim_inter = INTER_NONE;

@@ -114,16 +114,26 @@ int				main(int argc, char *argv[])
 {
 	int	i;
 
+	debug_perror("debug_init");
 	if (debug_init())
 		return (ERROR);
+
+	debug_perror("config_init");
 	if (config_init())
 		return (ERROR);
+
+	debug_perror("sdl_init");
 	if (init_sdl())
 		return (ERROR);
+
+	debug_perror("window_init");
 	if (init_window())
 		return (ERROR);
+
+	debug_perror("display_init");
 	if (init_window_display())
 		return (ERROR);
+
 	init_scene();
 	init_camera(&rt.scene.camera);
 	if (argc > 1)
@@ -137,8 +147,12 @@ int				main(int argc, char *argv[])
 			rt_file_import(argv[i]);
 		}
 	}
+
+	debug_perror("ui_init");
 	if (ui_init())
 		return (ERROR);
+
+	debug_perror("opencl_init");
 	if (opencl_init(RT_CL_PLATFORM_UNINITIALIZED))
 		return (ERROR);
 	return (main_loop());

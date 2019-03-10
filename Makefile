@@ -89,15 +89,16 @@ endif
 
 
 # List of C header files
-HDRS	=	$(LFTDIR)libft.h 	\
-			rt.h				\
-			assets.h			\
-			$(SRCDIR)debug.h	\
-			$(SRCDIR)config.h	\
-			$(SRCDIR)event.h	\
-			$(SRCDIR)ui.h		\
-			$(SRCDIR)rt_cl.h	\
-			$(SRCDIR)rt_scene.h	\
+HDRS	=	$(LFTDIR)libft.h 		\
+			rt.h					\
+			assets.h				\
+			$(SRCDIR)debug.h		\
+			$(SRCDIR)config.h		\
+			$(SRCDIR)event.h		\
+			$(SRCDIR)ui.h			\
+			$(SRCDIR)rt_cl.h		\
+			$(SRCDIR)rt_scene.h		\
+			$(SRCDIR)rt_random.h	\
 
 # List of C source code files
 SRCS	= 	main.c							\
@@ -123,7 +124,7 @@ SRCS	= 	main.c							\
 			rt_open_util.c					\
 			rt_open_read.c					\
 			rt_save.c 						\
-			scene.c							\
+			rt_scene.c						\
 			camera.c						\
 			ui.c							\
 			ui_init.c						\

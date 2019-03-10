@@ -132,16 +132,17 @@ typedef enum	e_texttype
 **	if 'type' is 0 (texttype_none), nothing is selected
 **	otherwise, the 'type' will inform how to convert the
 **	contents of 'input' to write it into 'value'
+**	Fields:
+**	- type			The type of keyboard input box selected
+**	- input			The string of text that the user has entered
+**	- value			A pointer to the value in memory which needs to be changed
+**	- value_changed	Whether or not text has been input by the user
 */
 typedef struct	s_textinput
 {
-// the type of keyboard input box selected
 	t_texttype	type;
-// the string of text that the user has entered
 	char		*input;
-// a pointer to the value in memory which needs to be changed
 	void		*value;
-// whether or not text has been input by the user
 	t_bool		value_changed;
 }				t_textinput;
 
@@ -243,24 +244,32 @@ void			ui_render_rect(SDL_Rect rect, t_bool filled);
 /*
 **	ui_control_numberbox_int.c
 */
-t_bool			ui_mouse_control_numberbox_int(t_textinput *textinput, cl_uint *value, int x, int y);
 void			ui_leave_control_numberbox_int(t_textinput *textinput);
-void			ui_render_control_numberbox_int(int x, int y, cl_uint *value);
-void			ui_keypress_control_numberbox_int(t_textinput *textinput, t_bool up);
+t_bool			ui_mouse_control_numberbox_int(t_textinput *textinput,
+	cl_uint *value, int x, int y);
+void			ui_render_control_numberbox_int(
+	int x, int y, cl_uint *value);
+void			ui_keypress_control_numberbox_int(t_textinput *textinput,
+	t_bool up);
 /*
 **	ui_control_numberbox_float.c
 */
-t_bool			ui_mouse_control_numberbox_float(t_textinput *textinput, cl_float *value, int x, int y);
 void			ui_leave_control_numberbox_float(t_textinput *textinput);
-void			ui_render_control_numberbox_float(int x, int y, cl_float *value);
-void			ui_keypress_control_numberbox_float(t_textinput *textinput, t_bool up);
+t_bool			ui_mouse_control_numberbox_float(t_textinput *textinput,
+	cl_float *value, int x, int y);
+void			ui_render_control_numberbox_float(
+	int x, int y, cl_float *value);
+void			ui_keypress_control_numberbox_float(t_textinput *textinput,
+	t_bool up);
 
 /*
 **	ui_control_textbox.c
 */
-t_bool			ui_mouse_control_textbox(t_textinput *textinput, char **value, int x, int y);
 void			ui_leave_control_textbox(t_textinput *textinput);
-void			ui_render_control_textbox(int x, int y, char *value);
+t_bool			ui_mouse_control_textbox(t_textinput *textinput,
+	char **value, int x, int y);
+void			ui_render_control_textbox(
+	int x, int y, char *value);
 void			ui_keypress_control_textbox(t_textinput *textinput);
 
 #endif

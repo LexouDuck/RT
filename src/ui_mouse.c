@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft_memory.h"
+
 #include "../rt.h"
 #include "debug.h"
 
@@ -91,6 +93,26 @@ void	ui_mouse_menubar(void)
 	SDL_Rect	rect;
 	t_s8		i;
 
+	rect.w = 2;
+	rect.h = 2;
+	rect.y = 1;
+	rect.x = UI_WIDTH_TILES - 8;
+	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+	{
+		rt.scene.objects[rt.scene.object_amount].type = sphere;
+		init_object(&rt.scene.objects[rt.scene.object_amount]);
+		rt.scene.object_amount += 1;
+		rt.must_render = TRUE;
+		return ;
+	}
+	rect.x = UI_WIDTH_TILES - 4;
+	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+	{
+		rt.scene.object_amount -= 1;
+		ft_memclr(&rt.scene.objects[rt.scene.object_amount], sizeof(t_object));
+		rt.must_render = TRUE;
+		return ;
+	}
 	collided = FALSE;
 	i = -1;
 	while (++i < MENUBAR_ITEMS)

@@ -1,5 +1,17 @@
-#ifndef FT_RANDOM_H
-# define FT_RANDOM_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rt_random.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
+/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef __RT_RANDOM_H
+# define __RT_RANDOM_H
 
 /*
 ** Random number generator. Modulus is 2^31
@@ -15,11 +27,11 @@
 **		new_nb = (CEIL_SQRT_MOD  * old_nb + OFFSET) % MODULUS
 */
 
-#include "libft.h"
+# include "libft.h"
 
-# define DEFAULT_SEED	0x93E21FD5
+# define DEFAULT_SEED	0xCAF3DEC4
 
-# define MODULUS		0x7FFFFFFF		
+# define MODULUS		0x7FFFFFFF
 # define CEIL_SQRT_MOD	46341
 # define OFFSET			2835
 

@@ -25,11 +25,11 @@ inline char		*rt_get_str_primitive(t_primitive primitive)
 		"RECTANGLE",
 		"DISK",
 		"TRIANGLE",
-		"SADDLE",
 		"PARABOLOID",
 		"HYPERBOLOID",
 		"INFCYLINDER",
 		"INFCONE",
+		"SADDLE",
 		"OBJ MESH",
 	};
 

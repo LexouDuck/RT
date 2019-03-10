@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rt_create_texture.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
+/*   Updated: 2019/02/28 15:03:29 by hbruvry          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft_char.h"
 #include "libft_color.h"
 #include "libft_memory.h"
@@ -31,24 +43,23 @@ void		rt_create_rgb_texture(cl_float3 **rgb_texture)
 	int				h_inc;
 	int				w_inc;
 
-	x = -1;
-	y = -1;
-
-	surface = SDL_LoadBMP("img_texture.bmp");
-	format = surface->format;
+	if (!(surface = SDL_LoadBMP("img_texture.bmp")))
+	{
+		debug_output_error("Texture BMP image file could not be loaded.", TRUE);
+		return ;
+	}
 	SDL_LockSurface(surface);
+	format = surface->format;
 	img_pixels = (Uint32*)(surface->pixels);
-	SDL_UnlockSurface(surface);
-
 	h_inc = (int)(surface->h / 100);
 	w_inc = (int)(surface->w / 100);
-
-	if (!(*rgb_texture = (cl_float3*)malloc(sizeof(cl_float3) * (100 * 100 + 1))))
+	if (!(*rgb_texture = (cl_float3*)malloc(sizeof(cl_float3) * (100 * 100))))
 	{
 		SDL_FreeSurface(surface);
 		return ;
 	}
-
+	x = -1;
+	y = -1;
 	while (++y < 100)
 	{
 		while (++x < 100)
@@ -57,19 +68,20 @@ void		rt_create_rgb_texture(cl_float3 **rgb_texture)
 			tmp = pixel & format->Rmask;
 			tmp = tmp >> format->Rshift;
 			tmp = tmp << format->Rloss;
-			(*rgb_texture)[y * 100 + x].x = (cl_float)tmp / 255;
+			(*rgb_texture)[y * 100 + x].x = (cl_float)tmp / 255.;
 			tmp = pixel & format->Gmask;
 			tmp = tmp >> format->Gshift;
 			tmp = tmp << format->Gloss;
-			(*rgb_texture)[y * 100 + x].y = (cl_float)tmp / 255;
+			(*rgb_texture)[y * 100 + x].y = (cl_float)tmp / 255.;
 			tmp = pixel & format->Bmask;
 			tmp = tmp >> format->Bshift;
 			tmp = tmp << format->Bloss;
-			(*rgb_texture)[y * 100 + x].z = (cl_float)tmp / 255;
+			(*rgb_texture)[y * 100 + x].z = (cl_float)tmp / 255.;
 	//		debug_output_value("rgb :", cl_float3_to_str(&(*rgb_texture)[y * 100 + x], 3), TRUE);
 		}
 		x = -1;
 	}
+	SDL_UnlockSurface(surface);
 	SDL_FreeSurface(surface);
 	return ;
 }

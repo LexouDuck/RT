@@ -105,6 +105,7 @@ int			init_window_display();
 */
 void		init_scene();
 void		update_scene();
+void		init_object(t_object *object);
 void		update_object(t_object *object);
 
 /*

@@ -215,11 +215,11 @@ typedef enum		e_primitive
 	rectangle,
 	disk,
 	triangle,
-	saddle,
 	paraboloid,
 	hyperboloid,
 	infcylinder,
 	infcone,
+	saddle,
 	obj_mesh,
 }					t_primitive;
 

@@ -14,11 +14,9 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <string.h>
-#include <math.h>
 
 #include "libft_char.h"
 #include "libft_color.h"
-#include "libft_memory.h"
 #include "libft_convert.h"
 
 #include "../rt.h"
@@ -55,54 +53,6 @@ void		rt_output_readfile(void)
 	}
 }
 
-//TODO merge hyperboloid and infcone with else ?
-static void	rt_object_init_bbox(t_object *object)
-{
-	float	render_dist;
-
-	render_dist = rt.scene.render_dist;
-	if (object->type == sphere || object->type == cube || object->type == cylinder)
-		object->bbox_os = (t_bbox){
-			(cl_float3){{-1.f - EPS, -1.f - EPS, -1.f - EPS}},
-			(cl_float3){{1.f + EPS, 1.f + EPS, 1.f + EPS}}};
-	else if (object->type == plane)
-		object->bbox_os = (t_bbox){
-			(cl_float3){{-render_dist, -EPS, -render_dist}},
-			(cl_float3){{render_dist, EPS, render_dist}}};
-	else if (object->type == rectangle || object->type == disk)
-		object->bbox_os = (t_bbox){
-			(cl_float3){{-1.f - EPS, -EPS, -1.f - EPS}},
-			(cl_float3){{1.f + EPS, EPS, 1.f + EPS}}};
-	else if (object->type == triangle)
-		object->bbox_os = (t_bbox){
-			(cl_float3){{-0.5f - EPS, -EPS, -EPS}},
-			(cl_float3){{0.5f + EPS, EPS, 1.f + EPS}}};
-	else if (object->type == infcylinder)
-		object->bbox_os = (t_bbox){
-			(cl_float3){{-1.f - EPS, -render_dist, -1.f - EPS}},
-			(cl_float3){{1.f + EPS, render_dist, 1.f + EPS}}};
-	else if (object->type == paraboloid)
-		object->bbox_os = (t_bbox){
-			(cl_float3){{-sqrt(render_dist), 0.f - EPS, -sqrt(render_dist)}},
-			(cl_float3){{sqrt(render_dist), render_dist, sqrt(render_dist)}}};
-	else if (object->type == hyperboloid)
-		object->bbox_os = (t_bbox){
-			(cl_float3){{-render_dist, -render_dist, -render_dist}},
-			(cl_float3){{render_dist, render_dist, render_dist}}};
-	else if (object->type == cone)
-		object->bbox_os = (t_bbox){
-			(cl_float3){{-1.f - EPS, 0.f - EPS, -1.f - EPS}},
-			(cl_float3){{1.f + EPS, 1.f + EPS, 1.f + EPS}}};
-	else if (object->type == infcone)
-		object->bbox_os = (t_bbox){
-			(cl_float3){{-render_dist, -render_dist, -render_dist}},
-			(cl_float3){{render_dist, render_dist, render_dist}}};
-	else
-		object->bbox_os = (t_bbox){
-			(cl_float3){{-render_dist, -render_dist, -render_dist}},
-			(cl_float3){{render_dist, render_dist, render_dist}}};
-}
-
 static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 {
 	char		*error;
@@ -110,24 +60,7 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 	t_s32		i;
 
 	object.type = shape;
-	object.material = diffuse;
-	object.pattern = solid;
-	object.uvw_projection = spherical;
-	ft_memclr(&object.name, OBJECT_NAME_MAXLENGTH);
-	object.color_a = 0xFFFFFF;
-	object.color_b = 0x000000;
-	object.rgb_a = (cl_float3){{ 1., 1., 1. }};
-	object.rgb_b = (cl_float3){{ 0., 0., 0. }};
-	object.pos = (cl_float3){{ 0., 0., 0. }};
-	object.rot = (cl_float3){{ 0., 0., 0. }};
-	object.scale = (cl_float3){{ 1., 1., 1. }};
-	rt_create_rgb_texture(&object.rgb_texture);
-	object.uvw_scale = (cl_float3){{ 1., 1., 1. }};
-	object.uvw_offset = (cl_float3){{ 0., 0., 0. }};
-	object.refrac = DEFAULT_OBJECT_REFRAC;
-	object.roughness = DEFAULT_OBJECT_ROUGHNESS;
-	object.opacity = DEFAULT_OBJECT_OPACITY;
-	rt_object_init_bbox(&object);
+	init_object(&object);
 	i = -1;
 	while (++i < OBJECT_ARGS_AMOUNT)
 	{

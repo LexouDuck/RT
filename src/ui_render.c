@@ -56,10 +56,10 @@ void		ui_render_menubar(void)
 	rect.w = UI_WIDTH_TILES;
 	rect.h = 14;
 	ui_render_fill(0, rect, FALSE);
-	ui_render_icon(26,
+	ui_render_icon(27,
 		TILE * (UI_WIDTH_TILES - 8),
 		TILE * 1, FALSE);
-	ui_render_icon(27,
+	ui_render_icon(26,
 		TILE * (UI_WIDTH_TILES - 4),
 		TILE * 1, FALSE);
 	i = -1;

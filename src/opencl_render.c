@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render.c                                           :+:      :+:    :+:   */
+/*   opencl_render.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,8 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "libft_memory.h"
+#include "libft_convert.h"
+
 #include "../rt.h"
 #include "debug.h"
 #include "rt_scene.h"
@@ -28,29 +29,20 @@
 
 static int		render_launch_kernel0_build_scene(void)
 {
-	int err;
+	int		error;
 
-	err = CL_SUCCESS;
-	err = clEnqueueWriteBuffer(rt.ocl.cmd_queue, rt.ocl.gpu_buf.scene, CL_TRUE,
-			0, sizeof(t_scene), &(rt.scene), 0, NULL, NULL);
-	if (err < 0)
-		return (debug_perror("render_launch_kernel0_build_scene:"
+	if ((error = clEnqueueWriteBuffer(rt.ocl.cmd_queue, rt.ocl.gpu_buf.scene,
+			CL_TRUE, 0, sizeof(t_scene), &(rt.scene), 0, NULL, NULL)) < 0)
+		return (opencl_handle_error(error, "render_launch_kernel0_build_scene:"
 							" write to gpu failed for "RT_CL_KERNEL_0));
-	if ((err = clSetKernelArg(rt.ocl.kernels[0], 0, sizeof(cl_mem),
+	if ((error = clSetKernelArg(rt.ocl.kernels[0], 0, sizeof(cl_mem),
 							&(rt.ocl.gpu_buf.scene))) < 0)
-		return (debug_perror("render_launch_kernel0_build_scene:"
+		return (opencl_handle_error(error, "render_launch_kernel0_build_scene:"
 							" set kernel arg failed for "RT_CL_KERNEL_0));
-	err = clEnqueueNDRangeKernel(rt.ocl.cmd_queue, rt.ocl.kernels[0], 1, NULL,
-				&(rt.scene.object_amount), NULL, 0, NULL, NULL);
-	if (err < 0)
-	{
-		debug_perror(opencl_get_error_string(err));
-		return (debug_perror("render_launch_kernel0_build_scene:"
+	if ((error = clEnqueueNDRangeKernel(rt.ocl.cmd_queue, rt.ocl.kernels[0], 1,
+				NULL, &(rt.scene.object_amount), NULL, 0, NULL, NULL)) < 0)
+		return (opencl_handle_error(error, "render_launch_kernel0_build_scene:"
 							" enqueue kernel failed for "RT_CL_KERNEL_0));
-	}
-	if ((err = clFinish(rt.ocl.cmd_queue)) < 0)
-		return (debug_perror("render_launch_kernel0_build_scene:"
-							" clFinish failed for "RT_CL_KERNEL_0));
 	return (OK);
 }
 
@@ -82,11 +74,8 @@ static int			render_piecewise_2d_kernel(cl_kernel krnl)
 	{ 
 		if ((err = clEnqueueNDRangeKernel(rt.ocl.cmd_queue, krnl, work_dim_rank,
 						work_offsets, work_dim_array, NULL, 0, NULL, NULL)) < 0)
-		{
-			debug_perror(opencl_get_error_string(err));
-			return (debug_perror("render_piecewise_2d_kernel:"
+			return (opencl_handle_error(err, "render_piecewise_2d_kernel:"
 								" enqueue kernel failed for "RT_CL_KERNEL_1));
-		}
 		work_offsets[1] += step;
 		rt.ocl.render_progress = (float)work_offsets[1] / rt.scene.work_dim[1];
 	}
@@ -95,54 +84,54 @@ static int			render_piecewise_2d_kernel(cl_kernel krnl)
 
 static int			render_launch_kernel1_rendermain(void)
 {
-	int		err;
+	int		error;
 	int		kernel_arg_nbr;
 
-	err = 0;
 	kernel_arg_nbr = -1;
-	if (((err = clSetKernelArg(rt.ocl.kernels[1], ++kernel_arg_nbr,
+	if (((error = clSetKernelArg(rt.ocl.kernels[1], ++kernel_arg_nbr,
 					sizeof(cl_mem), &(rt.ocl.gpu_buf.canvas_pixels))) < 0) ||
-		((err = clSetKernelArg(rt.ocl.kernels[1], ++kernel_arg_nbr,
+		((error = clSetKernelArg(rt.ocl.kernels[1], ++kernel_arg_nbr,
 					sizeof(cl_mem), &(rt.ocl.gpu_buf.scene))) < 0))
 	{
-		debug_perror(opencl_get_error_string(err));
-		return (debug_perror("render_launch_kernel1_rendermain:"
+		debug_output_value("error: kernel #",
+							ft_s32_to_str(kernel_arg_nbr), TRUE);
+		return (opencl_handle_error(error, "render_launch_kernel1_rendermain:"
 							" set kernel arg failed for "RT_CL_KERNEL_1));
 	}
-	render_piecewise_2d_kernel(rt.ocl.kernels[1]);
-	if ((err = clFinish(rt.ocl.cmd_queue)) < 0)
-	{
-		debug_perror(opencl_get_error_string(err));
-		return (debug_perror("render_launch_kernel1_rendermain:"
-							" clFinish failed for "RT_CL_KERNEL_1));
-	}
+	if (render_piecewise_2d_kernel(rt.ocl.kernels[1]))
+		return (opencl_handle_error(error, "render_launch_kernel1_rendermain:"
+						" chained enqueue kernel failed for "RT_CL_KERNEL_1));
 	return (OK);
 }
 
 int			render_read_gpu_buffer(void)
 {
-	int err;
+	int		error;
 
-	err = 0;
-	err = clEnqueueReadBuffer(rt.ocl.cmd_queue, rt.ocl.gpu_buf.canvas_pixels,
+	error = clEnqueueReadBuffer(rt.ocl.cmd_queue, rt.ocl.gpu_buf.canvas_pixels,
 		CL_TRUE, 0, sizeof(t_u32) * rt.canvas_pixel_amount,
 		rt.canvas->pixels, 0, NULL, NULL);
-	if (err < 0)
-	{
-		debug_perror(opencl_get_error_string(err));
-		return (debug_perror("render_read_gpu_buffer:"
+	if (error < 0)
+		return (opencl_handle_error(error, "render_read_gpu_buffer:"
 			" couldn't read the buffer for "RT_CL_KERNEL_1));
-	}
 	return (OK);
 }
 
 int			render(void)
 {
+	int		error;
+
 	rt.scene.random_seed_time = rt.sdl.current_frame;
 	if (render_launch_kernel0_build_scene())
 		return (ERROR);
+	if ((error = clFinish(rt.ocl.cmd_queue)) < 0)
+		return (opencl_handle_error(error, "render:"
+							" clFinish failed for "RT_CL_KERNEL_0));
 	if (render_launch_kernel1_rendermain())
 		return (ERROR);
+	if ((error = clFinish(rt.ocl.cmd_queue)) < 0)
+		return (opencl_handle_error(error, "render:"
+							" clFinish failed for "RT_CL_KERNEL_1));
 	if (render_read_gpu_buffer())
 		return (ERROR);
 	return (OK);

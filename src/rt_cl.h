@@ -101,17 +101,30 @@ typedef struct	s_cl
 
 /*
 ** opencl_init.c
+**
+** static int		opencl_initialize_platforms(void);
+** static int		opencl_get_platform_and_gpu(int platform_index);
+** static int		opencl_create_context_and_queue(void);
+** static int		opencl_read_and_build_program(void)
 */
 int				opencl_init(int platform_index);
 
 /*
 ** opencl_utils.c
 */
-int				opencl_init_gpu_memory(void);
+int				opencl_handle_error(cl_int error, char const *str);
 int				opencl_set_device_info(void);
 int				opencl_refresh_gpu_memory_buffers(void);
+int				opencl_log_compiler(void);
+
+/*
+** opencl_memory.c
+*/
+int				opencl_init_gpu_memory(void);
+int				opencl_release_memory_buffers(void);
+int				opencl_refresh_gpu_memory_buffers(void);
+int				opencl_release_queue_context_program(void);
 int				opencl_freeall(void);
-void			opencl_log_compiler(void);
 
 /*
 ** opencl_get_error_str.c

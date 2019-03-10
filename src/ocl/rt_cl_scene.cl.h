@@ -124,6 +124,7 @@ typedef struct	s_ray
 //	cl_uint			depth;
 	float3			lum_mask;
 	float3			lum_acc;
+	float			refrac;
 	t_intersection	inter_type;
 	float2			uvw_coordinates;
 }				t_ray;

@@ -178,7 +178,9 @@ typedef struct		s_ray
 //	cl_uint			depth;
 	cl_float3		lum_mask;
 	cl_float3		lum_acc;
+	cl_float		refrac; //refractive index of medium in which ray is currently passing through
 	t_intersection	inter_type;
+	cl_float2		uvw_coordinates;
 }					t_ray;
 
 /*

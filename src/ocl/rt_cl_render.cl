@@ -177,9 +177,11 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 				float3		hitpos;
 				float3		normal;
 				t_texture	texture;
+				bool		is_inter_inside;
 
 	hitpos = ray.hitpos;
 	normal = ray.inter_type * rt_cl_primitive_get_normal(hitpos, obj->type);
+	is_inter_inside = (ray.inter_type == INTER_INSIDE);
 	texture = rt_cl_get_texture_properties(scene, random_seeds, obj, hitpos, normal);
 	if (scene->render_mode == RENDERMODE_SOLIDTEXTURE)
 	{
@@ -189,6 +191,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 
 	normal = texture.bump_normal;
 
+	new_ray.refrac = ray.refrac;
 	new_ray.hit_obj_id = -1;
 	new_ray.inter_type = INTER_NONE;
 	new_ray.t = scene->render_dist;
@@ -215,25 +218,30 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 	}
 	else if (obj->material == transparent)
 	{
-		new_ray.dir = rt_cl_get_transmit_or_reflect(random_seeds, ray.dir, ray.inter_type == INTER_INSIDE, normal, obj->refrac);
-		new_ray.lum_mask = (ray.inter_type == INTER_INSIDE) ?
+		float	prev_refrac = ray.refrac;
+		float	new_refrac	= (is_inter_inside) ?
+								ray.refrac / obj->refrac : //TODO replace with a stored obj->inv_refrac and init in build_scene ?
+								ray.refrac * obj->refrac;
+		bool	is_transmitted;
+
+		is_transmitted = rt_cl_get_transmit_or_reflect(&new_ray.dir, random_seeds, ray.dir, normal, obj->roughness, prev_refrac, new_refrac);
+		new_ray.lum_mask = (!is_inter_inside && is_transmitted) ?
 			ray.lum_mask * texture.rgb :
 			ray.lum_mask;
+		//nnew_ray.lum_mask = ray.lum_mask * texture.rgb; //TODO replace with this line and return texture.rgb = 1.1.1. for inter_outside and an average of samples for inter_inside
 
+		ray.refrac = is_transmitted ? new_refrac : prev_refrac;
 		//Position correction for transmission
-		hitpos = mad(-2.f * EPS, normal, hitpos);//TODO @Hugo beware with textures for this call
+		if (is_transmitted)
+			hitpos = mad(-2.f * EPS, normal, hitpos);//TODO @Hugo beware with textures for this call
 	}
 	else if (obj->material == specular)
 	{
-		float3 reflect = rt_cl_get_reflect(ray.dir, normal);
-		//Seen in Eric Veach's thesis: phong exponent should be (1/roughness) - 1
-		float phong = native_recip(obj->roughness) - 1.f;
-
-		new_ray.dir = rt_cl_rand_dir_coslobe(random_seeds, reflect, phong);
-		new_ray.lum_mask = ray.lum_mask * texture.rgb * (float3)(dot(normal, reflect));// * obj->rgb;//*dot(new_dir, reflect) ?
+		new_ray.dir = rt_cl_get_reflect_coslobe(random_seeds, ray.dir, normal, obj->roughness);
+		new_ray.lum_mask = ray.lum_mask * texture.rgb * (float3)(dot(normal, new_ray.dir));//*dot(new_dir, reflect) ?
 	}
 
-	hitpos = mad(1.5f * EPS, normal, hitpos);//TODO @Hugo maybe textures should take care of this call actually ?
+	hitpos = mad(EPS, new_ray.dir, hitpos);//TODO @Hugo maybe textures should take care of this call actually ?
 	new_ray.pos = rt_cl_apply_homogeneous_matrix(obj->o_to_w, hitpos);
 	new_ray.dir = rt_cl_apply_linear_matrix(obj->o_to_w, new_ray.dir);
 	return (new_ray);
@@ -316,6 +324,8 @@ static t_ray			rt_cl_create_camray
 	camray.pos = rt_cl_apply_homogeneous_matrix(cam_mat44, camray.pos);
 	camray.dir = rt_cl_apply_linear_matrix(cam_mat44, camray.dir);
 	camray.dir = normalize(camray.dir);
+
+	camray.refrac = 1.f;//TODO make "is in primitive" functions
 	return (camray);
 }
 
@@ -327,7 +337,7 @@ static float3			rt_cl_get_pixel_color_from_mc_sampling
 )
 {
 	float3				pixel_rgb = (float3)(0.);
-	float const			inv_samp_size = 1. / scene->mc_raysamp_size;
+	float const			inv_samp_size = native_recip((float)scene->mc_raysamp_size);
 	t_ray				ray_i;
 	t_intersection		inter;
 

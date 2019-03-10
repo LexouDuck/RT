@@ -254,7 +254,7 @@ static float3			rt_cl_rand_dir_coslobe
 (
 							uint2 *			random_seeds,
 							float3			axis,
-							uint			phong
+							float			phong
 )
 {
 	float3		randdir;
@@ -265,7 +265,7 @@ static float3			rt_cl_rand_dir_coslobe
 	float16		lin_mat;
 	float		phongexp;
 
-	phongexp = 1. / (phong + 1);
+	phongexp = native_recip(phong + 1.f);//TODO isn't this just 'roughness' ?
 	seed.x = TAU * rt_cl_frand_0_to_1(random_seeds);
 	seed.y = rt_cl_frand_0_to_1(random_seeds);
 	//TODO can be done with single call to powr, (e^2x) = e^x^2 = e^x * e^x

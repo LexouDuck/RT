@@ -70,16 +70,16 @@ static int		opencl_get_platform_and_gpu(int platform_index)
 
 static int		opencl_create_context_and_queue(void)
 {
-	cl_int		err;
+	cl_int		error;
 
 	rt.ocl.context = clCreateContext(NULL, 1, &(rt.ocl.gpu.id),
-									NULL, NULL, &err);
-	if (err < 0)
+									NULL, NULL, &error);
+	if (error < 0)
 		return (debug_perror("opencl_create_context_and_queue:"
 								" could not create context."));
 	rt.ocl.cmd_queue = clCreateCommandQueue(rt.ocl.context,
-											rt.ocl.gpu.id, 0, &err);
-	if (err < 0)
+											rt.ocl.gpu.id, 0, &error);
+	if (error < 0)
 		return (debug_perror("opencl_create_context_and_queue:"
 								" could not create command queue."));
 	return (OK);
@@ -107,7 +107,7 @@ static int		opencl_create_context_and_queue(void)
 static int		opencl_read_and_build_program(void)
 {
 	int			fd;
-	cl_int		err;
+	cl_int		error;
 	char		*file_buf;
 	size_t		file_len;
 
@@ -117,12 +117,12 @@ static int		opencl_read_and_build_program(void)
 		return (debug_perror("opencl_read_and_build_program: read failed."));
 	file_len = ft_strlen(file_buf);
 	rt.ocl.program = clCreateProgramWithSource(rt.ocl.context, 1,
-							(char const **)(&file_buf), &file_len, &err);
+							(char const **)(&file_buf), &file_len, &error);
 	free(file_buf);
-	if (err < 0)
+	if (error < 0)
 		return (debug_perror("opencl_read_and_build_program:"
 							" clCreateProgramWithSource returned error."));
-	if ((err = clBuildProgram(rt.ocl.program, 1, &(rt.ocl.gpu.id),
+	if ((error = clBuildProgram(rt.ocl.program, 1, &(rt.ocl.gpu.id),
 								RT_CL_PROGRAM_OPTIONS, NULL, NULL)) < 0)
 	{
 		opencl_log_compiler();
@@ -143,7 +143,7 @@ static int		opencl_read_and_build_program(void)
 
 int				opencl_init(int platform_index)
 {
-	int		err;
+	int		error;
 
 	if (opencl_get_platform_and_gpu(platform_index))
 		return (debug_perror("opencl_init:"
@@ -156,12 +156,12 @@ int				opencl_init(int platform_index)
 	if (opencl_init_gpu_memory())
 		return (debug_perror("opencl_init:"
 							" could not initialize gpu memory buffers."));
-	rt.ocl.kernels[0] = clCreateKernel(rt.ocl.program, RT_CL_KERNEL_0, &err);
-	if (err < 0)
+	rt.ocl.kernels[0] = clCreateKernel(rt.ocl.program, RT_CL_KERNEL_0, &error);
+	if (error < 0)
 		return (debug_perror("opencl_init:"
 							" could not init kernel "RT_CL_KERNEL_0));
-	rt.ocl.kernels[1] = clCreateKernel(rt.ocl.program, RT_CL_KERNEL_1, &err);
-	if (err < 0)
+	rt.ocl.kernels[1] = clCreateKernel(rt.ocl.program, RT_CL_KERNEL_1, &error);
+	if (error < 0)
 		return (debug_perror("opencl_init:"
 							" could not init kernel "RT_CL_KERNEL_1));
 	return (OK);

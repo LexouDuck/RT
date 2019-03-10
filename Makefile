@@ -104,7 +104,9 @@ SRCS	= 	main.c							\
 			init_sdl.c						\
 			opencl_init.c					\
 			opencl_utils.c					\
+			opencl_memory.c					\
 			opencl_get_error_str.c			\
+			opencl_render.c					\
 			debug.c							\
 			config.c						\
 			config_ini.c					\
@@ -136,8 +138,7 @@ SRCS	= 	main.c							\
 			ui_control_textbox.c			\
 			ui_scrollbar.c					\
 			ui_prompt.c						\
-			cl_float3_util.c				\
-			render.c
+			cl_float3_util.c
 
 SRCDIR_CL	= $(SRCDIR)ocl/
 

@@ -51,16 +51,16 @@ static float3		rt_cl_convert_uvw_to_os
 	float	theta;
 	float	phi;
 
-	float2	sincos_th;
-	float2	sincos_phi;
+//	float2	sincos_th;
+//	float2	sincos_phi;
 
 	if (obj->uvw_projection == cubic)
 		return (
 					(float3)
 					(
-						uvw_pos.x * 2.f - 1,
-						uvw_pos.z * 2.f - 1,
-						uvw_pos.y * 2.f - 1
+						uvw_pos.x * 2.f - 1.f,
+						uvw_pos.z * 2.f - 1.f,
+						uvw_pos.y * 2.f - 1.f
 					)
 				);
 	if (obj->uvw_projection == spherical)
@@ -83,7 +83,7 @@ static float3		rt_cl_convert_uvw_to_os
 					(float3)
 					(
 						- cos((float)theta) * uvw_pos.z,
-						uvw_pos.y * 2.f - 1,
+						uvw_pos.y * 2.f - 1.f,
 						- sin((float)theta) * uvw_pos.z
 					)
 				);
@@ -145,9 +145,9 @@ static float3		rt_cl_get_bump_normal
 	bumpiness = 1.f;
 	if (is_2d_proj)
 	{
-		vtan1 = (float3)(2 * precision, 0.f, rt_cl_get_texel_value(obj, (float3)(uvw_pos.x - precision, uvw_pos.y, uvw_pos.z), uvw_scale)
+		vtan1 = (float3)(2.f * precision, 0.f, rt_cl_get_texel_value(obj, (float3)(uvw_pos.x - precision, uvw_pos.y, uvw_pos.z), uvw_scale)
 			- rt_cl_get_texel_value(obj, (float3)(uvw_pos.x + precision, uvw_pos.y, uvw_pos.z), uvw_scale));
-		vtan2 = (float3)(0.f, 2 * precision, rt_cl_get_texel_value(obj, (float3)(uvw_pos.x, uvw_pos.y - precision, uvw_pos.z), uvw_scale)
+		vtan2 = (float3)(0.f, 2.f * precision, rt_cl_get_texel_value(obj, (float3)(uvw_pos.x, uvw_pos.y - precision, uvw_pos.z), uvw_scale)
 			- rt_cl_get_texel_value(obj, (float3)(uvw_pos.x, uvw_pos.y + precision, uvw_pos.z), uvw_scale));
 		vtan1 = rt_cl_convert_uvw_to_os(obj, vtan1);
 		vtan2 = rt_cl_convert_uvw_to_os(obj, vtan2);

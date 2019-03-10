@@ -17,9 +17,10 @@
 
 void		event_mouse_wheel(SDL_Event *event)
 {
+	t_bool mouse_in_objectlist;
+
 	if (event->wheel.y == 0)
 		return ;
-	t_bool mouse_in_objectlist;
 	rt.ui.objects.rect.w += 2;
 	mouse_in_objectlist = SDL_PointInRect(
 		&rt.input.mouse_tile, &rt.ui.objects.rect);
@@ -61,7 +62,7 @@ void		event_mouse_press(SDL_Event *event)
 		debug_output_error("Unable to capture the mouse cursor input.", TRUE);
 }
 
-static void	event_mouse_release_textinput()
+static void	event_mouse_release_textinput(void)
 {
 	if (rt.ui.current_textinput.type)
 	{

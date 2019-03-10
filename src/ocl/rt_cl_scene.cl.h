@@ -189,7 +189,7 @@ typedef	enum	e_pattern
 	horizontal_stripe,
 	vertical_stripe,
 	checkerboard,
-	hue,
+	image,
 	perlin,
 	marble,
 	wood,

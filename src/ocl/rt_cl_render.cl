@@ -166,6 +166,7 @@ static t_intersection		rt_cl_trace_ray_to_scene
 static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 (
 						__constant	t_scene	*	scene,
+						__constant	uint *		img_texture,
 									uint2 *		random_seeds,
 									t_ray		ray,
 									int			sampid,
@@ -182,7 +183,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 	hitpos = ray.hitpos;
 	normal = ray.inter_type * rt_cl_primitive_get_normal(hitpos, obj->type);
 	is_inter_inside = (ray.inter_type == INTER_INSIDE);
-	texture = rt_cl_get_texture_properties(scene, random_seeds, obj, hitpos, normal);
+	texture = rt_cl_get_texture_properties(scene, obj, img_texture, random_seeds, hitpos, normal);
 	if (scene->render_mode == RENDERMODE_SOLIDTEXTURE)
 	{
 		ray.lum_acc = texture.rgb;
@@ -333,6 +334,7 @@ static t_ray			rt_cl_create_camray
 static float3			rt_cl_get_pixel_color_from_mc_sampling
 (
 					__constant		t_scene	*	scene,
+					__constant		uint *		img_texture,
 									uint2 *		random_seeds
 )
 {
@@ -351,11 +353,11 @@ static float3			rt_cl_get_pixel_color_from_mc_sampling
 			{
 				if (scene->render_mode == RENDERMODE_MCPT)
 				{
-					ray_i = rt_cl_accumulate_lum_and_bounce_ray(scene, random_seeds, ray_i, i, depth);
+					ray_i = rt_cl_accumulate_lum_and_bounce_ray(scene, img_texture, random_seeds, ray_i, i, depth);
 				}
 				else if (scene->render_mode == RENDERMODE_SOLIDTEXTURE)
 				{
-					ray_i = rt_cl_accumulate_lum_and_bounce_ray(scene, random_seeds, ray_i, i, depth);
+					ray_i = rt_cl_accumulate_lum_and_bounce_ray(scene, img_texture, random_seeds, ray_i, i, depth);
 					return (ray_i.lum_acc);
 				}
 				else
@@ -389,7 +391,8 @@ static float3			rt_cl_get_pixel_color_from_mc_sampling
 __kernel void			rt_cl_render
 (
 					__global		uint *		result_imgbuf,
-					__constant		t_scene	*	scene
+					__constant		t_scene	*	scene,
+					__constant		uint *		img_texture
 )
 {
 	int const			x_id = get_global_id(0); /* x-coordinate of the current pixel */
@@ -407,7 +410,7 @@ __kernel void			rt_cl_render
 	debug_print_camera(&(scene->camera));
 }*/
 	rt_cl_rand(&random_seeds);
-	float3 vcolor3 = rt_cl_get_pixel_color_from_mc_sampling(scene, &random_seeds);
+	float3 vcolor3 = rt_cl_get_pixel_color_from_mc_sampling(scene, img_texture, &random_seeds);
 	vcolor3 = (float3)(255.f) * fmin(vcolor3, (float3)(1.f));
 	uint3 color3 = (uint3)(floor(vcolor3.x), floor(vcolor3.y), floor(vcolor3.z));
 	uint color = 0xFF000000 | (color3.x << 16) | (color3.y << 8) | (color3.z);

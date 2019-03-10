@@ -33,6 +33,13 @@ int			opencl_init_gpu_memory(void)
 	if (error < 0)
 		return (opencl_handle_error(error, "opencl_init_gpu_memory:"
 					" create write buffer failed for "RT_CL_KERNEL_1));
+	//TODO Check with Tristan
+	rt.ocl.gpu_buf.img_texture = clCreateBuffer(rt.ocl.context,
+		CL_MEM_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,
+		sizeof(t_u32) * 100 * 100, rt.img_texture, &error);
+	if (error < 0)
+		return (opencl_handle_error(error, "opencl_init_gpu_memory:"
+					" create write buffer failed for "RT_CL_KERNEL_1));
 	return (OK);
 }
 
@@ -50,6 +57,12 @@ int			opencl_release_memory_buffers(void)
 		return (opencl_handle_error(error, "opencl_release_memory_buffers:"
 										" release of scene buffer failed."));
 	rt.ocl.gpu_buf.scene = NULL;
+	//TODO Check with Tristan
+	if (rt.ocl.gpu_buf.img_texture &&
+		(error = clReleaseMemObject(rt.ocl.gpu_buf.img_texture)))
+		return (opencl_handle_error(error, "opencl_release_memory_buffers:"
+										" release of img texture buffer failed."));
+	rt.ocl.gpu_buf.img_texture = NULL;
 	return (OK);
 }
 

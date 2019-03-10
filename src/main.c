@@ -126,6 +126,8 @@ int				main(int argc, char *argv[])
 		return (ERROR);
 	init_scene();
 	init_camera(&rt.scene.camera);
+	//HUGO Check with Tristan
+	rt_get_img_texture(&rt.img_texture);
 	if (argc > 1)
 	{
 		i = 1;

@@ -54,6 +54,23 @@ int		init_window(void)
 	return (OK);
 }
 
+int		init_window_display_canvas(void)
+{
+	rt.canvas_w = (rt.sdl.window_w - UI_WIDTH);
+	rt.canvas_h = (rt.sdl.window_h);
+	rt.canvas_pixel_amount = (rt.canvas_w * rt.canvas_h);
+	rt.canvas = SDL_CreateRGBSurfaceWithFormat(
+		SDL_RLEACCEL,
+		rt.canvas_w, rt.canvas_h,
+		8, SDL_PIXELFORMAT_ARGB8888);
+	if (rt.canvas == NULL)
+	{
+		debug_output_error("Could not create the render canvas: ", TRUE);
+		return (ERROR);
+	}
+	return (OK);
+}
+
 int		init_window_display(void)
 {
 	SDL_GetWindowSize(rt.sdl.window, &rt.sdl.window_w, &rt.sdl.window_h);
@@ -76,17 +93,5 @@ int		init_window_display(void)
 		debug_output_error("Could not create window's SDL_Surface: ", TRUE);
 		return (ERROR);
 	}
-	rt.canvas_w = (rt.sdl.window_w - UI_WIDTH);
-	rt.canvas_h = (rt.sdl.window_h);
-	rt.canvas_pixel_amount = (rt.canvas_w * rt.canvas_h);
-	rt.canvas = SDL_CreateRGBSurfaceWithFormat(
-		SDL_RLEACCEL,
-		rt.canvas_w, rt.canvas_h,
-		8, SDL_PIXELFORMAT_ARGB8888);
-	if (rt.canvas == NULL)
-	{
-		debug_output_error("Could not create window's SDL_Surface: ", TRUE);
-		return (ERROR);
-	}
-	return (OK);
+	return (init_window_display_canvas());
 }

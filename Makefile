@@ -115,7 +115,8 @@ SRCS	= 	main.c							\
 			event_window.c					\
 			event_mouse.c					\
 			event_key.c						\
-			rt_get_str.c					\
+			rt_get_str_scene.c				\
+			rt_get_str_object.c				\
 			rt_file.c						\
 			rt_create_texture.c				\
 			rt_open.c						\
@@ -128,8 +129,9 @@ SRCS	= 	main.c							\
 			ui_init.c						\
 			ui_menu_file.c					\
 			ui_menu_edit.c					\
-			ui_render_util.c				\
 			ui_render.c						\
+			ui_render_util.c				\
+			ui_render_canvas.c				\
 			ui_mouse.c						\
 			ui_mouse_objectlist.c			\
 			ui_render_objectlist.c			\

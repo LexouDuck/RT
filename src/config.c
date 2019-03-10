@@ -61,7 +61,6 @@ int			config_init(void)
 	config_init_settings();
 	if (access(CONFIG_FILE, R_OK) < 0)
 	{
-	// if file does not exist
 		debug_output_value("Using default settings, no ", CONFIG_FILE, FALSE);
 		return (OK);
 	}

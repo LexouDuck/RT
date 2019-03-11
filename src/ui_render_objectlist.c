@@ -99,37 +99,38 @@ void		ui_render_expandedproperties(t_object *object, t_s32 y)
 	ui_render_control_numberbox_float(10, y + 27, &object->scale.y);
 	ui_render_control_numberbox_float(19, y + 27, &object->scale.z);
 	ui_render_text("Object BBox Corner VI:", 1, y + 30, FALSE);
-	ui_render_control_numberbox_float( 1, y + 31, &object->bbox_os.vi.x);
+	ui_render_control_numberbox_float(1, y + 31, &object->bbox_os.vi.x);
 	ui_render_control_numberbox_float(10, y + 31, &object->bbox_os.vi.y);
 	ui_render_control_numberbox_float(19, y + 31, &object->bbox_os.vi.z);
 	ui_render_text("Object BBox Corner VF:", 1, y + 34, FALSE);
-	ui_render_control_numberbox_float( 1, y + 35, &object->bbox_os.vf.x);
+	ui_render_control_numberbox_float(1, y + 35, &object->bbox_os.vf.x);
 	ui_render_control_numberbox_float(10, y + 35, &object->bbox_os.vf.y);
 	ui_render_control_numberbox_float(19, y + 35, &object->bbox_os.vf.z);
 	ui_render_text("World BBox Corner VI:", 1, y + 38, FALSE);
-	ui_render_control_numberbox_float( 1, y + 39, &object->bbox_ws.vi.x);
+	ui_render_control_numberbox_float(1, y + 39, &object->bbox_ws.vi.x);
 	ui_render_control_numberbox_float(10, y + 39, &object->bbox_ws.vi.y);
 	ui_render_control_numberbox_float(19, y + 39, &object->bbox_ws.vi.z);
 	ui_render_text("World BBox Corner VF:", 1, y + 42, FALSE);
-	ui_render_control_numberbox_float( 1, y + 43, &object->bbox_ws.vf.x);
+	ui_render_control_numberbox_float(1, y + 43, &object->bbox_ws.vf.x);
 	ui_render_control_numberbox_float(10, y + 43, &object->bbox_ws.vf.y);
 	ui_render_control_numberbox_float(19, y + 43, &object->bbox_ws.vf.z);
 	ui_render_text("Refrac:  Rough:   Opacity:", 1, y + 46, FALSE);
-	ui_render_control_numberbox_float( 1, y + 47, &object->refrac);
+	ui_render_control_numberbox_float(1, y + 47, &object->refrac);
 	ui_render_control_numberbox_float(10, y + 47, &object->roughness);
 	ui_render_control_numberbox_float(19, y + 47, &object->opacity);
-	//TODO Add texture UI here
-	/*
-	ui_render_text("UVW Scale:", 1, y + 50, FALSE);
-	ui_render_control_numberbox_float( 1, y + 51, &object->uvw_scale.x);
-	ui_render_control_numberbox_float(10, y + 51, &object->uvw_scale.y);
-	ui_render_control_numberbox_float(19, y + 51, &object->uvw_scale.z);
-	ui_render_text("UVW Offset:", 1, y + 54, FALSE);
-	ui_render_control_numberbox_float( 1, y + 55, &object->uvw_offset.x);
-	ui_render_control_numberbox_float(10, y + 55, &object->uvw_offset.y);
-	ui_render_control_numberbox_float(19, y + 55, &object->uvw_offset.z);
-	*/
+	//TODO Add texture UI her
 }
+
+/*
+** ui_render_text("UVW Scale:", 1, y + 50, FALSE);
+** ui_render_control_numberbox_float( 1, y + 51, &object->uvw_scale.x);
+** ui_render_control_numberbox_float(10, y + 51, &object->uvw_scale.y);
+** ui_render_control_numberbox_float(19, y + 51, &object->uvw_scale.z);
+** ui_render_text("UVW Offset:", 1, y + 54, FALSE);
+** ui_render_control_numberbox_float( 1, y + 55, &object->uvw_offset.x);
+** ui_render_control_numberbox_float(10, y + 55, &object->uvw_offset.y);
+** ui_render_control_numberbox_float(19, y + 55, &object->uvw_offset.z);
+*/
 
 void	ui_render_objectlist(void)
 {

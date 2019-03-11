@@ -105,7 +105,7 @@ static int		main_loop(void)
 	return (OK);
 }
 
-static void		main_check_args()
+static void		main_check_args(int argc, char *argv[])
 {
 	int	i;
 
@@ -146,7 +146,7 @@ int				main(int argc, char *argv[])
 		return (ERROR);
 	init_scene();
 	init_camera(&rt.scene.camera);
-	main_check_args();
+	main_check_args(argc, argv);
 	if (ui_init())
 		return (ERROR);
 	if (opencl_init(RT_CL_PLATFORM_UNINITIALIZED))

@@ -153,6 +153,7 @@ int				main(int argc, char *argv[])
 		return (ERROR);
 	init_scene();
 	init_camera(&rt.scene.camera);
+	rt_get_img_texture(&rt.img_texture);
 	main_check_args(argc, argv);
 	debug_perror("ui_init");
 	if (ui_init())

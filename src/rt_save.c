@@ -110,3 +110,20 @@ void			rt_save(int fd)
 	}
 	FT_Write_Char(fd, '\n');
 }
+
+void		ui_menu_file_save(void)
+{
+	debug_output("File->Save\n");
+	if (rt.filepath)
+	{
+		rt_file_save(rt.filepath);
+	}
+	else
+	{
+		rt.ui.current_prompt.textbox = texttype_text;
+		rt.ui.current_prompt.text = ft_strdup("./");
+		rt.ui.current_prompt.name = DROPDOWN_LABEL_FILE_SAVE;
+		rt.ui.current_prompt.description = "Type in the destination filepath.";
+		rt.ui.current_prompt.rect = PROMPT;
+	}
+}

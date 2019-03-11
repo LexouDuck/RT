@@ -63,16 +63,45 @@ static t_bool	ui_mouse_menu_cameramodel(t_camera_model *cameramodel, t_s32 y)
 	return (FALSE);
 }
 
-void	ui_mouse_menu(void)
+static t_bool	ui_mouse_menu_addremove()
+{
+	SDL_Rect	rect;
+
+	rect.w = 2;
+	rect.h = 2;
+	rect.y = 1;
+	rect.x = UI_WIDTH_TILES - 8;
+	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+	{
+		rt.scene.objects[rt.scene.object_amount].type = sphere;
+		init_object(&rt.scene.objects[rt.scene.object_amount]);
+		rt.scene.object_amount += 1;
+		rt.must_render = TRUE;
+		return (TRUE);
+	}
+	rect.x = UI_WIDTH_TILES - 4;
+	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+	{
+		rt.scene.object_amount -= 1;
+		ft_memclr(&rt.scene.objects[rt.scene.object_amount], sizeof(t_object));
+		rt.must_render = TRUE;
+		return (TRUE);
+	}
+	return (FALSE);
+}
+
+void			ui_mouse_menu(void)
 {
 	t_textinput	*p;
 	t_s32		y;
 
 	p = &rt.ui.current_textinput;
+	if (ui_mouse_menu_addremove())
+		return ;
 	y = MENUBAR_ITEMS_H + 1;
 	if (ui_mouse_control_numberbox_int(p, &rt.ocl.gpu_platform_index, 1, y) ||
 		ui_mouse_control_numberbox_int(p, &rt.scene.mc_raysamp_size, 10, y) ||
-		ui_mouse_control_numberbox_int(p, &rt.scene.max_ray_depth,   19, y))
+		ui_mouse_control_numberbox_int(p, &rt.scene.max_ray_depth, 19, y))
 		return ;
 	y += 3;
 	if (ui_mouse_menu_rendermode(&rt.scene.render_mode, y))
@@ -87,32 +116,12 @@ void	ui_mouse_menu(void)
 		return ;
 }
 
-void	ui_mouse_menubar(void)
+void			ui_mouse_menubar(void)
 {
 	t_bool		collided;
 	SDL_Rect	rect;
 	t_s8		i;
 
-	rect.w = 2;
-	rect.h = 2;
-	rect.y = 1;
-	rect.x = UI_WIDTH_TILES - 8;
-	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
-	{
-		rt.scene.objects[rt.scene.object_amount].type = sphere;
-		init_object(&rt.scene.objects[rt.scene.object_amount]);
-		rt.scene.object_amount += 1;
-		rt.must_render = TRUE;
-		return ;
-	}
-	rect.x = UI_WIDTH_TILES - 4;
-	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
-	{
-		rt.scene.object_amount -= 1;
-		ft_memclr(&rt.scene.objects[rt.scene.object_amount], sizeof(t_object));
-		rt.must_render = TRUE;
-		return ;
-	}
 	collided = FALSE;
 	i = -1;
 	while (++i < MENUBAR_ITEMS)

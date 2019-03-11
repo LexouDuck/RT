@@ -358,24 +358,9 @@ Error (line 134): preprocessor block must be followed by one empty line
 Error (line 136): preprocessor block must be followed by one empty line
 Error (line 138): preprocessor block must be followed by one empty line
 Norme: ./src/ui_mouse.c
-Error: global scope bad aligned
-Error (line 75, col 60): bad spacing
-Error (line 90): function ui_mouse_menubar has 37 lines
 Norme: ./src/ui_mouse_objectlist.c
 Warning: /Users/aduquesn/Documents/08-rt/src/ui_mouse_objectlist.c may not compile or is invalid for some reasons.
 Norme: ./src/ui_prompt.c
-Error (line 32): function ui_mouse_prompt has 32 lines
-Error (line 44): line has 93 characters
-Error (line 45): line has 85 characters
-Error (line 47): line has 87 characters
-Error (line 49): line has 85 characters
-Error (line 51): line has 87 characters
-Error (line 53): line has 87 characters
-Error (line 54, col 3): no newline after block
-Error (line 54, col 4): no newline before block
-Error (line 55): line has 90 characters
-Error (line 57): line has 90 characters
-Error (line 62): line has 98 characters
 Norme: ./src/rt_open_read.c
 Error: 8 functions in the file
 Error: file must end with a single empty line

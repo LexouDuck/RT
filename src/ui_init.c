@@ -50,13 +50,13 @@ static void	ui_init_dropdown_file(void)
 	dropdown->item_labels[DROPDOWN_FILE_SAVE] = DROPDOWN_LABEL_FILE_SAVE;
 	dropdown->item_labels[DROPDOWN_FILE_SAVEAS] = DROPDOWN_LABEL_FILE_SAVEAS;
 	dropdown->item_labels[DROPDOWN_FILE_RANDOM] = DROPDOWN_LABEL_FILE_RANDOM;
-	dropdown->item_labels[DROPDOWN_FILE_EXPORTBMP] = DROPDOWN_LABEL_FILE_EXPORTBMP;
+	dropdown->item_labels[DROPDOWN_FILE_SAVEBMP] = DROPDOWN_LABEL_FILE_SAVEBMP;
 	dropdown->item_action[DROPDOWN_FILE_OPEN] = ui_menu_file_open;
 	dropdown->item_action[DROPDOWN_FILE_IMPORT] = ui_menu_file_import;
 	dropdown->item_action[DROPDOWN_FILE_SAVE] = ui_menu_file_save;
 	dropdown->item_action[DROPDOWN_FILE_SAVEAS] = ui_menu_file_saveas;
 	dropdown->item_action[DROPDOWN_FILE_RANDOM] = ui_menu_file_generate;
-	dropdown->item_action[DROPDOWN_FILE_EXPORTBMP] = ui_menu_file_exportbmp;
+	dropdown->item_action[DROPDOWN_FILE_SAVEBMP] = ui_menu_file_exportbmp;
 	i = 0;
 	while (i < DROPDOWN_ITEMS_FILE)
 	{

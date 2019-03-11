@@ -38,11 +38,9 @@ static void		update_window(void)
 	}
 	if (rt.ui.menubar.selection != -1)
 		ui_render_dropdown(&rt.ui.dropdowns[rt.ui.menubar.selection]);
-	if (rt.must_render)
-	{
 	// Do the 3d render if needed
+	if (rt.must_render)
 		render();//TODO: thread call to render with an SDL call ?
-	}
 	dest = rt.sdl.window_surface->clip_rect;
 	dest.x += UI_WIDTH;
 	dest.w -= UI_WIDTH;
@@ -50,11 +48,10 @@ static void		update_window(void)
 		debug_output_error("Error during update_window() -> render blit: ", TRUE);
 	ui_render_caminfo(&rt.scene.camera);
 	ui_render_loading_bar();//TODO SNIF
+	// and update the window display
 	if (SDL_UpdateTexture(rt.sdl.window_texture, NULL,
 		rt.sdl.window_surface->pixels, rt.sdl.window_surface->pitch))
-	{ // and update the window display
 		debug_output_error("Error during window update: ", TRUE);
-	}
 	//	if (SDL_RenderClear(rt.sdl.window_renderer))
 	//		debug_output_error("Error during render screen clear: ", TRUE);
 	if (SDL_RenderCopy(rt.sdl.window_renderer, rt.sdl.window_texture, NULL, NULL))
@@ -114,14 +111,19 @@ int				main(int argc, char *argv[])
 {
 	int	i;
 
+	debug_perror("debug_init");
 	if (debug_init())
 		return (ERROR);
+	debug_perror("config_init");
 	if (config_init())
 		return (ERROR);
+	debug_perror("sdl_init");
 	if (init_sdl())
 		return (ERROR);
+	debug_perror("window_init");
 	if (init_window())
 		return (ERROR);
+	debug_perror("display_init");
 	if (init_window_display())
 		return (ERROR);
 	init_scene();
@@ -139,8 +141,10 @@ int				main(int argc, char *argv[])
 			rt_file_import(argv[i]);
 		}
 	}
+	debug_perror("ui_init");
 	if (ui_init())
 		return (ERROR);
+	debug_perror("opencl_init");
 	if (opencl_init(RT_CL_PLATFORM_UNINITIALIZED))
 		return (ERROR);
 	return (main_loop());

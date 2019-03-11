@@ -136,14 +136,15 @@ int				opencl_log_compiler(void)
 		return (opencl_handle_error(error,
 				"opencl_log_compiler: compiler log file length query failed."));
 	if (!(file_buf = (char *)malloc(file_len + 1)))
-		return (opencl_handle_error(error,
-				"opencl_log_compiler: malloc failed."));
+		return (debug_perror("opencl_log_compiler: malloc failed."));
 	file_buf[file_len] = '\0';
 	if ((error = clGetProgramBuildInfo(rt.ocl.program, rt.ocl.gpu.id,
 					CL_PROGRAM_BUILD_LOG, file_len + 1, file_buf, NULL)) < 0)
 		return (opencl_handle_error(error,
 				"opencl_log_compiler: compiler log retrieve failed."));
+	debug_output("OpenCL compiler log -->\n");
 	debug_output(file_buf);
+	debug_output("\n");
 	free(file_buf);
 	return (OK);
 }

@@ -23,9 +23,9 @@ static int		opencl_initialize_platforms(void)
 	t_bool		has_gpu;
 
 	if ((error = clGetPlatformIDs(RT_CL_PLATFORM_MAX_AMOUNT,
-		rt.ocl.platforms, &(rt.ocl.platform_amount))) != CL_SUCCESS)
-		return (debug_perror("opencl_get_platform_and_gpu:"
-							" could not get platform IDs."));
+		rt.ocl.platforms, &(rt.ocl.platform_amount))) < 0)
+		return (opencl_handle_error(error, "opencl_get_platform_and_gpu:"
+									" could not get platform IDs."));
 	has_gpu = FALSE;
 	rt.ocl.gpu_platform_index = -1;
 	while (!has_gpu && ++rt.ocl.gpu_platform_index < rt.ocl.platform_amount)
@@ -50,7 +50,6 @@ static int		opencl_get_platform_and_gpu(int platform_index)
 	if (platform_index == RT_CL_PLATFORM_UNINITIALIZED)
 	{
 		if (opencl_initialize_platforms())
-
 			return (debug_perror("opencl_get_platform_and_gpu:"
 								" error while querying available platforms."));
 	}
@@ -59,7 +58,7 @@ static int		opencl_get_platform_and_gpu(int platform_index)
 		rt.ocl.gpu_platform_index = platform_index;
 		if ((error = clGetDeviceIDs(rt.ocl.platforms[rt.ocl.gpu_platform_index],
 			CL_DEVICE_TYPE_GPU, 1, &(rt.ocl.gpu.id), NULL)) < 0)
-			return (debug_perror("opencl_get_platform_and_gpu:"
+			return (opencl_handle_error(error, "opencl_get_platform_and_gpu:"
 								" error getting selected platform's GPU."));
 	}
 	debug_output_value("Platform amount found: ",
@@ -75,12 +74,12 @@ static int		opencl_create_context_and_queue(void)
 	rt.ocl.context = clCreateContext(NULL, 1, &(rt.ocl.gpu.id),
 									NULL, NULL, &error);
 	if (error < 0)
-		return (debug_perror("opencl_create_context_and_queue:"
+		return (opencl_handle_error(error, "opencl_create_context_and_queue:"
 								" could not create context."));
 	rt.ocl.cmd_queue = clCreateCommandQueue(rt.ocl.context,
 											rt.ocl.gpu.id, 0, &error);
 	if (error < 0)
-		return (debug_perror("opencl_create_context_and_queue:"
+		return (opencl_handle_error(error, "opencl_create_context_and_queue:"
 								" could not create command queue."));
 	return (OK);
 }
@@ -126,7 +125,7 @@ static int		opencl_read_and_build_program(void)
 								RT_CL_PROGRAM_OPTIONS, NULL, NULL)) < 0)
 	{
 		opencl_log_compiler();
-		return (debug_perror("opencl_read_and_build_program: build failed."));
+		return (opencl_handle_error(error, "opencl_read_and_build_program: build failed."));
 	}
 	if (close(fd) == -1)
 		return (debug_perror("opencl_read_and_build_program: close failed."));

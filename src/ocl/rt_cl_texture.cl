@@ -204,7 +204,7 @@ static t_texture	rt_cl_get_texture_properties
 	bool		is_bump;
 	int			i;
 
-	is_bump = false;
+	is_bump = true;
 	is_2d_proj = false;
 	texture.uvw_offset = (float3)(0.f, 0.f, 0.f);
 	texture.uvw_scale = (float3)(1.f, 1.f, 1.f);

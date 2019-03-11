@@ -80,14 +80,14 @@ int			opencl_release_queue_context_program(void)
 	cl_int	error;
 
 	if ((error = clReleaseCommandQueue(rt.ocl.cmd_queue)))
-		return (opencl_handle_error(error, "opencl_release_queue_context_
-		program: queue release failed."));
+		return (opencl_handle_error(error, "opencl_release_queue_context_"
+		"program: queue release failed."));
 	if ((error = clReleaseContext(rt.ocl.context)))
-		return (opencl_handle_error(error, "opencl_release_queue_context_
-		program: context release failed."));
+		return (opencl_handle_error(error, "opencl_release_queue_context_"
+		"program: context release failed."));
 	if ((error = clReleaseProgram(rt.ocl.program)))
-		return (opencl_handle_error(error, "opencl_release_queue_context_
-		program: program release failed."));
+		return (opencl_handle_error(error, "opencl_release_queue_context_"
+		"program: program release failed."));
 	return (OK);
 }
 

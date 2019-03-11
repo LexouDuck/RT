@@ -25,6 +25,7 @@ int		rt_file_open(char *filepath)
 	t_rtparser	parser;
 	char		*error;
 
+	rt.filepath = filepath;
 	if (rt_open_file(filepath, &parser))
 		return (ERROR);
 	if (parser.file)

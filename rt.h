@@ -73,6 +73,7 @@ typedef struct		t_rt
 	t_bool			must_render;
 	char			*filepath;
 	t_ui			ui;
+	t_u32			*img_texture;
 }					t_rt;
 /*
 **	This is our global variable which stores everything.
@@ -99,6 +100,11 @@ typedef struct	s_rtparser
 int			init_sdl();
 int			init_window();
 int			init_window_display();
+
+/*
+**	init_image_texture.c
+*/
+void		rt_get_img_texture(cl_uint **img_texture);
 
 /*
 **	scene.c
@@ -152,7 +158,6 @@ void		rt_save(int	fd);
 **	rt_open_util.c
 **	rt_open_read.c
 */
-void		rt_create_rgb_texture(cl_float3 **rgb_texture);
 int			rt_open_file(char *filepath, t_rtparser *p);
 char		*rt_read_file(t_rtparser *p);
 void		rt_output_readfile();

@@ -17,9 +17,10 @@
 
 void		event_mouse_wheel(SDL_Event *event)
 {
+	t_bool mouse_in_objectlist;
+
 	if (event->wheel.y == 0)
 		return ;
-	t_bool mouse_in_objectlist;
 	rt.ui.objects.rect.w += 2;
 	mouse_in_objectlist = SDL_PointInRect(
 		&rt.input.mouse_tile, &rt.ui.objects.rect);
@@ -39,6 +40,7 @@ void		event_mouse_wheel(SDL_Event *event)
 		camera_update(&rt.scene.camera);
 		rt.must_render = TRUE;
 	}
+	return ;
 }
 
 void		event_mouse_press(SDL_Event *event)
@@ -59,9 +61,10 @@ void		event_mouse_press(SDL_Event *event)
 		rt.scene.camera.mode = CAMERA_MODE_ROTATE;
 	if (rt.scene.camera.mode && SDL_CaptureMouse(TRUE))
 		debug_output_error("Unable to capture the mouse cursor input.", TRUE);
+	return ;
 }
 
-static void	event_mouse_release_textinput()
+static void	event_mouse_release_textinput(void)
 {
 	if (rt.ui.current_textinput.type)
 	{
@@ -72,6 +75,7 @@ static void	event_mouse_release_textinput()
 		else if (rt.ui.current_textinput.type == texttype_number_float)
 			ui_leave_control_numberbox_float(&rt.ui.current_textinput);
 	}
+	return ;
 }
 
 void		event_mouse_release(SDL_Event *event)
@@ -99,6 +103,7 @@ void		event_mouse_release(SDL_Event *event)
 	}
 	if (SDL_CaptureMouse(FALSE))
 		debug_output_error("Unable to release the mouse cursor input.", TRUE);
+	return ;
 }
 
 void		event_mouse_motion(SDL_Event *event)
@@ -127,4 +132,5 @@ void		event_mouse_motion(SDL_Event *event)
 		camera_update(&rt.scene.camera);
 		rt.must_render = TRUE;
 	}
+	return ;
 }

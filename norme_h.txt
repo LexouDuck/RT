@@ -1,39 +1,108 @@
 Norme: ./src/config.h
 Norme: ./src/debug.h
+Norme: ./src/rt_random.h
 Norme: ./src/event.h
 Norme: ./src/rt_cl.h
 Error (line 70): C++ comment
 Error (line 77): C++ comment
 Error (line 99): C++ comment
 Norme: ./src/rt_scene.h
-Error (line 46): preprocessor block must be followed by one empty line
-Error (line 54): preprocessor block must be followed by one empty line
-Error (line 74): line has 87 characters
-Error (line 75): line has 98 characters
-Error (line 76): line has 83 characters
-Error (line 77): line has 84 characters
-Error (line 80): line has 90 characters
-Error (line 81): line has 90 characters
-Error (line 82): line has 90 characters
-Error (line 87): line has 90 characters
-Error (line 107): C++ comment
-Error (line 111): line has 82 characters
-Error (line 129): line has 86 characters
-Error (line 160): C++ comment
-Error (line 214): C++ comment
-Error (line 216): C++ comment
-Error (line 218): C++ comment
-Error (line 220): C++ comment
-Error (line 222): C++ comment
-Error (line 278): C++ comment
-Error (line 279): C++ comment
-Error (line 281): C++ comment
-Error (line 281): line has 109 characters
+Error (line 58): preprocessor block must be followed by one empty line
+Error (line 68): preprocessor block must be followed by one empty line
+Error (line 89): line has 87 characters
+Error (line 90): line has 98 characters
+Error (line 91): line has 83 characters
+Error (line 92): line has 84 characters
+Error (line 95): line has 90 characters
+Error (line 96): line has 90 characters
+Error (line 97): line has 90 characters
+Error (line 102): line has 90 characters
+Error (line 124): C++ comment
+Error (line 128): line has 82 characters
+Error (line 146): line has 86 characters
+Error (line 178): C++ comment
+Error (line 181): C++ comment
+Error (line 181): line has 99 characters
+Error (line 208): wrong number of spaces in preprocessor line
+Error (line 208): preprocessor block must be followed by one empty line
+Error (line 233): wrong number of spaces in preprocessor line
+Error (line 233): preprocessor block must be followed by one empty line
+Error (line 236): C++ comment
+Error (line 238): C++ comment
+Error (line 240): C++ comment
+Error (line 242): C++ comment
+Error (line 244): C++ comment
+Error (line 247): wrong number of spaces in preprocessor line
+Error (line 247): preprocessor block must be followed by one empty line
+Error (line 263): wrong number of spaces in preprocessor line
+Error (line 263): preprocessor block must be followed by one empty line
+Error (line 323): Struct s_object bad aligned
+Error (line 337): C++ comment
 Norme: ./src/ui.h
+Error (line 105): C++ comment
+Error (line 107): C++ comment
 Error (line 109): C++ comment
-Error (line 111): C++ comment
-Error (line 113): C++ comment
-Error (line 142): C++ comment
-Error (line 144): C++ comment
-Error (line 146): C++ comment
-Error (line 148): C++ comment
+Norme: ./assets.h
+Warning: /Users/aduquesn/Documents/08-rt/assets.h may not compile or is invalid for some reasons.
+Norme: ./rt.h
+Error: global scope bad aligned
+Error: 42 header must be followed by one empty line
+Error (line 1): line has 82 characters
+Error (line 2): line has 82 characters
+Error (line 3): line has 82 characters
+Error (line 4): line has 82 characters
+Error (line 5): line has 82 characters
+Error (line 6): line has 82 characters
+Error (line 7): line has 82 characters
+Error (line 8): line has 82 characters
+Error (line 9): line has 82 characters
+Error (line 10): line has 82 characters
+Error (line 11): line has 82 characters
+Error (line 14): preprocessor block must be followed by one empty line
+Error (line 16): comment not well formatted
+Error (line 17): line has 82 characters
+Error (line 18): line has 82 characters
+Error (line 19): line has 82 characters
+Error (line 24): preprocessor block must be followed by one empty line
+Error (line 30): preprocessor block must be followed by one empty line
+Error (line 32): comment not well formatted
+Error (line 33): line has 82 characters
+Error (line 34): line has 82 characters
+Error (line 35): line has 82 characters
+Error (line 38): preprocessor block must be followed by one empty line
+Error (line 41): preprocessor block must be followed by one empty line
+Error (line 43): comment not well formatted
+Error (line 46): Struct s_sdl bad aligned
+Error (line 59): comment not well formatted
+Error (line 62): Struct t_rt bad aligned
+Error (line 62, col 8): t_rt is not well prefixed.
+Error (line 77): comment not well formatted
+Error (line 80, col 8): global named rt is not well prefixed
+Error (line 82): comment not well formatted
+Error (line 83): line has 82 characters
+Error (line 84): line has 82 characters
+Error (line 85): line has 82 characters
+Error (line 96): comment not well formatted
+Error (line 103): comment not well formatted
+Error (line 111): comment not well formatted
+Error (line 116): comment not well formatted
+Error (line 124): comment not well formatted
+Error (line 129): comment not well formatted
+Error (line 139): comment not well formatted
+Error (line 146): comment not well formatted
+Error (line 150): comment not well formatted
+Error (line 162): line has 86 characters
+Error (line 163): line has 87 characters
+Error (line 163, col 70): space after pointer
+Error (line 164): line has 86 characters
+Error (line 164, col 69): space after pointer
+Error (line 165): line has 90 characters
+Error (line 166): line has 88 characters
+Error (line 167): line has 98 characters
+Error (line 169): comment not well formatted
+Error (line 170): line has 82 characters
+Error (line 171): line has 82 characters
+Error (line 172): line has 82 characters
+Error (line 175): comment not well formatted
+Error (line 178): C++ comment
+Error (line 180): comment not well formatted

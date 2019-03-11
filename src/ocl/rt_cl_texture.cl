@@ -115,8 +115,6 @@ static float		rt_cl_get_texel_value
 		rt_cl_get_pattern_vertical_stripes(obj, uvw_pos, uvw_scale, &texel_value);
 	else if (obj->pattern == checkerboard)
 		rt_cl_get_pattern_checkerboard(obj, uvw_pos, uvw_scale, &texel_value);
-	else if (obj->pattern == hue)
-		texel_value = 1.f;
 	else if (obj->pattern == perlin)
 		rt_cl_get_pattern_perlin(obj, uvw_pos, uvw_scale, &texel_value);
 	else if (obj->pattern == wood)
@@ -194,8 +192,9 @@ static float3		rt_cl_uint_to_float3
 static t_texture	rt_cl_get_texture_properties
 (
 					__constant	t_scene	*	scene,
-								uint2 *		random_seeds,
 					__constant	t_object *	obj,
+					__constant	uint *		img_texture,
+								uint2 *		random_seeds,
 								float3		hitpos,
 								float3		normal
 )
@@ -203,26 +202,25 @@ static t_texture	rt_cl_get_texture_properties
 	t_texture	texture;
 	bool		is_2d_proj;
 	bool		is_bump;
-	bool		is_image_texture;
+	int			i;
 
-	is_bump = false;
+	is_bump = true;
 	is_2d_proj = false;
-	is_image_texture = true;
 	texture.uvw_offset = (float3)(0.f, 0.f, 0.f);
 	texture.uvw_scale = (float3)(1.f, 1.f, 1.f);
 	texture.uvw_pos = rt_cl_convert_os_to_uvw(obj, hitpos);
 	texture.uvw_pos = fmod((float3)(texture.uvw_pos + texture.uvw_offset), 1.f);
 	//TODO add conditional for 2d texturing vs 3d texturing
-/*	if (is_image_texture)
+	if (obj->pattern == image)
 	{
-		texture.rgb = obj->rgb_texture[0];
+		i = round(texture.uvw_pos.y * 99.f) * 100 + round(texture.uvw_pos.x * 99.f);
+		texture.rgb = (float3)(((img_texture[i] >> 16) & 0xFF) / 255.f, ((img_texture[i] >> 8) & 0xFF) / 255.f, ((img_texture[i]) & 0xFF) / 255.f);
 	}
 	else
 	{
-*/
 		texture.texel_value = rt_cl_get_texel_value(obj, texture.uvw_pos, texture.uvw_scale);
 		texture.rgb = obj->rgb_a * texture.texel_value + obj->rgb_b * (1 - texture.texel_value);
-//	}
+	}
 	if (is_bump && is_2d_proj)
 		texture.uvw_pos.z = texture.texel_value;
 	else if (is_bump)

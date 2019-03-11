@@ -48,10 +48,7 @@ static t_bool	event_check_keydown_special_numberbox(SDL_Event *event)
 		rt.ui.current_textinput.type == texttype_number_float)
 	{
 		tmp = rt.ui.current_textinput.value;
-	 	if (rt.input.keys & KEY_SHIFT_L)
-			tmp -= 1;
-		else
-			tmp += 1;
+		tmp += (rt.input.keys & KEY_SHIFT_L) ? -1 : 1;
 		rt.ui.current_textinput.value = tmp;
 		rt.ui.current_textinput.input = ft_f32_to_str(*tmp, 4);
 		return (TRUE);
@@ -61,9 +58,11 @@ static t_bool	event_check_keydown_special_numberbox(SDL_Event *event)
 		if (rt.ui.current_textinput.type == texttype_number_int)
 			ui_keypress_control_textbox(&rt.ui.current_textinput);
 		else if (rt.ui.current_textinput.type == texttype_number_int)
-			ui_keypress_control_numberbox_int(&rt.ui.current_textinput, event->key.keysym.sym == SDLK_UP);
+			ui_keypress_control_numberbox_int(&rt.ui.current_textinput,
+				event->key.keysym.sym == SDLK_UP);
 		else if (rt.ui.current_textinput.type == texttype_number_float)
-			ui_keypress_control_numberbox_float(&rt.ui.current_textinput, event->key.keysym.sym == SDLK_UP);
+			ui_keypress_control_numberbox_float(&rt.ui.current_textinput,
+				event->key.keysym.sym == SDLK_UP);
 		return (TRUE);
 	}
 	return (FALSE);
@@ -98,7 +97,7 @@ static t_bool	event_check_keydown_special_textinput(SDL_Event *event)
 	return (FALSE);
 }
 
-void		event_check_keydown(SDL_Event *event)
+void			event_check_keydown(SDL_Event *event)
 {
 	if (event_check_keydown_windowevents(event))
 		return ;
@@ -121,9 +120,10 @@ void		event_check_keydown(SDL_Event *event)
 		rt.input.keys |= KEY_SHIFT_L;
 	else if (event->key.keysym.sym == SDLK_RSHIFT)
 		rt.input.keys |= KEY_SHIFT_R;
+	return ;
 }
 
-void		event_check_keyup(SDL_Event *event)
+void			event_check_keyup(SDL_Event *event)
 {
 	if (event->key.keysym.sym == SDLK_LALT)
 		rt.input.keys &= ~KEY_ALT_L;
@@ -137,4 +137,5 @@ void		event_check_keyup(SDL_Event *event)
 		rt.input.keys &= ~KEY_SHIFT_L;
 	else if (event->key.keysym.sym == SDLK_RSHIFT)
 		rt.input.keys &= ~KEY_SHIFT_R;
+	return ;
 }

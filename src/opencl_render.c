@@ -91,7 +91,9 @@ static int			render_launch_kernel1_rendermain(void)
 	if (((error = clSetKernelArg(rt.ocl.kernels[1], ++kernel_arg_nbr,
 					sizeof(cl_mem), &(rt.ocl.gpu_buf.canvas_pixels))) < 0) ||
 		((error = clSetKernelArg(rt.ocl.kernels[1], ++kernel_arg_nbr,
-					sizeof(cl_mem), &(rt.ocl.gpu_buf.scene))) < 0))
+							sizeof(cl_mem), &(rt.ocl.gpu_buf.scene))) < 0) ||
+		((error = clSetKernelArg(rt.ocl.kernels[1], ++kernel_arg_nbr,
+						sizeof(cl_mem), &(rt.ocl.gpu_buf.img_texture))) < 0))
 	{
 		debug_output_value("error: kernel #",
 							ft_s32_to_str(kernel_arg_nbr), TRUE);

@@ -37,7 +37,7 @@
 # define DEFAULT_CAM_RGB_SHADE		((cl_float3){{ 0., 0., 0. }})
 
 # define DEFAULT_OBJECT_REFRAC		1.
-# define DEFAULT_OBJECT_ROUGHNESS	0.0001
+# define DEFAULT_OBJECT_ROUGHNESS	0.
 # define DEFAULT_OBJECT_OPACITY		1.
 
 # define EPS						0.00003
@@ -254,7 +254,7 @@ typedef	enum		e_pattern
 	horizontal_stripe,
 	vertical_stripe,
 	checkerboard,
-	hue,
+	image,
 	perlin,
 	marble,
 	wood,

@@ -51,14 +51,14 @@
 # define DROPDOWN_FILE_SAVE			2
 # define DROPDOWN_FILE_SAVEAS		3
 # define DROPDOWN_FILE_RANDOM		4
-# define DROPDOWN_FILE_EXPORTBMP	5
+# define DROPDOWN_FILE_SAVEBMP		5
 # define DROPDOWN_ITEMS_FILE		6
 # define DROPDOWN_LABEL_FILE_OPEN		"Open file..."
 # define DROPDOWN_LABEL_FILE_IMPORT		"Import file..."
 # define DROPDOWN_LABEL_FILE_SAVE		"Save"
 # define DROPDOWN_LABEL_FILE_SAVEAS		"Save as..."
 # define DROPDOWN_LABEL_FILE_RANDOM		"Generate file..."
-# define DROPDOWN_LABEL_FILE_EXPORTBMP	"Export BMP image..."
+# define DROPDOWN_LABEL_FILE_SAVEBMP	"Export BMP image..."
 
 # define DROPDOWN_EDIT_UNDO		0
 # define DROPDOWN_EDIT_REDO		1

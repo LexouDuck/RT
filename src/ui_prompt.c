@@ -15,7 +15,7 @@
 #include "../rt.h"
 #include "debug.h"
 
-void	ui_leave_prompt(void)
+static void	ui_cancel_prompt(void)
 {
 	if (rt.ui.current_textinput.type)
 		ui_leave_control_textbox(&rt.ui.current_textinput);
@@ -29,6 +29,31 @@ void	ui_leave_prompt(void)
 	ft_memclr(&rt.ui.objects.expanded, sizeof(t_bool) * OBJECT_MAX_AMOUNT);
 }
 
+static void	ui_accept_prompt()
+{
+	if (rt.ui.current_prompt.name == NULL)
+		debug_output_error(
+			"Invalid dropdown label name upon prompt apply.", FALSE);
+	else if (ft_strequ(rt.ui.current_prompt.name, DROPDOWN_LABEL_FILE_OPEN))
+		rt_file_open(rt.ui.current_prompt.text);
+	else if (ft_strequ(rt.ui.current_prompt.name, DROPDOWN_LABEL_FILE_IMPORT))
+		rt_file_import(rt.ui.current_prompt.text);
+	else if (ft_strequ(rt.ui.current_prompt.name, DROPDOWN_LABEL_FILE_SAVE))
+		rt_file_save(rt.ui.current_prompt.text);
+	else if (ft_strequ(rt.ui.current_prompt.name, DROPDOWN_LABEL_FILE_SAVEAS))
+		rt_file_save(rt.ui.current_prompt.text);
+	else if (ft_strequ(rt.ui.current_prompt.name, DROPDOWN_LABEL_FILE_RANDOM))
+	{
+		
+	}
+	else if (ft_strequ(rt.ui.current_prompt.name, DROPDOWN_LABEL_FILE_SAVEBMP))
+		if (SDL_SaveBMP(rt.canvas, rt.ui.current_prompt.text))
+			debug_output_error(
+				"Could not save BMP image of the render: ", TRUE);
+	ui_cancel_prompt();
+	rt.must_render = TRUE;
+}
+
 void	ui_mouse_prompt(void)
 {
 	static SDL_Rect	button_ok = PROMPT_BUTTON_OK;
@@ -37,30 +62,13 @@ void	ui_mouse_prompt(void)
 	if (SDL_PointInRect(&rt.input.mouse_tile, &rt.ui.current_prompt.rect))
 	{
 		if (SDL_PointInRect(&rt.input.mouse_tile, &button_cancel))
-			ui_leave_prompt();
+			ui_cancel_prompt();
 		else if (SDL_PointInRect(&rt.input.mouse_tile, &button_ok))
-		{
-			if (rt.ui.current_prompt.name == NULL)
-				debug_output_error("Invalid dropdown label name upon prompt apply.", FALSE);
-			else if (ft_strequ(rt.ui.current_prompt.name, DROPDOWN_LABEL_FILE_OPEN))
-				rt_file_open(rt.ui.current_prompt.text);
-			else if (ft_strequ(rt.ui.current_prompt.name, DROPDOWN_LABEL_FILE_IMPORT))
-				rt_file_import(rt.ui.current_prompt.text);
-			else if (ft_strequ(rt.ui.current_prompt.name, DROPDOWN_LABEL_FILE_SAVE))
-				rt_file_save(rt.ui.current_prompt.text);
-			else if (ft_strequ(rt.ui.current_prompt.name, DROPDOWN_LABEL_FILE_SAVEAS))
-				rt_file_save(rt.ui.current_prompt.text);
-			else if (ft_strequ(rt.ui.current_prompt.name, DROPDOWN_LABEL_FILE_RANDOM))
-			{}
-			else if (ft_strequ(rt.ui.current_prompt.name, DROPDOWN_LABEL_FILE_EXPORTBMP))
-				if (SDL_SaveBMP(rt.canvas, rt.ui.current_prompt.text))
-					debug_output_error("Could not save BMP image of the render: ", TRUE);
-			ui_leave_prompt();
-			rt.must_render = TRUE;
-		}
+			ui_accept_prompt();
 		else
-			ui_mouse_control_textbox(&rt.ui.current_textinput, &rt.ui.current_prompt.text, 2, 8);
+			ui_mouse_control_textbox(&rt.ui.current_textinput,
+				&rt.ui.current_prompt.text, 2, 8);
 	}
 	else
-		ui_leave_prompt();
+		ui_cancel_prompt();
 }

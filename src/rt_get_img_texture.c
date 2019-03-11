@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rt_create_texture.c                                :+:      :+:    :+:   */
+/*   rt_get_img_texture.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
+/*   By: hbruvry <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
-/*   Updated: 2019/02/28 15:03:29 by hbruvry          ###   ########.fr       */
+/*   Created: 2019/03/11 15:04:26 by hbruvry           #+#    #+#             */
+/*   Updated: 2019/03/11 15:05:28 by hbruvry          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,41 +19,13 @@
 #include "debug.h"
 #include "rt_scene.h"
 
-/*
-static t_float3	rt_get_texture_pixel(SDL_Surface *surface, int x, int y)
+void		rt_fill_image_texture(cl_uint **img_texture, Uint32 *img_pixels, SDL_PixelFormat *format)
 {
-	int		bpp;
-	Uint8	*p;
+	Uint32	pixel;
+	Uint32	tmp;
+	int		x;
+	int		y;
 
-	bpp = surface->format->BytesPerPixel;
-	p = (Uint8*)surface->pixels + y * surface->pitch + x * bpp;
-	return (p[0] | p[1] << 8 | p[2] << 16);
-}
-*/
-
-void		rt_get_img_texture(cl_uint **img_texture)
-{
-	SDL_Surface		*surface;
-	SDL_PixelFormat	*format;
-	Uint32			*img_pixels;
-	Uint32			pixel;
-	Uint32			tmp;
-	int				x;
-	int				y;
-
-	if (!(surface = SDL_LoadBMP("img_texture.bmp")))
-	{
-		debug_output_error("Texture BMP image file could not be loaded.", TRUE);
-		return ;
-	}
-	SDL_LockSurface(surface);
-	format = surface->format;
-	img_pixels = (Uint32*)(surface->pixels);
-	if (!(*img_texture = (cl_uint*)malloc(sizeof(cl_uint) * (100 * 100))))
-	{
-		SDL_FreeSurface(surface);
-		return ;
-	}
 	x = -1;
 	y = -1;
 	while (++y < 100)
@@ -76,6 +48,36 @@ void		rt_get_img_texture(cl_uint **img_texture)
 		}
 		x = -1;
 	}
+	return ;
+}
+
+/*
+** Uint32			pixel;
+** Uint32			tmp;
+** int				x;
+** int				y;
+*/
+
+void		rt_get_img_texture(cl_uint **img_texture)
+{
+	SDL_Surface		*surface;
+	SDL_PixelFormat	*format;
+	Uint32			*img_pixels;
+
+	if (!(surface = SDL_LoadBMP("img_texture.bmp")))
+	{
+		debug_output_error("Texture BMP image file could not be loaded.", TRUE);
+		return ;
+	}
+	SDL_LockSurface(surface);
+	format = surface->format;
+	img_pixels = (Uint32*)(surface->pixels);
+	if (!(*img_texture = (cl_uint*)malloc(sizeof(cl_uint) * (100 * 100))))
+	{
+		SDL_FreeSurface(surface);
+		return ;
+	}
+	rt_fill_image_texture(img_texture, img_pixels, format);
 	SDL_UnlockSurface(surface);
 	SDL_FreeSurface(surface);
 	return ;

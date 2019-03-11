@@ -23,7 +23,6 @@
 #include "debug.h"
 #include "rt_scene.h"
 
-//TODO Add texture debug output value
 void		rt_output_readfile(void)
 {
 	t_object			*object;
@@ -36,6 +35,7 @@ void		rt_output_readfile(void)
 	while (i < rt.scene.object_amount)
 	{
 		object = &rt.scene.objects[i];
+		//TODO Add texture debug output value
 		debug_output(rt_get_str_primitive(object->type));
 		debug_output("\t-> ");
 		debug_output_value("NAME: ", object->name, FALSE);

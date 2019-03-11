@@ -228,7 +228,6 @@ char		*rt_read_arg_pattern(t_rtparser *p, t_pattern *result, char const *label)
 	return ("No valid texture pattern enum label encountered");
 }
 
-
 char		*rt_read_arg_projection(t_rtparser *p, t_uvw_projection *result, char const *label)
 {
 	char const	*str;

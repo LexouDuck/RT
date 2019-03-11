@@ -40,6 +40,7 @@ void	ui_leave_control_textbox(t_textinput *textinput)
 		textinput->value = NULL;
 		SDL_StopTextInput();
 	}
+	return ;
 }
 
 t_bool	ui_mouse_control_textbox(t_textinput *textinput, char **value, int x, int y)
@@ -78,10 +79,12 @@ void	ui_render_control_textbox(int x, int y, char *value)
 			value[str_max_length] = '\0';
 		ui_render_text(value, rect.x + 1, rect.y + 1, FALSE);
 	}
+	return ;
 }
 
-void			ui_keypress_control_textbox(t_textinput *textinput)
+void	ui_keypress_control_textbox(t_textinput *textinput)
 {
 	if (!textinput)
 		return ;
+	return ;
 }

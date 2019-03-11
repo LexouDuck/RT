@@ -18,7 +18,7 @@
 ** this function write a function to the savefile
 */
 
-static void		print_float3_to_str(int	fd, cl_float3 *vector, char *label)
+static void		print_float3_to_str(int fd, cl_float3 *vector, char *label)
 {
 	char *tmp;
 
@@ -28,13 +28,14 @@ static void		print_float3_to_str(int	fd, cl_float3 *vector, char *label)
 		FT_Write_Line(fd, tmp);
 		free(tmp);
 	}
+	return ;
 }
 
 /*
 ** this function write revery data of the map and call above function.
 */
 
-static void		print_get_str(int fd, t_object *object) 
+static void		print_get_str(int fd, t_object *object)
 {
 	char *tmp;
 
@@ -48,17 +49,17 @@ static void		print_get_str(int fd, t_object *object)
 	}
 	if ((tmp = rt_get_str_material(object->material)))
 	{
-		FT_Write_String(fd,"material:");
+		FT_Write_String(fd, "material:");
 		FT_Write_Line(fd, tmp);
 	}
 	if ((tmp = rt_get_str_pattern(object->pattern)))
 	{
-		FT_Write_String(fd,"pattern:");
+		FT_Write_String(fd, "pattern:");
 		FT_Write_Line(fd, tmp);
 	}
 	if ((tmp = rt_get_str_projection(object->uvw_projection)))
 	{
-		FT_Write_String(fd,"projection:");
+		FT_Write_String(fd, "projection:");
 		FT_Write_Line(fd, tmp);
 	}
 }
@@ -67,17 +68,18 @@ static void		print_get_str(int fd, t_object *object)
 ** this function print Back ground color on the savefile
 */
 
-static void 	print_bg_color(int fd)
+static void		print_bg_color(int fd)
 {
 	char *tmp;
 
 	if ((tmp = FT_U32_To_HexString(rt.scene.bg_color)))
-	{	
+	{
 		FT_Write_String(fd, "BG #");
 		FT_Write_Line(fd, tmp);
 		FT_Write_Char(fd, '\n');
 		free(tmp);
 	}
+	return ;
 }
 
 /*
@@ -86,8 +88,8 @@ static void 	print_bg_color(int fd)
 
 void			rt_save(int fd)
 {
-	size_t 			i;
-	t_object* 		object;
+	size_t		i;
+	t_object	*object;
 
 	print_bg_color(fd);
 	i = 0;
@@ -109,9 +111,10 @@ void			rt_save(int fd)
 		i++;
 	}
 	FT_Write_Char(fd, '\n');
+	return ;
 }
 
-void		ui_menu_file_save(void)
+void			ui_menu_file_save(void)
 {
 	debug_output("File->Save\n");
 	if (rt.filepath)
@@ -126,4 +129,5 @@ void		ui_menu_file_save(void)
 		rt.ui.current_prompt.description = "Type in the destination filepath.";
 		rt.ui.current_prompt.rect = PROMPT;
 	}
+	return ;
 }

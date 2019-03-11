@@ -100,7 +100,7 @@ static void	ui_init_dropdown_edit(void)
 static void	ui_init_objectlist(void)
 {
 	rt.ui.objects.rect.x = 0;
-	rt.ui.objects.rect.y = 14;
+	rt.ui.objects.rect.y = 22;
 	rt.ui.objects.rect.w = UI_WIDTH_TILES - 2;
 	rt.ui.objects.rect.h = rt.sdl.window_h - rt.ui.objects.rect.y;
 	rt.ui.objects.scrollbar.clicked = scrollclick_none;

@@ -114,6 +114,16 @@ void			ui_mouse_menu(void)
 		ui_mouse_control_numberbox_float(p, &rt.scene.camera.aperture, 10, y) ||
 		ui_mouse_control_numberbox_float(p, &rt.scene.camera.focal_dist, 19, y))
 		return ;
+	y += 4;
+	if (ui_mouse_control_numberbox_float(p, &rt.scene.camera.rgb_mask.x, 1, y) ||
+		ui_mouse_control_numberbox_float(p, &rt.scene.camera.rgb_mask.y, 10, y) ||
+		ui_mouse_control_numberbox_float(p, &rt.scene.camera.rgb_mask.z, 19, y))
+		return ;
+	y += 4;
+	if (ui_mouse_control_numberbox_float(p, &rt.scene.camera.rgb_shade.x, 1, y) ||
+		ui_mouse_control_numberbox_float(p, &rt.scene.camera.rgb_shade.y, 10, y) ||
+		ui_mouse_control_numberbox_float(p, &rt.scene.camera.rgb_shade.z, 19, y))
+		return ;
 }
 
 void			ui_mouse_menubar(void)

@@ -186,7 +186,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 	texture = rt_cl_get_texture_properties(scene, obj, img_texture, random_seeds, hitpos, normal);
 	if (scene->render_mode == RENDERMODE_SOLIDTEXTURE)
 	{
-		ray.lum_acc = texture.rgb;
+		ray.lum_acc += texture.rgb * ray.lum_mask;
 		return (ray);
 	}
 

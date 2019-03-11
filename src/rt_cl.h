@@ -82,6 +82,7 @@ typedef	struct	s_gpu_buffers
 {
 	cl_mem			scene;
 	cl_mem			canvas_pixels;
+	cl_mem			img_texture;
 }				t_gpu_buffers;
 
 typedef struct	s_cl

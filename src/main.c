@@ -20,15 +20,20 @@
 #include "ui.h"
 #include "rt_scene.h"
 
+/*
+** Fill the window pixel buffer with black
+** Display the UI
+** Do the 3d render if needed
+** and update the window display
+*/
+
 static void		update_window(void)
 {
 	SDL_Rect	dest;
 
-	// Fill the window pixel buffer with black
 	if (SDL_FillRect(rt.sdl.window_surface, NULL, 0x000000))
 		debug_output_error(
 			"Error during update_window() -> Screen clear: ", TRUE);
-	// display the UI
 	if (rt.ui.current_prompt.name)
 		ui_render_prompt();
 	else
@@ -38,23 +43,20 @@ static void		update_window(void)
 	}
 	if (rt.ui.menubar.selection != -1)
 		ui_render_dropdown(&rt.ui.dropdowns[rt.ui.menubar.selection]);
+	//TODO thread call to render with an SDL call ?
 	if (rt.must_render)
-	{
-	// Do the 3d render if needed
-		render();//TODO: thread call to render with an SDL call ?
-	}
+		render();
 	dest = rt.sdl.window_surface->clip_rect;
 	dest.x += UI_WIDTH;
 	dest.w -= UI_WIDTH;
 	if (SDL_BlitSurface(rt.canvas, &rt.canvas->clip_rect, rt.sdl.window_surface, &dest))
 		debug_output_error("Error during update_window() -> render blit: ", TRUE);
 	ui_render_caminfo(&rt.scene.camera);
-	ui_render_loading_bar();//TODO SNIF
+	//TODO SNIF
+	ui_render_loading_bar();
 	if (SDL_UpdateTexture(rt.sdl.window_texture, NULL,
 		rt.sdl.window_surface->pixels, rt.sdl.window_surface->pitch))
-	{ // and update the window display
 		debug_output_error("Error during window update: ", TRUE);
-	}
 	//	if (SDL_RenderClear(rt.sdl.window_renderer))
 	//		debug_output_error("Error during render screen clear: ", TRUE);
 	if (SDL_RenderCopy(rt.sdl.window_renderer, rt.sdl.window_texture, NULL, NULL))
@@ -134,21 +136,28 @@ static void		main_check_args(int argc, char *argv[])
 
 int				main(int argc, char *argv[])
 {
+	debug_perror("debug_init");
 	if (debug_init())
 		return (ERROR);
+	debug_perror("config_init");
 	if (config_init())
 		return (ERROR);
+	debug_perror("sdl_init");
 	if (init_sdl())
 		return (ERROR);
+	debug_perror("window_init");
 	if (init_window())
 		return (ERROR);
+	debug_perror("display_init");
 	if (init_window_display())
 		return (ERROR);
 	init_scene();
 	init_camera(&rt.scene.camera);
 	main_check_args(argc, argv);
+	debug_perror("ui_init");
 	if (ui_init())
 		return (ERROR);
+	debug_perror("opencl_init");
 	if (opencl_init(RT_CL_PLATFORM_UNINITIALIZED))
 		return (ERROR);
 	return (main_loop());

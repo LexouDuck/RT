@@ -120,6 +120,7 @@ void			event_check_keydown(SDL_Event *event)
 		rt.input.keys |= KEY_SHIFT_L;
 	else if (event->key.keysym.sym == SDLK_RSHIFT)
 		rt.input.keys |= KEY_SHIFT_R;
+	return ;
 }
 
 void			event_check_keyup(SDL_Event *event)
@@ -136,4 +137,5 @@ void			event_check_keyup(SDL_Event *event)
 		rt.input.keys &= ~KEY_SHIFT_L;
 	else if (event->key.keysym.sym == SDLK_RSHIFT)
 		rt.input.keys &= ~KEY_SHIFT_R;
+	return ;
 }

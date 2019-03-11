@@ -58,7 +58,7 @@ inline char		*rt_get_str_pattern(t_pattern pattern)
 		"H_STRIPES",
 		"V_STRIPES",
 		"CHECKER",
-		"HUE",
+		"IMAGE",
 		"PERLIN",
 		"MARBLE",
 		"WOOD",

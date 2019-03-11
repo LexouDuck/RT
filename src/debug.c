@@ -45,9 +45,7 @@ void	debug_output(char const *str)
 {
 	int fd;
 
-#ifdef DEBUG
 	FT_Write_String(STDERR, str);
-#endif
 	fd = open(DEBUG_FILE, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
 	{
@@ -70,10 +68,8 @@ void	debug_output_value(char const *str, char *value, t_bool free_value)
 {
 	int fd;
 
-#ifdef DEBUG
 	FT_Write_String(STDERR, str);
 	FT_Write_Line(STDERR, value);
-#endif
 	fd = open(DEBUG_FILE, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
 	{
@@ -99,17 +95,9 @@ void	debug_output_error(char const *str, t_bool sdl_error)
 {
 	int fd;
 
-#ifdef DEBUG
+	FT_Write_Line(STDERR, str);
 	if (sdl_error)
-	{
-		FT_Write_String(STDERR, str);
 		FT_Write_Line(STDERR, SDL_GetError());
-	}
-	else
-	{
-		FT_Write_Line(STDERR, str);
-	}
-#endif
 	fd = open(DEBUG_FILE, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
 	{
@@ -118,13 +106,9 @@ void	debug_output_error(char const *str, t_bool sdl_error)
 		FT_Write_Line(STDERR, strerror(errno));
 		return ;
 	}
+	FT_Write_Line(fd, str);
 	if (sdl_error)
-	{
-		FT_Write_String(fd, str);
 		FT_Write_Line(fd, SDL_GetError());
-	}
-	else
-		FT_Write_Line(fd, str);
 	if (close(fd) < 0)
 	{
 		FT_Write_String(STDERR, "Error in debug_output_error() -> "DEBUG_FILE
@@ -138,10 +122,8 @@ int		debug_perror(char const *str)
 {
 	int fd;
 
-#ifdef DEBUG
 	FT_Write_String(STDERR, str);
 	FT_Write_Char(STDERR, '\n');
-#endif
 	fd = open(DEBUG_FILE, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
 	{

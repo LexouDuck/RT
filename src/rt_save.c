@@ -62,6 +62,11 @@ static void		print_get_str(int fd, t_object *object)
 		FT_Write_String(fd, "projection:");
 		FT_Write_Line(fd, tmp);
 	}
+	if ((tmp = rt_get_str_bump(object->bump_type)))
+	{
+		FT_Write_String(fd, "bump:");
+		FT_Write_Line(fd, tmp);
+	}
 }
 
 /*
@@ -106,6 +111,9 @@ void			rt_save(int fd)
 			print_float3_to_str(fd, &object->scale, "scale:");
 			print_float3_to_str(fd, &object->bbox_os.vi, "bbox_vi:");
 			print_float3_to_str(fd, &object->bbox_os.vf, "bbox_vf:");
+			print_float3_to_str(fd, &object->uvw_scale, "uvw_scale:");
+			print_float3_to_str(fd, &object->uvw_offset, "uvw_offset:");
+			//TODO Add refrace rough and opacity ?
 			FT_Write_Char(fd, '\n');
 		}
 		i++;

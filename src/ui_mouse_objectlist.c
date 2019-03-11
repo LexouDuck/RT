@@ -88,7 +88,7 @@ static t_bool	ui_mouse_objectlist_expandedproperties_pattern(
 }
 
 static t_bool	ui_mouse_objectlist_expandedproperties_projection(
-	t_uvw_projection *projection, t_s32 y)
+	t_projection *projection, t_s32 y)
 {
 	static SDL_Rect	rect = { 0, 0, 1, 1 };
 
@@ -111,6 +111,30 @@ static t_bool	ui_mouse_objectlist_expandedproperties_projection(
 	return (FALSE);
 }
 
+static t_bool	ui_mouse_objectlist_expandedproperties_bump(
+	t_bump *bump_type, t_s32 y)
+{
+	static SDL_Rect	rect = { 0, 0, 1, 1 };
+
+	rect.x = 12;
+	rect.y = y + 8;
+	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+	{
+		*bump_type = (int)(*bump_type == 0) ? BUMP_TYPES - 1 : (*bump_type - 1);
+		rt.must_render = TRUE;
+		return (TRUE);
+	}
+	rect.x = 24;
+	rect.y = y + 8;
+	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+	{
+		*bump_type = (int)(*bump_type == BUMP_TYPES - 1) ? 0 : (*bump_type + 1);
+		rt.must_render = TRUE;
+		return (TRUE);
+	}
+	return (FALSE);
+}
+
 static void	ui_mouse_objectlist_expandedproperties(t_object *object, t_s32 y)
 {
 	cl_float3		*ptr;
@@ -119,9 +143,10 @@ static void	ui_mouse_objectlist_expandedproperties(t_object *object, t_s32 y)
 	if (ui_mouse_objectlist_expandedproperties_primitive(&object->type, y) ||
 		ui_mouse_objectlist_expandedproperties_material(&object->material, y) ||
 		ui_mouse_objectlist_expandedproperties_pattern(&object->pattern, y) ||
-		ui_mouse_objectlist_expandedproperties_projection(&object->uvw_projection, y))
+		ui_mouse_objectlist_expandedproperties_projection(&object->uvw_projection, y) ||
+		ui_mouse_objectlist_expandedproperties_bump(&object->bump_type, y))
 		return ;
-	y += 8;
+	y += 10;
 	ptr = &object->rgb_a;
 	i = 0;
 	while (i < OBJECT_PROPERTIES)

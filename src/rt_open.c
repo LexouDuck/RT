@@ -40,6 +40,7 @@ void		rt_output_readfile(void)
 		debug_output("\t-> ");
 		debug_output_value("NAME: ", object->name, FALSE);
 		debug_output_value("MATERIAL: ", rt_get_str_material(object->material), FALSE);
+		debug_output_value("PATTERN: ", rt_get_str_pattern(object->pattern), FALSE);
 		debug_output_value("-> #", ft_u32_to_hex(object->color_a), TRUE);
 		debug_output_value("-> #", ft_u32_to_hex(object->color_b), TRUE);
 		debug_output_value(" - ", cl_float3_to_str(&object->rgb_a, 3), TRUE);
@@ -49,6 +50,9 @@ void		rt_output_readfile(void)
 		debug_output_value(" - scale:", cl_float3_to_str(&object->scale, 3), TRUE);
 		debug_output_value(" - bbox_vi:", cl_float3_to_str(&object->bbox_os.vi, 3), TRUE);
 		debug_output_value(" - bbox_vf:", cl_float3_to_str(&object->bbox_os.vf, 3), TRUE);
+		debug_output_value(" - uvw_scale:", cl_float3_to_str(&object->uvw_scale, 3), TRUE);
+		debug_output_value(" - uvw_scale:", cl_float3_to_str(&object->uvw_offset, 3), TRUE);
+		//TODO Add refrac, roughness and opacity ?
 		++i;
 	}
 }
@@ -68,6 +72,7 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 			(error = rt_read_arg_material(p, &object.material, "material")) ||
 			(error = rt_read_arg_pattern(p, &object.pattern, "pattern")) ||
 			(error = rt_read_arg_projection(p, &object.uvw_projection, "projection")) ||
+			(error = rt_read_arg_bump(p, &object.bump_type, "bump")) ||
 			(error = rt_read_arg_color(p, &object.rgb_a, "color")) ||
 			(error = rt_read_arg_color(p, &object.rgb_b, "color2")) ||
 			(error = rt_read_arg_vector(p, &object.pos, "pos")) ||
@@ -75,6 +80,8 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 			(error = rt_read_arg_vector(p, &object.scale, "scale")) ||
 			(error = rt_read_arg_vector(p, &object.bbox_os.vi, "bbox_vi")) ||
 			(error = rt_read_arg_vector(p, &object.bbox_os.vf, "bbox_vf")) ||
+			(error = rt_read_arg_vector(p, &object.uvw_scale, "uvw_scale")) ||
+			(error = rt_read_arg_vector(p, &object.uvw_offset, "uvw_offset")) ||
 			(error = rt_read_arg_number(p, &object.refrac, "refrac")) ||
 			(error = rt_read_arg_number(p, &object.roughness, "roughness")) ||
 			(error = rt_read_arg_number(p, &object.opacity, "opacity")))

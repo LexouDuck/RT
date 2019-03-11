@@ -260,24 +260,33 @@ typedef	enum		e_pattern
 	wood,
 }					t_pattern;
 
-# define			TEXTURE_PROJECTIONS	3
-typedef	enum		e_uvw_projection
+# define			BUMP_TYPES			2
+typedef	enum		e_bump
 {
-	cubic = 0,
-	spherical,
-	cylindrical,
-}					t_uvw_projection;
+	flat = 0,
+	bump,
+}					t_bump;
 
 typedef struct		s_texture
 {
 	t_pattern		pattern;
+
 	cl_float		texel_value;
 	cl_float3		uvw_pos;
 	cl_float3		uvw_scale;
 	cl_float3		uvw_offset;
+	t_bump			bump_type;
 	cl_float3		bump_normal;
 	cl_float3		rgb;
 }					t_texture;
+
+# define			TEXTURE_PROJECTIONS	3
+typedef	enum		e_projection
+{
+	cubic = 0,
+	spherical,
+	cylindrical,
+}					t_projection;
 
 /*
 ** This struct is used to translate, rotate and scale our object into position
@@ -334,6 +343,8 @@ typedef struct		s_object
 	cl_float3		scale;
 	t_bbox			bbox_os;
 	t_bbox			bbox_ws;
+	cl_float3		uvw_scale;
+	cl_float3		uvw_offset;
 	cl_float		refrac;//refraction index for snell-descartes
 	cl_float		roughness;
 	cl_float		opacity;
@@ -341,10 +352,8 @@ typedef struct		s_object
 	cl_float16		w_to_o;
 	cl_float16		n_to_w;
 	t_pattern		pattern;
-	cl_float3		*rgb_texture;
-	cl_float3		uvw_scale;
-	cl_float3		uvw_offset;
-	t_uvw_projection	uvw_projection;
+	t_projection	uvw_projection;
+	t_bump			bump_type;
 }					t_object;
 
 typedef struct		s_scene

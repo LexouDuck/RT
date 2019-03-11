@@ -224,7 +224,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 								ray.refrac * obj->refrac;
 		bool	is_transmitted;
 
-		is_transmitted = rt_cl_get_transmit_or_reflect(&new_ray.dir, random_seeds, ray.dir, normal, obj->roughness, prev_refrac, new_refrac);
+		is_transmitted = rt_cl_get_transmit_or_reflect(&new_ray.dir, random_seeds, ray.dir, normal, prev_refrac, new_refrac, obj->roughness);
 		new_ray.lum_mask = (!is_inter_inside && is_transmitted) ?
 			ray.lum_mask * texture.rgb :
 			ray.lum_mask;

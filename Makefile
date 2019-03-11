@@ -132,6 +132,7 @@ SRCS	= 	main.c							\
 			ui_menu_edit.c					\
 			ui_render.c						\
 			ui_render_util.c				\
+			ui_render_util_rect.c			\
 			ui_render_canvas.c				\
 			ui_mouse.c						\
 			ui_mouse_objectlist.c			\

@@ -66,6 +66,20 @@ static void		update_window(void)
 	rt.must_render = FALSE;
 }
 
+static void		main_exit(void)
+{
+	if (rt.ui.current_textinput.input)
+	{
+		free(rt.ui.current_textinput.input);
+		rt.ui.current_textinput.input = NULL;
+	}
+	config_save();
+	config_free();
+	opencl_freeall();
+	SDL_DestroyWindow(rt.sdl.window);
+	SDL_Quit();
+}
+
 /*
 **	The main program loop: pretty much everything is called from here
 **	Runs at 60fps (the 3 first lines of code inside the loop do this)
@@ -88,19 +102,27 @@ static int		main_loop(void)
 		event_checkevents();
 		update_window();
 	}
-	if (rt.ui.current_textinput.input)
-	{
-		free(rt.ui.current_textinput.input);
-		rt.ui.current_textinput.input = NULL;
-	}
 	debug_output("Attempting to close program...\n");
-	config_save();
-	config_free();
-	opencl_freeall();
-	SDL_DestroyWindow(rt.sdl.window);
-	SDL_Quit();
+	main_exit();
 	debug_output("Program closed successfully.\n");
 	return (OK);
+}
+
+static void		main_check_args(int argc, char *argv[])
+{
+	int	i;
+
+	if (argc > 1)
+	{
+		i = 1;
+		rt.filepath = argv[i];
+		rt_file_open(rt.filepath);
+		while (++i < argc)
+		{
+			rt.filepath = NULL;
+			rt_file_import(argv[i]);
+		}
+	}
 }
 
 /*
@@ -115,8 +137,6 @@ static int		main_loop(void)
 
 int				main(int argc, char *argv[])
 {
-	int	i;
-
 	debug_perror("debug_init");
 	if (debug_init())
 		return (ERROR);
@@ -134,18 +154,7 @@ int				main(int argc, char *argv[])
 		return (ERROR);
 	init_scene();
 	init_camera(&rt.scene.camera);
-	rt_get_img_texture(&rt.img_texture);
-	if (argc > 1)
-	{
-		i = 1;
-		rt.filepath = argv[i];
-		rt_file_open(rt.filepath);
-		while (++i < argc)
-		{
-			rt.filepath = NULL;
-			rt_file_import(argv[i]);
-		}
-	}
+	main_check_args(argc, argv);
 	debug_perror("ui_init");
 	if (ui_init())
 		return (ERROR);

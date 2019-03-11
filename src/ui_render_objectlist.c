@@ -27,24 +27,28 @@ void	ui_render_icon_object(t_object *object, t_s32 y)
 	static t_u32		palette[PALETTE] = {
 		0x000000, 0x0058F8, 0x3CBCFC, 0xFCFCFC };
 
-	if (object->type == none)
-		return ;
 	palette[1] = object->color_a;
-	palette[1] = (ft_color_argb32_get_r(palette[1]) < shade) ? (palette[1] & 0x00FFFF) : (palette[1] - (shade << 16));
-	palette[1] = (ft_color_argb32_get_g(palette[1]) < shade) ? (palette[1] & 0xFF00FF) : (palette[1] - (shade << 8));
-	palette[1] = (ft_color_argb32_get_b(palette[1]) < shade) ? (palette[1] & 0xFFFF00) : (palette[1] - (shade << 0));
+	palette[1] = (ft_color_argb32_get_r(palette[1]) < shade) ?
+		(palette[1] & 0x00FFFF) : (palette[1] - (shade << 16));
+	palette[1] = (ft_color_argb32_get_g(palette[1]) < shade) ?
+		(palette[1] & 0xFF00FF) : (palette[1] - (shade << 8));
+	palette[1] = (ft_color_argb32_get_b(palette[1]) < shade) ?
+		(palette[1] & 0xFFFF00) : (palette[1] - (shade << 0));
 	palette[3] = object->color_a;
-	palette[3] = (ft_color_argb32_get_r(palette[3]) >= 0xFF - light) ? (palette[3] | 0xFF0000) : (palette[3] + (light << 16));
-	palette[3] = (ft_color_argb32_get_g(palette[3]) >= 0xFF - light) ? (palette[3] | 0x00FF00) : (palette[3] + (light << 8));
-	palette[3] = (ft_color_argb32_get_b(palette[3]) >= 0xFF - light) ? (palette[3] | 0x0000FF) : (palette[3] + (light << 0));
+	palette[3] = (ft_color_argb32_get_r(palette[3]) >= 0xFF - light) ?
+		(palette[3] | 0xFF0000) : (palette[3] + (light << 16));
+	palette[3] = (ft_color_argb32_get_g(palette[3]) >= 0xFF - light) ?
+		(palette[3] | 0x00FF00) : (palette[3] + (light << 8));
+	palette[3] = (ft_color_argb32_get_b(palette[3]) >= 0xFF - light) ?
+		(palette[3] | 0x0000FF) : (palette[3] + (light << 0));
 	palette[2] = object->color_a;
-	if (!ui_set_palette(rt.ui.tileset, palette))
+	if (object->type == none || !ui_set_palette(rt.ui.tileset, palette))
 		return ;
 	ui_render_icon((int)object->type - 1, 1, y * TILE, TRUE);
 	ui_set_palette(rt.ui.tileset, rt.ui.pal);
 }
 
-void	ui_render_expandedproperties(t_object *object, t_s32 y)
+void		ui_render_expandedproperties(t_object *object, t_s32 y)
 {
 	char		*tmp;
 

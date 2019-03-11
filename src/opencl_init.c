@@ -25,7 +25,7 @@ static int		opencl_initialize_platforms(void)
 	if ((error = clGetPlatformIDs(RT_CL_PLATFORM_MAX_AMOUNT,
 		rt.ocl.platforms, &(rt.ocl.platform_amount))) < 0)
 		return (opencl_handle_error(error, "opencl_get_platform_and_gpu:"
-									" could not get platform IDs."));
+		" could not get platform IDs."));
 	has_gpu = FALSE;
 	rt.ocl.gpu_platform_index = -1;
 	while (!has_gpu && ++rt.ocl.gpu_platform_index < rt.ocl.platform_amount)
@@ -39,7 +39,7 @@ static int		opencl_initialize_platforms(void)
 	}
 	if (!has_gpu)
 		return (debug_perror("opencl_get_platform_and_gpu:"
-							" no GPU device found."));
+		" no GPU device found."));
 	return (OK);
 }
 
@@ -51,7 +51,7 @@ static int		opencl_get_platform_and_gpu(int platform_index)
 	{
 		if (opencl_initialize_platforms())
 			return (debug_perror("opencl_get_platform_and_gpu:"
-								" error while querying available platforms."));
+			" error while querying available platforms."));
 	}
 	else
 	{
@@ -59,7 +59,7 @@ static int		opencl_get_platform_and_gpu(int platform_index)
 		if ((error = clGetDeviceIDs(rt.ocl.platforms[rt.ocl.gpu_platform_index],
 			CL_DEVICE_TYPE_GPU, 1, &(rt.ocl.gpu.id), NULL)) < 0)
 			return (opencl_handle_error(error, "opencl_get_platform_and_gpu:"
-								" error getting selected platform's GPU."));
+			" error getting selected platform's GPU."));
 	}
 	debug_output_value("Platform amount found: ",
 							ft_u64_to_str(rt.ocl.platform_amount), TRUE);
@@ -75,12 +75,12 @@ static int		opencl_create_context_and_queue(void)
 									NULL, NULL, &error);
 	if (error < 0)
 		return (opencl_handle_error(error, "opencl_create_context_and_queue:"
-								" could not create context."));
+		" could not create context."));
 	rt.ocl.cmd_queue = clCreateCommandQueue(rt.ocl.context,
 											rt.ocl.gpu.id, 0, &error);
 	if (error < 0)
 		return (opencl_handle_error(error, "opencl_create_context_and_queue:"
-								" could not create command queue."));
+		" could not create command queue."));
 	return (OK);
 }
 
@@ -120,7 +120,7 @@ static int		opencl_read_and_build_program(void)
 	free(file_buf);
 	if (error < 0)
 		return (debug_perror("opencl_read_and_build_program:"
-							" clCreateProgramWithSource returned error."));
+		" clCreateProgramWithSource returned error."));
 	if ((error = clBuildProgram(rt.ocl.program, 1, &(rt.ocl.gpu.id),
 								RT_CL_PROGRAM_OPTIONS, NULL, NULL)) < 0)
 	{
@@ -146,22 +146,22 @@ int				opencl_init(int platform_index)
 
 	if (opencl_get_platform_and_gpu(platform_index))
 		return (debug_perror("opencl_init:"
-							" could not find an appropriate GPU/platform."));
+		" could not find an appropriate GPU/platform."));
 	if (opencl_create_context_and_queue())
 		return (debug_perror("opencl_init:"
-							" could not create device, context or queue."));
+		" could not create device, context or queue."));
 	if (opencl_read_and_build_program())
 		return (debug_perror("opencl_init: could not build program."));
 	if (opencl_init_gpu_memory())
 		return (debug_perror("opencl_init:"
-							" could not initialize gpu memory buffers."));
+		" could not initialize gpu memory buffers."));
 	rt.ocl.kernels[0] = clCreateKernel(rt.ocl.program, RT_CL_KERNEL_0, &error);
 	if (error < 0)
 		return (debug_perror("opencl_init:"
-							" could not init kernel "RT_CL_KERNEL_0));
+		" could not init kernel "RT_CL_KERNEL_0));
 	rt.ocl.kernels[1] = clCreateKernel(rt.ocl.program, RT_CL_KERNEL_1, &error);
 	if (error < 0)
 		return (debug_perror("opencl_init:"
-							" could not init kernel "RT_CL_KERNEL_1));
+		" could not init kernel "RT_CL_KERNEL_1));
 	return (OK);
 }

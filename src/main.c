@@ -20,15 +20,20 @@
 #include "ui.h"
 #include "rt_scene.h"
 
+/*
+** Fill the window pixel buffer with black
+** Display the UI
+** Do the 3d render if needed
+** and update the window display
+*/
+
 static void		update_window(void)
 {
 	SDL_Rect	dest;
 
-	// Fill the window pixel buffer with black
 	if (SDL_FillRect(rt.sdl.window_surface, NULL, 0x000000))
 		debug_output_error(
 			"Error during update_window() -> Screen clear: ", TRUE);
-	// display the UI
 	if (rt.ui.current_prompt.name)
 		ui_render_prompt();
 	else
@@ -38,17 +43,17 @@ static void		update_window(void)
 	}
 	if (rt.ui.menubar.selection != -1)
 		ui_render_dropdown(&rt.ui.dropdowns[rt.ui.menubar.selection]);
-	// Do the 3d render if needed
+	//TODO thread call to render with an SDL call ?
 	if (rt.must_render)
-		render();//TODO: thread call to render with an SDL call ?
+		render();
 	dest = rt.sdl.window_surface->clip_rect;
 	dest.x += UI_WIDTH;
 	dest.w -= UI_WIDTH;
 	if (SDL_BlitSurface(rt.canvas, &rt.canvas->clip_rect, rt.sdl.window_surface, &dest))
 		debug_output_error("Error during update_window() -> render blit: ", TRUE);
 	ui_render_caminfo(&rt.scene.camera);
-	ui_render_loading_bar();//TODO SNIF
-	// and update the window display
+	//TODO SNIF
+	ui_render_loading_bar();
 	if (SDL_UpdateTexture(rt.sdl.window_texture, NULL,
 		rt.sdl.window_surface->pixels, rt.sdl.window_surface->pitch))
 		debug_output_error("Error during window update: ", TRUE);
@@ -128,7 +133,6 @@ int				main(int argc, char *argv[])
 		return (ERROR);
 	init_scene();
 	init_camera(&rt.scene.camera);
-	//HUGO Check with Tristan
 	rt_get_img_texture(&rt.img_texture);
 	if (argc > 1)
 	{

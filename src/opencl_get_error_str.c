@@ -130,7 +130,7 @@ static const char	*opencl_get_error_string2(cl_int error)
 	return (opencl_get_error_string3(error));
 }
 
-const char	*opencl_get_error_string(cl_int error)
+const char			*opencl_get_error_string(cl_int error)
 {
 	if (error == 0)
 		return ("CL_SUCCESS");

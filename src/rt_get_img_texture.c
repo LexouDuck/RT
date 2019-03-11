@@ -19,7 +19,8 @@
 #include "debug.h"
 #include "rt_scene.h"
 
-void		rt_fill_image_texture(cl_uint **img_texture, Uint32 *img_pixels, SDL_PixelFormat *format)
+void		rt_fill_image_texture(cl_uint **img_texture,
+			Uint32 *img_pixels, SDL_PixelFormat *format)
 {
 	Uint32	pixel;
 	Uint32	tmp;
@@ -33,16 +34,13 @@ void		rt_fill_image_texture(cl_uint **img_texture, Uint32 *img_pixels, SDL_Pixel
 		while (++x < 100)
 		{
 			pixel = img_pixels[(y * 100) + x];
-			tmp = pixel & format->Rmask;
-			tmp = tmp >> format->Rshift;
+			tmp = (pixel & format->Rmask) >> format->Rshift;
 			tmp = tmp << format->Rloss;
 			(*img_texture)[(y * 100) + x] = (cl_uint)tmp * 0x10000;
-			tmp = pixel & format->Gmask;
-			tmp = tmp >> format->Gshift;
+			tmp = (pixel & format->Gmask) >> format->Gshift;
 			tmp = tmp << format->Gloss;
 			(*img_texture)[(y * 100) + x] += (cl_uint)tmp * 0x100;
-			tmp = pixel & format->Bmask;
-			tmp = tmp >> format->Bshift;
+			tmp = (pixel & format->Bmask) >> format->Bshift;
 			tmp = tmp << format->Bloss;
 			(*img_texture)[(y * 100) + x] += (cl_uint)tmp * 0x1;
 		}

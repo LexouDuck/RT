@@ -25,10 +25,8 @@ static t_bool	ui_mouse_menu_rendermode(t_rendermode *rendermode, t_s32 y)
 	{
 		*rendermode = ((int)*rendermode == 0) ?
 			(RENDER_MODES - 1) : ((int)*rendermode - 1);
-		if (*rendermode != RENDERMODE_MCPT)
-			rt.scene.work_dims.z = 1;
-		else
-			rt.scene.work_dims.z = rt.scene.mc_raysamp_size;
+		rt.scene.work_dims.z = (*rendermode == RENDERMODE_MCPT) ? 
+											rt.scene.mc_raysamp_size : 1;
 		rt.must_render = TRUE;
 		return (TRUE);
 	}

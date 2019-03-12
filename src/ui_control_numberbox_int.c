@@ -18,6 +18,25 @@
 #include "../rt.h"
 #include "debug.h"
 
+static void	ui_control_numberbox_int_to_valid_pow_of_2(cl_uint *value,
+														t_u32 max,
+														t_u32 paired_value)
+{
+	t_float		lg2_f;
+	t_u32		lg2_ui;
+
+	if (*value > max)
+		*value = max;
+	else if (*value < 1)
+		*value = 1;
+	lg2_f = log2(*value);
+	lg2_ui = round(lg2_f);
+	*value = 0x1 << lg2_ui;
+	if (rt.scene.mc_raysamp_size * rt.scene.max_ray_depth >=
+										MAXIMUM_RENDER_PRODUCT)
+		*value = MAXIMUM_RENDER_PRODUCT / paired_value;
+}
+
 static void	ui_change_control_numberbox_int(cl_uint *value)
 {
 	if (value == &rt.ocl.gpu_platform_index)
@@ -29,20 +48,14 @@ static void	ui_change_control_numberbox_int(cl_uint *value)
 	}
 	else if (value == &rt.scene.mc_raysamp_size)
 	{
-		if (*value > MAXIMUM_RAYSAMP_SIZE)
-			*value = MAXIMUM_RAYSAMP_SIZE;
-		else if (*value < 1)
-			*value = 1;
-//		else
-//			*value = ft_uint_round_pow2();
+		ui_control_numberbox_int_to_valid_pow_of_2(value,
+				MAXIMUM_RAYSAMP_SIZE, rt.scene.max_ray_depth);
 		rt.scene.work_dims.z = *value;
 	}
 	else if (value == &rt.scene.max_ray_depth)
 	{
-		if (*value > MAXIMUM_MAX_RAY_DEPTH)
-			*value = MAXIMUM_MAX_RAY_DEPTH;
-		else if (*value < 1)
-			*value = 1;
+		ui_control_numberbox_int_to_valid_pow_of_2(value,
+				MAXIMUM_MAX_RAY_DEPTH, rt.scene.mc_raysamp_size);
 	}
 	rt.must_render = TRUE;
 }
@@ -99,12 +112,14 @@ t_bool	ui_mouse_control_numberbox_int(t_textinput *textinput, cl_uint *value, in
 		button.y = rect.y;
 		if (SDL_PointInRect(&rt.input.mouse, &button))
 		{
-			*value += 1;
+			*value = (value == &rt.ocl.gpu_platform_index) ?
+					(*value + 1) : (*value * 2);
 			ui_change_control_numberbox_int(value);
 		}
 		else if ((button.y += 2 * TILE) && SDL_PointInRect(&rt.input.mouse, &button))
 		{
-			*value -= 1;
+			*value = (value == &rt.ocl.gpu_platform_index) ?
+					(*value - 1) : (*value / 2);
 			ui_change_control_numberbox_int(value);
 		}
 		else

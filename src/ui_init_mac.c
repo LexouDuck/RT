@@ -37,13 +37,13 @@ int _mh_execute_header;
 int		ui_init_assets(void)
 {
 	size_t	size;
-	
+
 	size = 0;
 	rt.ui.chr = getsectiondata(&_mh_execute_header,
 		"__DATA", "__inc_ui_chr", &size);
 	if (rt.ui.chr == NULL)
 		return (debug_perror(
-			"Could not load UI assets: Mach-O GetSectionData() failed."));
+		"Could not load UI assets: Mach-O GetSectionData() failed."));
 	if (size != CHR_SIZE)
 	{
 		debug_output_value(

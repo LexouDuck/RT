@@ -160,18 +160,26 @@ void		rt_save(int	fd);
 **	rt_open_read.c
 */
 int			rt_open_file(char *filepath, t_rtparser *p);
+char		*rt_read_object_arg(t_rtparser *p, t_object *object);
+void		rt_read_getprimitive(char const *label, t_primitive *shape);
 char		*rt_read_file(t_rtparser *p);
-void		rt_output_readfile();
 void		rt_read_whitespace(t_rtparser *p);
 char		*rt_read_error(char expected, char *description, char instead);
 char		*rt_read_arg_name(t_rtparser *p, char *result);
-char		*rt_read_arg_number(t_rtparser *p, cl_float *result, char const *label);
-char		*rt_read_arg_vector(t_rtparser *p, cl_float3 *result, char const* label);
-char		*rt_read_arg_color(t_rtparser *p, cl_float3 *result, char const* label);
-char		*rt_read_arg_material(t_rtparser *p, t_material *result, char const *label);
-char		*rt_read_arg_pattern(t_rtparser *p, t_pattern *result, char const *label);
-char		*rt_read_arg_projection(t_rtparser *p, t_projection *result, char const *label);
-char		*rt_read_arg_bump(t_rtparser *p, t_bump *result, char const *label);
+char		*rt_read_arg_number(t_rtparser *p, cl_float *result,
+	char const *label);
+char		*rt_read_arg_vector(t_rtparser *p, cl_float3 *result,
+	char const* label);
+char		*rt_read_arg_color(t_rtparser *p, cl_float3 *result,
+	char const* label);
+char		*rt_read_arg_material(t_rtparser *p, t_material *result,
+	char const *label);
+char		*rt_read_arg_pattern(t_rtparser *p, t_pattern *result,
+	char const *label);
+char		*rt_read_arg_projection(t_rtparser *p, t_projection *result,
+	char const *label);
+char		*rt_read_arg_bump(t_rtparser *p, t_bump *result,
+	char const *label);
 
 /*
 ** ************************************************************************** *|

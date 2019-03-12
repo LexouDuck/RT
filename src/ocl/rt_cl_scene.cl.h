@@ -256,31 +256,36 @@ typedef struct	s_texture
 
 typedef struct	s_object
 {
-	t_primitive		type;
-	t_material		material;
-	char			name[OBJECT_NAME_MAXLENGTH];
-	uint			color_a;
-	uint			color_b;
-	float3			rgb_a;
-	float3			rgb_b;
-	float3			pos;
-	float3			rot;
-	float3			scale;
-	t_bbox			bbox_os;
-	t_bbox			bbox_ws;
-//	float3			specul;
-	float			refrac;//refraction index for snell-descartes
-	float			roughness;
-//	float			intensity;//intensity for lightsrc objects, 1. for other objects //or reflectivity ??
-	float16			o_to_w;
-	float16			w_to_o;
-	float16			n_to_w;
-	t_pattern		pattern;
-	float3			*rgb_texture;
-	float3			uvw_scale;
-	float3			uvw_offset;
+	t_primitive			type;
+	t_material			material;
+	char				name[OBJECT_NAME_MAXLENGTH];
+	uint				color_a;
+	uint				color_b;
+	float3				rgb_a;
+	float3				rgb_b;
+	float3				pos;
+	float3				rot;
+	float3				scale;
+	t_bbox				bbox_os;
+	t_bbox				bbox_ws;
+	float				refrac;//refraction index for snell-descartes
+	float				roughness;
+	float16				o_to_w;
+	float16				w_to_o;
+	float16				n_to_w;
+	t_pattern			pattern;
+	float3				*rgb_texture;
+	float3				uvw_scale;
+	float3				uvw_offset;
 	t_uvw_projection	uvw_projection;
 }				t_object;
+
+typedef struct	s_work_array
+{
+	size_t			x;
+	size_t			y;
+	size_t			z;
+}				t_work_array;
 
 typedef struct	s_scene
 {
@@ -295,5 +300,5 @@ typedef struct	s_scene
 	uint			mc_raysamp_size;
 	uint			random_seed_time;
 	t_rendermode	render_mode;
-	size_t			work_dim[2];
+	t_work_array	work_dims;
 }				t_scene;

@@ -169,7 +169,6 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 						__constant	uint *		img_texture,
 									uint2 *		random_seeds,
 									t_ray		ray,
-									int			sampid,
 									int			depth
 )
 {
@@ -256,8 +255,8 @@ static t_ray			rt_cl_create_camray
 {
 	int const			x_id = get_global_id(0);
 	int const			y_id = get_global_id(1);
-	int const			width = scene->work_dim[0];
-	int const			height = scene->work_dim[1];
+	int const			width = scene->work_dims.x;
+	int const			height = scene->work_dims.y;
 	float16	const		cam_mat44 = scene->camera.c_to_w;
 	float const			fov_val = -width / (2 * tan(scene->camera.hrz_fov));
 	t_ray				camray;
@@ -331,88 +330,121 @@ static t_ray			rt_cl_create_camray
 }
 
 //For some reason a statement with || doesn't EVER get read properly as a truth statement so I switched conditions around 
-static float3			rt_cl_get_pixel_color_from_mc_sampling
+static float3			rt_cl_get_ray_pixel_contribution
 (
 					__constant		t_scene	*	scene,
 					__constant		uint *		img_texture,
 									uint2 *		random_seeds
 )
 {
-	float3				pixel_rgb = (float3)(0.);
-	float const			inv_samp_size = native_recip((float)scene->mc_raysamp_size);
 	t_ray				ray_i;
 	t_intersection		inter;
 
-	for (uint i = 0; i < scene->mc_raysamp_size; ++i)
+	ray_i = rt_cl_create_camray(scene, random_seeds);
+	for (uint depth = 0; !ray_i.complete && depth < scene->max_ray_depth; ++depth)
 	{
-		ray_i = rt_cl_create_camray(scene, random_seeds);
-		for (uint depth = 0; !ray_i.complete && depth < scene->max_ray_depth; ++depth)
+		inter = rt_cl_trace_ray_to_scene(scene, &ray_i);
+		if (inter)
 		{
-			inter = rt_cl_trace_ray_to_scene(scene, &ray_i);
-			if (inter)
+			if (scene->render_mode == RENDERMODE_MCPT)
 			{
-				if (scene->render_mode == RENDERMODE_MCPT)
-				{
-					ray_i = rt_cl_accumulate_lum_and_bounce_ray(scene, img_texture, random_seeds, ray_i, i, depth);
-				}
-				else if (scene->render_mode == RENDERMODE_SOLIDTEXTURE)
-				{
-					ray_i = rt_cl_accumulate_lum_and_bounce_ray(scene, img_texture, random_seeds, ray_i, i, depth);
-					return (ray_i.lum_acc);
-				}
-				else
-				{
-					if (inter == INTER_INSIDE)
-						return (scene->objects[ray_i.hit_obj_id].rgb_b);
-					else
-						return (scene->objects[ray_i.hit_obj_id].rgb_a);
-				}
+				ray_i = rt_cl_accumulate_lum_and_bounce_ray(scene, img_texture, random_seeds, ray_i, depth);
+			}
+			else if (scene->render_mode == RENDERMODE_SOLIDTEXTURE)
+			{
+				ray_i = rt_cl_accumulate_lum_and_bounce_ray(scene, img_texture, random_seeds, ray_i, depth);
+				return (ray_i.lum_acc);
 			}
 			else
 			{
-				if (scene->render_mode == RENDERMODE_MCPT)
-				{
-					ray_i.complete = true;
-					ray_i.lum_acc += ray_i.lum_mask * scene->bg_rgb;
-				}
+				if (inter == INTER_INSIDE)
+					return (scene->objects[ray_i.hit_obj_id].rgb_b);
 				else
-				{
-					return (scene->bg_rgb);
-				}
+					return (scene->objects[ray_i.hit_obj_id].rgb_a);
 			}
 		}
-		pixel_rgb += ray_i.lum_acc;
+		else
+		{
+			if (scene->render_mode == RENDERMODE_MCPT)
+			{
+				ray_i.complete = true;
+				ray_i.lum_acc += ray_i.lum_mask * scene->bg_rgb;
+			}
+			else
+			{
+				return (scene->bg_rgb);
+			}
+		}
 	}
-	pixel_rgb *= (float3)(inv_samp_size); 
-	return (pixel_rgb);
+	return (ray_i.lum_acc);
 }
 
 
 __kernel void			rt_cl_render
 (
-					__global		uint *		result_imgbuf,
+//					__global		uint *		result_imgbuf,
+					__global		float3 *	rays_pp_tensor,
 					__constant		t_scene	*	scene,
 					__constant		uint *		img_texture
 )
 {
 	int const			x_id = get_global_id(0); /* x-coordinate of the current pixel */
 	int const			y_id = get_global_id(1); /* y-coordinate of the current pixel */
-//	int const			sample_id = get_global_id(2); /* id of the current ray thread amongst the MC simulation for the current pixel*/
-	int const			work_item_id = y_id * scene->work_dim[0] + x_id;//get_global_size(0) + x_id;
+	int const			ray_id = get_global_id(2); /* id of the current ray thread amongst the MC simulation for the current pixel*/
+	int const			work_item_id = scene->work_dims.y * scene->work_dims.x * ray_id
+									+						scene->work_dims.x * y_id
+									+											 x_id;
 	uint2				random_seeds;
+	float3				ray_lum_acc;
 
-	random_seeds.x = x_id;// ^ scene->random_seed_time;
-	random_seeds.y = y_id;// ^ (27309 * scene->random_seed_time - 0x320420C57);
-
-/*if (work_item_id == 0)
-{
-	debug_print_scene(scene);
-	debug_print_camera(&(scene->camera));
-}*/
+	random_seeds.x = (x_id ^ scene->random_seed_time) + ray_id;
+	random_seeds.y = y_id ^ (27309 * scene->random_seed_time - 0x320420C57 + ray_id);
 	rt_cl_rand(&random_seeds);
-	float3 vcolor3 = rt_cl_get_pixel_color_from_mc_sampling(scene, img_texture, &random_seeds);
+
+	ray_lum_acc = rt_cl_get_ray_pixel_contribution(scene, img_texture, &random_seeds);
+	rays_pp_tensor[work_item_id] = ray_lum_acc;
+}
+
+
+__kernel void			rt_cl_average
+(
+					__global		uint *				result_imgbuf,
+					__global		float3 *			rays_pp_tensor,
+			//						uint3 const			tensor_dims
+					__constant		uint3 *				tensor_dims_arg
+)
+{
+	uint3 const			tensor_dims = *tensor_dims_arg;
+	uint const			x_id = get_global_id(0); /* x-coordinate of the current pixel */
+	uint const			y_id = get_global_id(1); /* y-coordinate of the current pixel */
+	uint const			work_item_id = tensor_dims.x * y_id + x_id;
+	uint const			init = work_item_id;
+	uint const			inc = tensor_dims.y * tensor_dims.x;
+	uint const			tensor_size = inc * tensor_dims.z;
+	float const			inv_samp_size = native_recip((float)tensor_dims.z);
+	float3				vcolor3 = (float3)(0.f);
+	uint3				color3;
+	uint				color;
+//	int					ray_global_id;
+
+	#pragma unroll
+	for (uint i = init; i < tensor_size; i += inc)
+	{
+		vcolor3 += rays_pp_tensor[i];
+	}
+/*
+	#pragma unroll
+	for (int i = 0; i < tensor_dims.z; ++i)
+	{
+		ray_global_id = tensor_dims.y * tensor_dims.x * i
+					+				scene->work_dims.x * y_id
+					+									 x_id;
+		vcolor3 += rays_pp_tensor[ray_global_id];
+	}
+*/
+	vcolor3 *= (float3)(inv_samp_size);
 	vcolor3 = (float3)(255.f) * fmin(vcolor3, (float3)(1.f));
-	uint3 color3 = (uint3)(floor(vcolor3.x), floor(vcolor3.y), floor(vcolor3.z));
-	uint color = 0xFF000000 | (color3.x << 16) | (color3.y << 8) | (color3.z);
+	color3 = (uint3)(floor(vcolor3.x), floor(vcolor3.y), floor(vcolor3.z));
+	color = 0xFF000000 | (color3.x << 16) | (color3.y << 8) | (color3.z);
 	result_imgbuf[work_item_id] = color;
 }

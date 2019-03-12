@@ -33,6 +33,9 @@ static void	ui_change_control_numberbox_int(cl_uint *value)
 			*value = MAXIMUM_RAYSAMP_SIZE;
 		else if (*value < 1)
 			*value = 1;
+//		else
+//			*value = ft_uint_round_pow2();
+		rt.scene.work_dims.z = *value;
 	}
 	else if (value == &rt.scene.max_ray_depth)
 	{

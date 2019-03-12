@@ -37,7 +37,7 @@
 # define DEFAULT_CAM_RGB_SHADE		((cl_float3){{ 0., 0., 0. }})
 
 # define DEFAULT_OBJECT_REFRAC		1.
-# define DEFAULT_OBJECT_ROUGHNESS	0.
+# define DEFAULT_OBJECT_ROUGHNESS	0.0001
 # define DEFAULT_OBJECT_OPACITY		1.
 
 # define EPS						0.00003
@@ -51,8 +51,8 @@
 # define DEFAULT_RAYSAMP_SIZE		16
 # define DEFAULT_MAX_RAY_DEPTH		4
 
-# define MAXIMUM_RAYSAMP_SIZE		0x10000
-# define MAXIMUM_MAX_RAY_DEPTH		0x1000
+# define MAXIMUM_RAYSAMP_SIZE		0x800
+# define MAXIMUM_MAX_RAY_DEPTH		0x100
 
 # define RENDER_MODES				5
 # define DEFAULT_RENDER_MODE		4
@@ -254,7 +254,7 @@ typedef	enum		e_pattern
 	horizontal_stripe,
 	vertical_stripe,
 	checkerboard,
-	image,
+	hue,
 	perlin,
 	marble,
 	wood,
@@ -322,30 +322,37 @@ typedef struct		s_texture
 
 typedef struct		s_object
 {
-	t_primitive		type;
-	t_material		material;
-	char			name[OBJECT_NAME_MAXLENGTH];
-	cl_uint			color_a;
-	cl_uint			color_b;
-	cl_float3		rgb_a;
-	cl_float3		rgb_b;
-	cl_float3		pos;
-	cl_float3		rot;
-	cl_float3		scale;
-	t_bbox			bbox_os;
-	t_bbox			bbox_ws;
-	cl_float		refrac;//refraction index for snell-descartes
-	cl_float		roughness;
-	cl_float		opacity;
-	cl_float16		o_to_w;
-	cl_float16		w_to_o;
-	cl_float16		n_to_w;
-	t_pattern		pattern;
-	cl_float3		*rgb_texture;
-	cl_float3		uvw_scale;
-	cl_float3		uvw_offset;
+	t_primitive			type;
+	t_material			material;
+	char				name[OBJECT_NAME_MAXLENGTH];
+	cl_uint				color_a;
+	cl_uint				color_b;
+	cl_float3			rgb_a;
+	cl_float3			rgb_b;
+	cl_float3			pos;
+	cl_float3			rot;
+	cl_float3			scale;
+	t_bbox				bbox_os;
+	t_bbox				bbox_ws;
+	cl_float			refrac;//refraction index for snell-descartes
+	cl_float			roughness;
+	cl_float			opacity;
+	cl_float16			o_to_w;
+	cl_float16			w_to_o;
+	cl_float16			n_to_w;
+	t_pattern			pattern;
+	cl_float3			*rgb_texture;
+	cl_float3			uvw_scale;
+	cl_float3			uvw_offset;
 	t_uvw_projection	uvw_projection;
 }					t_object;
+
+typedef struct	s_work_array
+{
+	size_t			x;
+	size_t			y;
+	size_t			z;
+}				t_work_array;
 
 typedef struct		s_scene
 {
@@ -360,7 +367,7 @@ typedef struct		s_scene
 	cl_uint			mc_raysamp_size;
 	cl_uint			random_seed_time;
 	t_rendermode	render_mode;
-	size_t			work_dim[2];
+	t_work_array	work_dims;
 }					t_scene;
 
 #endif

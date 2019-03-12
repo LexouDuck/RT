@@ -61,21 +61,20 @@
 # define RT_CL_PROGRAM_OPTIONS			"-Werror"
 # define RT_CL_PROGRAM_SOURCE			"concat.cl"
 
-# define RT_CL_KERNEL_AMOUNT			2
+# define RT_CL_KERNEL_AMOUNT			3
 # define RT_CL_KERNEL_0					"rt_cl_build_scene"
 # define RT_CL_KERNEL_1					"rt_cl_render"
+# define RT_CL_KERNEL_2					"rt_cl_average"
 
 typedef struct	s_gpu
 {
-//	gpu info
 	cl_device_id	id;
 	cl_ulong		global_mem_size;
 	cl_uint			comp_unit_nb;
 	size_t			max_kernel_args_size;
 	size_t			max_witems_per_wgroup;
 	cl_uint			max_nd_range;
-	// should be replaced by value of max_nd_range
-	size_t			max_witems_per_dim[4];
+	size_t			max_witems_per_dim[3];
 }				t_gpu;
 
 typedef	struct	s_gpu_buffers
@@ -83,6 +82,7 @@ typedef	struct	s_gpu_buffers
 	cl_mem			scene;
 	cl_mem			canvas_pixels;
 	cl_mem			img_texture;
+	cl_mem			ray_lum_tensor;
 }				t_gpu_buffers;
 
 typedef struct	s_cl
@@ -97,7 +97,6 @@ typedef struct	s_cl
 	cl_kernel			kernels[RT_CL_KERNEL_AMOUNT];
 	t_gpu_buffers		gpu_buf;
 	float				render_progress;
-//	cl_int				status;
 }				t_cl;
 
 /*
@@ -126,6 +125,13 @@ int				opencl_release_memory_buffers(void);
 int				opencl_refresh_gpu_memory_buffers(void);
 int				opencl_release_queue_context_program(void);
 int				opencl_freeall(void);
+
+/*
+** opencl_kernels.c
+*/
+int				opencl_enqueue_piecewise_2d_kernel(cl_kernel krnl);
+int				opencl_enqueue_piecewise_3d_kernel(cl_kernel krnl);
+int				opencl_init_kernels(void);
 
 /*
 ** opencl_get_error_str.c

@@ -301,4 +301,5 @@ typedef struct	s_scene
 	uint			random_seed_time;
 	t_rendermode	render_mode;
 	t_work_array	work_dims;
+	t_work_array	work_steps;
 }				t_scene;

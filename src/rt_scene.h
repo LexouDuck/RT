@@ -53,6 +53,7 @@
 
 # define MAXIMUM_RAYSAMP_SIZE		0x800
 # define MAXIMUM_MAX_RAY_DEPTH		0x100
+# define MAXIMUM_RENDER_PRODUCT		0x8000
 
 # define RENDER_MODES				5
 # define DEFAULT_RENDER_MODE		4
@@ -368,6 +369,7 @@ typedef struct		s_scene
 	cl_uint			random_seed_time;
 	t_rendermode	render_mode;
 	t_work_array	work_dims;
+	t_work_array	work_steps;
 }					t_scene;
 
 #endif

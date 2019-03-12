@@ -388,15 +388,24 @@ __kernel void			rt_cl_render
 					__constant		uint *		img_texture
 )
 {
-	int const			x_id = get_global_id(0); /* x-coordinate of the current pixel */
-	int const			y_id = get_global_id(1); /* y-coordinate of the current pixel */
-	int const			ray_id = get_global_id(2); /* id of the current ray thread amongst the MC simulation for the current pixel*/
-	int const			work_item_id = scene->work_dims.y * scene->work_dims.x * ray_id
-									+						scene->work_dims.x * y_id
-									+											 x_id;
+	size_t const			x_id = get_global_id(0); /* x-coordinate of the current pixel */
+	size_t const			y_id = get_global_id(1); /* y-coordinate of the current pixel */
+	size_t const			block_x_id = x_id - get_global_offset(0); /* x-coordinate of the current pixel */
+	size_t const			block_y_id = y_id - get_global_offset(1); /* y-coordinate of the current pixel */
+	size_t const			ray_id = get_global_id(2); /* id of the current ray thread amongst the MC simulation for the current pixel*/
+	size_t const			block_width = get_global_size(0);
+	size_t const			block_height = get_global_size(1);
+	size_t const			work_item_id = block_height * block_width * ray_id
+										+					block_width * (block_y_id)
+										+								 (block_x_id);
 	uint2				random_seeds;
 	float3				ray_lum_acc;
 
+/*	if (x_id == 50 && y_id == 100 && ray_id == 0)
+	{
+		printf("render blocx %zu blocy %zu\n", block_x_id, block_y_id);
+	}
+*/
 	random_seeds.x = (x_id ^ scene->random_seed_time) + ray_id;
 	random_seeds.y = y_id ^ (27309 * scene->random_seed_time - 0x320420C57 + ray_id);
 	rt_cl_rand(&random_seeds);
@@ -410,23 +419,31 @@ __kernel void			rt_cl_average
 (
 					__global		uint *				result_imgbuf,
 					__global		float3 *			rays_pp_tensor,
-			//						uint3 const			tensor_dims
-					__constant		uint3 *				tensor_dims_arg
+					__constant		uint4 *				tensor_dims_arg
 )
 {
-	uint3 const			tensor_dims = *tensor_dims_arg;
-	uint const			x_id = get_global_id(0); /* x-coordinate of the current pixel */
-	uint const			y_id = get_global_id(1); /* y-coordinate of the current pixel */
-	uint const			work_item_id = tensor_dims.x * y_id + x_id;
-	uint const			init = work_item_id;
-	uint const			inc = tensor_dims.y * tensor_dims.x;
-	uint const			tensor_size = inc * tensor_dims.z;
+	uint4 const			tensor_dims = *tensor_dims_arg;
+	size_t const		x_id = get_global_id(0); /* x-coordinate of the current pixel */
+	size_t const		y_id = get_global_id(1); /* y-coordinate of the current pixel */
+	size_t const		block_x_id = x_id - get_global_offset(0); /* x-coordinate of the current pixel in current tensor block */
+	size_t const		block_y_id = y_id - get_global_offset(1); /* y-coordinate of the current pixel in current tensor block */
+	size_t const		work_item_id = tensor_dims.w * y_id 
+													+ x_id; /* tensor_dims.w is scene->work_dims.x */
+	size_t const		init = get_global_size(0) * block_y_id //tensor_dims.x * block_y_id
+											+ block_x_id;
+	size_t const		inc = tensor_dims.y * tensor_dims.x;
+	size_t const		tensor_size = inc * tensor_dims.z;
 	float const			inv_samp_size = native_recip((float)tensor_dims.z);
 	float3				vcolor3 = (float3)(0.f);
 	uint3				color3;
 	uint				color;
 //	int					ray_global_id;
 
+/*	if (x_id == 50 && y_id == 100)
+	{
+		printf("average blocx %zu blocy %zu\n", block_x_id, block_y_id);
+	}
+*/
 	#pragma unroll
 	for (uint i = init; i < tensor_size; i += inc)
 	{
@@ -437,8 +454,8 @@ __kernel void			rt_cl_average
 	for (int i = 0; i < tensor_dims.z; ++i)
 	{
 		ray_global_id = tensor_dims.y * tensor_dims.x * i
-					+				scene->work_dims.x * y_id
-					+									 x_id;
+					+					tensor_dims.x * y_id
+					+									x_id;
 		vcolor3 += rays_pp_tensor[ray_global_id];
 	}
 */

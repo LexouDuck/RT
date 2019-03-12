@@ -83,6 +83,7 @@ typedef	struct	s_gpu_buffers
 	cl_mem			canvas_pixels;
 	cl_mem			img_texture;
 	cl_mem			ray_lum_tensor;
+	cl_mem			tensor_dims;
 }				t_gpu_buffers;
 
 typedef struct	s_cl
@@ -129,8 +130,8 @@ int				opencl_freeall(void);
 /*
 ** opencl_kernels.c
 */
-int				opencl_enqueue_piecewise_2d_kernel(cl_kernel krnl);
-int				opencl_enqueue_piecewise_3d_kernel(cl_kernel krnl);
+//int				opencl_enqueue_piecewise_2d_kernel(cl_kernel krnl);
+//int				opencl_enqueue_piecewise_3d_kernel(cl_kernel krnl);
 int				opencl_init_kernels(void);
 
 /*

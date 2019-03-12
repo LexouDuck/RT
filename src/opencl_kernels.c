@@ -13,12 +13,6 @@
 #include "../rt.h"
 #include "debug.h"
 
-//TODO move to better pastures
-inline t_u32		ft_min(t_u32 a, t_u32 b)
-{
-	return (a < b ? a : b);
-}
-
 int					opencl_init_kernels(void)
 {
 	int		error;
@@ -48,6 +42,7 @@ int					opencl_init_kernels(void)
 ** F{x,y} = global ID offset{0, 1}
 */
 
+#if 0
 //TODO remove
 #include <stdio.h>
 
@@ -84,49 +79,5 @@ printf("offsets: %zu %zu %zu | dim_end %zu %zu %zu\n", work_offsets.x, work_offs
 	}
 	return (OK);
 }
+#endif
 
-/*
-static int			render_piecewise_3d_kernel_subloops(cl_kernel krnl,
-														t_work_array work_steps,
-														t_work_array offsets)
-{
-
-}
-*/
-int					opencl_enqueue_piecewise_3d_kernel(cl_kernel krnl)
-{
-	static const int	dim_rank = 3;
-	int					err;
-	t_work_array		work_dim_end;
-	t_work_array		work_offsets;
-	t_work_array		work_steps;
-
-	work_steps = *((t_work_array *)rt.ocl.gpu.max_witems_per_dim);
-	work_offsets.z = 0;
-	while (work_offsets.z < rt.scene.work_dims.z)
-	{
-		work_offsets.y = 0;
-		while (work_offsets.y < rt.scene.work_dims.y)
-		{
-			work_offsets.x = 0;
-			while (work_offsets.x < rt.scene.work_dims.x)
-			{
-				work_dim_end = (t_work_array){
-					ft_min(work_steps.x, rt.scene.work_dims.x - work_offsets.x),
-					ft_min(work_steps.y, rt.scene.work_dims.y - work_offsets.y),
-					ft_min(work_steps.z, rt.scene.work_dims.z - work_offsets.z)};
-				if ((err = clEnqueueNDRangeKernel(rt.ocl.cmd_queue, krnl, dim_rank,
-												(size_t const *)&work_offsets,
-												(size_t const *)&work_dim_end,
-														NULL, 0, NULL, NULL)) < 0)
-					return (opencl_handle_error(err, "render_piecewise_3d_kernel:"
-													" enqueue kernel failed."));
-				work_offsets.x += work_steps.x;
-			}
-			work_offsets.y += work_steps.y;
-		}
-		work_offsets.z += work_steps.z;
-		rt.ocl.render_progress = (float)work_offsets.z / rt.scene.work_dims.z;
-	}
-	return (OK);
-}

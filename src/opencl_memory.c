@@ -25,12 +25,6 @@ int			opencl_init_gpu_memory(void)
 	if (error < 0)
 		return (opencl_handle_error(error, "opencl_init_gpu_memory:"
 		" create read/write buffer failed for scene for "RT_CL_KERNEL_0));
-	rt.ocl.gpu_buf.ray_lum_tensor = clCreateBuffer(rt.ocl.context,
-		CL_MEM_READ_WRITE, sizeof(cl_float3) * rt.scene.work_dims.x *
-		rt.scene.work_dims.y * rt.scene.work_dims.z, NULL, &error);
-	if (error < 0)
-		return (opencl_handle_error(error, "opencl_init_gpu_memory:"
-		" create read/write buffer failed for ray tensor for "RT_CL_KERNEL_1));
 	rt.ocl.gpu_buf.img_texture = clCreateBuffer(rt.ocl.context,
 		CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,
 		sizeof(t_u32) * 100 * 100, rt.img_texture, &error);
@@ -56,11 +50,6 @@ int			opencl_release_memory_buffers(void)
 		return (opencl_handle_error(error, "opencl_release_memory_buffers:"
 		" release of canvas buffer failed."));
 	rt.ocl.gpu_buf.canvas_pixels = NULL;
-	if (rt.ocl.gpu_buf.ray_lum_tensor &&
-		(error = clReleaseMemObject(rt.ocl.gpu_buf.ray_lum_tensor)))
-		return (opencl_handle_error(error, "opencl_release_memory_buffers:"
-		" release of ray tensor buffer failed."));
-	rt.ocl.gpu_buf.ray_lum_tensor = NULL;
 	if (rt.ocl.gpu_buf.scene &&
 		(error = clReleaseMemObject(rt.ocl.gpu_buf.scene)))
 		return (opencl_handle_error(error, "opencl_release_memory_buffers:"

@@ -49,12 +49,12 @@ void		update_scene(void)
 		rt.scene.bg_rgb.z * 255.);
 }
 
-//TODO merge hyperboloid and infcone with else ?
 static void	rt_object_init_bbox(t_object *object)
 {
 	float	render_dist;
 
 	render_dist = rt.scene.render_dist;
+	//TODO merge hyperboloid and infcone with else ?
 	if (object->type == sphere || object->type == cube || object->type == cylinder)
 		object->bbox_os = (t_bbox){
 			(cl_float3){{-1.f - EPS, -1.f - EPS, -1.f - EPS}},

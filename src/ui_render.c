@@ -17,14 +17,14 @@
 #include "debug.h"
 #include "event.h"
 
-static void ui_render_menu(void)
+static void	ui_render_menu(void)
 {
 	t_s32		y;
 
 	y = MENUBAR_ITEMS_H;
 	ui_render_text("Platform   Rays    Depth", 1, y, FALSE);
 	y += 1;
-	ui_render_control_numberbox_int( 1, y, &rt.ocl.gpu_platform_index);
+	ui_render_control_numberbox_int(1, y, &rt.ocl.gpu_platform_index);
 	ui_render_control_numberbox_int(10, y, &rt.scene.mc_raysamp_size);
 	ui_render_control_numberbox_int(19, y, &rt.scene.max_ray_depth);
 	y += 3;
@@ -40,7 +40,7 @@ static void ui_render_menu(void)
 	y += 1;
 	ui_render_text("FOV   Aperture   FocalDist", 1, y, FALSE);
 	y += 1;
-	ui_render_control_numberbox_float( 1, y, &rt.scene.camera.hrz_fov);
+	ui_render_control_numberbox_float(1, y, &rt.scene.camera.hrz_fov);
 	ui_render_control_numberbox_float(10, y, &rt.scene.camera.aperture);
 	ui_render_control_numberbox_float(19, y, &rt.scene.camera.focal_dist);
 	y += 3;

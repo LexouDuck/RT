@@ -63,7 +63,7 @@ static t_bool	ui_mouse_menu_cameramodel(t_camera_model *cameramodel, t_s32 y)
 	return (FALSE);
 }
 
-static t_bool	ui_mouse_menu_addremove()
+static t_bool	ui_mouse_menu_addremove(void)
 {
 	SDL_Rect	rect;
 
@@ -145,9 +145,10 @@ void			ui_mouse_menubar(void)
 	}
 	if (!collided)
 		rt.ui.menubar.selection = -1;
+	return ;
 }
 
-void	ui_mouse_dropdown(t_menu *dropdown)
+void			ui_mouse_dropdown(t_menu *dropdown)
 {
 	t_bool		collided;
 	SDL_Rect	rect;
@@ -170,4 +171,5 @@ void	ui_mouse_dropdown(t_menu *dropdown)
 		if (!collided)
 			dropdown->selection = -1;
 	}
+	return ;
 }

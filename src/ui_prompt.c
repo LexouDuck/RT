@@ -27,9 +27,10 @@ static void	ui_cancel_prompt(void)
 	rt.ui.objects.scrollbar.scroll_max = 0;
 	ft_memclr(&rt.ui.objects.selected, sizeof(t_bool) * OBJECT_MAX_AMOUNT);
 	ft_memclr(&rt.ui.objects.expanded, sizeof(t_bool) * OBJECT_MAX_AMOUNT);
+	return ;
 }
 
-static void	ui_accept_prompt()
+static void	ui_accept_prompt(void)
 {
 	if (rt.ui.current_prompt.name == NULL)
 		debug_output_error(
@@ -44,7 +45,7 @@ static void	ui_accept_prompt()
 		rt_file_save(rt.ui.current_prompt.text);
 	else if (ft_strequ(rt.ui.current_prompt.name, DROPDOWN_LABEL_FILE_RANDOM))
 	{
-		
+		//TODO put something here
 	}
 	else if (ft_strequ(rt.ui.current_prompt.name, DROPDOWN_LABEL_FILE_SAVEBMP))
 		if (SDL_SaveBMP(rt.canvas, rt.ui.current_prompt.text))
@@ -52,9 +53,10 @@ static void	ui_accept_prompt()
 				"Could not save BMP image of the render: ", TRUE);
 	ui_cancel_prompt();
 	rt.must_render = TRUE;
+	return ;
 }
 
-void	ui_mouse_prompt(void)
+void		ui_mouse_prompt(void)
 {
 	static SDL_Rect	button_ok = PROMPT_BUTTON_OK;
 	static SDL_Rect	button_cancel = PROMPT_BUTTON_CANCEL;
@@ -71,4 +73,5 @@ void	ui_mouse_prompt(void)
 	}
 	else
 		ui_cancel_prompt();
+	return ;
 }

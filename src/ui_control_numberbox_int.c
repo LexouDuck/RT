@@ -44,7 +44,7 @@ static void	ui_change_control_numberbox_int(cl_uint *value)
 	rt.must_render = TRUE;
 }
 
-void	ui_leave_control_numberbox_int(t_textinput *textinput)
+void		ui_leave_control_numberbox_int(t_textinput *textinput)
 {
 	cl_uint	*value;
 
@@ -65,7 +65,7 @@ void	ui_leave_control_numberbox_int(t_textinput *textinput)
 	}
 }
 
-void	ui_keypress_control_numberbox_int(t_textinput *textinput, t_bool up)
+void		ui_keypress_control_numberbox_int(t_textinput *textinput, t_bool up)
 {
 	cl_uint *value;
 
@@ -83,7 +83,7 @@ void	ui_keypress_control_numberbox_int(t_textinput *textinput, t_bool up)
 	SDL_StartTextInput();
 }
 
-t_bool	ui_mouse_control_numberbox_int(t_textinput *textinput, cl_uint *value, int x, int y)
+t_bool		ui_mouse_control_numberbox_int(t_textinput *textinput, cl_uint *value, int x, int y)
 {
 	static SDL_Rect	rect = { 0, 0, 9 * TILE, 3 * TILE };
 	static SDL_Rect	button = { 0, 0, 2 * TILE, 1 * TILE };
@@ -117,7 +117,7 @@ t_bool	ui_mouse_control_numberbox_int(t_textinput *textinput, cl_uint *value, in
 	return (FALSE);
 }
 
-void	ui_render_control_numberbox_int(int x, int y, cl_uint *value)
+void		ui_render_control_numberbox_int(int x, int y, cl_uint *value)
 {
 	static const size_t	str_max_length = 7;
 	static SDL_Rect		rect = { 0, 0, 9, 3 };

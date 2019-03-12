@@ -49,7 +49,8 @@ SDL_Palette		*ui_set_palette(SDL_Surface *surface, t_u32 const *palette)
 	return (surface->format->palette);
 }
 
-void			ui_set_result_pixels(t_u8 const *chr, t_u16 tile, t_u8 **result_pixels)
+void			ui_set_result_pixels(t_u8 const *chr, t_u16 tile,
+				t_u8 **result_pixels)
 {
 	t_u16			index;
 	t_u8			pixel;
@@ -58,7 +59,8 @@ void			ui_set_result_pixels(t_u8 const *chr, t_u16 tile, t_u8 **result_pixels)
 
 	x = -1;
 	y = -1;
-	index = (tile / TILESET_W_TILES) * TILE * TILESET_W + (tile % TILESET_W_TILES) * TILE;
+	index = (tile / TILESET_W_TILES) * TILE * TILESET_W
+	+ (tile % TILESET_W_TILES) * TILE;
 	while (++y < TILE)
 	{
 		while (++x < TILE)

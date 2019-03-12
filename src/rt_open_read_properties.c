@@ -15,24 +15,10 @@
 #include "libft_convert.h"
 #include "../rt.h"
 
-char		*rt_read_arg_name(t_rtparser *p, char *result)
+char		*rt_get_arg_name(t_rtparser *p, char *result, char symbol)
 {
-	t_bool	has_arg;
-	char	symbol;
 	size_t	offset;
 
-	rt_read_whitespace(p);
-	if (!p->file[p->index])
-		return (NULL);
-	if ((has_arg = ft_strnequ(p->file + p->index, "name:", 5)))
-		p->index += 5;
-	symbol = p->file[p->index];
-	if (symbol != '\"' && symbol != '\'' && symbol != '<')
-	{
-		return (has_arg ? rt_read_error('\"',
-		"or '\'' or '<' => name argument", symbol) : NULL);
-	}
-	symbol = (symbol == '<') ? '>' : symbol;
 	offset = p->index + 1;
 	while (p->file[++p->index])
 	{
@@ -46,6 +32,26 @@ char		*rt_read_arg_name(t_rtparser *p, char *result)
 	}
 	return (rt_read_error(symbol, "name arg terminating char",
 	p->file[p->index]));
+}
+
+char		*rt_read_arg_name(t_rtparser *p, char *result)
+{
+	t_bool	has_arg;
+	char	symbol;
+
+	rt_read_whitespace(p);
+	if (!p->file[p->index])
+		return (NULL);
+	if ((has_arg = ft_strnequ(p->file + p->index, "name:", 5)))
+		p->index += 5;
+	symbol = p->file[p->index];
+	if (symbol != '\"' && symbol != '\'' && symbol != '<')
+	{
+		return (has_arg ? rt_read_error('\"',
+		"or '\'' or '<' => name argument", symbol) : NULL);
+	}
+	symbol = (symbol == '<') ? '>' : symbol;
+	return (rt_get_arg_name(p, result, symbol));
 }
 
 char		*rt_read_arg_number(t_rtparser *p, cl_float *result,

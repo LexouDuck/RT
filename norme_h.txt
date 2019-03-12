@@ -553,40 +553,4 @@ Norme: ./src/debug.h
 Norme: ./rtv1_aduquesn/rtv1.h
 Norme: ./src/rt_random.h
 Norme: ./src/rt_scene.h
-Error (line 58): preprocessor block must be followed by one empty line
-Error (line 68): preprocessor block must be followed by one empty line
-Error (line 89): line has 87 characters
-Error (line 90): line has 98 characters
-Error (line 91): line has 83 characters
-Error (line 92): line has 84 characters
-Error (line 95): line has 90 characters
-Error (line 96): line has 90 characters
-Error (line 97): line has 90 characters
-Error (line 102): line has 90 characters
-Error (line 124): C++ comment
-Error (line 128): line has 82 characters
-Error (line 146): line has 86 characters
-Error (line 178): C++ comment
-Error (line 181): C++ comment
-Error (line 181): line has 99 characters
-Error (line 208): wrong number of spaces in preprocessor line
-Error (line 208): preprocessor block must be followed by one empty line
-Error (line 233): wrong number of spaces in preprocessor line
-Error (line 233): preprocessor block must be followed by one empty line
-Error (line 236): C++ comment
-Error (line 238): C++ comment
-Error (line 240): C++ comment
-Error (line 242): C++ comment
-Error (line 244): C++ comment
-Error (line 247): wrong number of spaces in preprocessor line
-Error (line 247): preprocessor block must be followed by one empty line
-Error (line 263): wrong number of spaces in preprocessor line
-Error (line 263): preprocessor block must be followed by one empty line
-Error (line 283): wrong number of spaces in preprocessor line
-Error (line 283): preprocessor block must be followed by one empty line
-Error (line 348): C++ comment
 Norme: ./src/ui.h
-Error: global scope bad aligned
-Error (line 105): C++ comment
-Error (line 107): C++ comment
-Error (line 109): C++ comment

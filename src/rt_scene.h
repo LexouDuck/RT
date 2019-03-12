@@ -56,6 +56,7 @@
 
 # define RENDER_MODES				5
 # define DEFAULT_RENDER_MODE		4
+
 typedef enum	e_rendermode
 {
 	RENDERMODE_MCPT = 0,
@@ -66,6 +67,7 @@ typedef enum	e_rendermode
 }				t_rendermode;
 
 # define CAMERA_MODELS	5
+
 typedef enum	e_camera_model
 {
 	CAMERA_MODEL_PINHOLE = 0,
@@ -86,20 +88,20 @@ typedef enum	e_cameramode
 /*
 ** CAMERA
 **
-** world_pos	: cartesian coords of the camera in world space (world = anchor + pos)
-** anchor		: cartesian coords of the anchor point around which this camera rotates and zooms
-** pos			: cartesian coordinate of the camera's position relative to anchor
-** zoom			: polar anchor-relative coord: how far from the anchor point is pos
-** lat			: polar anchor-relative coord: horizontal angle of the camera
-** lon			: polar anchor-relative coord: vertical angle of the camera
-** tilt_angle	: the angle of tilting for this cam -> set to 0 for a regular upright cam
-** tilt_vector	: the tilting vector for this cam: is {0, 1, 0} for a regular upright cam
-** range_min	: the minimal amount of distance needed for an object to show on this cam
-** range_max	: the maximum vision distance for this camera
-** hrz_fov		: field-of-view horizontal angle in radians
-** aperture		:
-** w_to_c		: the camera's world-to-view/cam matrix
-** c_to_w		: the camera's view/cam-to-world matrix (used to put rays in world space)
+** world_pos	coords of the camera in world space (world = anchor + pos)
+** anchor		coords of the point around which this camera rotates and zooms
+** pos			cartesian coordinate of the camera's position relative to anchor
+** zoom			polar relative coord: how far from the anchor point is pos
+** lat			polar relative coord: horizontal angle of the camera
+** lon			polar relative coord: vertical angle of the camera
+** tilt_angle	the angle of tilting for this cam -> if 0, then it's upright cam
+** tilt_vector	the tilting vector for this cam: is {0, 1, 0} is an upright cam
+** range_min	the minimal amount of distance for an object to show on this cam
+** range_max	the maximum vision distance for this camera
+** hrz_fov		field-of-view horizontal angle in radians
+** aperture		
+** w_to_c		the camera's world-to-view matrix
+** c_to_w		the camera's view-to-world matrix (to get rays in world space)
 */
 typedef struct		s_camera
 {
@@ -125,7 +127,7 @@ typedef struct		s_camera
 }					t_camera;
 
 /*
-** c_to_w.s012 is axis_x, .s456 is axis_y, .s89A is axis_z and .sCDE is world_pos
+** c_to_w.s012 is axis_x, .s456 is axis_y, .s89A is axis_z, & .sCDE is world_pos
 */
 
 /*
@@ -140,11 +142,12 @@ void				camera_update(t_camera *camera);
 /*
 **	cl_float3_util.c
 */
+char				*cl_float3_to_str(cl_float3 *vector, int i);
 cl_float			cl_float3_norm(cl_float3 const *vector);
 void				cl_float3_normalize(cl_float3 *vector);
 cl_float			cl_float3_dot(cl_float3 *v1, cl_float3 *v2);
-void				cl_float3_cross(cl_float3 *result, cl_float3 *v1, cl_float3 *v2);
-char				*cl_float3_to_str(cl_float3 *vector, int i);
+void				cl_float3_cross(cl_float3 *result,
+					cl_float3 *v1, cl_float3 *v2);
 
 /*
 **	init_scene.c
@@ -158,6 +161,7 @@ void				init_scene(void);
 ** 			- "pos + scale(t, dir)" = "end of the current ray";
 **			- t is init at MAX_RENDER_DIST.
 **			- depth is the recursion depth of the ray being cast;
+**	- refrac	refractive index of medium in which ray is currently passing
 */
 
 typedef enum		e_intersection
@@ -178,7 +182,7 @@ typedef struct		s_ray
 //	cl_uint			depth;
 	cl_float3		lum_mask;
 	cl_float3		lum_acc;
-	cl_float		refrac; //refractive index of medium in which ray is currently passing through
+	cl_float		refrac; 
 	t_intersection	inter_type;
 	cl_float2		uvw_coordinates;
 }					t_ray;
@@ -206,6 +210,7 @@ typedef struct		s_bbox
 ** unit dimensions.
 */
 # define			PRIMITIVES	15
+
 typedef enum		e_primitive
 {
 	none = 0,
@@ -229,22 +234,23 @@ typedef enum		e_primitive
 ** Categories for the optical properties of materials for each geometric
 ** primtive (ie, how they interact with or produce light). Normals play
 ** a major role here.
+**	- light			emits light
+**	- diffuse		linear to-dark shading
+**	- transparent	returns a blended color of a reflection and refraction
+**	- specular		has a special "lighter" mode of specular hightlighting
 */
 # define			MATERIALS	4
+
 typedef enum		e_material
 {
-// 	emits light
 	light = 0,
-// 	linear to-dark shading
 	diffuse,
-// 	returns a blended color of a reflection ray and a refraction ray
 	transparent,
-// 	has a special "lighter" mode of specular hightlighting
 	specular,
-// 	skybox ?
 }					t_material;
 
 # define			TEXTURE_PATTERNS	11
+
 typedef	enum		e_pattern
 {
 	solid = 0,
@@ -261,6 +267,7 @@ typedef	enum		e_pattern
 }					t_pattern;
 
 # define			BUMP_TYPES			2
+
 typedef	enum		e_bump
 {
 	flat = 0,
@@ -281,6 +288,7 @@ typedef struct		s_texture
 }					t_texture;
 
 # define			TEXTURE_PROJECTIONS	3
+
 typedef	enum		e_projection
 {
 	cubic = 0,
@@ -345,7 +353,7 @@ typedef struct		s_object
 	t_bbox			bbox_ws;
 	cl_float3		uvw_scale;
 	cl_float3		uvw_offset;
-	cl_float		refrac;//refraction index for snell-descartes
+	cl_float		refrac;
 	cl_float		roughness;
 	cl_float		opacity;
 	cl_float16		o_to_w;

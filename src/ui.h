@@ -96,17 +96,20 @@ typedef enum	e_scrolling
 	scrollclick_bar
 }				t_scrolling;
 
+/*
+**	The struct which holds all current scrollbar info
+**	- scroll		the current pixel y value
+**	- scroll_max	the amount of vertical pixels for the entire list
+**	- scroll_view	the amount of vertical pixels visible in the window
+*/
 typedef struct	s_scrollbar
 {
 	t_scrolling	clicked;
 	SDL_Rect	button_up;
 	SDL_Rect	button_down;
 	SDL_Rect	bar;
-// the current pixel y value
 	t_s32		scroll;
-// the amount of pixels to fit the entire list (with expanded objects and all)
 	t_s32		scroll_max;
-// the amount of pixels visible in the window, vertically
 	t_s32		scroll_view;
 }				t_scrollbar;
 
@@ -230,16 +233,16 @@ void			ui_mouse_scrollbar(void);
 void			ui_mouse_prompt(void);
 
 void			ui_scrollbar_setscroll(t_scrollbar *scrollbar, t_s32 scroll);
-t_bool	ui_mouse_objectlist_expandedproperties_primitive(
-	t_primitive *primitive, t_s32 y);
-t_bool	ui_mouse_objectlist_expandedproperties_material(
-	t_material *material, t_s32 y);
-t_bool	ui_mouse_objectlist_expandedproperties_pattern(
-	t_pattern *pattern, t_s32 y);
-t_bool	ui_mouse_objectlist_expandedproperties_projection(
-	t_projection *projection, t_s32 y);
-t_bool	ui_mouse_objectlist_expandedproperties_bump(
-	t_bump *bump_type, t_s32 y);
+t_bool			ui_mouse_objectlist_expandedproperties_primitive(
+				t_primitive *primitive, t_s32 y);
+t_bool			ui_mouse_objectlist_expandedproperties_material(
+				t_material *material, t_s32 y);
+t_bool			ui_mouse_objectlist_expandedproperties_pattern(
+				t_pattern *pattern, t_s32 y);
+t_bool			ui_mouse_objectlist_expandedproperties_projection(
+				t_projection *projection, t_s32 y);
+t_bool			ui_mouse_objectlist_expandedproperties_bump(
+				t_bump *bump_type, t_s32 y);
 
 /*
 **	ui_render_util.c
@@ -257,30 +260,30 @@ void			ui_render_rect(SDL_Rect rect, t_bool filled);
 */
 void			ui_leave_control_numberbox_int(t_textinput *textinput);
 t_bool			ui_mouse_control_numberbox_int(t_textinput *textinput,
-	cl_uint *value, int x, int y);
+				cl_uint *value, int x, int y);
 void			ui_render_control_numberbox_int(
-	int x, int y, cl_uint *value);
+				int x, int y, cl_uint *value);
 void			ui_keypress_control_numberbox_int(t_textinput *textinput,
-	t_bool up);
+				t_bool up);
 /*
 **	ui_control_numberbox_float.c
 */
 void			ui_leave_control_numberbox_float(t_textinput *textinput);
 t_bool			ui_mouse_control_numberbox_float(t_textinput *textinput,
-	cl_float *value, int x, int y);
+				cl_float *value, int x, int y);
 void			ui_render_control_numberbox_float(
-	int x, int y, cl_float *value);
+				int x, int y, cl_float *value);
 void			ui_keypress_control_numberbox_float(t_textinput *textinput,
-	t_bool up);
+				t_bool up);
 
 /*
 **	ui_control_textbox.c
 */
 void			ui_leave_control_textbox(t_textinput *textinput);
 t_bool			ui_mouse_control_textbox(t_textinput *textinput,
-	char **value, int x, int y);
+				char **value, int x, int y);
 void			ui_render_control_textbox(
-	int x, int y, char *value);
+				int x, int y, char *value);
 void			ui_keypress_control_textbox(t_textinput *textinput);
 
 #endif

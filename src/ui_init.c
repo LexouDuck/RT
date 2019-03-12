@@ -37,12 +37,10 @@ static void	ui_init_menubar(void)
 	}
 }
 
-static void	ui_init_dropdown_file(void)
+static void	ui_init_dropdown_file(t_menu *dropdown)
 {
-	t_menu	*dropdown;
 	int		i;
 
-	dropdown = &rt.ui.dropdowns[MENUBAR_ITEM_FILE];
 	dropdown->selection = -1;
 	dropdown->item_amount = DROPDOWN_ITEMS_FILE;
 	dropdown->item_labels[DROPDOWN_FILE_OPEN] = DROPDOWN_LABEL_FILE_OPEN;
@@ -68,12 +66,10 @@ static void	ui_init_dropdown_file(void)
 	}
 }
 
-static void	ui_init_dropdown_edit(void)
+static void	ui_init_dropdown_edit(t_menu *dropdown)
 {
-	t_menu	*dropdown;
 	int		i;
 
-	dropdown = &rt.ui.dropdowns[MENUBAR_ITEM_EDIT];
 	dropdown->selection = -1;
 	dropdown->item_amount = DROPDOWN_ITEMS_EDIT;
 	dropdown->item_labels[DROPDOWN_EDIT_UNDO] = DROPDOWN_LABEL_EDIT_UNDO;
@@ -108,21 +104,21 @@ static void	ui_init_objectlist(void)
 		{ UI_WIDTH - TILE * 2, TILE * rt.ui.objects.rect.y, TILE * 2, TILE * 2 };
 	rt.ui.objects.scrollbar.button_down = (SDL_Rect)
 		{ UI_WIDTH - TILE * 2, rt.sdl.window_h - TILE * 2, TILE * 2, TILE * 2 };
-	rt.ui.objects.scrollbar.bar = (SDL_Rect)
-		{ UI_WIDTH - TILE * 2, TILE * (rt.ui.objects.rect.y + 2), TILE * 2, rt.ui.objects.scrollbar.button_down.y - (TILE * (rt.ui.objects.rect.y + 2)) };
+	rt.ui.objects.scrollbar.bar = (SDL_Rect){
+		UI_WIDTH - TILE * 2, TILE * (rt.ui.objects.rect.y + 2), TILE * 2,
+		rt.ui.objects.scrollbar.button_down.y -
+			(TILE * (rt.ui.objects.rect.y + 2)) };
 	rt.ui.objects.scrollbar.scroll = 0;
 	rt.ui.objects.scrollbar.scroll_max = 0;
-	rt.ui.objects.scrollbar.scroll_view = (rt.sdl.window_h - rt.ui.objects.rect.y);
+	rt.ui.objects.scrollbar.scroll_view =
+		(rt.sdl.window_h - rt.ui.objects.rect.y);
 }
 
 int			ui_init(void)
 {
 	static const t_u32	palette[PALETTE] = {
-		0x000000,
-		0x0058F8,
-		0x3CBCFC,
-		0xFCFCFC
-	};
+		0x000000, 0x0058F8, 0x3CBCFC, 0xFCFCFC };
+	;
 
 	if (OS_ASSETS == 0)
 		ui_init_assets();
@@ -136,8 +132,8 @@ int			ui_init(void)
 		return (ERROR);
 	ft_memcpy(&rt.ui.pal, palette, PALETTE * sizeof(t_u32));
 	ui_init_menubar();
-	ui_init_dropdown_file();
-	ui_init_dropdown_edit();
+	ui_init_dropdown_file(&rt.ui.dropdowns[MENUBAR_ITEM_FILE]);
+	ui_init_dropdown_edit(&rt.ui.dropdowns[MENUBAR_ITEM_EDIT]);
 	ui_init_objectlist();
 	SDL_StopTextInput();
 	return (OK);

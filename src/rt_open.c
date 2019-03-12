@@ -17,47 +17,10 @@
 
 #include "libft_char.h"
 #include "libft_color.h"
-#include "libft_convert.h"
 
 #include "../rt.h"
 #include "debug.h"
 #include "rt_scene.h"
-
-void		rt_output_readfile(void)
-{
-	t_object			*object;
-	unsigned int		i;
-
-	debug_output("RT File successfully read:\n");
-	debug_output_value("BG Color: #", ft_u32_to_hex(rt.scene.bg_color), TRUE);
-	debug_output("Objects:\n");
-	i = 0;
-	while (i < rt.scene.object_amount)
-	{
-		object = &rt.scene.objects[i];
-		//TODO Add texture debug output value
-		debug_output(rt_get_str_primitive(object->type));
-		debug_output("\t-> ");
-		debug_output_value("NAME: ", object->name, FALSE);
-		debug_output_value("MATERIAL: ", rt_get_str_material(object->material), FALSE);
-		debug_output_value("PATTERN: ", rt_get_str_pattern(object->pattern), FALSE);
-		debug_output_value("Color A #", ft_u32_to_hex(object->color_a), TRUE);
-		debug_output_value(" ->", cl_float3_to_str(&object->rgb_a, 3), TRUE);
-		debug_output_value("Color B #", ft_u32_to_hex(object->color_b), TRUE);
-		debug_output_value(" ->", cl_float3_to_str(&object->rgb_b, 3), TRUE);
-		debug_output_value(" -   pos:", cl_float3_to_str(&object->pos, 3), TRUE);
-		debug_output_value(" -   rot:", cl_float3_to_str(&object->rot, 3), TRUE);
-		debug_output_value(" - scale:", cl_float3_to_str(&object->scale, 3), TRUE);
-		debug_output_value(" - bbox_vi:", cl_float3_to_str(&object->bbox_os.vi, 3), TRUE);
-		debug_output_value(" - bbox_vf:", cl_float3_to_str(&object->bbox_os.vf, 3), TRUE);
-		debug_output_value(" - uvw_scale:", cl_float3_to_str(&object->uvw_scale, 3), TRUE);
-		debug_output_value(" - uvw_offset:", cl_float3_to_str(&object->uvw_offset, 3), TRUE);
-		debug_output_value(" - refraction:", ft_f32_to_str(object->refrac, 3), TRUE);
-		debug_output_value(" - roughness:", ft_f32_to_str(object->roughness, 3), TRUE);
-		debug_output_value(" - opacity:", ft_f32_to_str(object->opacity, 3), TRUE);
-		++i;
-	}
-}
 
 static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 {
@@ -67,27 +30,12 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 
 	object.type = shape;
 	init_object(&object);
-	i = -1;
+	i = 0;
 	while (++i < OBJECT_ARGS_AMOUNT)
 	{
-		if ((error = rt_read_arg_name(p, (char *)&object.name)) ||
-			(error = rt_read_arg_material(p, &object.material, "material")) ||
-			(error = rt_read_arg_pattern(p, &object.pattern, "pattern")) ||
-			(error = rt_read_arg_projection(p, &object.uvw_projection, "projection")) ||
-			(error = rt_read_arg_bump(p, &object.bump_type, "bump")) ||
-			(error = rt_read_arg_color(p, &object.rgb_a, "color")) ||
-			(error = rt_read_arg_color(p, &object.rgb_b, "color2")) ||
-			(error = rt_read_arg_vector(p, &object.pos, "pos")) ||
-			(error = rt_read_arg_vector(p, &object.rot, "rot")) ||
-			(error = rt_read_arg_vector(p, &object.scale, "scale")) ||
-			(error = rt_read_arg_vector(p, &object.bbox_os.vi, "bbox_vi")) ||
-			(error = rt_read_arg_vector(p, &object.bbox_os.vf, "bbox_vf")) ||
-			(error = rt_read_arg_vector(p, &object.uvw_scale, "uvw_scale")) ||
-			(error = rt_read_arg_vector(p, &object.uvw_offset, "uvw_offset")) ||
-			(error = rt_read_arg_number(p, &object.refrac, "refrac")) ||
-			(error = rt_read_arg_number(p, &object.roughness, "roughness")) ||
-			(error = rt_read_arg_number(p, &object.opacity, "opacity")))
+		if ((error = rt_read_object_arg(p, &object)))
 			return (error);
+		++i;
 	}
 	update_object(&object);
 	rt.scene.objects[p->current_object] = object;
@@ -104,32 +52,10 @@ static char	*rt_read_command(t_rtparser *p, char *label)
 	if (ft_strequ(label, "LIGHT"))
 		return ("'LIGHT' is not a valid usable 3D object label.\n"
 		"To create a light, make any object and add a 'light' argument.");
-	else if (ft_strequ(label, "PLANE"))
-		shape = plane;
-	else if (ft_strequ(label, "DISC") || ft_strequ(label, "DISK"))
-		shape = disk;
-	else if (ft_strequ(label, "RECTANGLE"))
-		shape = rectangle;
-	else if (ft_strequ(label, "TRIANGLE"))
-		shape = triangle;
-	else if (ft_strequ(label, "CUBE"))
-		shape = cube;
-	else if (ft_strequ(label, "SPHERE"))
-		shape = sphere;
-	else if (ft_strequ(label, "CYLINDER"))
-		shape = cylinder;
-	else if (ft_strequ(label, "INFCYLINDER"))
-		shape = infcylinder;
-	else if (ft_strequ(label, "INFCONE"))
-		shape = infcone;
-	else if (ft_strequ(label, "CONE"))
-		shape = cone;
-	else if (ft_strequ(label, "PARABOLOID"))
-		shape = paraboloid;
-	else if (ft_strequ(label, "HYPERBOLOID"))
-		shape = hyperboloid;
 	else if (ft_strequ(label, "OBJ") || ft_strequ(label, "MESH"))
 		shape = obj_mesh;
+	else
+		rt_read_getprimitive(label, &shape);
 	if (shape)
 		return (p->current_object < OBJECT_MAX_AMOUNT ? rt_read_object(p, shape)
 			: "Import error: Maximum object amount limit has been reached.");

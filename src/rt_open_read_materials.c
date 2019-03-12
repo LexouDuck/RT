@@ -89,7 +89,7 @@ char		*rt_read_arg_material(t_rtparser *p, t_material *result,
 			char const *label)
 {
 	rt_read_whitespace(p);
-	if (!p->file[p->index] || !ft_strnequ(p->file + p->index, 
+	if (!p->file[p->index] || !ft_strnequ(p->file + p->index,
 	label, ft_strlen(label)))
 	{
 		return (NULL);
@@ -101,7 +101,7 @@ char		*rt_read_arg_material(t_rtparser *p, t_material *result,
 		p->file[p->index]));
 	}
 	++(p->index);
-	if(rt_check_arg_material_label(p, result))
+	if (rt_check_arg_material_label(p, result))
 		return (NULL);
 	return ("No valid material enum label encountered");
 }

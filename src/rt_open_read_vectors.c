@@ -62,11 +62,9 @@ char		*rt_read_arg_vector(t_rtparser *p, cl_float3 *result,
 	else
 		return (rt_read_error('(', "or '{' or '[' => vector argument", symbol));
 	symbol += (symbol == '(') ? 1 : 2;
-	if ((error = rt_read_arg_vector_number(p, &(result->x), ',')))
-		return (error);
-	if ((error = rt_read_arg_vector_number(p, &(result->y), ',')))
-		return (error);
-	if ((error = rt_read_arg_vector_number(p, &(result->z), symbol)))
+	if ((error = rt_read_arg_vector_number(p, &(result->x), ',')) ||
+		(error = rt_read_arg_vector_number(p, &(result->y), ',')) ||
+		(error = rt_read_arg_vector_number(p, &(result->z), symbol)))
 		return (error);
 	return (NULL);
 }

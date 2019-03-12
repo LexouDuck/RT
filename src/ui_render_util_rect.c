@@ -124,7 +124,8 @@ void		ui_render_rect(SDL_Rect rect, t_bool filled)
 		{
 			dest.x = TILE * (rect.x + i.x);
 			dest.y = TILE * (rect.y + i.y);
-			if (SDL_BlitSurface(rt.ui.tileset, &tile, rt.sdl.window_surface, &dest))
+			if (SDL_BlitSurface(rt.ui.tileset, &tile,
+				rt.sdl.window_surface, &dest))
 				debug_output_error(
 					"Error during ui_render_rect() -> center: ", TRUE);
 		}

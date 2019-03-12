@@ -20,7 +20,7 @@
 #include "debug.h"
 #include "event.h"
 
-void	ui_render_icon_object(t_object *object, t_s32 y)
+void		ui_render_icon_object(t_object *object, t_s32 y)
 {
 	static const t_u8	light = 0x50;
 	static const t_u8	shade = 0x50;
@@ -48,91 +48,55 @@ void	ui_render_icon_object(t_object *object, t_s32 y)
 	ui_set_palette(rt.ui.tileset, rt.ui.pal);
 }
 
+static void	ui_render_expandedproperty(t_bool is_string,
+	char const *label, void *value, t_s32 y)
+{
+	char const	*str;
+	cl_float3	*vector;
+
+	if (is_string)
+	{
+		str = (char const *)value;
+		ui_render_text(label, 1, y, FALSE);
+		ui_render_text(str, 13, y, FALSE);
+		ui_render_text("\x12", 12, y, FALSE);
+		ui_render_text("\x13", 24, y, FALSE);
+	}
+	else
+	{
+		vector = (cl_float3 *)value;
+		ui_render_text(label, 1, y, FALSE);
+		ui_render_control_numberbox_float(1, y + 1, &vector->x);
+		ui_render_control_numberbox_float(10, y + 1, &vector->y);
+		ui_render_control_numberbox_float(19, y + 1, &vector->z);
+	}
+}
+
 void		ui_render_expandedproperties(t_object *object, t_s32 y)
 {
-	char		*tmp;
-
-	ui_render_text("Primitive:", 1, y + 2, FALSE);
-	ui_render_text(rt_get_str_primitive(object->type), 13, y + 2, FALSE);
-	ui_render_text("\x12", 12, y + 2, FALSE);
-	ui_render_text("\x13", 24, y + 2, FALSE);
-	ui_render_text("Material:", 1, y + 4, FALSE);
-	ui_render_text(rt_get_str_material(object->material), 13, y + 4, FALSE);
-	ui_render_text("\x12", 12, y + 4, FALSE);
-	ui_render_text("\x13", 24, y + 4, FALSE);
-	ui_render_text("Pattern:", 1, y + 6, FALSE);
-	ui_render_text(rt_get_str_pattern(object->pattern), 13, y + 6, FALSE);
-	ui_render_text("\x12", 12, y + 6, FALSE);
-	ui_render_text("\x13", 24, y + 6, FALSE);
-	ui_render_text("Projection:", 1, y + 8, FALSE);
-	ui_render_text(rt_get_str_projection(object->uvw_projection), 13, y + 8, FALSE);
-	ui_render_text("\x12", 12, y + 8, FALSE);
-	ui_render_text("\x13", 24, y + 8, FALSE);
-	ui_render_text("Bump:", 1, y + 10, FALSE);
-	ui_render_text(rt_get_str_bump(object->bump_type), 13, y + 10, FALSE);
-	ui_render_text("\x12", 12, y + 10, FALSE);
-	ui_render_text("\x13", 24, y + 10, FALSE);
-	if ((tmp = ft_u32_to_hex(object->color_a)))
-	{
-		ui_render_text("Color A: #", 1, y + 12, FALSE);
-		ui_render_text(tmp, 11, y + 12, FALSE);
-		free(tmp);
-	}
-	ui_render_control_numberbox_float(1, y + 13, &object->rgb_a.x);
-	ui_render_control_numberbox_float(10, y + 13, &object->rgb_a.y);
-	ui_render_control_numberbox_float(19, y + 13, &object->rgb_a.z);
-	if ((tmp = ft_u32_to_hex(object->color_b)))
-	{
-		ui_render_text("Color B: #", 1, y + 16, FALSE);
-		ui_render_text(tmp, 11, y + 16, FALSE);
-		free(tmp);
-	}
-	ui_render_control_numberbox_float(1, y + 17, &object->rgb_b.x);
-	ui_render_control_numberbox_float(10, y + 17, &object->rgb_b.y);
-	ui_render_control_numberbox_float(19, y + 17, &object->rgb_b.z);
-	ui_render_text("Pos:", 1, y + 20, FALSE);
-	ui_render_control_numberbox_float(1, y + 21, &object->pos.x);
-	ui_render_control_numberbox_float(10, y + 21, &object->pos.y);
-	ui_render_control_numberbox_float(19, y + 21, &object->pos.z);
-	ui_render_text("Rot:", 1, y + 24, FALSE);
-	ui_render_control_numberbox_float(1, y + 25, &object->rot.x);
-	ui_render_control_numberbox_float(10, y + 25, &object->rot.y);
-	ui_render_control_numberbox_float(19, y + 25, &object->rot.z);
-	ui_render_text("Scale:", 1, y + 28, FALSE);
-	ui_render_control_numberbox_float(1, y + 29, &object->scale.x);
-	ui_render_control_numberbox_float(10, y + 29, &object->scale.y);
-	ui_render_control_numberbox_float(19, y + 29, &object->scale.z);
-	ui_render_text("Object BBox Corner VI:", 1, y + 32, FALSE);
-	ui_render_control_numberbox_float(1, y + 33, &object->bbox_os.vi.x);
-	ui_render_control_numberbox_float(10, y + 33, &object->bbox_os.vi.y);
-	ui_render_control_numberbox_float(19, y + 33, &object->bbox_os.vi.z);
-	ui_render_text("Object BBox Corner VF:", 1, y + 36, FALSE);
-	ui_render_control_numberbox_float(1, y + 37, &object->bbox_os.vf.x);
-	ui_render_control_numberbox_float(10, y + 37, &object->bbox_os.vf.y);
-	ui_render_control_numberbox_float(19, y + 37, &object->bbox_os.vf.z);
-	ui_render_text("World BBox Corner VI:", 1, y + 40, FALSE);
-	ui_render_control_numberbox_float(1, y + 41, &object->bbox_ws.vi.x);
-	ui_render_control_numberbox_float(10, y + 41, &object->bbox_ws.vi.y);
-	ui_render_control_numberbox_float(19, y + 41, &object->bbox_ws.vi.z);
-	ui_render_text("World BBox Corner VF:", 1, y + 44, FALSE);
-	ui_render_control_numberbox_float(1, y + 45, &object->bbox_ws.vf.x);
-	ui_render_control_numberbox_float(10, y + 45, &object->bbox_ws.vf.y);
-	ui_render_control_numberbox_float(19, y + 45, &object->bbox_ws.vf.z);
-	ui_render_text("UVW Scale:", 1, y + 48, FALSE);
-	ui_render_control_numberbox_float( 1, y + 49, &object->uvw_scale.x);
-	ui_render_control_numberbox_float(10, y + 49, &object->uvw_scale.y);
-	ui_render_control_numberbox_float(19, y + 49, &object->uvw_scale.z);
-	ui_render_text("UVW Offset:", 1, y + 52, FALSE);
-	ui_render_control_numberbox_float( 1, y + 53, &object->uvw_offset.x);
-	ui_render_control_numberbox_float(10, y + 53, &object->uvw_offset.y);
-	ui_render_control_numberbox_float(19, y + 53, &object->uvw_offset.z);
+	ui_render_expandedproperty(TRUE, "Primitive:",	rt_get_str_primitive(object->type), y + 2);
+	ui_render_expandedproperty(TRUE, "Material:",	rt_get_str_material(object->material), y + 4);
+	ui_render_expandedproperty(TRUE, "Pattern:",	rt_get_str_pattern(object->pattern), y + 6);
+	ui_render_expandedproperty(TRUE, "Projection:",	rt_get_str_projection(object->uvw_projection), y + 8);
+	ui_render_expandedproperty(TRUE, "Bump:",		rt_get_str_bump(object->bump_type), y + 10);
+	ui_render_expandedproperty(FALSE, "Color A:",	&object->rgb_a, y + 12);
+	ui_render_expandedproperty(FALSE, "Color B:",	&object->rgb_b, y + 16);
+	ui_render_expandedproperty(FALSE, "Position:",	&object->pos, y + 20);
+	ui_render_expandedproperty(FALSE, "Rotation:",	&object->rot, y + 24);
+	ui_render_expandedproperty(FALSE, "Scale:",		&object->scale, y + 28);
+	ui_render_expandedproperty(FALSE, "Object BBox Corner VI:",	&object->bbox_os.vi, y + 32);
+	ui_render_expandedproperty(FALSE, "Object BBox Corner VF:",	&object->bbox_os.vf, y + 36);
+	ui_render_expandedproperty(FALSE, "World BBox Corner VI:",	&object->bbox_ws.vi, y + 40);
+	ui_render_expandedproperty(FALSE, "World BBox Corner VF:",	&object->bbox_ws.vf, y + 44);
+	ui_render_expandedproperty(FALSE, "UVW Scale:",		&object->uvw_scale, y + 48);
+	ui_render_expandedproperty(FALSE, "UVW Offset:",	&object->uvw_offset, y + 52);
 	ui_render_text("Refrac:  Rough:   Opacity:", 1, y + 56, FALSE);
 	ui_render_control_numberbox_float(1, y + 57, &object->refrac);
 	ui_render_control_numberbox_float(10, y + 57, &object->roughness);
 	ui_render_control_numberbox_float(19, y + 57, &object->opacity);
 }
 
-void	ui_render_objectlist(void)
+void		ui_render_objectlist(void)
 {
 	t_s32		tmp;
 	t_s32		add_height;

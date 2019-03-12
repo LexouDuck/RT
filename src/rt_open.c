@@ -51,8 +51,10 @@ void		rt_output_readfile(void)
 		debug_output_value(" - bbox_vi:", cl_float3_to_str(&object->bbox_os.vi, 3), TRUE);
 		debug_output_value(" - bbox_vf:", cl_float3_to_str(&object->bbox_os.vf, 3), TRUE);
 		debug_output_value(" - uvw_scale:", cl_float3_to_str(&object->uvw_scale, 3), TRUE);
-		debug_output_value(" - uvw_scale:", cl_float3_to_str(&object->uvw_offset, 3), TRUE);
-		//TODO Add refrac, roughness and opacity ?
+		debug_output_value(" - uvw_offset:", cl_float3_to_str(&object->uvw_offset, 3), TRUE);
+		debug_output_value(" - refraction:", cl_float3_to_str(&object->refrac, 3), TRUE);
+		debug_output_value(" - roughness:", cl_float3_to_str(&object->roughness, 3), TRUE);
+		debug_output_value(" - opacity:", cl_float3_to_str(&object->opacity, 3), TRUE);
 		++i;
 	}
 }
@@ -129,8 +131,10 @@ static char	*rt_read_command(t_rtparser *p, char *label)
 	else if (ft_strequ(label, "OBJ") || ft_strequ(label, "MESH"))
 		shape = obj_mesh;
 	if (shape)
+	{
 		return (p->current_object < OBJECT_MAX_AMOUNT ? rt_read_object(p, shape)
 			: "Import error: Maximum object amount limit has been reached.");
+	}
 	else if (ft_strequ(label, "BG"))
 	{
 		error = rt_read_arg_color(p, &rt.scene.bg_rgb, "color");

@@ -102,6 +102,7 @@ void		init_object(t_object *object)
 	object->material = diffuse;
 	object->pattern = solid;
 	object->uvw_projection = spherical;
+	object->bump_type = flat;
 	ft_memclr(&object->name, OBJECT_NAME_MAXLENGTH);
 	object->color_a = 0xFFFFFF;
 	object->color_b = 0x000000;

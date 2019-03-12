@@ -273,7 +273,7 @@ char		*rt_read_arg_bump(t_rtparser *p, t_bump *result, char const *label)
 	i = 0;
 	while (i < BUMP_TYPES)
 	{
-		str = rt_get_str_projection((t_projection)i);
+		str = rt_get_str_bump((t_bump)i);
 		length = ft_strlen(str);
 		if (ft_strnequ(p->file + p->index, str, length))
 		{

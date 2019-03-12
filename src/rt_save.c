@@ -10,15 +10,25 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../rt.h"
-#include "debug.h"
 #include "libft_convert.h"
 
-/*
-** this function write a function to the savefile
-*/
+#include "../rt.h"
+#include "debug.h"
 
-static void		print_float3_to_str(int fd, cl_float3 *vector, char *label)
+static void		write_float(int fd, cl_float value, char *label)
+{
+	char *tmp;
+
+	if ((tmp = ft_f32_to_str(value, 5)))
+	{
+		FT_Write_String(fd, label);
+		FT_Write_Line(fd, tmp);
+		free(tmp);
+	}
+	return ;
+}
+
+static void		write_float3(int fd, cl_float3 *vector, char *label)
 {
 	char *tmp;
 
@@ -35,7 +45,7 @@ static void		print_float3_to_str(int fd, cl_float3 *vector, char *label)
 ** this function write revery data of the map and call above function.
 */
 
-static void		print_get_str(int fd, t_object *object)
+static void		write_enums(int fd, t_object *object)
 {
 	char *tmp;
 
@@ -73,7 +83,7 @@ static void		print_get_str(int fd, t_object *object)
 ** this function print Back ground color on the savefile
 */
 
-static void		print_bg_color(int fd)
+static void		write_bg_color(int fd)
 {
 	char *tmp;
 
@@ -93,32 +103,29 @@ static void		print_bg_color(int fd)
 
 void			rt_save(int fd)
 {
-	size_t		i;
+	t_s32		i;
 	t_object	*object;
 
-	print_bg_color(fd);
-	i = 0;
-	while (i < rt.scene.object_amount)
+	write_bg_color(fd);
+	i = -1;
+	while (++i < rt.scene.object_amount)
 	{
 		object = &rt.scene.objects[i];
-		if (object)
-		{
-			print_get_str(fd, object);
-			print_float3_to_str(fd, &object->rgb_a, "color:");
-			print_float3_to_str(fd, &object->rgb_b, "color2:");
-			print_float3_to_str(fd, &object->pos, "pos:");
-			print_float3_to_str(fd, &object->rot, "rot:");
-			print_float3_to_str(fd, &object->scale, "scale:");
-			print_float3_to_str(fd, &object->bbox_os.vi, "bbox_vi:");
-			print_float3_to_str(fd, &object->bbox_os.vf, "bbox_vf:");
-			print_float3_to_str(fd, &object->uvw_scale, "uvw_scale:");
-			print_float3_to_str(fd, &object->uvw_offset, "uvw_offset:");
-			//TODO Add refrace rough and opacity ?
-			FT_Write_Char(fd, '\n');
-		}
-		i++;
+		write_enums(fd, object);
+		write_float3(fd, &object->rgb_a, "color:");
+		write_float3(fd, &object->rgb_b, "color2:");
+		write_float3(fd, &object->pos, "pos:");
+		write_float3(fd, &object->rot, "rot:");
+		write_float3(fd, &object->scale, "scale:");
+		write_float3(fd, &object->bbox_os.vi, "bbox_vi:");
+		write_float3(fd, &object->bbox_os.vf, "bbox_vf:");
+		write_float3(fd, &object->uvw_scale, "uvw_scale:");
+		write_float3(fd, &object->uvw_offset, "uvw_offset:");
+		write_float(fd, object->refrac, "refrac:");
+		write_float(fd, object->roughness, "roughness:");
+		write_float(fd, object->opacity, "opacity:");
+		FT_Write_Char(fd, '\n');
 	}
-	FT_Write_Char(fd, '\n');
 	return ;
 }
 

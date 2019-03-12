@@ -131,10 +131,8 @@ static char	*rt_read_command(t_rtparser *p, char *label)
 	else if (ft_strequ(label, "OBJ") || ft_strequ(label, "MESH"))
 		shape = obj_mesh;
 	if (shape)
-	{
 		return (p->current_object < OBJECT_MAX_AMOUNT ? rt_read_object(p, shape)
 			: "Import error: Maximum object amount limit has been reached.");
-	}
 	else if (ft_strequ(label, "BG"))
 	{
 		error = rt_read_arg_color(p, &rt.scene.bg_rgb, "color");

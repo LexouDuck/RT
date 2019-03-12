@@ -122,7 +122,8 @@ SRCS	= 	main.c							\
 			rt_file.c						\
 			rt_open.c						\
 			rt_open_util.c					\
-			rt_open_read.c					\
+			rt_open_read_properties.c		\
+			rt_open_read_materials.c		\
 			rt_save.c 						\
 			rt_scene.c						\
 			camera.c						\

@@ -44,26 +44,33 @@ char		*rt_read_arg_name(t_rtparser *p, char *result)
 			return (NULL);
 		result[p->index - offset] = p->file[p->index];
 	}
-	return (rt_read_error(symbol, "name arg terminating char", p->file[p->index]));
+	return (rt_read_error(symbol, "name arg terminating char",
+	p->file[p->index]));
 }
 
-char		*rt_read_arg_number(t_rtparser *p, cl_float *result, char const *label)
+char		*rt_read_arg_number(t_rtparser *p, cl_float *result,
+			char const *label)
 {
 	char	*number;
 
 	rt_read_whitespace(p);
-	if (!p->file[p->index] || !ft_strnequ(p->file + p->index, label, ft_strlen(label)))
+	if (!p->file[p->index] || !ft_strnequ(p->file + p->index,
+		label, ft_strlen(label)))
 		return (NULL);
 	p->index += ft_strlen(label);
 	if (p->file[p->index] != ':')
-		return (rt_read_error(':', "without spaces before vector '('", p->file[p->index]));
+	{
+		return (rt_read_error(':', "without spaces before vector '('",
+		p->file[p->index]));
+	}
 	if (p->file[++(p->index)] == '\0')
 		return ("Expected number argument, reached end of file");
 	else if (ft_isdigit(p->file[p->index]))
 	{
 		number = p->file + p->index;
 		while (p->file[p->index] && (ft_isdigit(p->file[p->index]) ||
-			p->file[p->index] == '.' || p->file[p->index] == 'e' || p->file[p->index] == 'E'))
+			p->file[p->index] == '.' || p->file[p->index] == 'e' ||
+			p->file[p->index] == 'E'))
 			++(p->index);
 		if (p->file[p->index] == '\n')
 			p->line += 1;
@@ -72,55 +79,6 @@ char		*rt_read_arg_number(t_rtparser *p, cl_float *result, char const *label)
 		*result = ft_str_to_f32(number);
 		return (NULL);
 	}
-	return (rt_read_error('0', "or any other digit, for a number argument", p->file[p->index]));
-}
-
-static char	*rt_read_arg_vector_number(t_rtparser *p, cl_float *result, char sep)
-{
-	char	*file;
-	char	*number;
-
-	rt_read_whitespace(p);
-	file = p->file;
-	number = file + p->index;
-	while (file[p->index] &&
-		(ft_isdigit(file[p->index]) || file[p->index] == '.' ||
-			file[p->index] == '+' || file[p->index] == '-' ||
-			file[p->index] == 'e' || file[p->index] == 'E'))
-		++(p->index);
-	if (!file[p->index])
-		return ("Unexpected end of file inside vector argument");
-	rt_read_whitespace(p);
-	if (file[p->index] != sep)
-		return (rt_read_error(sep, "separator char", file[p->index]));
-	file[p->index] = '\0';
-	++(p->index);
-	*result = ft_str_to_f32(number);
-	return (NULL);
-}
-
-char		*rt_read_arg_vector(t_rtparser *p, cl_float3 *result, char const *label)
-{
-	char	*error;
-	char	symbol;
-
-	rt_read_whitespace(p);
-	if (!p->file[p->index] || !ft_strnequ(p->file + p->index, label, ft_strlen(label)))
-		return (NULL);
-	p->index += ft_strlen(label);
-	if (p->file[p->index] != ':')
-		return (rt_read_error(':', "without spaces before vector '('", p->file[p->index]));
-	symbol = p->file[++(p->index)];
-	if (symbol == '(' || symbol == '{' || symbol == '[')
-		++(p->index);
-	else
-		return (rt_read_error('(', "or '{' or '[' => vector argument", symbol));
-	symbol += (symbol == '(') ? 1 : 2;
-	if ((error = rt_read_arg_vector_number(p, &(result->x), ',')))
-		return (error);
-	if ((error = rt_read_arg_vector_number(p, &(result->y), ',')))
-		return (error);
-	if ((error = rt_read_arg_vector_number(p, &(result->z), symbol)))
-		return (error);
-	return (NULL);
+	return (rt_read_error('0', "or any other digit, for a number argument",
+	p->file[p->index]));
 }

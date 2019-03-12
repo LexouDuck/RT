@@ -42,6 +42,8 @@
 */
 # ifdef __APPLE__
 # define OS_ASSETS	0
+extern const t_u8 binary___inc_ui_chr_start[1];
+extern const t_u8 _binary___inc_ui_chr_start[1];
 extern const t_u8 _section$__DATA__inc_ui_chr[CHR_SIZE];
 
 # else

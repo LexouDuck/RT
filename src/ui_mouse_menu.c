@@ -90,6 +90,31 @@ static t_bool	ui_mouse_menu_addremove(void)
 	return (FALSE);
 }
 
+void			ui_mouse_menu_camera(t_textinput *p, t_s32 y)
+{
+	p = &rt.ui.current_textinput;
+	if (ui_mouse_control_numberbox_float(p, &rt.scene.camera.hrz_fov, 1, y) ||
+		ui_mouse_control_numberbox_float(p, &rt.scene.camera.aperture, 10, y) ||
+		ui_mouse_control_numberbox_float(p, &rt.scene.camera.focal_dist, 19, y))
+		return ;
+	y += 4;
+	if (ui_mouse_control_numberbox_float(p,
+		&rt.scene.camera.rgb_mask.x, 1, y) ||
+		ui_mouse_control_numberbox_float(p,
+			&rt.scene.camera.rgb_mask.y, 10, y) ||
+		ui_mouse_control_numberbox_float(p,
+			&rt.scene.camera.rgb_mask.z, 19, y))
+		return ;
+	y += 4;
+	if (ui_mouse_control_numberbox_float(p,
+		&rt.scene.camera.rgb_shade.x, 1, y) ||
+		ui_mouse_control_numberbox_float(p,
+			&rt.scene.camera.rgb_shade.y, 10, y) ||
+		ui_mouse_control_numberbox_float(p,
+			&rt.scene.camera.rgb_shade.z, 19, y))
+		return ;
+}
+
 void			ui_mouse_menu(void)
 {
 	t_textinput	*p;
@@ -110,18 +135,5 @@ void			ui_mouse_menu(void)
 	if (ui_mouse_menu_cameramodel(&rt.scene.camera.model, y))
 		return ;
 	y += 2;
-	if (ui_mouse_control_numberbox_float(p, &rt.scene.camera.hrz_fov, 1, y) ||
-		ui_mouse_control_numberbox_float(p, &rt.scene.camera.aperture, 10, y) ||
-		ui_mouse_control_numberbox_float(p, &rt.scene.camera.focal_dist, 19, y))
-		return ;
-	y += 4;
-	if (ui_mouse_control_numberbox_float(p, &rt.scene.camera.rgb_mask.x, 1, y) ||
-		ui_mouse_control_numberbox_float(p, &rt.scene.camera.rgb_mask.y, 10, y) ||
-		ui_mouse_control_numberbox_float(p, &rt.scene.camera.rgb_mask.z, 19, y))
-		return ;
-	y += 4;
-	if (ui_mouse_control_numberbox_float(p, &rt.scene.camera.rgb_shade.x, 1, y) ||
-		ui_mouse_control_numberbox_float(p, &rt.scene.camera.rgb_shade.y, 10, y) ||
-		ui_mouse_control_numberbox_float(p, &rt.scene.camera.rgb_shade.z, 19, y))
-		return ;
+	ui_mouse_menu_camera(p, y);
 }

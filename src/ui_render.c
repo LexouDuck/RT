@@ -17,6 +17,32 @@
 #include "debug.h"
 #include "event.h"
 
+static void	ui_render_menu_camera(t_s32 y)
+{
+	ui_render_text("Camera Type:", 2, y, FALSE);
+	ui_render_text("\x12", 14, y, TRUE);
+	ui_render_text("\x13", 27, y, TRUE);
+	ui_render_text(rt_get_str_cameramodel(rt.scene.camera.model), 15, y, FALSE);
+	y += 1;
+	ui_render_text("FOV   Aperture   FocalDist", 1, y, FALSE);
+	y += 1;
+	ui_render_control_numberbox_float(1, y, &rt.scene.camera.hrz_fov);
+	ui_render_control_numberbox_float(10, y, &rt.scene.camera.aperture);
+	ui_render_control_numberbox_float(19, y, &rt.scene.camera.focal_dist);
+	y += 3;
+	ui_render_text("Camera Light ColorMask:", 2, y, FALSE);
+	y += 1;
+	ui_render_control_numberbox_float(1, y, &rt.scene.camera.rgb_mask.x);
+	ui_render_control_numberbox_float(10, y, &rt.scene.camera.rgb_mask.y);
+	ui_render_control_numberbox_float(19, y, &rt.scene.camera.rgb_mask.z);
+	y += 3;
+	ui_render_text("Camera Shade Filter:", 2, y, FALSE);
+	y += 1;
+	ui_render_control_numberbox_float(1, y, &rt.scene.camera.rgb_shade.x);
+	ui_render_control_numberbox_float(10, y, &rt.scene.camera.rgb_shade.y);
+	ui_render_control_numberbox_float(19, y, &rt.scene.camera.rgb_shade.z);
+}
+
 static void	ui_render_menu(void)
 {
 	t_s32		y;
@@ -33,28 +59,7 @@ static void	ui_render_menu(void)
 	ui_render_text("\x13", 27, y, TRUE);
 	ui_render_text(rt_get_str_rendermode(rt.scene.render_mode), 15, y, FALSE);
 	y += 2;
-	ui_render_text("Camera Type:", 2, y, FALSE);
-	ui_render_text("\x12", 14, y, TRUE);
-	ui_render_text("\x13", 27, y, TRUE);
-	ui_render_text(rt_get_str_cameramodel(rt.scene.camera.model), 15, y, FALSE);
-	y += 1;
-	ui_render_text("FOV   Aperture   FocalDist", 1, y, FALSE);
-	y += 1;
-	ui_render_control_numberbox_float(1, y, &rt.scene.camera.hrz_fov);
-	ui_render_control_numberbox_float(10, y, &rt.scene.camera.aperture);
-	ui_render_control_numberbox_float(19, y, &rt.scene.camera.focal_dist);
-	y += 3;
-	ui_render_text("Camera Light ColorMask:", 2, y, FALSE);
-	y += 1;
-	ui_render_control_numberbox_float( 1, y, &rt.scene.camera.rgb_mask.x);
-	ui_render_control_numberbox_float(10, y, &rt.scene.camera.rgb_mask.y);
-	ui_render_control_numberbox_float(19, y, &rt.scene.camera.rgb_mask.z);
-	y += 3;
-	ui_render_text("Camera Shade Filter:", 2, y, FALSE);
-	y += 1;
-	ui_render_control_numberbox_float( 1, y, &rt.scene.camera.rgb_shade.x);
-	ui_render_control_numberbox_float(10, y, &rt.scene.camera.rgb_shade.y);
-	ui_render_control_numberbox_float(19, y, &rt.scene.camera.rgb_shade.z);
+	ui_render_menu_camera(y);
 }
 
 void		ui_render_menubar(void)

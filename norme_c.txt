@@ -127,33 +127,10 @@ Error (line 112): line has 155 characters
 Error (line 115): line has 84 characters
 Norme: ./src/ui_mouse_objectlist_enums.c
 Norme: ./src/ui_render.c
-Error (line 20): function ui_render_menu has 36 lines
-Error (line 49, col 34): space after (
-Error (line 55, col 34): space after (
 Norme: ./src/ui_mouse_menu.c
-Error (line 93): function ui_mouse_menu has 32 lines
-Error (line 118): line has 82 characters
-Error (line 119): line has 83 characters
-Error (line 123): line has 83 characters
-Error (line 124): line has 84 characters
-Error (line 125): line has 82 characters
 Norme: ./src/ui_render_util.c
 Norme: ./src/ui_render_canvas.c
 Norme: ./tmp_srcs/solve_cubic.c
 Norme: ./src/ui_scrollbar.c
-Error (line 114): line has 84 characters
 Norme: ./src/ui_render_objectlist.c
-Error (line 77): line has 95 characters
-Error (line 78): line has 97 characters
-Error (line 79): line has 94 characters
-Error (line 80): line has 107 characters
-Error (line 81): line has 91 characters
-Error (line 87): line has 94 characters
-Error (line 88): line has 94 characters
-Error (line 89): line has 93 characters
-Error (line 90): line has 93 characters
-Error (line 92): line has 83 characters
-Error (line 99): function ui_render_objectlist has 37 lines
-Error (line 121): line has 82 characters
-Error (line 136): line has 82 characters
 Norme: ./src/ui_render_util_rect.c

@@ -111,7 +111,8 @@ void		ui_render_scrollbar(t_scrollbar *scrollbar)
 	t_f32			ratio;
 
 	ui_render_scrollbar_buttons(scrollbar);
-	tile.x = TILE * (rt.ui.objects.scrollbar.clicked == scrollclick_bar ? 14 : 12);
+	tile.x = TILE *
+		(rt.ui.objects.scrollbar.clicked == scrollclick_bar ? 14 : 12);
 	tile.y = TILE * 12;
 	dest.x = scrollbar->bar.x;
 	dest.y = scrollbar->bar.y;

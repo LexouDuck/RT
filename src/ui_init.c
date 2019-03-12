@@ -124,18 +124,12 @@ int			ui_init(void)
 		0xFCFCFC
 	};
 
-#ifdef __APPLE__
-	size_t				size = 0;
-	rt.ui.chr = getsectiondata(&_mh_execute_header,
-		"__DATA", "__inc_ui_chr", &size);
-	if (size != CHR_SIZE)
-		debug_output_value(
-			"Invalid binary size: ", FT_Size_To_String(size), TRUE);
-#elif (defined __WIN32__)
-	rt.ui.chr = binary___inc_ui_chr_start;
-#else
-	rt.ui.chr = _binary___inc_ui_chr_start;
-#endif
+	if (OS_ASSETS == 0)
+		ui_init_assets();
+	else if (OS_ASSETS == 1)
+		rt.ui.chr = binary___inc_ui_chr_start;
+	else
+		rt.ui.chr = _binary___inc_ui_chr_start;
 	if (!(rt.ui.tileset = ui_set_tileset(rt.ui.chr, CHR_SIZE)))
 		return (ERROR);
 	if (!(ui_set_palette(rt.ui.tileset, palette)))

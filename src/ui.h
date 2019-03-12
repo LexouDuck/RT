@@ -184,6 +184,7 @@ typedef struct	s_ui
 **	ui.c
 */
 int				ui_init();
+int				ui_init_assets();
 SDL_Palette		*ui_set_palette(SDL_Surface *surface, t_u32 const *palette);
 SDL_Surface		*ui_set_tileset(t_u8 const *chr, size_t length);
 

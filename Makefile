@@ -128,6 +128,7 @@ SRCS	= 	main.c							\
 			camera.c						\
 			ui.c							\
 			ui_init.c						\
+			ui_init_mac.c					\
 			ui_menu_file.c					\
 			ui_menu_edit.c					\
 			ui_render.c						\

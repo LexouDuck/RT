@@ -33,23 +33,30 @@
 /*
 **	2bpp = 16 bytes of memory per 8x8 tile
 */
-#define CHR_BYTES_PER_TILE	16
-#define TILESET_W_TILES		16
-#define TILESET_W		(TILESET_W_TILES * TILE)
+# define CHR_BYTES_PER_TILE		16
+# define TILESET_W_TILES		16
+# define TILESET_W		(TILESET_W_TILES * TILE)
+
 /*
 **	UI Tileset: 4-color 2bpp CHR pixel data format
 */
 # ifdef __APPLE__
-#include <mach-o/getsect.h>
-#include <mach-o/ldsyms.h>
+# define OS_ASSETS	0
 extern const t_u8 _section$__DATA__inc_ui_chr[CHR_SIZE];
 
-# elif (defined __WIN32__)
-extern const t_u8 binary___inc_ui_chr_start[CHR_SIZE];
-
 # else
-extern const t_u8 _binary___inc_ui_chr_start[CHR_SIZE];
+#  ifdef __WIN32__
+#   define OS_ASSETS	1
+#  else
+#   define OS_ASSETS	2
+#  endif
 
+extern const t_u8 binary___inc_ui_chr_start[CHR_SIZE];
+extern const t_u8 _binary___inc_ui_chr_start[CHR_SIZE];
+void	*getsectiondata(void *ptr,
+	char const* section,
+	char const* segment,
+	size_t *size);
 # endif
 
 #endif

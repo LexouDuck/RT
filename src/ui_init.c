@@ -101,12 +101,14 @@ static void	ui_init_objectlist(void)
 	rt.ui.objects.rect.h = rt.sdl.window_h - rt.ui.objects.rect.y;
 	rt.ui.objects.scrollbar.clicked = scrollclick_none;
 	rt.ui.objects.scrollbar.button_up = (SDL_Rect)
-		{ UI_WIDTH - TILE * 2, TILE * rt.ui.objects.rect.y, TILE * 2, TILE * 2 };
+		{ UI_WIDTH - TILE * 2, TILE * rt.ui.objects.rect.y,
+			TILE * 2, TILE * 2 };
 	rt.ui.objects.scrollbar.button_down = (SDL_Rect)
-		{ UI_WIDTH - TILE * 2, rt.sdl.window_h - TILE * 2, TILE * 2, TILE * 2 };
-	rt.ui.objects.scrollbar.bar = (SDL_Rect){
-		UI_WIDTH - TILE * 2, TILE * (rt.ui.objects.rect.y + 2), TILE * 2,
-		rt.ui.objects.scrollbar.button_down.y -
+		{ UI_WIDTH - TILE * 2, rt.sdl.window_h - TILE * 2,
+			TILE * 2, TILE * 2 };
+	rt.ui.objects.scrollbar.bar = (SDL_Rect)
+		{ UI_WIDTH - TILE * 2, TILE * (rt.ui.objects.rect.y + 2),
+			TILE * 2, rt.ui.objects.scrollbar.button_down.y -
 			(TILE * (rt.ui.objects.rect.y + 2)) };
 	rt.ui.objects.scrollbar.scroll = 0;
 	rt.ui.objects.scrollbar.scroll_max = 0;
@@ -118,7 +120,6 @@ int			ui_init(void)
 {
 	static const t_u32	palette[PALETTE] = {
 		0x000000, 0x0058F8, 0x3CBCFC, 0xFCFCFC };
-	;
 
 	if (OS_ASSETS == 0)
 		ui_init_assets();

@@ -4,6 +4,7 @@ SPHERE
 material:LIGHT
 pattern:SOLID
 projection:CUBIC
+bump:FLAT
 color:(1.00000, 1.00000, 1.00000)
 color2:(0.00000, 0.00000, 0.00000)
 pos:(3.00000, 20.00000, 3.00000)
@@ -11,11 +12,17 @@ rot:(0.00000, 0.00000, 0.00000)
 scale:(10.00000, 1.00000, 10.00000)
 bbox_vi:(-1.00002, -1.00002, -1.00002)
 bbox_vf:(1.00002, 1.00002, 1.00002)
+uvw_scale:(1.00000, 1.00000, 1.00000)
+uvw_offset:(0.00000, 0.00000, 0.00000)
+refrac:1.00000
+roughness:0.00000
+opacity:1.00000
 
 SPHERE
 material:LIGHT
 pattern:SOLID
 projection:CUBIC
+bump:FLAT
 color:(1.00000, 1.00000, 1.00000)
 color2:(0.00000, 0.00000, 0.00000)
 pos:(3.00000, -10.00000, 3.00000)
@@ -23,64 +30,94 @@ rot:(0.00000, 0.00000, 0.00000)
 scale:(0.00000, 0.00000, 0.00000)
 bbox_vi:(-1.00002, -1.00002, -1.00002)
 bbox_vf:(1.00002, 1.00002, 1.00002)
+uvw_scale:(1.00000, 1.00000, 1.00000)
+uvw_offset:(0.00000, 0.00000, 0.00000)
+refrac:1.00000
+roughness:0.00000
+opacity:1.00000
 
 CUBE
 "Brick Side Left"
 material:SPECULAR
 pattern:SOLID
 projection:CUBIC
+bump:FLAT
 color:(0.50000, 0.50000, 0.50000)
 color2:(0.00000, 0.00000, 0.00000)
-pos:(-9.00100, 0.00000, 0.00000)
+pos:(-9.00099, 0.00000, 0.00000)
 rot:(0.00000, 0.00000, 0.00000)
 scale:(1.00000, 6.00000, 10.00000)
 bbox_vi:(-1.00002, -1.00002, -1.00002)
 bbox_vf:(1.00002, 1.00002, 1.00002)
+uvw_scale:(1.00000, 1.00000, 1.00000)
+uvw_offset:(0.00000, 0.00000, 0.00000)
+refrac:1.00000
+roughness:0.00000
+opacity:1.00000
 
 CUBE
 "Brick Side Right"
 material:SPECULAR
 pattern:SOLID
 projection:CUBIC
+bump:FLAT
 color:(0.50000, 0.50000, 0.50000)
 color2:(0.00000, 0.00000, 0.00000)
-pos:(9.00100, 0.00000, 0.00000)
+pos:(9.00099, 0.00000, 0.00000)
 rot:(0.00000, 0.00000, 0.00000)
 scale:(1.00000, 6.00000, 10.00000)
 bbox_vi:(-1.00002, -1.00002, -1.00002)
 bbox_vf:(1.00002, 1.00002, 1.00002)
+uvw_scale:(1.00000, 1.00000, 1.00000)
+uvw_offset:(0.00000, 0.00000, 0.00000)
+refrac:1.00000
+roughness:0.00000
+opacity:1.00000
 
 CUBE
 "Brick Side Near"
 material:SPECULAR
 pattern:SOLID
 projection:CUBIC
+bump:FLAT
 color:(0.50000, 0.50000, 0.50000)
 color2:(0.00000, 0.00000, 0.00000)
-pos:(0.00000, 0.00000, -9.00100)
+pos:(0.00000, 0.00000, -9.00099)
 rot:(0.00000, 0.00000, 0.00000)
 scale:(10.00000, 6.00000, 1.00000)
 bbox_vi:(-1.00002, -1.00002, -1.00002)
 bbox_vf:(1.00002, 1.00002, 1.00002)
+uvw_scale:(1.00000, 1.00000, 1.00000)
+uvw_offset:(0.00000, 0.00000, 0.00000)
+refrac:1.00000
+roughness:0.00000
+opacity:1.00000
 
 CUBE
 "Brick Side Far"
 material:SPECULAR
 pattern:SOLID
 projection:CUBIC
+bump:FLAT
 color:(0.50000, 0.50000, 0.50000)
 color2:(0.00000, 0.00000, 0.00000)
-pos:(0.00000, 0.00000, 9.00100)
+pos:(0.00000, 0.00000, 9.00099)
 rot:(0.00000, 0.00000, 0.00000)
 scale:(10.00000, 6.00000, 1.00000)
 bbox_vi:(-1.00002, -1.00002, -1.00002)
 bbox_vf:(1.00002, 1.00002, 1.00002)
+uvw_scale:(1.00000, 1.00000, 1.00000)
+uvw_offset:(0.00000, 0.00000, 0.00000)
+refrac:1.00000
+roughness:0.00000
+opacity:1.00000
 
 CUBE
 "Brick Top"
 material:SPECULAR
 pattern:SOLID
 projection:CUBIC
+bump:FLAT
 color:(0.50000, 0.50000, 0.50000)
 color2:(0.00000, 0.00000, 0.00000)
 pos:(0.00000, 6.00000, 0.00000)
@@ -88,12 +125,18 @@ rot:(0.00000, 0.00000, 0.00000)
 scale:(10.00000, 1.00000, 10.00000)
 bbox_vi:(-1.00002, -1.00002, -1.00002)
 bbox_vf:(1.00002, 1.00002, 1.00002)
+uvw_scale:(1.00000, 1.00000, 1.00000)
+uvw_offset:(0.00000, 0.00000, 0.00000)
+refrac:1.00000
+roughness:0.00000
+opacity:1.00000
 
 CYLINDER
 "Brick Stud TL"
 material:SPECULAR
 pattern:SOLID
 projection:CUBIC
+bump:FLAT
 color:(0.50000, 0.50000, 0.50000)
 color2:(0.00000, 0.00000, 0.00000)
 pos:(5.00000, 8.00000, 5.00000)
@@ -101,12 +144,18 @@ rot:(0.00000, 0.00000, 0.00000)
 scale:(3.00000, 2.00000, 3.00000)
 bbox_vi:(-1.00002, -1.00002, -1.00002)
 bbox_vf:(1.00002, 1.00002, 1.00002)
+uvw_scale:(1.00000, 1.00000, 1.00000)
+uvw_offset:(0.00000, 0.00000, 0.00000)
+refrac:1.00000
+roughness:0.00000
+opacity:1.00000
 
 CYLINDER
 "Brick Stud TR"
 material:SPECULAR
 pattern:SOLID
 projection:CUBIC
+bump:FLAT
 color:(0.50000, 0.50000, 0.50000)
 color2:(0.00000, 0.00000, 0.00000)
 pos:(5.00000, 8.00000, -5.00000)
@@ -114,12 +163,18 @@ rot:(0.00000, 0.00000, 0.00000)
 scale:(3.00000, 2.00000, 3.00000)
 bbox_vi:(-1.00002, -1.00002, -1.00002)
 bbox_vf:(1.00002, 1.00002, 1.00002)
+uvw_scale:(1.00000, 1.00000, 1.00000)
+uvw_offset:(0.00000, 0.00000, 0.00000)
+refrac:1.00000
+roughness:0.00000
+opacity:1.00000
 
 CYLINDER
 "Brick Stud BL"
 material:SPECULAR
 pattern:SOLID
 projection:CUBIC
+bump:FLAT
 color:(0.50000, 0.50000, 0.50000)
 color2:(0.00000, 0.00000, 0.00000)
 pos:(-5.00000, 8.00000, 5.00000)
@@ -127,12 +182,18 @@ rot:(0.00000, 0.00000, 0.00000)
 scale:(3.00000, 2.00000, 3.00000)
 bbox_vi:(-1.00002, -1.00002, -1.00002)
 bbox_vf:(1.00002, 1.00002, 1.00002)
+uvw_scale:(1.00000, 1.00000, 1.00000)
+uvw_offset:(0.00000, 0.00000, 0.00000)
+refrac:1.00000
+roughness:0.00000
+opacity:1.00000
 
 CYLINDER
 "Brick Stud BR"
 material:SPECULAR
 pattern:SOLID
 projection:CUBIC
+bump:FLAT
 color:(0.50000, 0.50000, 0.50000)
 color2:(0.00000, 0.00000, 0.00000)
 pos:(-5.00000, 8.00000, -5.00000)
@@ -140,30 +201,46 @@ rot:(0.00000, 0.00000, 0.00000)
 scale:(3.00000, 2.00000, 3.00000)
 bbox_vi:(-1.00002, -1.00002, -1.00002)
 bbox_vf:(1.00002, 1.00002, 1.00002)
+uvw_scale:(1.00000, 1.00000, 1.00000)
+uvw_offset:(0.00000, 0.00000, 0.00000)
+refrac:1.00000
+roughness:0.00000
+opacity:1.00000
 
 CYLINDER
 "Bottom Pillar"
 material:SPECULAR
 pattern:SOLID
 projection:CUBIC
+bump:FLAT
 color:(0.50000, 0.50000, 0.50000)
 color2:(0.00000, 0.00000, 0.00000)
-pos:(0.00000, 0.99989, 0.00000)
+pos:(0.00000, 0.99988, 0.00000)
 rot:(0.00000, 0.00000, 0.00000)
 scale:(4.06997, 6.00000, 4.06997)
 bbox_vi:(-1.00002, -1.00002, -1.00002)
 bbox_vf:(1.00002, 1.00002, 1.00002)
+uvw_scale:(1.00000, 1.00000, 1.00000)
+uvw_offset:(0.00000, 0.00000, 0.00000)
+refrac:1.00000
+roughness:0.00000
+opacity:1.00000
 
 PLANE
 material:SPECULAR
 pattern:SOLID
 projection:CUBIC
+bump:FLAT
 color:(1.00000, 1.00000, 1.00000)
 color2:(0.00000, 0.00000, 0.00000)
-pos:(3.00000, -10.00000, 3.00000)
-rot:(0.00000, 0.50000, 0.00000)
-scale:(1.00000, 1.00000, 1.00000)
-bbox_vi:(-100000.00000, -0.00000, -100000.00000)
-bbox_vf:(100000.00000, 0.00000, 100000.00000)
-
+pos:(0.00000, -10.00000, 0.00000)
+rot:(0.00000, 0.00000, 0.00000)
+scale:(1.00000, -1.00000, 1.00000)
+bbox_vi:(-99999.00000, -1.00000, -99999.00000)
+bbox_vf:(99999.00000, 1.00030, 999999.00000)
+uvw_scale:(1.00000, 1.00000, 1.00000)
+uvw_offset:(0.00000, 0.00000, 0.00000)
+refrac:1.00000
+roughness:0.00000
+opacity:1.00000
 

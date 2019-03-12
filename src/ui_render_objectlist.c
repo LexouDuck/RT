@@ -74,27 +74,26 @@ static void	ui_render_expandedproperty(t_bool is_string,
 
 void		ui_render_expandedproperties(t_object *object, t_s32 y)
 {
-	ui_render_expandedproperty(TRUE, "Primitive:",
-		rt_get_str_primitive(object->type), y + 2);
-	ui_render_expandedproperty(TRUE, "Material:",
-		rt_get_str_material(object->material), y + 4);
-	ui_render_expandedproperty(TRUE, "Pattern:",
-		rt_get_str_pattern(object->pattern), y + 6);
-	ui_render_expandedproperty(TRUE, "Projection:",
-		rt_get_str_projection(object->uvw_projection), y + 8);
-	ui_render_expandedproperty(TRUE, "Bump:",
-		rt_get_str_bump(object->bump_type), y + 10);
-	ui_render_expandedproperty(FALSE, "Color A:", &object->rgb_a, y + 12);
-	ui_render_expandedproperty(FALSE, "Color B:", &object->rgb_b, y + 16);
-	ui_render_expandedproperty(FALSE, "Position:", &object->pos, y + 20);
-	ui_render_expandedproperty(FALSE, "Rotation:", &object->rot, y + 24);
-	ui_render_expandedproperty(FALSE, "Scale:", &object->scale, y + 28);
-	ui_render_expandedproperty(FALSE, "Object BBox VI:", &object->bbox_os.vi, y + 32);
-	ui_render_expandedproperty(FALSE, "Object BBox VF:", &object->bbox_os.vf, y + 36);
-	ui_render_expandedproperty(FALSE, "Axis BBox VI:", &object->bbox_ws.vi, y + 40);
-	ui_render_expandedproperty(FALSE, "Axis BBox VF:", &object->bbox_ws.vf, y + 44);
-	ui_render_expandedproperty(FALSE, "UVW Scale:", &object->uvw_scale, y + 48);
-	ui_render_expandedproperty(FALSE, "UVW Pos:", &object->uvw_offset, y + 52);
+	void	(*f)(t_bool, char const *, void *, t_s32);
+
+	f = ui_render_expandedproperty;
+	f(TRUE, "Primitive:", rt_get_str_primitive(object->type), y + 2);
+	f(TRUE, "Material:", rt_get_str_material(object->material), y + 4);
+	f(TRUE, "Pattern:", rt_get_str_pattern(object->pattern), y + 6);
+	f(TRUE, "Projection:", rt_get_str_projection(object->uvw_projection),
+		y + 8);
+	f(TRUE, "Bump:", rt_get_str_bump(object->bump_type), y + 10);
+	f(FALSE, "Color A:", &object->rgb_a, y + 12);
+	f(FALSE, "Color B:", &object->rgb_b, y + 16);
+	f(FALSE, "Position:", &object->pos, y + 20);
+	f(FALSE, "Rotation:", &object->rot, y + 24);
+	f(FALSE, "Scale:", &object->scale, y + 28);
+	f(FALSE, "Object BBox VI:", &object->bbox_os.vi, y + 32);
+	f(FALSE, "Object BBox VF:", &object->bbox_os.vf, y + 36);
+	f(FALSE, "Axis BBox VI:", &object->bbox_ws.vi, y + 40);
+	f(FALSE, "Axis BBox VF:", &object->bbox_ws.vf, y + 44);
+	f(FALSE, "UVW Scale:", &object->uvw_scale, y + 48);
+	f(FALSE, "UVW Pos:", &object->uvw_offset, y + 52);
 	ui_render_text("Refrac:  Rough:   Opacity:", 1, y + 56, FALSE);
 	ui_render_control_numberbox_float(1, y + 57, &object->refrac);
 	ui_render_control_numberbox_float(10, y + 57, &object->roughness);

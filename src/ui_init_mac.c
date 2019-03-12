@@ -40,10 +40,9 @@ int		ui_init_assets(void)
 
 	size = 0;
 	rt.ui.chr = getsectiondata(&_mh_execute_header,
-		"__DATA", "__inc_ui_chr", &size);
+		"__TEXT", "__inc_ui_chr", &size);
 	if (rt.ui.chr == NULL)
-		return (debug_perror(
-		"Could not load UI assets: Mach-O GetSectionData() failed."));
+		return (debug_perror("Could not load UI assets: GetSectionData()"));
 	if (size != CHR_SIZE)
 	{
 		debug_output_value(

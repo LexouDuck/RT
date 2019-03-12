@@ -18,7 +18,7 @@ CFLAGS_MAC	=
 LD	= _
 LD_WIN	= i686-w64-mingw32-ld -r -b binary
 LD_LIN	= ld -r -b binary
-LD_MAC	= ld -r -sectcreate __DATA __inc_ui_chr
+LD_MAC	= ld -r -sectcreate __TEXT __inc_ui_chr
 
 # Libraries
 LIBS		=	$(LIBFT) $(LIBSDL) $(OPENCL)
@@ -126,13 +126,15 @@ SRCS	= 	main.c							\
 			rt_open_read_properties.c		\
 			rt_open_read_textures.c			\
 			rt_open_read_vectors.c			\
-			rt_save.c 						\
+			rt_save.c						\
 			rt_scene.c						\
+			rt_object.c						\
 			camera.c						\
 			ui.c							\
 			ui_init.c						\
 			ui_init_mac.c					\
 			ui_menu_file.c					\
+			ui_menu_file_extra.c			\
 			ui_menu_edit.c					\
 			ui_render.c						\
 			ui_render_util.c				\

@@ -57,8 +57,9 @@ char		*rt_read_arg_vector(t_rtparser *p, cl_float3 *result,
 		p->file[p->index]));
 	}
 	symbol = p->file[++(p->index)];
-	(symbol == '(' || symbol == '{' || symbol == '[') ? ++(p->index) : 0;
-	if (symbol != '(' || symbol != '{' || symbol != '[')
+	if (symbol == '(' || symbol == '{' || symbol == '[')
+		++(p->index);
+	else
 		return (rt_read_error('(', "or '{' or '[' => vector argument", symbol));
 	symbol += (symbol == '(') ? 1 : 2;
 	if ((error = rt_read_arg_vector_number(p, &(result->x), ',')))

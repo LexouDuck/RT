@@ -125,11 +125,11 @@ static int		opencl_read_and_build_program(void)
 								RT_CL_PROGRAM_OPTIONS, NULL, NULL)) < 0)
 	{
 		opencl_log_compiler();
-		return (opencl_handle_error(error, "opencl_read_and_build_program: build failed."));
+		return (opencl_handle_error(error, "opencl_read_and_build_program:"
+		" build failed."));
 	}
-	if (close(fd) == -1)
-		return (debug_perror("opencl_read_and_build_program: close failed."));
-	return (OK);
+	return (close(fd) == -1 ? debug_perror("opencl_read_and_build_program:"
+	" close failed.") : OK);
 }
 
 /*

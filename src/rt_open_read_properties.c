@@ -54,43 +54,42 @@ char		*rt_read_arg_name(t_rtparser *p, char *result)
 	return (rt_get_arg_name(p, result, symbol));
 }
 
-void		rt_get_arg_number(t_rtparser *p, cl_float *result)
+t_bool		rt_check_arg_bump_label(t_rtparser *p, t_bump *result)
 {
-	char	*number;
+	char const	*str;
+	size_t		length;
+	size_t		i;
 
-	number = p->file + p->index;
-	while (p->file[p->index] && (ft_isdigit(p->file[p->index]) ||
-		p->file[p->index] == '.' || p->file[p->index] == 'e' ||
-		p->file[p->index] == 'E'))
-		++(p->index);
-	if (p->file[p->index] == '\n')
-		p->line += 1;
-	p->file[p->index] = '\0';
-	++(p->index);
-	*result = ft_str_to_f32(number);
-	return ;
+	i = 0;
+	while (i < BUMP_TYPES)
+	{
+		str = rt_get_str_bump((t_bump)i);
+		length = ft_strlen(str);
+		if (ft_strnequ(p->file + p->index, str, length))
+		{
+			*result = (t_bump)i;
+			p->index += length;
+			return (TRUE);
+		}
+		++i;
+	}
+	return (FALSE);
 }
 
-char		*rt_read_arg_number(t_rtparser *p, cl_float *result,
-			char const *label)
+char		*rt_read_arg_bump(t_rtparser *p, t_bump *result, char const *label)
 {
 	rt_read_whitespace(p);
-	if (!p->file[p->index] || !ft_strnequ(p->file + p->index,
-		label, ft_strlen(label)))
+	if (!p->file[p->index] || !ft_strnequ(p->file + p->index, label,
+		ft_strlen(label)))
 		return (NULL);
 	p->index += ft_strlen(label);
 	if (p->file[p->index] != ':')
 	{
-		return (rt_read_error(':', "without spaces before vector '('",
+		return (rt_read_error(':', "without spaces before bump string",
 		p->file[p->index]));
 	}
-	if (p->file[++(p->index)] == '\0')
-		return ("Expected number argument, reached end of file");
-	else if (ft_isdigit(p->file[p->index]))
-	{
-		rt_get_arg_number(p, result);
+	++(p->index);
+	if (rt_check_arg_bump_label(p, result))
 		return (NULL);
-	}
-	return (rt_read_error('0', "or any other digit, for a number argument",
-	p->file[p->index]));
+	return ("No valid bump enum label encountered");
 }

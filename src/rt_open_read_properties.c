@@ -54,11 +54,26 @@ char		*rt_read_arg_name(t_rtparser *p, char *result)
 	return (rt_get_arg_name(p, result, symbol));
 }
 
-char		*rt_read_arg_number(t_rtparser *p, cl_float *result,
-			char const *label)
+void		rt_get_arg_number(t_rtparser *p, cl_float *result)
 {
 	char	*number;
 
+	number = p->file + p->index;
+	while (p->file[p->index] && (ft_isdigit(p->file[p->index]) ||
+		p->file[p->index] == '.' || p->file[p->index] == 'e' ||
+		p->file[p->index] == 'E'))
+		++(p->index);
+	if (p->file[p->index] == '\n')
+		p->line += 1;
+	p->file[p->index] = '\0';
+	++(p->index);
+	*result = ft_str_to_f32(number);
+	return ;
+}
+
+char		*rt_read_arg_number(t_rtparser *p, cl_float *result,
+			char const *label)
+{
 	rt_read_whitespace(p);
 	if (!p->file[p->index] || !ft_strnequ(p->file + p->index,
 		label, ft_strlen(label)))
@@ -73,16 +88,7 @@ char		*rt_read_arg_number(t_rtparser *p, cl_float *result,
 		return ("Expected number argument, reached end of file");
 	else if (ft_isdigit(p->file[p->index]))
 	{
-		number = p->file + p->index;
-		while (p->file[p->index] && (ft_isdigit(p->file[p->index]) ||
-			p->file[p->index] == '.' || p->file[p->index] == 'e' ||
-			p->file[p->index] == 'E'))
-			++(p->index);
-		if (p->file[p->index] == '\n')
-			p->line += 1;
-		p->file[p->index] = '\0';
-		++(p->index);
-		*result = ft_str_to_f32(number);
+		rt_get_arg_number(p, result);
 		return (NULL);
 	}
 	return (rt_read_error('0', "or any other digit, for a number argument",

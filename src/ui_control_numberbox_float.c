@@ -59,6 +59,25 @@ void	ui_keypress_control_numberbox_float(t_textinput *textinput, t_bool up)
 	SDL_StartTextInput();
 }
 
+t_bool	ui_mouse_control_numberbox_increment_float(SDL_Rect button
+		, cl_float *value)
+{
+	if (SDL_PointInRect(&rt.input.mouse, &button))
+	{
+		*value += 0.500;
+		rt.must_render = TRUE;
+		return (TRUE);
+	}
+	button.y += 2 * TILE;
+	if (SDL_PointInRect(&rt.input.mouse, &button))
+	{
+		*value -= 0.500;
+		rt.must_render = TRUE;
+		return (TRUE);
+	}
+	return (FALSE);
+}
+
 t_bool	ui_mouse_control_numberbox_float(t_textinput *textinput,
 	cl_float *value, int x, int y)
 {
@@ -71,19 +90,8 @@ t_bool	ui_mouse_control_numberbox_float(t_textinput *textinput,
 	{
 		button.x = rect.x + rect.w - button.w;
 		button.y = rect.y;
-		if (SDL_PointInRect(&rt.input.mouse, &button))
-		{
-			*value += 0.500;
-			rt.must_render = TRUE;
+		if (ui_mouse_control_numberbox_increment_float(button, value))
 			return (TRUE);
-		}
-		button.y += 2 * TILE;
-		if (SDL_PointInRect(&rt.input.mouse, &button))
-		{
-			*value -= 0.500;
-			rt.must_render = TRUE;
-			return (TRUE);
-		}
 		textinput->type = texttype_number_float;
 		textinput->input = ft_f32_to_str(*value, 4);
 		textinput->value = (void *)value;

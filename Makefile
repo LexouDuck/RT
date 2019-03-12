@@ -7,7 +7,7 @@ CC_LIN	= gcc
 CC_MAC	= gcc
 
 # Compiler flags
-CFLAGS	=	-Wall -Wextra $(CFLAGS_PLATFORM) -MMD -g
+CFLAGS	=	-Wall -Wextra -Werror $(CFLAGS_PLATFORM) -MMD -g
 
 CFLAGS_PLATFORM = _
 CFLAGS_WIN	= -mwindows -I./ -L./

@@ -31,12 +31,12 @@ int		init_window(void)
 {
 	t_u32	flags;
 
-	rt.sdl.window_w = FT_String_To_S32(config_get(CONFIG_INDEX_WINDOW_W));
-	rt.sdl.window_h = FT_String_To_S32(config_get(CONFIG_INDEX_WINDOW_H));
+	rt.sdl.window_w = ft_str_to_s32(config_get(CONFIG_INDEX_WINDOW_W));
+	rt.sdl.window_h = ft_str_to_s32(config_get(CONFIG_INDEX_WINDOW_H));
 	flags = (SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
-	if (FT_String_To_Bool(config_get(CONFIG_INDEX_FULLSCREEN)))
+	if (ft_str_to_bool(config_get(CONFIG_INDEX_FULLSCREEN)))
 		flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
-	if (FT_String_To_Bool(config_get(CONFIG_INDEX_MAXIMIZED)))
+	if (ft_str_to_bool(config_get(CONFIG_INDEX_MAXIMIZED)))
 		flags |= SDL_WINDOW_MAXIMIZED;
 	rt.sdl.window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED, rt.sdl.window_w, rt.sdl.window_h, flags);

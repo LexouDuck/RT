@@ -26,16 +26,16 @@ int		debug_init(void)
 	fd = open(DEBUG_FILE, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
 	{
-		FT_Write_String(STDERR, "Error in debug_init() -> "DEBUG_FILE
+		ft_write_str(STDERR, "Error in debug_init() -> "DEBUG_FILE
 			" could not be opened for writing: ");
-		FT_Write_Line(STDERR, strerror(errno));
+		ft_write_line(STDERR, strerror(errno));
 		return (ERROR);
 	}
 	if (close(fd) < 0)
 	{
-		FT_Write_String(STDERR, "Error in debug_init() -> "DEBUG_FILE
+		ft_write_str(STDERR, "Error in debug_init() -> "DEBUG_FILE
 			" could not be closed properly: ");
-		FT_Write_Line(STDERR, strerror(errno));
+		ft_write_line(STDERR, strerror(errno));
 		return (ERROR);
 	}
 	return (OK);
@@ -45,21 +45,21 @@ void	debug_output(char const *str)
 {
 	int fd;
 
-	FT_Write_String(STDERR, str);
+	ft_write_str(STDERR, str);
 	fd = open(DEBUG_FILE, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
 	{
-		FT_Write_String(STDERR, "Error in debug_output() -> "DEBUG_FILE
+		ft_write_str(STDERR, "Error in debug_output() -> "DEBUG_FILE
 			" could not be opened for writing: ");
-		FT_Write_Line(STDERR, strerror(errno));
+		ft_write_line(STDERR, strerror(errno));
 		return ;
 	}
-	FT_Write_String(fd, str);
+	ft_write_str(fd, str);
 	if (close(fd) < 0)
 	{
-		FT_Write_String(STDERR, "Error in debug_output() -> "DEBUG_FILE
+		ft_write_str(STDERR, "Error in debug_output() -> "DEBUG_FILE
 			" could not be closed properly: ");
-		FT_Write_Line(STDERR, strerror(errno));
+		ft_write_line(STDERR, strerror(errno));
 		return ;
 	}
 }
@@ -68,25 +68,25 @@ void	debug_output_value(char const *str, char *value, t_bool free_value)
 {
 	int fd;
 
-	FT_Write_String(STDERR, str);
-	FT_Write_Line(STDERR, value);
+	ft_write_str(STDERR, str);
+	ft_write_line(STDERR, value);
 	fd = open(DEBUG_FILE, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
 	{
-		FT_Write_String(STDERR, "Error in debug_output_value() -> "DEBUG_FILE
+		ft_write_str(STDERR, "Error in debug_output_value() -> "DEBUG_FILE
 			" could not be opened for writing: ");
-		FT_Write_Line(STDERR, strerror(errno));
+		ft_write_line(STDERR, strerror(errno));
 		return ;
 	}
-	FT_Write_String(fd, str);
-	FT_Write_Line(fd, value);
+	ft_write_str(fd, str);
+	ft_write_line(fd, value);
 	if (free_value)
 		free(value);
 	if (close(fd) < 0)
 	{
-		FT_Write_String(STDERR, "Error in debug_output_value() -> "DEBUG_FILE
+		ft_write_str(STDERR, "Error in debug_output_value() -> "DEBUG_FILE
 			" could not be closed properly: ");
-		FT_Write_Line(STDERR, strerror(errno));
+		ft_write_line(STDERR, strerror(errno));
 		return ;
 	}
 }
@@ -95,25 +95,25 @@ void	debug_output_error(char const *str, t_bool sdl_error)
 {
 	int fd;
 
-	FT_Write_Line(STDERR, str);
+	ft_write_line(STDERR, str);
 	if (sdl_error)
-		FT_Write_Line(STDERR, SDL_GetError());
+		ft_write_line(STDERR, SDL_GetError());
 	fd = open(DEBUG_FILE, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
 	{
-		FT_Write_String(STDERR, "Error in debug_output_error() -> "DEBUG_FILE
+		ft_write_str(STDERR, "Error in debug_output_error() -> "DEBUG_FILE
 			" could not be opened for writing: ");
-		FT_Write_Line(STDERR, strerror(errno));
+		ft_write_line(STDERR, strerror(errno));
 		return ;
 	}
-	FT_Write_Line(fd, str);
+	ft_write_line(fd, str);
 	if (sdl_error)
-		FT_Write_Line(fd, SDL_GetError());
+		ft_write_line(fd, SDL_GetError());
 	if (close(fd) < 0)
 	{
-		FT_Write_String(STDERR, "Error in debug_output_error() -> "DEBUG_FILE
+		ft_write_str(STDERR, "Error in debug_output_error() -> "DEBUG_FILE
 			" could not be closed properly: ");
-		FT_Write_Line(STDERR, strerror(errno));
+		ft_write_line(STDERR, strerror(errno));
 		return ;
 	}
 }
@@ -122,22 +122,21 @@ int		debug_perror(char const *str)
 {
 	int fd;
 
-	FT_Write_String(STDERR, str);
-	FT_Write_Char(STDERR, '\n');
+	ft_write_line(STDERR, str);
 	fd = open(DEBUG_FILE, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
 	{
-		FT_Write_String(STDERR, "Error in debug_perror() -> "DEBUG_FILE
+		ft_write_str(STDERR, "Error in debug_perror() -> "DEBUG_FILE
 			" could not be opened for writing: ");
-		FT_Write_Line(STDERR, strerror(errno));
+		ft_write_line(STDERR, strerror(errno));
 		return (ERROR);
 	}
-	FT_Write_Line(fd, str);
+	ft_write_line(fd, str);
 	if (close(fd) < 0)
 	{
-		FT_Write_String(STDERR, "Error in debug_perror() -> "DEBUG_FILE
+		ft_write_str(STDERR, "Error in debug_perror() -> "DEBUG_FILE
 			" could not be closed properly: ");
-		FT_Write_Line(STDERR, strerror(errno));
+		ft_write_line(STDERR, strerror(errno));
 		return (ERROR);
 	}
 	return (ERROR);

@@ -99,7 +99,7 @@ typedef enum	e_cameramode
 ** range_min	the minimal amount of distance for an object to show on this cam
 ** range_max	the maximum vision distance for this camera
 ** hrz_fov		field-of-view horizontal angle in radians
-** aperture		
+** aperture		_
 ** w_to_c		the camera's world-to-view matrix
 ** c_to_w		the camera's view-to-world matrix (to get rays in world space)
 */
@@ -123,7 +123,6 @@ typedef struct		s_camera
 	cl_float3		rgb_mask;
 	t_camera_model	model;
 	cl_float16		c_to_w;
-//	cl_float16		w_to_c;
 }					t_camera;
 
 /*
@@ -179,10 +178,9 @@ typedef struct		s_ray
 	cl_bool			complete;
 	cl_int			hit_obj_id;
 	cl_float3		hitpos;
-//	cl_uint			depth;
 	cl_float3		lum_mask;
 	cl_float3		lum_acc;
-	cl_float		refrac; 
+	cl_float		refrac;
 	t_intersection	inter_type;
 	cl_float2		uvw_coordinates;
 }					t_ray;
@@ -209,7 +207,7 @@ typedef struct		s_bbox
 ** All primitives are considered to be centered near the origin with default
 ** unit dimensions.
 */
-# define			PRIMITIVES	15
+# define PRIMITIVES	15
 
 typedef enum		e_primitive
 {
@@ -239,7 +237,7 @@ typedef enum		e_primitive
 **	- transparent	returns a blended color of a reflection and refraction
 **	- specular		has a special "lighter" mode of specular hightlighting
 */
-# define			MATERIALS	4
+# define MATERIALS	4
 
 typedef enum		e_material
 {
@@ -249,7 +247,7 @@ typedef enum		e_material
 	specular,
 }					t_material;
 
-# define			TEXTURE_PATTERNS	11
+# define TEXTURE_PATTERNS	11
 
 typedef	enum		e_pattern
 {
@@ -266,7 +264,7 @@ typedef	enum		e_pattern
 	wood,
 }					t_pattern;
 
-# define			BUMP_TYPES			2
+# define BUMP_TYPES			2
 
 typedef	enum		e_bump
 {
@@ -287,7 +285,7 @@ typedef struct		s_texture
 	cl_float3		rgb;
 }					t_texture;
 
-# define			TEXTURE_PROJECTIONS	3
+# define TEXTURE_PROJECTIONS	3
 
 typedef	enum		e_projection
 {

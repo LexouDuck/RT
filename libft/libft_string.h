@@ -42,7 +42,7 @@
 **	#define	FT_StringHas(str, charset)				ft_strhas(str, charset)
 **	#define	FT_StringHasOnly(str, charset)			ft_strhasonly(str, charset)
 **	#define	FT_StringCount_Char(str, c)				ft_strcount_char(str, c)
-**	#define	FT_StringCount_Charset(str, charset)	
+**	#define	FT_StringCount_Charset(str, charset)	_
 **		ft_strcount_charset(str, charset)
 **	#define	FT_StringCount_String(str, query)		ft_strcount_str(str, query)
 **	
@@ -54,11 +54,11 @@
 **	#define	FT_StringFind_N_String(str, query, n)	ft_strnstr(str, query, n)
 **	#define FT_StringRemove(str, query)				ft_strremove(str, query)
 **	#define	FT_StringToEscape(str)					ft_strtoescape(str)
-**	#define	FT_StringReplace_Char(str, old, new)	
+**	#define	FT_StringReplace_Char(str, old, new)	_
 **		ft_strrep_char(str, old, new)
-**	#define	FT_StringReplace_Charset(str, old, new)	
+**	#define	FT_StringReplace_Charset(str, old, new)	_
 **		ft_strrep_charset(str, old, new)
-**	#define	FT_StringReplace_String(str, old, new)	
+**	#define	FT_StringReplace_String(str, old, new)	_
 **		ft_strrep_string(str, old, new)
 **	
 **	#define	FT_StringTrim(str, charset)				ft_strtrim(str, charset)
@@ -70,7 +70,7 @@
 **	
 **	#define	FT_StringReverse(str)					ft_strrev(str)
 **	#define	FT_StringJoin(str1, str2)				ft_strjoin(str1, str2)
-**	#define	FT_StringInsert(dest, src, index)		
+**	#define	FT_StringInsert(dest, src, index)		_
 **		ft_strinsert(dest, src, index)
 **	#define	FT_StringSub(str, index, n)				ft_strsub(str, index, n)
 **	#define FT_StringIterate(str, f)				ft_striter(str, f)
@@ -85,10 +85,12 @@
 ** ************************************************************************** *|
 */
 
-typedef void (*f_string_iterate)(char *);
-typedef void (*f_string_iterate_i)(unsigned int, char *);
-typedef char (*f_string_map)(char);
-typedef char (*f_string_map_i)(unsigned int, char);
+/*
+**	typedef void	(*f_string_iterate)(char *);
+**	typedef void	(*f_string_iterate_i)(unsigned int, char *);
+**	typedef char	(*f_string_map)(char);
+**	typedef char	(*f_string_map_i)(unsigned int, char);
+*/
 
 /*
 ** ************************************************************************** *|

@@ -36,9 +36,9 @@ SDL_Palette		*ui_set_palette(SDL_Surface *surface, t_u32 const *palette)
 	while (i < PALETTE)
 	{
 		result[i].a = 0xFF;
-		result[i].r = FT_Color_ARGB32_Get_R(palette[i]);
-		result[i].g = FT_Color_ARGB32_Get_G(palette[i]);
-		result[i].b = FT_Color_ARGB32_Get_B(palette[i]);
+		result[i].r = ft_color_argb32_get_r(palette[i]);
+		result[i].g = ft_color_argb32_get_g(palette[i]);
+		result[i].b = ft_color_argb32_get_b(palette[i]);
 		++i;
 	}
 	if (SDL_SetPaletteColors(surface->format->palette, result, 0, PALETTE))
@@ -95,7 +95,7 @@ SDL_Surface		*ui_set_tileset(t_u8 const *chr, size_t length)
 	tile = -1;
 	if (!chr)
 		return (NULL);
-	if (!(result_pixels = (t_u8*)FT_MemoryAlloc(length * 4)))
+	if (!(result_pixels = (t_u8*)ft_memalloc(length * 4)))
 		return (NULL);
 	while (++tile < tilecount)
 		ui_set_result_pixels(chr, tile, &result_pixels);

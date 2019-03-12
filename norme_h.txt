@@ -191,13 +191,4 @@ Norme: ./src/debug.h
 Norme: ./rtv1_aduquesn/rtv1.h
 Norme: ./src/rt_random.h
 Norme: ./src/rt_scene.h
-Error (line 102): spaces at the end of line
-Error (line 126): C++ comment
-Error (line 182): C++ comment
-Error (line 185): spaces at the end of line
-Error (line 212): wrong number of spaces in preprocessor line
-Error (line 242): wrong number of spaces in preprocessor line
-Error (line 252): wrong number of spaces in preprocessor line
-Error (line 269): wrong number of spaces in preprocessor line
-Error (line 290): wrong number of spaces in preprocessor line
 Norme: ./src/ui.h

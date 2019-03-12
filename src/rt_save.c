@@ -21,8 +21,8 @@ static void		write_float(int fd, cl_float value, char *label)
 
 	if ((tmp = ft_f32_to_str(value, 5)))
 	{
-		FT_Write_String(fd, label);
-		FT_Write_Line(fd, tmp);
+		ft_write_str(fd, label);
+		ft_write_line(fd, tmp);
 		free(tmp);
 	}
 	return ;
@@ -34,8 +34,8 @@ static void		write_float3(int fd, cl_float3 *vector, char *label)
 
 	if ((tmp = cl_float3_to_str(vector, 5)))
 	{
-		FT_Write_String(fd, label);
-		FT_Write_Line(fd, tmp);
+		ft_write_str(fd, label);
+		ft_write_line(fd, tmp);
 		free(tmp);
 	}
 	return ;
@@ -50,25 +50,25 @@ static void		write_enums(int fd, t_object *object)
 	char *tmp;
 
 	if ((tmp = rt_get_str_primitive(object->type)))
-		FT_Write_Line(fd, tmp);
+		ft_write_line(fd, tmp);
 	if (ft_strlen(object->name))
 	{
-		FT_Write_Char(fd, '"');
-		FT_Write_String(fd, object->name);
-		FT_Write_Line(fd, "\"");
+		ft_write_char(fd, '"');
+		ft_write_str(fd, object->name);
+		ft_write_line(fd, "\"");
 	}
 	tmp = rt_get_str_material(object->material);
-	FT_Write_String(fd, "material:");
-	FT_Write_Line(fd, tmp);
+	ft_write_str(fd, "material:");
+	ft_write_line(fd, tmp);
 	tmp = rt_get_str_pattern(object->pattern);
-	FT_Write_String(fd, "pattern:");
-	FT_Write_Line(fd, tmp);
+	ft_write_str(fd, "pattern:");
+	ft_write_line(fd, tmp);
 	tmp = rt_get_str_projection(object->uvw_projection);
-	FT_Write_String(fd, "projection:");
-	FT_Write_Line(fd, tmp);
+	ft_write_str(fd, "projection:");
+	ft_write_line(fd, tmp);
 	tmp = rt_get_str_bump(object->bump_type);
-	FT_Write_String(fd, "bump:");
-	FT_Write_Line(fd, tmp);
+	ft_write_str(fd, "bump:");
+	ft_write_line(fd, tmp);
 }
 
 /*
@@ -79,11 +79,11 @@ static void		write_bg_color(int fd)
 {
 	char *tmp;
 
-	if ((tmp = FT_U32_To_HexString(rt.scene.bg_color)))
+	if ((tmp = ft_u32_to_hex(rt.scene.bg_color)))
 	{
-		FT_Write_String(fd, "BG #");
-		FT_Write_Line(fd, tmp);
-		FT_Write_Char(fd, '\n');
+		ft_write_str(fd, "BG #");
+		ft_write_line(fd, tmp);
+		ft_write_char(fd, '\n');
 		free(tmp);
 	}
 	return ;
@@ -116,7 +116,7 @@ void			rt_save(int fd)
 		write_float(fd, object->refrac, "refrac:");
 		write_float(fd, object->roughness, "roughness:");
 		write_float(fd, object->opacity, "opacity:");
-		FT_Write_Char(fd, '\n');
+		ft_write_char(fd, '\n');
 	}
 	return ;
 }

@@ -46,7 +46,7 @@ int		ui_init_assets(void)
 	if (size != CHR_SIZE)
 	{
 		debug_output_value(
-			"Invalid binary size: ", FT_Size_To_String(size), TRUE);
+			"Invalid binary size: ", ft_size_to_str(size), TRUE);
 		return (ERROR);
 	}
 	return (OK);

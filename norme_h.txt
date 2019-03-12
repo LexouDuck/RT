@@ -1,27 +1,27 @@
-Norme: ./CL/cl_d3d11.h
-Warning: /Users/hbruvry/Desktop/RTV2/CL/cl_d3d11.h may not compile or is invalid for some reasons.
 Norme: ./CL/cl_d3d10.h
 Warning: /Users/hbruvry/Desktop/RTV2/CL/cl_d3d10.h may not compile or is invalid for some reasons.
 Norme: ./CL/cl_dx9_media_sharing.h
 Warning: /Users/hbruvry/Desktop/RTV2/CL/cl_dx9_media_sharing.h may not compile or is invalid for some reasons.
 Norme: ./CL/cl_dx9_media_sharing_intel.h
 Warning: /Users/hbruvry/Desktop/RTV2/CL/cl_dx9_media_sharing_intel.h may not compile or is invalid for some reasons.
+Norme: ./CL/cl_d3d11.h
+Warning: /Users/hbruvry/Desktop/RTV2/CL/cl_d3d11.h may not compile or is invalid for some reasons.
+Norme: ./CL/cl.h
+Warning: /Users/hbruvry/Desktop/RTV2/CL/cl.h may not compile or is invalid for some reasons.
+Norme: ./CL/cl_egl.h
+Warning: /Users/hbruvry/Desktop/RTV2/CL/cl_egl.h may not compile or is invalid for some reasons.
 Norme: ./CL/cl_ext_intel.h
 Warning: /Users/hbruvry/Desktop/RTV2/CL/cl_ext_intel.h may not compile or is invalid for some reasons.
-Norme: ./CL/cl_gl.h
-Warning: /Users/hbruvry/Desktop/RTV2/CL/cl_gl.h may not compile or is invalid for some reasons.
 Norme: ./CL/cl_gl_ext.h
 Warning: /Users/hbruvry/Desktop/RTV2/CL/cl_gl_ext.h may not compile or is invalid for some reasons.
 Norme: ./CL/cl_ext.h
 Warning: /Users/hbruvry/Desktop/RTV2/CL/cl_ext.h may not compile or is invalid for some reasons.
-Norme: ./CL/cl.h
-Warning: /Users/hbruvry/Desktop/RTV2/CL/cl.h may not compile or is invalid for some reasons.
-Norme: ./CL/cl_va_api_media_sharing_intel.h
-Warning: /Users/hbruvry/Desktop/RTV2/CL/cl_va_api_media_sharing_intel.h may not compile or is invalid for some reasons.
-Norme: ./CL/cl_egl.h
-Warning: /Users/hbruvry/Desktop/RTV2/CL/cl_egl.h may not compile or is invalid for some reasons.
+Norme: ./CL/cl_gl.h
+Warning: /Users/hbruvry/Desktop/RTV2/CL/cl_gl.h may not compile or is invalid for some reasons.
 Norme: ./CL/opencl.h
 Warning: /Users/hbruvry/Desktop/RTV2/CL/opencl.h may not compile or is invalid for some reasons.
+Norme: ./CL/cl_va_api_media_sharing_intel.h
+Warning: /Users/hbruvry/Desktop/RTV2/CL/cl_va_api_media_sharing_intel.h may not compile or is invalid for some reasons.
 Norme: ./CL/cl_version.h
 Error: 42 header not at top of the file
 Error (line 30): wrong number of spaces in preprocessor indentation
@@ -79,35 +79,8 @@ Error (line 82): line has 83 characters
 Error (line 83): wrong number of spaces in preprocessor indentation
 Error (line 84): wrong number of spaces in preprocessor indentation
 Error (line 86): comment not well formatted
-Norme: ./CL/cl_platform.h
-Warning: /Users/hbruvry/Desktop/RTV2/CL/cl_platform.h may not compile or is invalid for some reasons.
 Norme: ./libft/libft.h
 Warning: /Users/hbruvry/Desktop/RTV2/libft/libft.h may not compile or is invalid for some reasons.
-Norme: ./libft/libft_char.h
-Error (line 24): wrong number of spaces in preprocessor indentation
-Error (line 24): define not upcase
-Error (line 25): wrong number of spaces in preprocessor indentation
-Error (line 25): define not upcase
-Error (line 26): wrong number of spaces in preprocessor indentation
-Error (line 26): define not upcase
-Error (line 27): wrong number of spaces in preprocessor indentation
-Error (line 27): define not upcase
-Error (line 28): wrong number of spaces in preprocessor indentation
-Error (line 28): define not upcase
-Error (line 29): wrong number of spaces in preprocessor indentation
-Error (line 29): define not upcase
-Error (line 30): wrong number of spaces in preprocessor indentation
-Error (line 30): define not upcase
-Error (line 31): wrong number of spaces in preprocessor indentation
-Error (line 31): define not upcase
-Error (line 32): wrong number of spaces in preprocessor indentation
-Error (line 32): define not upcase
-Error (line 33): wrong number of spaces in preprocessor indentation
-Error (line 33): define not upcase
-Error (line 35): wrong number of spaces in preprocessor indentation
-Error (line 35): define not upcase
-Error (line 36): wrong number of spaces in preprocessor indentation
-Error (line 36): define not upcase
 Norme: ./libft/libft_color.h
 Error (line 24): wrong number of spaces in preprocessor indentation
 Error (line 24): define not upcase
@@ -187,6 +160,33 @@ Error (line 83): wrong number of spaces in preprocessor line
 Error (line 84): wrong number of spaces in preprocessor indentation
 Error (line 84): wrong number of spaces in preprocessor line
 Error (line 94, col 54): space after pointer
+Norme: ./CL/cl_platform.h
+Warning: /Users/hbruvry/Desktop/RTV2/CL/cl_platform.h may not compile or is invalid for some reasons.
+Norme: ./libft/libft_char.h
+Error (line 24): wrong number of spaces in preprocessor indentation
+Error (line 24): define not upcase
+Error (line 25): wrong number of spaces in preprocessor indentation
+Error (line 25): define not upcase
+Error (line 26): wrong number of spaces in preprocessor indentation
+Error (line 26): define not upcase
+Error (line 27): wrong number of spaces in preprocessor indentation
+Error (line 27): define not upcase
+Error (line 28): wrong number of spaces in preprocessor indentation
+Error (line 28): define not upcase
+Error (line 29): wrong number of spaces in preprocessor indentation
+Error (line 29): define not upcase
+Error (line 30): wrong number of spaces in preprocessor indentation
+Error (line 30): define not upcase
+Error (line 31): wrong number of spaces in preprocessor indentation
+Error (line 31): define not upcase
+Error (line 32): wrong number of spaces in preprocessor indentation
+Error (line 32): define not upcase
+Error (line 33): wrong number of spaces in preprocessor indentation
+Error (line 33): define not upcase
+Error (line 35): wrong number of spaces in preprocessor indentation
+Error (line 35): define not upcase
+Error (line 36): wrong number of spaces in preprocessor indentation
+Error (line 36): define not upcase
 Norme: ./libft/libft_math.h
 Norme: ./libft/libft_io.h
 Error (line 27): wrong number of spaces in preprocessor indentation
@@ -216,40 +216,6 @@ Error (line 40): define not upcase
 Error (line 41): wrong number of spaces in preprocessor indentation
 Error (line 41): define not upcase
 Error (line 97): comment not well formatted
-Norme: ./libft/libft_memory.h
-Error (line 24): wrong number of spaces in preprocessor indentation
-Error (line 24): define not upcase
-Error (line 25): wrong number of spaces in preprocessor indentation
-Error (line 25): define not upcase
-Error (line 26): wrong number of spaces in preprocessor indentation
-Error (line 26): define not upcase
-Error (line 27): wrong number of spaces in preprocessor indentation
-Error (line 27): define not upcase
-Error (line 28): wrong number of spaces in preprocessor indentation
-Error (line 28): define not upcase
-Error (line 29): wrong number of spaces in preprocessor indentation
-Error (line 29): define not upcase
-Error (line 30): wrong number of spaces in preprocessor indentation
-Error (line 30): define not upcase
-Error (line 31): wrong number of spaces in preprocessor indentation
-Error (line 31): define not upcase
-Error (line 33): wrong number of spaces in preprocessor indentation
-Error (line 33): define not upcase
-Error (line 34): wrong number of spaces in preprocessor indentation
-Error (line 34): define not upcase
-Error (line 35): wrong number of spaces in preprocessor indentation
-Error (line 35): define not upcase
-Error (line 37): wrong number of spaces in preprocessor indentation
-Error (line 37): define not upcase
-Error (line 39): multiple empty lines
-Error (line 40): multiple empty lines
-Error (line 129): multiple empty lines
-Norme: ./libft/libft_stringarray.h
-Error (line 24): wrong number of spaces in preprocessor indentation
-Error (line 24): wrong number of spaces in preprocessor line
-Error (line 24): define not upcase
-Error (line 26): multiple empty lines
-Error (line 27): multiple empty lines
 Norme: ./libft/libft_list.h
 Error: global scope bad aligned
 Error (line 24): wrong number of spaces in preprocessor indentation
@@ -294,7 +260,41 @@ Error (line 66): must have tabulations between VOID and f_list_iterate
 Error (line 66, col 15): f_list_iterate have not a good prefix.
 Error (line 67, col 18): f_list_map have not a good prefix.
 Error (line 145, col 42): space after pointer
+Norme: ./libft/libft_stringarray.h
+Error (line 24): wrong number of spaces in preprocessor indentation
+Error (line 24): wrong number of spaces in preprocessor line
+Error (line 24): define not upcase
+Error (line 26): multiple empty lines
+Error (line 27): multiple empty lines
 Norme: ./libft/libft_vlq.h
+Norme: ./libft/libft_memory.h
+Error (line 24): wrong number of spaces in preprocessor indentation
+Error (line 24): define not upcase
+Error (line 25): wrong number of spaces in preprocessor indentation
+Error (line 25): define not upcase
+Error (line 26): wrong number of spaces in preprocessor indentation
+Error (line 26): define not upcase
+Error (line 27): wrong number of spaces in preprocessor indentation
+Error (line 27): define not upcase
+Error (line 28): wrong number of spaces in preprocessor indentation
+Error (line 28): define not upcase
+Error (line 29): wrong number of spaces in preprocessor indentation
+Error (line 29): define not upcase
+Error (line 30): wrong number of spaces in preprocessor indentation
+Error (line 30): define not upcase
+Error (line 31): wrong number of spaces in preprocessor indentation
+Error (line 31): define not upcase
+Error (line 33): wrong number of spaces in preprocessor indentation
+Error (line 33): define not upcase
+Error (line 34): wrong number of spaces in preprocessor indentation
+Error (line 34): define not upcase
+Error (line 35): wrong number of spaces in preprocessor indentation
+Error (line 35): define not upcase
+Error (line 37): wrong number of spaces in preprocessor indentation
+Error (line 37): define not upcase
+Error (line 39): multiple empty lines
+Error (line 40): multiple empty lines
+Error (line 129): multiple empty lines
 Norme: ./src/config.h
 Norme: ./libft/libft_convert.h
 Error (line 24): wrong number of spaces in preprocessor indentation
@@ -409,11 +409,11 @@ Error (line 117): preprocessor block must be followed by one empty line
 Error (line 124): preprocessor block must be followed by one empty line
 Error (line 130): preprocessor block must be followed by one empty line
 Norme: ./src/event.h
+Norme: ./rtv1_aduquesn/rtv1.h
 Norme: ./src/rt_cl.h
 Error (line 70): C++ comment
 Error (line 77): C++ comment
 Error (line 100): C++ comment
-Norme: ./rtv1_aduquesn/rtv1.h
 Norme: ./src/rt_random.h
 Norme: ./libft/libft_string.h
 Error (line 24): wrong number of spaces in preprocessor indentation
@@ -586,6 +586,7 @@ Error (line 283): wrong number of spaces in preprocessor line
 Error (line 283): preprocessor block must be followed by one empty line
 Error (line 348): C++ comment
 Norme: ./src/ui.h
+Error: global scope bad aligned
 Error (line 105): C++ comment
 Error (line 107): C++ comment
 Error (line 109): C++ comment

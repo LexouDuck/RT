@@ -1,13 +1,12 @@
-Norme: ./src/config_access.c
 Norme: ./src/cl_float3_util.c
-Norme: ./src/config.c
 Norme: ./src/camera.c
-Norme: ./src/event.c
-Norme: ./src/config_ini.c
+Norme: ./src/config_access.c
+Norme: ./src/config.c
 Norme: ./src/debug.c
+Norme: ./src/config_ini.c
+Norme: ./src/event.c
 Norme: ./src/event_window.c
 Norme: ./src/init_sdl.c
-Norme: ./src/event_key.c
 Norme: ./src/main.c
 Error: 6 functions in the file
 Error (line 45): bad indentation
@@ -24,27 +23,20 @@ Error (line 66): C++ comment
 Error (line 67): line has 83 characters
 Error (line 139): wrong number of spaces in preprocessor indentation
 Error (line 142): function main has 26 lines
+Norme: ./src/event_key.c
 Norme: ./src/event_mouse.c
 Norme: ./src/opencl_memory.c
-Norme: ./src/opencl_init.c
-Error (line 128): line has 93 characters
-Norme: ./src/opencl_get_error_str.c
 Norme: ./src/opencl_render.c
 Error (line 68): C++ comment
+Norme: ./src/opencl_init.c
+Norme: ./src/opencl_get_error_str.c
 Norme: ./src/opencl_utils.c
-Norme: ./src/rt_get_str_object.c
-Error: file must end with a single empty line
-Error (line 89, col 0): no newline after block
-Norme: ./src/rt_get_str_scene.c
 Norme: ./src/rt_get_img_texture.c
 Norme: ./src/rt_file.c
+Norme: ./src/rt_get_str_scene.c
+Norme: ./src/rt_get_str_object.c
 Norme: ./src/rt_open_util.c
 Norme: ./src/rt_random.c
-Error: 8 functions in the file
-Norme: ./src/rt_save.c
-Error (line 38): function print_get_str has 30 lines
-Error (line 94): function rt_save has 27 lines
-Error (line 116): C++ comment
 Norme: ./src/rt_auto_build_map.c
 Error: 9 functions in the file
 Error (line 32): declaration of Struct forbidden in .c
@@ -52,6 +44,16 @@ Error (line 72): declaration of Enum forbidden in .c
 Error (line 84): function set_alea_nb has 26 lines
 Error (line 165): function build_fix_object has 78 lines
 Error (line 247): function write_scene has 29 lines
+Norme: ./src/rt_save.c
+Error: 6 functions in the file
+Norme: ./src/rt_scene.c
+Error: 6 functions in the file
+Error (line 44): bad spacing after update_scene
+Error (line 52): multiple empty lines
+Error (line 53): bad spacing before rt_object_init_other_bbox
+Error (line 81): line has 84 characters
+Error (line 105): comment not well formatted
+Error (line 112): line has 84 characters
 Norme: ./src/rt_open_read.c
 Error: 9 functions in the file
 Error: file must end with a single empty line
@@ -80,17 +82,8 @@ Error (line 242): line has 107 characters
 Error (line 267): line has 88 characters
 Error (line 271): line has 93 characters
 Error (line 287, col 0): no newline after block
-Norme: ./src/ui.c
-Error (line 53): line has 90 characters
-Error (line 57): function ui_set_tileset has 45 lines
-Error (line 57, col 0): ui_set_tileset has 8 variables
-Error (line 79): line has 95 characters
-Error (line 85): line has 82 characters
-Error (line 87): line has 82 characters
-Error (line 96): line has 128 characters
-Norme: ./src/ui_control_numberbox_float.c
 Norme: ./src/rt_open.c
-Error (line 26): function rt_output_readfile has 30 lines
+Error (line 26): function rt_output_readfile has 32 lines
 Error (line 38): C++ comment
 Error (line 42): line has 88 characters
 Error (line 43): line has 85 characters
@@ -100,31 +93,67 @@ Error (line 50): line has 84 characters
 Error (line 51): line has 91 characters
 Error (line 52): line has 91 characters
 Error (line 53): line has 92 characters
-Error (line 54): line has 93 characters
-Error (line 55): C++ comment
-Error (line 60): function rt_read_object has 32 lines
-Error (line 74): line has 89 characters
-Error (line 96): function rt_read_command has 44 lines
+Error (line 54): line has 94 characters
+Error (line 55): line has 86 characters
+Error (line 56): line has 88 characters
+Error (line 57): line has 84 characters
+Error (line 62): function rt_read_object has 32 lines
+Error (line 76): line has 89 characters
+Error (line 98): function rt_read_command has 44 lines
+Norme: ./src/rt_random_util.c
 Norme: ./src/ui_control_textbox.c
+Norme: ./src/ui.c
+Norme: ./src/ui_control_numberbox_float.c
+Norme: ./src/ui_init_mac.c
+Error (line 33, col 4): _mh_execute_header not unixcase
+Error (line 33, col 4): global named _mh_execute_header is not well prefixed
+Error (line 37): declarations must be followed by one empty line in ui_init_assets
+Error (line 40): spaces at the end of line
+Error (line 47): bad indentation
 Norme: ./src/ui_menu_edit.c
-Norme: ./src/ui_menu_file.c
+Norme: ./src/ui_mouse.c
 Norme: ./src/ui_control_numberbox_int.c
 Error (line 86): function ui_mouse_control_numberbox_int has 30 lines
 Norme: ./src/ui_mouse_objectlist.c
 Warning: /Users/hbruvry/Desktop/RTV2/src/ui_mouse_objectlist.c may not compile or is invalid for some reasons.
-Norme: ./src/rt_scene.c
-Error (line 52): function rt_object_init_bbox has 44 lines
-Error (line 57): C++ comment
-Error (line 58): line has 84 characters
-Norme: ./src/ui_render.c
-Norme: ./src/ui_render_canvas.c
-Norme: ./src/ui_mouse.c
-Norme: ./src/ui_init.c
+Norme: ./src/ui_menu_file.c
 Norme: ./src/ui_prompt.c
 Error (line 48): bad indentation
 Error (line 48): C++ comment
+Norme: ./src/ui_init.c
+Error (line 40): function ui_init_dropdown_file has 27 lines
+Error (line 108): line has 82 characters
+Error (line 112): line has 155 characters
+Error (line 115): line has 84 characters
+Norme: ./src/ui_mouse_objectlist_enums.c
+Norme: ./src/ui_render.c
+Error (line 20): function ui_render_menu has 36 lines
+Error (line 49, col 34): space after (
+Error (line 55, col 34): space after (
+Norme: ./src/ui_mouse_menu.c
+Error (line 93): function ui_mouse_menu has 32 lines
+Error (line 118): line has 82 characters
+Error (line 119): line has 83 characters
+Error (line 123): line has 83 characters
+Error (line 124): line has 84 characters
+Error (line 125): line has 82 characters
 Norme: ./src/ui_render_util.c
+Norme: ./src/ui_render_canvas.c
 Norme: ./tmp_srcs/solve_cubic.c
 Norme: ./src/ui_scrollbar.c
-Norme: ./src/ui_render_util_rect.c
+Error (line 114): line has 84 characters
 Norme: ./src/ui_render_objectlist.c
+Error (line 77): line has 95 characters
+Error (line 78): line has 97 characters
+Error (line 79): line has 94 characters
+Error (line 80): line has 107 characters
+Error (line 81): line has 91 characters
+Error (line 87): line has 94 characters
+Error (line 88): line has 94 characters
+Error (line 89): line has 93 characters
+Error (line 90): line has 93 characters
+Error (line 92): line has 83 characters
+Error (line 99): function ui_render_objectlist has 37 lines
+Error (line 121): line has 82 characters
+Error (line 136): line has 82 characters
+Norme: ./src/ui_render_util_rect.c

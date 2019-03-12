@@ -50,8 +50,8 @@ SDL_Palette		*ui_set_palette(SDL_Surface *surface, t_u32 const *palette)
 }
 
 /*
-**	Creates an 8bpp indexed SDL_Surface from 2bpp NES-compliant pixel data 
-** ('.chr' files) - chr: The chr file -> an array of 8x8 tiled pixel data
+**	Creates an 8bpp indexed SDL_Surface from 2bpp NES-compliant pixel data ('.chr' files)
+**	- chr:	The chr file -> an array of 8x8 tiled pixel data
 */
 
 SDL_Surface		*ui_set_tileset(t_u8 const *chr, size_t length)

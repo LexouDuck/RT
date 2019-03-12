@@ -49,6 +49,60 @@ void		update_scene(void)
 		rt.scene.bg_rgb.z * 255.);
 }
 
+
+static void	rt_object_init_other_bbox(t_object *object)
+{
+	float		render_dist;
+
+	render_dist = rt.scene.render_dist;
+	if (object->type == infcylinder)
+		object->bbox_os = (t_bbox){
+			(cl_float3){{-1.f - EPS, -render_dist, -1.f - EPS}},
+			(cl_float3){{1.f + EPS, render_dist, 1.f + EPS}}};
+	else if (object->type == paraboloid)
+		object->bbox_os = (t_bbox){
+			(cl_float3){{-sqrt(render_dist), -EPS, -sqrt(render_dist)}},
+			(cl_float3){{sqrt(render_dist), render_dist, sqrt(render_dist)}}};
+	else if (object->type == hyperboloid || object->type == infcone)
+		object->bbox_os = (t_bbox){
+			(cl_float3){{-render_dist, -render_dist, -render_dist}},
+			(cl_float3){{render_dist, render_dist, render_dist}}};
+	else
+		object->bbox_os = (t_bbox){
+			(cl_float3){{-render_dist, -render_dist, -render_dist}},
+			(cl_float3){{render_dist, render_dist, render_dist}}};
+}
+
+static void	rt_object_init_bbox(t_object *object)
+{
+	float		render_dist;
+
+	render_dist = rt.scene.render_dist;
+	if (object->type == sphere || object->type == cube || object->type == cylinder)
+		object->bbox_os = (t_bbox){
+			(cl_float3){{-1.f - EPS, -1.f - EPS, -1.f - EPS}},
+			(cl_float3){{1.f + EPS, 1.f + EPS, 1.f + EPS}}};
+	else if (object->type == plane)
+		object->bbox_os = (t_bbox){
+			(cl_float3){{-render_dist, -EPS, -render_dist}},
+			(cl_float3){{render_dist, EPS, render_dist}}};
+	else if (object->type == rectangle || object->type == disk)
+		object->bbox_os = (t_bbox){
+			(cl_float3){{-1.f - EPS, -EPS, -1.f - EPS}},
+			(cl_float3){{1.f + EPS, EPS, 1.f + EPS}}};
+	else if (object->type == triangle)
+		object->bbox_os = (t_bbox){
+			(cl_float3){{-0.5f - EPS, -EPS, -EPS}},
+			(cl_float3){{0.5f + EPS, EPS, 1.f + EPS}}};
+	else if (object->type == cone)
+		object->bbox_os = (t_bbox){
+			(cl_float3){{-1.f - EPS, -EPS, -1.f - EPS}},
+			(cl_float3){{1.f + EPS, 1.f + EPS, 1.f + EPS}}};
+	else
+		rt_object_init_other_bbox(object);
+}
+
+/*
 static void	rt_object_init_bbox(t_object *object)
 {
 	float	render_dist;
@@ -96,6 +150,7 @@ static void	rt_object_init_bbox(t_object *object)
 			(cl_float3){{-render_dist, -render_dist, -render_dist}},
 			(cl_float3){{render_dist, render_dist, render_dist}}};
 }
+*/
 
 void		init_object(t_object *object)
 {

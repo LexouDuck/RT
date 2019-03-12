@@ -41,10 +41,10 @@ void		rt_output_readfile(void)
 		debug_output_value("NAME: ", object->name, FALSE);
 		debug_output_value("MATERIAL: ", rt_get_str_material(object->material), FALSE);
 		debug_output_value("PATTERN: ", rt_get_str_pattern(object->pattern), FALSE);
-		debug_output_value("-> #", ft_u32_to_hex(object->color_a), TRUE);
-		debug_output_value("-> #", ft_u32_to_hex(object->color_b), TRUE);
-		debug_output_value(" - ", cl_float3_to_str(&object->rgb_a, 3), TRUE);
-		debug_output_value(" - ", cl_float3_to_str(&object->rgb_b, 3), TRUE);
+		debug_output_value("Color A #", ft_u32_to_hex(object->color_a), TRUE);
+		debug_output_value(" ->", cl_float3_to_str(&object->rgb_a, 3), TRUE);
+		debug_output_value("Color B #", ft_u32_to_hex(object->color_b), TRUE);
+		debug_output_value(" ->", cl_float3_to_str(&object->rgb_b, 3), TRUE);
 		debug_output_value(" -   pos:", cl_float3_to_str(&object->pos, 3), TRUE);
 		debug_output_value(" -   rot:", cl_float3_to_str(&object->rot, 3), TRUE);
 		debug_output_value(" - scale:", cl_float3_to_str(&object->scale, 3), TRUE);
@@ -52,9 +52,9 @@ void		rt_output_readfile(void)
 		debug_output_value(" - bbox_vf:", cl_float3_to_str(&object->bbox_os.vf, 3), TRUE);
 		debug_output_value(" - uvw_scale:", cl_float3_to_str(&object->uvw_scale, 3), TRUE);
 		debug_output_value(" - uvw_offset:", cl_float3_to_str(&object->uvw_offset, 3), TRUE);
-		debug_output_value(" - refraction:", cl_float3_to_str(&object->refrac, 3), TRUE);
-		debug_output_value(" - roughness:", cl_float3_to_str(&object->roughness, 3), TRUE);
-		debug_output_value(" - opacity:", cl_float3_to_str(&object->opacity, 3), TRUE);
+		debug_output_value(" - refraction:", ft_f32_to_str(object->refrac, 3), TRUE);
+		debug_output_value(" - roughness:", ft_f32_to_str(object->roughness, 3), TRUE);
+		debug_output_value(" - opacity:", ft_f32_to_str(object->opacity, 3), TRUE);
 		++i;
 	}
 }

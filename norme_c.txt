@@ -89,10 +89,6 @@ Error (line 85): line has 82 characters
 Error (line 87): line has 82 characters
 Error (line 96): line has 128 characters
 Norme: ./src/ui_control_numberbox_float.c
-Error (line 62): function ui_mouse_control_numberbox_float has 30 lines
-Error (line 62): line has 96 characters
-Error (line 78): line has 86 characters
-Error (line 107): line has 86 characters
 Norme: ./src/rt_open.c
 Error (line 26): function rt_output_readfile has 30 lines
 Error (line 38): C++ comment
@@ -110,15 +106,10 @@ Error (line 60): function rt_read_object has 32 lines
 Error (line 74): line has 89 characters
 Error (line 96): function rt_read_command has 44 lines
 Norme: ./src/ui_control_textbox.c
-Error (line 46): line has 85 characters
-Error (line 74): line has 86 characters
 Norme: ./src/ui_menu_edit.c
 Norme: ./src/ui_menu_file.c
 Norme: ./src/ui_control_numberbox_int.c
 Error (line 86): function ui_mouse_control_numberbox_int has 30 lines
-Error (line 86): line has 97 characters
-Error (line 102): line has 86 characters
-Error (line 131): line has 86 characters
 Norme: ./src/ui_mouse_objectlist.c
 Warning: /Users/hbruvry/Desktop/RTV2/src/ui_mouse_objectlist.c may not compile or is invalid for some reasons.
 Norme: ./src/rt_scene.c
@@ -127,22 +118,8 @@ Error (line 57): C++ comment
 Error (line 58): line has 84 characters
 Norme: ./src/ui_render.c
 Norme: ./src/ui_render_canvas.c
-Error (line 39): line has 85 characters
 Norme: ./src/ui_mouse.c
-Error: 6 functions in the file
 Norme: ./src/ui_init.c
-Error (line 40): function ui_init_dropdown_file has 27 lines
-Error (line 108): line has 82 characters
-Error (line 112): line has 155 characters
-Error (line 115): line has 84 characters
-Error (line 118): function ui_init has 30 lines
-Error (line 118): declarations in ui_init must be at the top of the function
-Error (line 118): declarations must be followed by one empty line in ui_init
-Error (line 127): preprocessor block must be followed by one empty line
-Error (line 128, col 11): size is instanciated during declaration
-Error (line 134): preprocessor block must be followed by one empty line
-Error (line 136): preprocessor block must be followed by one empty line
-Error (line 138): preprocessor block must be followed by one empty line
 Norme: ./src/ui_prompt.c
 Error (line 48): bad indentation
 Error (line 48): C++ comment
@@ -151,11 +128,3 @@ Norme: ./tmp_srcs/solve_cubic.c
 Norme: ./src/ui_scrollbar.c
 Norme: ./src/ui_render_util_rect.c
 Norme: ./src/ui_render_objectlist.c
-Error: global scope bad aligned
-Error (line 51): function ui_render_expandedproperties has 80 lines
-Error (line 68): line has 85 characters
-Error (line 122, col 34): space after (
-Error (line 126, col 34): space after (
-Error (line 135): function ui_render_objectlist has 37 lines
-Error (line 157): line has 82 characters
-Error (line 172): line has 82 characters

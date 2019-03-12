@@ -12,7 +12,7 @@
 
 # define OBJECT_NAME_MAXLENGTH	24
 # define OBJECT_MAX_AMOUNT		32
-# define EPS					0.00003
+# define EPS					0.0003
 
 /*
 ** # define HALF_PI		0x1.921fb54442d18p0

@@ -83,7 +83,8 @@ void		ui_keypress_control_numberbox_int(t_textinput *textinput, t_bool up)
 	SDL_StartTextInput();
 }
 
-t_bool		ui_mouse_control_numberbox_int(t_textinput *textinput, cl_uint *value, int x, int y)
+t_bool		ui_mouse_control_numberbox_int(t_textinput *textinput,
+	cl_uint *value, int x, int y)
 {
 	static SDL_Rect	rect = { 0, 0, 9 * TILE, 3 * TILE };
 	static SDL_Rect	button = { 0, 0, 2 * TILE, 1 * TILE };
@@ -98,20 +99,20 @@ t_bool		ui_mouse_control_numberbox_int(t_textinput *textinput, cl_uint *value, i
 		{
 			*value += 1;
 			ui_change_control_numberbox_int(value);
+			return (TRUE);
 		}
-		else if ((button.y += 2 * TILE) && SDL_PointInRect(&rt.input.mouse, &button))
+		button.y += 2 * TILE;
+		if (SDL_PointInRect(&rt.input.mouse, &button))
 		{
 			*value -= 1;
 			ui_change_control_numberbox_int(value);
+			return (TRUE);
 		}
-		else
-		{
-			textinput->type = texttype_number_int;
-			textinput->input = ft_s32_to_str(*value);
-			textinput->value = (void *)value;
-			rt.ui.current_textinput.value_changed = FALSE;
-			SDL_StartTextInput();
-		}
+		textinput->type = texttype_number_int;
+		textinput->input = ft_s32_to_str(*value);
+		textinput->value = (void *)value;
+		rt.ui.current_textinput.value_changed = FALSE;
+		SDL_StartTextInput();
 		return (TRUE);
 	}
 	return (FALSE);
@@ -128,7 +129,8 @@ void		ui_render_control_numberbox_int(int x, int y, cl_uint *value)
 	ui_render_rect(rect, (value == rt.ui.current_textinput.value));
 	if (value == rt.ui.current_textinput.value)
 	{
-		ui_render_text(rt.ui.current_textinput.input, rect.x + 1, rect.y + 1, FALSE);
+		ui_render_text(rt.ui.current_textinput.input,
+			rect.x + 1, rect.y + 1, FALSE);
 	}
 	else if ((str = ft_s32_to_str(*value)))
 	{

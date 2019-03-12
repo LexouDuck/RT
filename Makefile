@@ -136,7 +136,9 @@ SRCS	= 	main.c							\
 			ui_render_util_rect.c			\
 			ui_render_canvas.c				\
 			ui_mouse.c						\
+			ui_mouse_menu.c					\
 			ui_mouse_objectlist.c			\
+			ui_mouse_objectlist_enums.c		\
 			ui_render_objectlist.c			\
 			ui_control_numberbox_float.c	\
 			ui_control_numberbox_int.c		\

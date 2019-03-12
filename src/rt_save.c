@@ -57,26 +57,18 @@ static void		write_enums(int fd, t_object *object)
 		FT_Write_String(fd, object->name);
 		FT_Write_Line(fd, "\"");
 	}
-	if ((tmp = rt_get_str_material(object->material)))
-	{
-		FT_Write_String(fd, "material:");
-		FT_Write_Line(fd, tmp);
-	}
-	if ((tmp = rt_get_str_pattern(object->pattern)))
-	{
-		FT_Write_String(fd, "pattern:");
-		FT_Write_Line(fd, tmp);
-	}
-	if ((tmp = rt_get_str_projection(object->uvw_projection)))
-	{
-		FT_Write_String(fd, "projection:");
-		FT_Write_Line(fd, tmp);
-	}
-	if ((tmp = rt_get_str_bump(object->bump_type)))
-	{
-		FT_Write_String(fd, "bump:");
-		FT_Write_Line(fd, tmp);
-	}
+	tmp = rt_get_str_material(object->material);
+	FT_Write_String(fd, "material:");
+	FT_Write_Line(fd, tmp);
+	tmp = rt_get_str_pattern(object->pattern);
+	FT_Write_String(fd, "pattern:");
+	FT_Write_Line(fd, tmp);
+	tmp = rt_get_str_projection(object->uvw_projection);
+	FT_Write_String(fd, "projection:");
+	FT_Write_Line(fd, tmp);
+	tmp = rt_get_str_bump(object->bump_type);
+	FT_Write_String(fd, "bump:");
+	FT_Write_Line(fd, tmp);
 }
 
 /*
@@ -108,7 +100,7 @@ void			rt_save(int fd)
 
 	write_bg_color(fd);
 	i = -1;
-	while (++i < rt.scene.object_amount)
+	while (++i < (t_s32)rt.scene.object_amount)
 	{
 		object = &rt.scene.objects[i];
 		write_enums(fd, object);

@@ -230,6 +230,16 @@ void			ui_mouse_scrollbar(void);
 void			ui_mouse_prompt(void);
 
 void			ui_scrollbar_setscroll(t_scrollbar *scrollbar, t_s32 scroll);
+t_bool	ui_mouse_objectlist_expandedproperties_primitive(
+	t_primitive *primitive, t_s32 y);
+t_bool	ui_mouse_objectlist_expandedproperties_material(
+	t_material *material, t_s32 y);
+t_bool	ui_mouse_objectlist_expandedproperties_pattern(
+	t_pattern *pattern, t_s32 y);
+t_bool	ui_mouse_objectlist_expandedproperties_projection(
+	t_projection *projection, t_s32 y);
+t_bool	ui_mouse_objectlist_expandedproperties_bump(
+	t_bump *bump_type, t_s32 y);
 
 /*
 **	ui_render_util.c

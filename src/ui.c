@@ -93,7 +93,8 @@ SDL_Surface		*ui_set_tileset(t_u8 const *chr, size_t length)
 		y = -1;
 	}
 	if (!(result = SDL_CreateRGBSurfaceWithFormatFrom(result_pixels, TILESET_W,
-		((tilecount / TILESET_W_TILES) + (tilecount % TILESET_W_TILES ? 1 : 0)) * TILE, 8, TILESET_W, SDL_PIXELFORMAT_INDEX8)))
+		((tilecount / TILESET_W_TILES) + (tilecount % TILESET_W_TILES ? 1 : 0))
+		* TILE, 8, TILESET_W, SDL_PIXELFORMAT_INDEX8)))
 	{
 		debug_output_error("Could not create SDL_Surface: ", TRUE);
 		free(result_pixels);

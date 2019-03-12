@@ -1,0 +1,62 @@
+Norme: ./libft/src/test.h
+Error: global scope bad aligned
+Error: 42 header not at top of the file
+Error (line 37): comment not well formatted
+Error (line 38): line has 97 characters
+Error (line 46): wrong number of spaces in preprocessor indentation
+Error (line 54, col 13): global named nullstr is not well prefixed
+Error (line 55, col 13): global named segstr is not well prefixed
+Error (line 57, col 6): global named segfault is not well prefixed
+Error (line 58, col 7): bad spacing
+Error (line 58, col 9): global named restore is not well prefixed
+Error (line 67): must have tabulations between timespec and t_time
+Error (line 71): must begin only by tabulations
+Error (line 71): bad indentation
+Error (line 72): must begin only by tabulations
+Error (line 72): bad indentation
+Error (line 73): must begin only by tabulations
+Error (line 73): bad indentation
+Error (line 74): must begin only by tabulations
+Error (line 74): bad indentation
+Error (line 75): must begin only by tabulations
+Error (line 75): bad indentation
+Error (line 76): must begin only by tabulations
+Error (line 76): bad indentation
+Error (line 79, col 23): space after pointer
+Error (line 82, col 31): space after pointer
+Error (line 90): 2 instructions
+Error (line 90): spaces at the end of line
+Error (line 90, col 19): global named test1 is not well prefixed
+Error (line 90, col 46): global named test1_len is not well prefixed
+Error (line 91): 2 instructions
+Error (line 91): spaces at the end of line
+Error (line 91, col 19): global named test2 is not well prefixed
+Error (line 91, col 46): global named test2_len is not well prefixed
+Error (line 92): 2 instructions
+Error (line 92): spaces at the end of line
+Error (line 92, col 19): global named test3 is not well prefixed
+Error (line 92, col 46): global named test3_len is not well prefixed
+Error (line 115, col 26): space after pointer
+Error (line 115, col 44): space after pointer
+Error (line 117, col 29): space after pointer
+Error (line 119, col 28): space after pointer
+Error (line 121, col 4): space after pointer
+Error (line 121, col 30): space after pointer
+Error (line 123): multiple empty lines
+Error (line 124): multiple empty lines
+Error (line 125): line has 112 characters
+Error (line 126): line has 115 characters
+Error (line 127): line has 115 characters
+Error (line 128): line has 115 characters
+Error (line 130): line has 112 characters
+Error (line 131): line has 115 characters
+Error (line 132): line has 115 characters
+Error (line 133): line has 115 characters
+Error (line 135): line has 115 characters
+Error (line 136): line has 115 characters
+Error (line 138): line has 118 characters
+Error (line 139): line has 118 characters
+Error (line 141): line has 127 characters
+Error (line 142): line has 142 characters
+Error (line 144): line has 131 characters
+Error (line 146): line has 131 characters

@@ -6,16 +6,18 @@ Norme: ./CL/cl_dx9_media_sharing.h
 Warning: /Users/hbruvry/Desktop/RTV2/CL/cl_dx9_media_sharing.h may not compile or is invalid for some reasons.
 Norme: ./CL/cl_dx9_media_sharing_intel.h
 Warning: /Users/hbruvry/Desktop/RTV2/CL/cl_dx9_media_sharing_intel.h may not compile or is invalid for some reasons.
-Norme: ./CL/cl.h
-Warning: /Users/hbruvry/Desktop/RTV2/CL/cl.h may not compile or is invalid for some reasons.
 Norme: ./CL/cl_ext_intel.h
 Warning: /Users/hbruvry/Desktop/RTV2/CL/cl_ext_intel.h may not compile or is invalid for some reasons.
-Norme: ./CL/cl_egl.h
-Warning: /Users/hbruvry/Desktop/RTV2/CL/cl_egl.h may not compile or is invalid for some reasons.
+Norme: ./CL/cl_ext.h
+Warning: /Users/hbruvry/Desktop/RTV2/CL/cl_ext.h may not compile or is invalid for some reasons.
 Norme: ./CL/cl_gl_ext.h
 Warning: /Users/hbruvry/Desktop/RTV2/CL/cl_gl_ext.h may not compile or is invalid for some reasons.
 Norme: ./CL/cl_gl.h
 Warning: /Users/hbruvry/Desktop/RTV2/CL/cl_gl.h may not compile or is invalid for some reasons.
+Norme: ./CL/cl_va_api_media_sharing_intel.h
+Warning: /Users/hbruvry/Desktop/RTV2/CL/cl_va_api_media_sharing_intel.h may not compile or is invalid for some reasons.
+Norme: ./CL/cl.h
+Warning: /Users/hbruvry/Desktop/RTV2/CL/cl.h may not compile or is invalid for some reasons.
 Norme: ./CL/cl_version.h
 Error: 42 header not at top of the file
 Error (line 30): wrong number of spaces in preprocessor indentation
@@ -73,484 +75,129 @@ Error (line 82): line has 83 characters
 Error (line 83): wrong number of spaces in preprocessor indentation
 Error (line 84): wrong number of spaces in preprocessor indentation
 Error (line 86): comment not well formatted
+Norme: ./CL/cl_egl.h
+Warning: /Users/hbruvry/Desktop/RTV2/CL/cl_egl.h may not compile or is invalid for some reasons.
 Norme: ./CL/opencl.h
 Warning: /Users/hbruvry/Desktop/RTV2/CL/opencl.h may not compile or is invalid for some reasons.
-Norme: ./CL/cl_ext.h
-Warning: /Users/hbruvry/Desktop/RTV2/CL/cl_ext.h may not compile or is invalid for some reasons.
-Norme: ./CL/cl_va_api_media_sharing_intel.h
-Warning: /Users/hbruvry/Desktop/RTV2/CL/cl_va_api_media_sharing_intel.h may not compile or is invalid for some reasons.
 Norme: ./libft/libft.h
 Warning: /Users/hbruvry/Desktop/RTV2/libft/libft.h may not compile or is invalid for some reasons.
 Norme: ./CL/cl_platform.h
 Warning: /Users/hbruvry/Desktop/RTV2/CL/cl_platform.h may not compile or is invalid for some reasons.
 Norme: ./libft/libft_color.h
-Error (line 24): wrong number of spaces in preprocessor indentation
-Error (line 24): define not upcase
-Error (line 24): line has 85 characters
-Error (line 25): wrong number of spaces in preprocessor indentation
-Error (line 25): define not upcase
-Error (line 25): line has 85 characters
-Error (line 26): wrong number of spaces in preprocessor indentation
-Error (line 26): define not upcase
-Error (line 26): line has 85 characters
-Error (line 27): wrong number of spaces in preprocessor indentation
-Error (line 27): define not upcase
-Error (line 27): line has 85 characters
-Error (line 28): wrong number of spaces in preprocessor indentation
-Error (line 28): define not upcase
-Error (line 28): line has 103 characters
-Error (line 29): wrong number of spaces in preprocessor indentation
-Error (line 29): define not upcase
-Error (line 29): line has 88 characters
-Error (line 30): wrong number of spaces in preprocessor indentation
-Error (line 30): define not upcase
-Error (line 30): line has 88 characters
-Error (line 31): wrong number of spaces in preprocessor indentation
-Error (line 31): define not upcase
-Error (line 31): line has 88 characters
-Error (line 32): wrong number of spaces in preprocessor indentation
-Error (line 32): define not upcase
-Error (line 32): line has 88 characters
-Error (line 33): wrong number of spaces in preprocessor indentation
-Error (line 33): define not upcase
-Error (line 33): line has 88 characters
-Error (line 35): wrong number of spaces in preprocessor indentation
-Error (line 35): define not upcase
-Error (line 35): line has 85 characters
-Error (line 36): wrong number of spaces in preprocessor indentation
-Error (line 36): define not upcase
-Error (line 36): line has 85 characters
-Error (line 37): wrong number of spaces in preprocessor indentation
-Error (line 37): define not upcase
-Error (line 37): line has 85 characters
-Error (line 38): wrong number of spaces in preprocessor indentation
-Error (line 38): define not upcase
-Error (line 38): line has 85 characters
-Error (line 39): wrong number of spaces in preprocessor indentation
-Error (line 39): define not upcase
-Error (line 39): line has 103 characters
-Error (line 40): wrong number of spaces in preprocessor indentation
-Error (line 40): define not upcase
-Error (line 40): line has 88 characters
-Error (line 41): wrong number of spaces in preprocessor indentation
-Error (line 41): define not upcase
-Error (line 41): line has 88 characters
-Error (line 42): wrong number of spaces in preprocessor indentation
-Error (line 42): define not upcase
-Error (line 42): line has 88 characters
-Error (line 43): wrong number of spaces in preprocessor indentation
-Error (line 43): define not upcase
-Error (line 43): line has 88 characters
-Error (line 44): wrong number of spaces in preprocessor indentation
-Error (line 44): define not upcase
-Error (line 44): line has 88 characters
-Error (line 52): wrong number of spaces in preprocessor indentation
-Error (line 52): wrong number of spaces in preprocessor line
-Error (line 53): wrong number of spaces in preprocessor indentation
-Error (line 53): wrong number of spaces in preprocessor line
-Error (line 54): wrong number of spaces in preprocessor indentation
-Error (line 54): wrong number of spaces in preprocessor line
-Error (line 55): wrong number of spaces in preprocessor indentation
-Error (line 55): wrong number of spaces in preprocessor line
-Error (line 65, col 54): space after pointer
-Error (line 81): wrong number of spaces in preprocessor indentation
-Error (line 81): wrong number of spaces in preprocessor line
-Error (line 82): wrong number of spaces in preprocessor indentation
-Error (line 82): wrong number of spaces in preprocessor line
-Error (line 83): wrong number of spaces in preprocessor indentation
-Error (line 83): wrong number of spaces in preprocessor line
-Error (line 84): wrong number of spaces in preprocessor indentation
-Error (line 84): wrong number of spaces in preprocessor line
-Error (line 94, col 54): space after pointer
+Error (line 25): spaces at the end of line
+Error (line 27): spaces at the end of line
+Error (line 29): spaces at the end of line
+Error (line 31): spaces at the end of line
+Error (line 33): spaces at the end of line
+Error (line 35): spaces at the end of line
+Error (line 37): spaces at the end of line
+Error (line 39): spaces at the end of line
+Error (line 41): spaces at the end of line
+Error (line 43): spaces at the end of line
+Error (line 45): spaces at the end of line
+Error (line 46): spaces at the end of line
+Error (line 48): spaces at the end of line
+Error (line 50): spaces at the end of line
+Error (line 52): spaces at the end of line
+Error (line 54): spaces at the end of line
+Error (line 56): spaces at the end of line
+Error (line 58): spaces at the end of line
+Error (line 60): spaces at the end of line
+Error (line 62): spaces at the end of line
+Error (line 64): spaces at the end of line
+Error (line 74): wrong number of spaces in preprocessor indentation
+Error (line 74): wrong number of spaces in preprocessor line
+Error (line 75): wrong number of spaces in preprocessor indentation
+Error (line 75): wrong number of spaces in preprocessor line
+Error (line 76): wrong number of spaces in preprocessor indentation
+Error (line 76): wrong number of spaces in preprocessor line
+Error (line 77): wrong number of spaces in preprocessor indentation
+Error (line 77): wrong number of spaces in preprocessor line
+Error (line 87, col 54): space after pointer
+Error (line 103): wrong number of spaces in preprocessor indentation
+Error (line 103): wrong number of spaces in preprocessor line
+Error (line 104): wrong number of spaces in preprocessor indentation
+Error (line 104): wrong number of spaces in preprocessor line
+Error (line 105): wrong number of spaces in preprocessor indentation
+Error (line 105): wrong number of spaces in preprocessor line
+Error (line 106): wrong number of spaces in preprocessor indentation
+Error (line 106): wrong number of spaces in preprocessor line
+Error (line 116, col 54): space after pointer
 Norme: ./libft/libft_char.h
-Error (line 24): wrong number of spaces in preprocessor indentation
-Error (line 24): define not upcase
-Error (line 25): wrong number of spaces in preprocessor indentation
-Error (line 25): define not upcase
-Error (line 26): wrong number of spaces in preprocessor indentation
-Error (line 26): define not upcase
-Error (line 27): wrong number of spaces in preprocessor indentation
-Error (line 27): define not upcase
-Error (line 28): wrong number of spaces in preprocessor indentation
-Error (line 28): define not upcase
-Error (line 29): wrong number of spaces in preprocessor indentation
-Error (line 29): define not upcase
-Error (line 30): wrong number of spaces in preprocessor indentation
-Error (line 30): define not upcase
-Error (line 31): wrong number of spaces in preprocessor indentation
-Error (line 31): define not upcase
-Error (line 32): wrong number of spaces in preprocessor indentation
-Error (line 32): define not upcase
-Error (line 33): wrong number of spaces in preprocessor indentation
-Error (line 33): define not upcase
-Error (line 35): wrong number of spaces in preprocessor indentation
-Error (line 35): define not upcase
-Error (line 36): wrong number of spaces in preprocessor indentation
-Error (line 36): define not upcase
+Error (line 35): spaces at the end of line
 Norme: ./libft/libft_math.h
 Norme: ./libft/libft_io.h
-Error (line 27): wrong number of spaces in preprocessor indentation
-Error (line 27): define not upcase
-Error (line 28): wrong number of spaces in preprocessor indentation
-Error (line 28): define not upcase
-Error (line 29): wrong number of spaces in preprocessor indentation
-Error (line 29): define not upcase
-Error (line 31): wrong number of spaces in preprocessor indentation
-Error (line 31): define not upcase
-Error (line 32): wrong number of spaces in preprocessor indentation
-Error (line 32): define not upcase
-Error (line 33): wrong number of spaces in preprocessor indentation
-Error (line 33): define not upcase
-Error (line 34): wrong number of spaces in preprocessor indentation
-Error (line 34): define not upcase
-Error (line 35): wrong number of spaces in preprocessor indentation
-Error (line 35): define not upcase
-Error (line 37): wrong number of spaces in preprocessor indentation
-Error (line 37): define not upcase
-Error (line 38): wrong number of spaces in preprocessor indentation
-Error (line 38): define not upcase
-Error (line 39): wrong number of spaces in preprocessor indentation
-Error (line 39): define not upcase
-Error (line 40): wrong number of spaces in preprocessor indentation
-Error (line 40): define not upcase
-Error (line 41): wrong number of spaces in preprocessor indentation
-Error (line 41): define not upcase
-Error (line 97): comment not well formatted
+Error (line 31): spaces at the end of line
+Error (line 37): spaces at the end of line
+Error (line 99): comment not well formatted
 Norme: ./libft/libft_memory.h
-Error (line 24): wrong number of spaces in preprocessor indentation
-Error (line 24): define not upcase
-Error (line 25): wrong number of spaces in preprocessor indentation
-Error (line 25): define not upcase
-Error (line 26): wrong number of spaces in preprocessor indentation
-Error (line 26): define not upcase
-Error (line 27): wrong number of spaces in preprocessor indentation
-Error (line 27): define not upcase
-Error (line 28): wrong number of spaces in preprocessor indentation
-Error (line 28): define not upcase
-Error (line 29): wrong number of spaces in preprocessor indentation
-Error (line 29): define not upcase
-Error (line 30): wrong number of spaces in preprocessor indentation
-Error (line 30): define not upcase
-Error (line 31): wrong number of spaces in preprocessor indentation
-Error (line 31): define not upcase
-Error (line 33): wrong number of spaces in preprocessor indentation
-Error (line 33): define not upcase
-Error (line 34): wrong number of spaces in preprocessor indentation
-Error (line 34): define not upcase
-Error (line 35): wrong number of spaces in preprocessor indentation
-Error (line 35): define not upcase
-Error (line 37): wrong number of spaces in preprocessor indentation
-Error (line 37): define not upcase
-Error (line 39): multiple empty lines
-Error (line 40): multiple empty lines
+Error (line 33): spaces at the end of line
+Error (line 37): spaces at the end of line
 Error (line 129): multiple empty lines
 Norme: ./libft/libft_stringarray.h
-Error (line 24): wrong number of spaces in preprocessor indentation
-Error (line 24): wrong number of spaces in preprocessor line
-Error (line 24): define not upcase
-Error (line 26): multiple empty lines
-Error (line 27): multiple empty lines
 Norme: ./libft/libft_list.h
 Error: global scope bad aligned
-Error (line 24): wrong number of spaces in preprocessor indentation
-Error (line 24): define not upcase
-Error (line 25): wrong number of spaces in preprocessor indentation
-Error (line 25): define not upcase
-Error (line 26): wrong number of spaces in preprocessor indentation
-Error (line 26): define not upcase
-Error (line 27): wrong number of spaces in preprocessor indentation
-Error (line 27): define not upcase
-Error (line 28): wrong number of spaces in preprocessor indentation
-Error (line 28): define not upcase
-Error (line 29): wrong number of spaces in preprocessor indentation
-Error (line 29): define not upcase
-Error (line 30): wrong number of spaces in preprocessor indentation
-Error (line 30): define not upcase
-Error (line 31): wrong number of spaces in preprocessor indentation
-Error (line 31): define not upcase
-Error (line 33): wrong number of spaces in preprocessor indentation
-Error (line 33): define not upcase
-Error (line 34): wrong number of spaces in preprocessor indentation
-Error (line 34): define not upcase
-Error (line 35): wrong number of spaces in preprocessor indentation
-Error (line 35): define not upcase
-Error (line 37): wrong number of spaces in preprocessor indentation
-Error (line 37): define not upcase
-Error (line 38): wrong number of spaces in preprocessor indentation
-Error (line 38): define not upcase
-Error (line 39): wrong number of spaces in preprocessor indentation
-Error (line 39): define not upcase
-Error (line 40): wrong number of spaces in preprocessor indentation
-Error (line 40): define not upcase
-Error (line 41): wrong number of spaces in preprocessor indentation
-Error (line 41): define not upcase
-Error (line 42): wrong number of spaces in preprocessor indentation
-Error (line 42): define not upcase
-Error (line 43): wrong number of spaces in preprocessor indentation
-Error (line 43): define not upcase
-Error (line 65): must have tabulations between VOID and f_list_delete
-Error (line 65, col 15): f_list_delete have not a good prefix.
-Error (line 66): must have tabulations between VOID and f_list_iterate
-Error (line 66, col 15): f_list_iterate have not a good prefix.
-Error (line 67, col 18): f_list_map have not a good prefix.
-Error (line 145, col 42): space after pointer
+Error (line 33): spaces at the end of line
+Error (line 37): spaces at the end of line
+Error (line 67): must have tabulations between VOID and f_list_delete
+Error (line 67, col 15): f_list_delete have not a good prefix.
+Error (line 68): must have tabulations between VOID and f_list_iterate
+Error (line 68, col 15): f_list_iterate have not a good prefix.
+Error (line 69, col 18): f_list_map have not a good prefix.
+Error (line 147, col 42): space after pointer
 Norme: ./libft/libft_vlq.h
 Norme: ./src/config.h
 Norme: ./libft/libft_convert.h
-Error (line 24): wrong number of spaces in preprocessor indentation
-Error (line 24): define not upcase
-Error (line 25): wrong number of spaces in preprocessor indentation
-Error (line 25): define not upcase
-Error (line 26): wrong number of spaces in preprocessor indentation
-Error (line 26): define not upcase
-Error (line 27): wrong number of spaces in preprocessor indentation
-Error (line 27): define not upcase
-Error (line 28): wrong number of spaces in preprocessor indentation
-Error (line 28): define not upcase
-Error (line 29): wrong number of spaces in preprocessor indentation
-Error (line 29): define not upcase
-Error (line 30): wrong number of spaces in preprocessor indentation
-Error (line 30): define not upcase
-Error (line 31): wrong number of spaces in preprocessor indentation
-Error (line 31): define not upcase
-Error (line 32): wrong number of spaces in preprocessor indentation
-Error (line 32): define not upcase
-Error (line 33): wrong number of spaces in preprocessor indentation
-Error (line 33): define not upcase
-Error (line 34): wrong number of spaces in preprocessor indentation
-Error (line 34): define not upcase
-Error (line 35): wrong number of spaces in preprocessor indentation
-Error (line 35): define not upcase
-Error (line 36): wrong number of spaces in preprocessor indentation
-Error (line 36): define not upcase
-Error (line 37): wrong number of spaces in preprocessor indentation
-Error (line 37): define not upcase
-Error (line 38): wrong number of spaces in preprocessor indentation
-Error (line 38): define not upcase
-Error (line 39): wrong number of spaces in preprocessor indentation
-Error (line 39): define not upcase
-Error (line 40): wrong number of spaces in preprocessor indentation
-Error (line 40): define not upcase
-Error (line 41): wrong number of spaces in preprocessor indentation
-Error (line 41): define not upcase
-Error (line 42): wrong number of spaces in preprocessor indentation
-Error (line 42): define not upcase
-Error (line 43): wrong number of spaces in preprocessor indentation
-Error (line 43): define not upcase
-Error (line 44): wrong number of spaces in preprocessor indentation
-Error (line 44): define not upcase
-Error (line 45): wrong number of spaces in preprocessor indentation
-Error (line 45): define not upcase
-Error (line 46): wrong number of spaces in preprocessor indentation
-Error (line 46): define not upcase
-Error (line 47): wrong number of spaces in preprocessor indentation
-Error (line 47): define not upcase
-Error (line 49): wrong number of spaces in preprocessor indentation
-Error (line 49): define not upcase
-Error (line 50): wrong number of spaces in preprocessor indentation
-Error (line 50): define not upcase
-Error (line 51): wrong number of spaces in preprocessor indentation
-Error (line 51): define not upcase
-Error (line 52): wrong number of spaces in preprocessor indentation
-Error (line 52): define not upcase
-Error (line 53): wrong number of spaces in preprocessor indentation
-Error (line 53): define not upcase
-Error (line 54): wrong number of spaces in preprocessor indentation
-Error (line 54): define not upcase
-Error (line 55): wrong number of spaces in preprocessor indentation
-Error (line 55): define not upcase
-Error (line 56): wrong number of spaces in preprocessor indentation
-Error (line 56): define not upcase
-Error (line 57): wrong number of spaces in preprocessor indentation
-Error (line 57): define not upcase
-Error (line 58): wrong number of spaces in preprocessor indentation
-Error (line 58): define not upcase
-Error (line 59): wrong number of spaces in preprocessor indentation
-Error (line 59): define not upcase
-Error (line 60): wrong number of spaces in preprocessor indentation
-Error (line 60): define not upcase
-Error (line 61): wrong number of spaces in preprocessor indentation
-Error (line 61): define not upcase
-Error (line 62): wrong number of spaces in preprocessor indentation
-Error (line 62): define not upcase
-Error (line 63): wrong number of spaces in preprocessor indentation
-Error (line 63): define not upcase
-Error (line 64): wrong number of spaces in preprocessor indentation
-Error (line 64): define not upcase
-Error (line 65): wrong number of spaces in preprocessor indentation
-Error (line 65): define not upcase
-Error (line 66): wrong number of spaces in preprocessor indentation
-Error (line 66): define not upcase
-Error (line 67): wrong number of spaces in preprocessor indentation
-Error (line 67): define not upcase
-Error (line 68): wrong number of spaces in preprocessor indentation
-Error (line 68): define not upcase
-Error (line 69): wrong number of spaces in preprocessor indentation
-Error (line 69): define not upcase
-Error (line 70): wrong number of spaces in preprocessor indentation
-Error (line 70): define not upcase
-Error (line 71): wrong number of spaces in preprocessor indentation
-Error (line 71): define not upcase
-Error (line 72): wrong number of spaces in preprocessor indentation
-Error (line 72): define not upcase
-Error (line 80): wrong number of spaces in preprocessor indentation
-Error (line 80): wrong number of spaces in preprocessor line
-Error (line 80): define not upcase
-Error (line 81): wrong number of spaces in preprocessor indentation
-Error (line 81): wrong number of spaces in preprocessor line
-Error (line 81): define not upcase
+Error (line 49): spaces at the end of line
 Error (line 82): wrong number of spaces in preprocessor indentation
 Error (line 82): wrong number of spaces in preprocessor line
 Error (line 82): define not upcase
 Error (line 83): wrong number of spaces in preprocessor indentation
 Error (line 83): wrong number of spaces in preprocessor line
 Error (line 83): define not upcase
-Error (line 117): preprocessor block must be followed by one empty line
-Error (line 124): preprocessor block must be followed by one empty line
-Error (line 130): preprocessor block must be followed by one empty line
+Error (line 84): wrong number of spaces in preprocessor indentation
+Error (line 84): wrong number of spaces in preprocessor line
+Error (line 84): define not upcase
+Error (line 85): wrong number of spaces in preprocessor indentation
+Error (line 85): wrong number of spaces in preprocessor line
+Error (line 85): define not upcase
+Error (line 119): preprocessor block must be followed by one empty line
+Error (line 126): preprocessor block must be followed by one empty line
+Error (line 132): preprocessor block must be followed by one empty line
 Norme: ./src/event.h
 Norme: ./src/rt_cl.h
 Error (line 70): C++ comment
 Error (line 77): C++ comment
 Error (line 100): C++ comment
 Norme: ./libft/libft_string.h
-Error (line 24): wrong number of spaces in preprocessor indentation
-Error (line 24): wrong number of spaces in preprocessor line
-Error (line 24): define not upcase
-Error (line 25): wrong number of spaces in preprocessor indentation
-Error (line 25): wrong number of spaces in preprocessor line
-Error (line 25): define not upcase
-Error (line 26): wrong number of spaces in preprocessor indentation
-Error (line 26): wrong number of spaces in preprocessor line
-Error (line 26): define not upcase
-Error (line 27): wrong number of spaces in preprocessor indentation
-Error (line 27): wrong number of spaces in preprocessor line
-Error (line 27): define not upcase
-Error (line 28): wrong number of spaces in preprocessor indentation
-Error (line 28): define not upcase
-Error (line 29): wrong number of spaces in preprocessor indentation
-Error (line 29): define not upcase
-Error (line 30): wrong number of spaces in preprocessor indentation
-Error (line 30): define not upcase
-Error (line 31): wrong number of spaces in preprocessor indentation
-Error (line 31): define not upcase
-Error (line 32): wrong number of spaces in preprocessor indentation
-Error (line 32): define not upcase
-Error (line 33): wrong number of spaces in preprocessor indentation
-Error (line 33): define not upcase
-Error (line 34): wrong number of spaces in preprocessor indentation
-Error (line 34): define not upcase
-Error (line 36): wrong number of spaces in preprocessor indentation
-Error (line 36): wrong number of spaces in preprocessor line
-Error (line 36): define not upcase
-Error (line 37): wrong number of spaces in preprocessor indentation
-Error (line 37): wrong number of spaces in preprocessor line
-Error (line 37): define not upcase
-Error (line 38): wrong number of spaces in preprocessor indentation
-Error (line 38): wrong number of spaces in preprocessor line
-Error (line 38): define not upcase
-Error (line 39): wrong number of spaces in preprocessor indentation
-Error (line 39): wrong number of spaces in preprocessor line
-Error (line 39): define not upcase
-Error (line 40): wrong number of spaces in preprocessor indentation
-Error (line 40): wrong number of spaces in preprocessor line
-Error (line 40): define not upcase
-Error (line 41): wrong number of spaces in preprocessor indentation
-Error (line 41): wrong number of spaces in preprocessor line
-Error (line 41): define not upcase
-Error (line 42): wrong number of spaces in preprocessor indentation
-Error (line 42): wrong number of spaces in preprocessor line
-Error (line 42): define not upcase
-Error (line 43): wrong number of spaces in preprocessor indentation
-Error (line 43): wrong number of spaces in preprocessor line
-Error (line 43): define not upcase
-Error (line 44): wrong number of spaces in preprocessor indentation
-Error (line 44): wrong number of spaces in preprocessor line
-Error (line 44): define not upcase
-Error (line 44): line has 82 characters
-Error (line 45): wrong number of spaces in preprocessor indentation
-Error (line 45): wrong number of spaces in preprocessor line
-Error (line 45): define not upcase
-Error (line 47): wrong number of spaces in preprocessor indentation
-Error (line 47): wrong number of spaces in preprocessor line
-Error (line 47): define not upcase
-Error (line 48): wrong number of spaces in preprocessor indentation
-Error (line 48): wrong number of spaces in preprocessor line
-Error (line 48): define not upcase
-Error (line 49): wrong number of spaces in preprocessor indentation
-Error (line 49): wrong number of spaces in preprocessor line
-Error (line 49): define not upcase
-Error (line 50): wrong number of spaces in preprocessor indentation
-Error (line 50): wrong number of spaces in preprocessor line
-Error (line 50): define not upcase
-Error (line 51): wrong number of spaces in preprocessor indentation
-Error (line 51): wrong number of spaces in preprocessor line
-Error (line 51): define not upcase
-Error (line 52): wrong number of spaces in preprocessor indentation
-Error (line 52): wrong number of spaces in preprocessor line
-Error (line 52): define not upcase
-Error (line 53): wrong number of spaces in preprocessor indentation
-Error (line 53): define not upcase
-Error (line 54): wrong number of spaces in preprocessor indentation
-Error (line 54): wrong number of spaces in preprocessor line
-Error (line 54): define not upcase
-Error (line 55): wrong number of spaces in preprocessor indentation
-Error (line 55): wrong number of spaces in preprocessor line
-Error (line 55): define not upcase
-Error (line 56): wrong number of spaces in preprocessor indentation
-Error (line 56): wrong number of spaces in preprocessor line
-Error (line 56): define not upcase
-Error (line 57): wrong number of spaces in preprocessor indentation
-Error (line 57): wrong number of spaces in preprocessor line
-Error (line 57): define not upcase
-Error (line 59): wrong number of spaces in preprocessor indentation
-Error (line 59): wrong number of spaces in preprocessor line
-Error (line 59): define not upcase
-Error (line 60): wrong number of spaces in preprocessor indentation
-Error (line 60): wrong number of spaces in preprocessor line
-Error (line 60): define not upcase
-Error (line 61): wrong number of spaces in preprocessor indentation
-Error (line 61): wrong number of spaces in preprocessor line
-Error (line 61): define not upcase
-Error (line 62): wrong number of spaces in preprocessor indentation
-Error (line 62): wrong number of spaces in preprocessor line
-Error (line 62): define not upcase
-Error (line 63): wrong number of spaces in preprocessor indentation
-Error (line 63): wrong number of spaces in preprocessor line
-Error (line 63): define not upcase
-Error (line 64): wrong number of spaces in preprocessor indentation
-Error (line 64): wrong number of spaces in preprocessor line
-Error (line 64): define not upcase
-Error (line 66): wrong number of spaces in preprocessor indentation
-Error (line 66): wrong number of spaces in preprocessor line
-Error (line 66): define not upcase
-Error (line 67): wrong number of spaces in preprocessor indentation
-Error (line 67): wrong number of spaces in preprocessor line
-Error (line 67): define not upcase
-Error (line 68): wrong number of spaces in preprocessor indentation
-Error (line 68): wrong number of spaces in preprocessor line
-Error (line 68): define not upcase
-Error (line 69): wrong number of spaces in preprocessor indentation
-Error (line 69): wrong number of spaces in preprocessor line
-Error (line 69): define not upcase
-Error (line 70): wrong number of spaces in preprocessor indentation
-Error (line 70): define not upcase
-Error (line 71): wrong number of spaces in preprocessor indentation
-Error (line 71): define not upcase
-Error (line 72): wrong number of spaces in preprocessor indentation
-Error (line 72): define not upcase
-Error (line 73): wrong number of spaces in preprocessor indentation
-Error (line 73): define not upcase
-Error (line 81): must have tabulations between VOID and f_string_iterate
-Error (line 81, col 15): f_string_iterate have not a good prefix.
-Error (line 82): must have tabulations between VOID and f_string_iterate_i
-Error (line 82, col 15): f_string_iterate_i have not a good prefix.
-Error (line 83): must have tabulations between CHAR and f_string_map
-Error (line 83, col 15): f_string_map have not a good prefix.
-Error (line 84): must have tabulations between CHAR and f_string_map_i
-Error (line 84, col 15): f_string_map_i have not a good prefix.
+Error (line 36): spaces at the end of line
+Error (line 45): spaces at the end of line
+Error (line 48): spaces at the end of line
+Error (line 57): spaces at the end of line
+Error (line 59): spaces at the end of line
+Error (line 61): spaces at the end of line
+Error (line 63): spaces at the end of line
+Error (line 70): spaces at the end of line
+Error (line 73): spaces at the end of line
+Error (line 88): must have tabulations between VOID and f_string_iterate
+Error (line 88, col 15): f_string_iterate have not a good prefix.
+Error (line 89): must have tabulations between VOID and f_string_iterate_i
+Error (line 89, col 15): f_string_iterate_i have not a good prefix.
+Error (line 90): must have tabulations between CHAR and f_string_map
+Error (line 90, col 15): f_string_map have not a good prefix.
+Error (line 91): must have tabulations between CHAR and f_string_map_i
+Error (line 91, col 15): f_string_map_i have not a good prefix.
 Norme: ./src/debug.h
 Norme: ./rtv1_aduquesn/rtv1.h
 Norme: ./src/rt_random.h
 Norme: ./src/rt_scene.h
+Error (line 102): spaces at the end of line
+Error (line 126): C++ comment
+Error (line 182): C++ comment
+Error (line 185): spaces at the end of line
+Error (line 212): wrong number of spaces in preprocessor line
+Error (line 242): wrong number of spaces in preprocessor line
+Error (line 252): wrong number of spaces in preprocessor line
+Error (line 269): wrong number of spaces in preprocessor line
+Error (line 290): wrong number of spaces in preprocessor line
 Norme: ./src/ui.h

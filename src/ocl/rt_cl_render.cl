@@ -418,27 +418,28 @@ __kernel void			rt_cl_average
 (
 					__global		uint *				result_imgbuf,
 					__global		float3 *			rays_pp_tensor,
-					__constant		uint4 *				tensor_dims_arg
+					__constant		uint8 *				tensor_dims_arg
 )
 {
-	uint4 const			tensor_dims = *tensor_dims_arg;
+	uint3 const			work_steps = tensor_dims_arg->s012; /* work_step.xyz */
+	uint3 const			work_dims = tensor_dims_arg->s456; /* work_dims.xyz, or equivalently (float3)(canvas_w, canvas_h, mc_raysamp_size) */
 	size_t const		x_id = get_global_id(0); /* x-coordinate of the current pixel */
 	size_t const		y_id = get_global_id(1); /* y-coordinate of the current pixel */
 
-	if (x_id >= tensor_dims.w)
+	if (x_id >= work_dims.x || y_id >= work_dims.y)
 	{
 		return ;
 	}
 
 	size_t const		block_x_id = x_id - get_global_offset(0); /* x-coordinate of the current pixel in current tensor block */
 	size_t const		block_y_id = y_id - get_global_offset(1); /* y-coordinate of the current pixel in current tensor block */
-	size_t const		work_item_id = tensor_dims.w * y_id 
-													+ x_id; /* tensor_dims.w is scene->work_dims.x */
-	size_t const		init = get_global_size(0) * block_y_id //tensor_dims.x * block_y_id
+	size_t const		work_item_id = work_dims.x * y_id
+													+ x_id;
+	size_t const		init = get_global_size(0) * block_y_id //work_steps.x * block_y_id
 											+ block_x_id;
-	size_t const		inc = tensor_dims.y * tensor_dims.x;
-	size_t const		tensor_size = inc * tensor_dims.z;
-	float const			inv_samp_size = native_recip((float)tensor_dims.z);
+	size_t const		inc = work_steps.y * work_steps.x;
+	size_t const		tensor_size = inc * work_dims.z; // we need the full ray dimension of the tensor for a quick average
+	float const			inv_samp_size = native_recip((float)work_dims.z);
 	float3				vcolor3 = (float3)(0.f);
 	uint3				color3;
 	uint				color;

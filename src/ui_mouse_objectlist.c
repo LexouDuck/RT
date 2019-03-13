@@ -42,6 +42,29 @@ static void	ui_mouse_objectlist_expandedproperties(t_object *object, t_s32 y)
 	update_object(object);
 }
 
+static void	ui_mouse_objectlist_object(SDL_Rect rect, t_u32 i, t_s32 height)
+{
+	if (rt.scene.objects[i].type &&
+		rect.y + height >= rt.ui.objects.rect.y - TILE &&
+		rect.y < rt.ui.objects.rect.y + rt.ui.objects.rect.h)
+	{
+		if (rt.ui.objects.expanded[i])
+			ui_mouse_objectlist_expandedproperties(&rt.scene.objects[i], rect.y + 2);
+		rect.x = 0;
+		rect.w = UI_WIDTH_TILES - 4;
+		if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+		{
+			if (!(rt.input.keys & KEY_CTRL))
+				ft_memclr(rt.ui.objects.selected, OBJECT_MAX_AMOUNT * sizeof(t_bool));
+			rt.ui.objects.selected[i] = TRUE;
+		}
+		rect.x = UI_WIDTH_TILES - 4;
+		rect.w = 2;
+		if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+			rt.ui.objects.expanded[i] = !rt.ui.objects.expanded[i];
+	}
+}
+
 void		ui_mouse_objectlist(void)
 {
 	t_s32		tmp;
@@ -51,32 +74,15 @@ void		ui_mouse_objectlist(void)
 
 	rect = rt.ui.objects.rect;
 	rect.h = 2;
-	i = -1;
-	while (++i < rt.scene.object_amount)
+	i = 0;
+	while (i < rt.scene.object_amount)
 	{
 		tmp = rect.y;
 		rect.y -= rt.ui.objects.scrollbar.scroll / TILE;
 		add_height = (rt.ui.objects.expanded[i] ? OBJECT_PROPERTIES_H : 0);
-		if (rt.scene.objects[i].type &&
-			rect.y + add_height >= rt.ui.objects.rect.y - TILE &&
-			rect.y < rt.ui.objects.rect.y + rt.ui.objects.rect.h)
-		{
-			if (rt.ui.objects.expanded[i])
-				ui_mouse_objectlist_expandedproperties(&rt.scene.objects[i], rect.y + 2);
-			rect.x = 0;
-			rect.w = UI_WIDTH_TILES - 4;
-			if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
-			{
-				if (!(rt.input.keys & KEY_CTRL))
-					ft_memclr(rt.ui.objects.selected, OBJECT_MAX_AMOUNT * sizeof(t_bool));
-				rt.ui.objects.selected[i] = TRUE;
-			}
-			rect.x = UI_WIDTH_TILES - 4;
-			rect.w = 2;
-			if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
-				rt.ui.objects.expanded[i] = !rt.ui.objects.expanded[i];
-		}
+		ui_mouse_objectlist_object(rect, i, add_height);
 		rect.y = tmp;
 		rect.y += 2 + add_height;
+		++i;
 	}
 }

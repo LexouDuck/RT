@@ -15,7 +15,7 @@
 char	*ft_size_to_str(size_t number)
 {
 	char	*result;
-	t_u8	digits[MAXDIGIT_64b];
+	t_u8	digits[MAXDIGIT_64BIT];
 	t_u8	i;
 	size_t	n;
 

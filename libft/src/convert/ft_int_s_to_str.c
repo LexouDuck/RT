@@ -15,7 +15,7 @@
 char	*ft_s8_to_str(t_s8 number)
 {
 	char	*result;
-	t_u8	digits[MAXDIGIT_8b];
+	t_u8	digits[MAXDIGIT_8BIT];
 	t_u8	i;
 	t_u8	n;
 
@@ -40,7 +40,7 @@ char	*ft_s8_to_str(t_s8 number)
 char	*ft_s16_to_str(t_s16 number)
 {
 	char	*result;
-	t_u8	digits[MAXDIGIT_16b];
+	t_u8	digits[MAXDIGIT_16BIT];
 	t_u8	i;
 	t_u16	n;
 
@@ -65,7 +65,7 @@ char	*ft_s16_to_str(t_s16 number)
 char	*ft_s32_to_str(t_s32 number)
 {
 	char	*result;
-	t_u8	digits[MAXDIGIT_32b];
+	t_u8	digits[MAXDIGIT_32BIT];
 	t_u8	i;
 	t_u32	n;
 
@@ -90,7 +90,7 @@ char	*ft_s32_to_str(t_s32 number)
 char	*ft_s64_to_str(t_s64 number)
 {
 	char	*result;
-	t_u8	digits[MAXDIGIT_64b];
+	t_u8	digits[MAXDIGIT_64BIT];
 	t_u8	i;
 	t_u64	n;
 

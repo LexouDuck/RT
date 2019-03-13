@@ -42,7 +42,7 @@
 **		ft_color_argb32_set_b(color, b)
 **	#define FT_Color_ARGB16_Set(a, r, g, b)					_
 **		ft_color_argb32_set(a, r, g, b)
-**	
+**
 **	#define FT_Color_ARGB32_Get_A(color)					_
 **		ft_color_argb32_get_a(color)
 **	#define FT_Color_ARGB32_Get_R(color)					_
@@ -71,10 +71,10 @@
 ** ************************************************************************** *|
 */
 
-#define COLOR_ARGB16_A	0b1000000000000000
-#define COLOR_ARGB16_R	0b0111110000000000
-#define COLOR_ARGB16_G	0b0000001111100000
-#define COLOR_ARGB16_B	0b0000000000011111
+# define COLOR_ARGB16_A	0b1000000000000000
+# define COLOR_ARGB16_R	0b0111110000000000
+# define COLOR_ARGB16_G	0b0000001111100000
+# define COLOR_ARGB16_B	0b0000000000011111
 
 t_u8	ft_color_argb16_get_a(t_u16 color);
 t_u8	ft_color_argb16_get_r(t_u16 color);
@@ -100,10 +100,10 @@ t_u32	ft_color_argb16_to_argb32(t_u16 color);
 ** ************************************************************************** *|
 */
 
-#define COLOR_ARGB32_A	0xFF000000
-#define COLOR_ARGB32_R	0x00FF0000
-#define COLOR_ARGB32_G	0x0000FF00
-#define COLOR_ARGB32_B	0x000000FF
+# define COLOR_ARGB32_A	0xFF000000
+# define COLOR_ARGB32_R	0x00FF0000
+# define COLOR_ARGB32_G	0x0000FF00
+# define COLOR_ARGB32_B	0x000000FF
 
 t_u8	ft_color_argb32_get_a(t_u32 color);
 t_u8	ft_color_argb32_get_r(t_u32 color);

@@ -17,11 +17,8 @@
 
 #include "../rt.h"
 
-static void	rt_object_init_other_bbox(t_object *object)
+static void	rt_object_init_other_bbox(t_object *object, cl_float render_dist)
 {
-	float		render_dist;
-
-	render_dist = rt.scene.render_dist;
 	if (object->type == plane)
 		object->bbox_os = (t_bbox){
 			(cl_float3){{-render_dist, -EPS, -render_dist}},
@@ -46,9 +43,6 @@ static void	rt_object_init_other_bbox(t_object *object)
 
 static void	rt_object_init_bbox(t_object *object)
 {
-	float		render_dist;
-
-	render_dist = rt.scene.render_dist;
 	if (object->type == sphere ||
 		object->type == cube ||
 		object->type == cylinder)
@@ -68,7 +62,7 @@ static void	rt_object_init_bbox(t_object *object)
 			(cl_float3){{-1.f - EPS, -EPS, -1.f - EPS}},
 			(cl_float3){{1.f + EPS, 1.f + EPS, 1.f + EPS}}};
 	else
-		rt_object_init_other_bbox(object);
+		rt_object_init_other_bbox(object, rt.scene.render_dist);
 }
 
 /*

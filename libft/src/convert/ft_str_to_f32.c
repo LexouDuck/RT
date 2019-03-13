@@ -34,8 +34,7 @@ static t_f32	ft_str_to_f32_expon(char const *s_mant, char const *s_exp)
 		tmp[18] = '\0';
 	result = (t_f32)ft_str_to_s64(tmp);
 	free(tmp);
-	exponent = 0;
-	if (s_exp)
+	if (!(exponent = 0) && s_exp)
 	{
 		exponent = ft_str_to_s16(s_exp);
 		if (exponent > F32_EXP_BIAS)
@@ -43,8 +42,7 @@ static t_f32	ft_str_to_f32_expon(char const *s_mant, char const *s_exp)
 		else if (exponent < 1 - F32_EXP_BIAS)
 			return (0.);
 	}
-	tmp = ft_strchr(s_mant, '.');
-	if (tmp && (frac_digits = ft_strlen(tmp + 1)) > 0)
+	if ((tmp = ft_strchr(s_mant, '.')) && (frac_digits = ft_strlen(++tmp)) > 0)
 		exponent -= frac_digits;
 	if (ft_strlen(s_mant) > 18)
 		exponent += ft_strlen(s_mant) - 18;
@@ -70,8 +68,7 @@ static t_f32	ft_str_to_f32_hexfp(
 		return (0. * result);
 	}
 	mant = ft_hex_to_u32(tmp);
-	result *= mant;
-	result *= F32_INIT_VAL * powf(2., (ft_strlen(tmp) - 1) * 4);
+	result *= mant * F32_INIT_VAL * powf(2., (ft_strlen(tmp) - 1) * 4);
 	if ((exponent = ft_str_to_s16(s_exp)) > F32_EXP_BIAS)
 		return ((sign ? -1. : 1.) / 0.);
 	else if (exponent < 1 - F32_EXP_BIAS)
@@ -93,19 +90,16 @@ t_f32			ft_str_to_f32(char const *str)
 	char	*exponent;
 	int		mode;
 
-	result = 0. / 0.;
-	tmp = NULL;
+	result = NOT_A_NUMBER;
 	if (ft_str_to_float_checkinvalid(str, &tmp))
 		return (NOT_A_NUMBER);
-	if (tmp[0] == 'I' || (tmp[1] == 'I' &&
-		(tmp[0] == '-' || tmp[0] == '+')))
+	if (tmp[0] == 'I' || (tmp[1] == 'I' && (tmp[0] == '-' || tmp[0] == '+')))
 	{
 		free(tmp);
 		return (tmp[0] == '-' ? -INFINITY : INFINITY);
 	}
 	hexfp = ft_strchr(tmp, 'X');
-	exponent = ft_strchr(tmp, (hexfp ? 'P' : 'E'));
-	if (exponent)
+	if ((exponent = ft_strchr(tmp, (hexfp ? 'P' : 'E'))))
 		*(exponent++) = '\0';
 	if (!(mode = (hexfp != NULL) + (exponent != NULL)))
 		result = ft_str_to_f32_expon(tmp, NULL);

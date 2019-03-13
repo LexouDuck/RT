@@ -79,10 +79,10 @@
 ** ************************************************************************** *|
 */
 
-#define MAXDIGIT_8b		3
-#define MAXDIGIT_16b	5
-#define MAXDIGIT_32b	10
-#define MAXDIGIT_64b	20
+# define MAXDIGIT_8BIT	3
+# define MAXDIGIT_16BIT	5
+# define MAXDIGIT_32BIT	10
+# define MAXDIGIT_64BIT	20
 
 /*
 ** ************************************************************************** *|

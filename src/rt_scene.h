@@ -58,33 +58,33 @@
 # define RENDER_MODES				5
 # define DEFAULT_RENDER_MODE		0
 
-typedef enum	e_rendermode
+typedef enum		e_rendermode
 {
 	RENDERMODE_MCPT = 0,
 	RENDERMODE_BBOX_OS,
 	RENDERMODE_BBOX_WS,
 	RENDERMODE_SOLIDCOLOR,
 	RENDERMODE_SOLIDTEXTURE,
-}				t_rendermode;
+}					t_rendermode;
 
 # define CAMERA_MODELS	5
 
-typedef enum	e_camera_model
+typedef enum		e_camera_model
 {
 	CAMERA_MODEL_PINHOLE = 0,
 	CAMERA_MODEL_BLUR_SIMPLE,
 	CAMERA_MODEL_BLUR_FOCAL,
 	CAMERA_MODEL_AUTO_FOCUS,
 	CAMERA_MODEL_ORTHOGRAPHIC
-}				t_camera_model;
+}					t_camera_model;
 
-typedef enum	e_cameramode
+typedef enum		e_cameramode
 {
 	CAMERA_MODE_NONE = 0,
 	CAMERA_MODE_ROTATE,
 	CAMERA_MODE_TILT,
 	CAMERA_MODE_PAN,
-}				t_cameramode;
+}					t_cameramode;
 
 /*
 ** CAMERA
@@ -356,12 +356,12 @@ typedef struct		s_object
 	t_bump			bump_type;
 }					t_object;
 
-typedef struct	s_work_array
+typedef struct		s_work_array
 {
 	size_t			x;
 	size_t			y;
 	size_t			z;
-}				t_work_array;
+}					t_work_array;
 
 typedef struct		s_scene
 {

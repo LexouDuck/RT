@@ -70,12 +70,12 @@ void			rt_auto_build_cornellbox(int fd);
 # define CEIL_SQRT_MOD	46341
 # define OFFSET			2835
 
-t_u32		ft_rand(void);
-t_u32		ft_rand_0_to_pow2n(t_u32 n);
-t_u32		ft_rand_0_to_n(t_u32 n);
-int			ft_rand_a_to_b(int a, int b);
-t_u32		ft_srand(t_u32 seed);
-t_float		ft_frand_0_to_1(void);
-t_float		ft_frand_a_to_b(t_float a, t_float b);
+t_u32			ft_rand(void);
+t_u32			ft_rand_0_to_pow2n(t_u32 n);
+t_u32			ft_rand_0_to_n(t_u32 n);
+int				ft_rand_a_to_b(int a, int b);
+t_u32			ft_srand(t_u32 seed);
+t_float			ft_frand_0_to_1(void);
+t_float			ft_frand_a_to_b(t_float a, t_float b);
 
 #endif

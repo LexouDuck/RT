@@ -66,16 +66,15 @@ static void		ui_mouse_objectlist_object(SDL_Rect rect, t_u32 i, t_s32 height)
 		rect.y < rt.ui.objects.rect.y + rt.ui.objects.rect.h)
 	{
 		if (rt.ui.objects.expanded[i])
-			ui_mouse_objectlist_expandedproperties(&rt.scene.objects[i],
-				rect.y + 2);
+			ui_mouse_objectlist_expandedproperties(
+				&rt.scene.objects[i], rect.y + 2);
 		rect.x = 0;
 		rect.w = UI_WIDTH_TILES - 4;
 		if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
 		{
-			if (!(rt.input.keys & KEY_CTRL) &&
-				!(rt.input.keys & KEY_SHIFT))
+			if (!(rt.input.keys & KEY_CTRL || rt.input.keys & KEY_SHIFT))
 				ft_memclr(rt.ui.objects.selected,
-					OBJECT_MAX_AMOUNT * sizeof(t_bool));
+					sizeof(t_bool) * OBJECT_MAX_AMOUNT);
 			rt.ui.objects.selected[i] = TRUE;
 		}
 		rect.x = UI_WIDTH_TILES - 4;

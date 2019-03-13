@@ -62,7 +62,7 @@ static int		opencl_get_platform_and_gpu(int platform_index)
 			" error getting selected platform's GPU."));
 	}
 	debug_output_value("Platform amount found: ",
-							ft_u64_to_str(rt.ocl.platform_amount), TRUE);
+		ft_u64_to_str(rt.ocl.platform_amount), TRUE);
 	opencl_set_device_info();
 	return (OK);
 }
@@ -116,13 +116,13 @@ static int		opencl_read_and_build_program(void)
 		return (debug_perror("opencl_read_and_build_program: read failed."));
 	file_len = ft_strlen(file_buf);
 	rt.ocl.program = clCreateProgramWithSource(rt.ocl.context, 1,
-							(char const **)(&file_buf), &file_len, &error);
+		(char const **)(&file_buf), &file_len, &error);
 	free(file_buf);
 	if (error < 0)
 		return (debug_perror("opencl_read_and_build_program:"
 		" clCreateProgramWithSource returned error."));
 	if ((error = clBuildProgram(rt.ocl.program, 1, &(rt.ocl.gpu.id),
-								RT_CL_PROGRAM_OPTIONS, NULL, NULL)) < 0)
+		RT_CL_PROGRAM_OPTIONS, NULL, NULL)) < 0)
 	{
 		opencl_log_compiler();
 		return (opencl_handle_error(error, "opencl_read_and_build_program:"
@@ -152,9 +152,9 @@ int				opencl_init(int platform_index)
 		return (debug_perror("opencl_init: could not build program."));
 	if (opencl_init_gpu_memory())
 		return (debug_perror("opencl_init:"
-							" could not initialize gpu memory buffers."));
+			" could not initialize gpu memory buffers."));
 	if (opencl_init_kernels())
 		return (debug_perror("opencl_init:"
-							" could not initialize kernels."));
+			" could not initialize kernels."));
 	return (OK);
 }

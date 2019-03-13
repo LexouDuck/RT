@@ -11,12 +11,12 @@
 /* ************************************************************************** */
 
 #ifndef __ASSETS_H
-#define __ASSETS_H
+# define __ASSETS_H
 
-#include "libft.h"
+# include "libft.h"
 
-#define TILE	8
-#define PALETTE	4
+# define TILE	8
+# define PALETTE	4
 
 /*
 **	This header holds all the external files to be embedded within the program.
@@ -24,8 +24,8 @@
 **	and they are then linked within the program executable with 'gcc'.
 */
 
-/*	- CHR
-**		NES 8x8 Tiled Pixel Data Format
+/*
+**	- CHR	-> NES 8x8 Tiled Pixel Data Format
 **	Stores 256 distinct 'tiles' (or 'chars', hence chr) of 8x8 pixel data.
 **	These pixels are 2-bits (can be 0-3), so as to go with a 4-color palette.
 */
@@ -42,11 +42,10 @@
 **	UI Tileset: 4-color 2bpp CHR pixel data format
 */
 # ifdef __APPLE__
-# define OS_ASSETS	0
+#  define OS_ASSETS	0
 
 extern const t_u8 binary___inc_ui_chr_start[1];
 extern const t_u8 _binary___inc_ui_chr_start[1];
-extern const t_u8 _section$__DATA__inc_ui_chr[CHR_SIZE];
 
 # else
 #  ifdef __WIN32__
@@ -58,9 +57,10 @@ extern const t_u8 _section$__DATA__inc_ui_chr[CHR_SIZE];
 extern const t_u8 binary___inc_ui_chr_start[CHR_SIZE];
 extern const t_u8 _binary___inc_ui_chr_start[CHR_SIZE];
 void	*getsectiondata(void *ptr,
-	char const* section,
-	char const* segment,
+	char const *section,
+	char const *segment,
 	size_t *size);
+
 # endif
 
 #endif

@@ -1,19 +1,16 @@
 Norme: ./src/config.h
-Norme: ./src/debug.h
-Norme: ./src/rt_auto_build_map.h
-Error: not protected against double inclusion
-Error: 42 header not well formatted
-Error: file must end with a single empty line
-Error (line 51): multiple empty lines
-Error (line 52): multiple empty lines
-Error (line 64, col 29): bad character after ;
-Norme: ./src/rt_random.h
 Norme: ./src/event.h
+Norme: ./src/rt_random.h
 Norme: ./src/rt_cl.h
 Norme: ./src/rt_scene.h
-Error: global scope bad aligned
 Norme: ./src/ui.h
+Norme: ./src/debug.h
 Norme: ./assets.h
-Warning: /Users/aduquesn/rt/assets.h may not compile or is invalid for some reasons.
+Error (line 47, col 18): global named binary___inc_ui_chr_start is not well prefixed
+Error (line 48, col 18): _binary___inc_ui_chr_start not unixcase
+Error (line 48, col 18): global named _binary___inc_ui_chr_start is not well prefixed
+Error (line 57, col 18): global named binary___inc_ui_chr_start is not well prefixed
+Error (line 58, col 18): _binary___inc_ui_chr_start not unixcase
+Error (line 58, col 18): global named _binary___inc_ui_chr_start is not well prefixed
 Norme: ./rt.h
-Error (line 81, col 7): global named rt is not well prefixed
+Error (line 82, col 7): global named rt is not well prefixed

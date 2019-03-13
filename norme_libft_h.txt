@@ -1,12 +1,11 @@
 Norme: ./libft/libft.h
-Warning: /Users/aduquesn/rt/libft/libft.h may not compile or is invalid for some reasons.
 Norme: ./libft/libft_char.h
 Norme: ./libft/libft_io.h
-Norme: ./libft/libft_math.h
 Norme: ./libft/libft_color.h
-Norme: ./libft/libft_memory.h
+Norme: ./libft/libft_math.h
 Norme: ./libft/libft_list.h
-Norme: ./libft/libft_vlq.h
 Norme: ./libft/libft_stringarray.h
+Norme: ./libft/libft_vlq.h
 Norme: ./libft/libft_convert.h
 Norme: ./libft/libft_string.h
+Norme: ./libft/libft_memory.h

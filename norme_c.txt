@@ -1,13 +1,14 @@
 Norme: ./src/config_access.c
-Norme: ./src/config.c
 Norme: ./src/cl_float3_util.c
+Norme: ./src/config.c
 Norme: ./src/camera.c
-Norme: ./src/event.c
 Norme: ./src/config_ini.c
+Norme: ./src/event.c
 Norme: ./src/debug.c
 Norme: ./src/event_window.c
 Norme: ./src/init_sdl.c
 Norme: ./src/event_key.c
+Norme: ./src/event_mouse.c
 Norme: ./src/main.c
 Error: 6 functions in the file
 Error (line 45): bad indentation
@@ -24,7 +25,9 @@ Error (line 66): C++ comment
 Error (line 67): line has 83 characters
 Error (line 139): wrong number of spaces in preprocessor indentation
 Error (line 142): function main has 26 lines
-Norme: ./src/event_mouse.c
+Norme: ./src/opencl_init.c
+Error (line 155): bad indentation
+Error (line 158): bad indentation
 Norme: ./src/opencl_kernels.c
 Error (line 25): bad indentation
 Error (line 29): bad indentation
@@ -34,11 +37,14 @@ Error (line 49): bad indentation
 Error (line 53): bad indentation
 Error (line 73): bad indentation
 Error (line 94): bad indentation
-Norme: ./src/opencl_init.c
-Error (line 155): bad indentation
-Error (line 158): bad indentation
 Norme: ./src/opencl_get_error_str.c
 Norme: ./src/opencl_memory.c
+Norme: ./src/opencl_render_mem.c
+Error (line 39): bad indentation
+Error (line 47): spaces at the end of line
+Error (line 55): bad indentation
+Error (line 60): bad indentation
+Error (line 73): bad indentation
 Norme: ./src/opencl_render.c
 Error (line 38): function render_enqueue_pairwise_kernels_inner has 34 lines
 Error (line 48): comment not well formatted
@@ -54,48 +60,29 @@ Error (line 73): bad indentation
 Error (line 89): bad indentation
 Error (line 108): bad indentation
 Error (line 121): bad indentation
-Norme: ./src/opencl_render_mem.c
-Error (line 39): bad indentation
-Error (line 47): spaces at the end of line
-Error (line 55): bad indentation
-Error (line 60): bad indentation
-Error (line 73): bad indentation
-Norme: ./src/rt_auto_build_fix_object.c
-Error: file must end with a single empty line
-Error (line 55): Empty line
-Error (line 56, col 0): no empty line before block
-Error (line 126): spaces at the end of line
-Error (line 131): bad indentation
-Error (line 131): spaces at the end of line
-Error (line 136): spaces at the end of line
-Error (line 137, col 0): no newline after block
+Norme: ./src/rt_auto_build_scene.c
 Norme: ./src/opencl_utils.c
-Norme: ./src/rt_auto_build_scene_util.c
+Norme: ./src/rt_auto_build_cornellbox.c
 Error: file must end with a single empty line
-Error (line 97, col 0): no newline after block
-Norme: ./src/rt_file.c
-Norme: ./src/rt_get_img_texture.c
-Norme: ./src/rt_auto_build_map.c
-Error (line 58): bad spacing after set_float3_nb
-Error (line 68): multiple empty lines
-Error (line 69): multiple empty lines
-Error (line 70): function write_scene has 29 lines
-Error (line 70): bad spacing before write_scene
-Error (line 86, col 6): missing space around =
-Error (line 89, col 6): missing space around =
-Error (line 92, col 6): missing space around =
-Error (line 107): bad spacing after auto_build_map
-Error (line 129): multiple empty lines
-Error (line 130): bad spacing before main
+Error (line 37): Empty line
+Error (line 38, col 0): no empty line before block
+Error (line 108): spaces at the end of line
+Error (line 113): bad indentation
+Error (line 113): spaces at the end of line
+Error (line 118): spaces at the end of line
+Error (line 119, col 0): no newline after block
 Norme: ./src/rt_get_str_object.c
 Norme: ./src/rt_get_str_scene.c
+Norme: ./src/rt_auto_build_scene_util.c
+Norme: ./src/rt_get_img_texture.c
+Norme: ./src/rt_file.c
 Norme: ./src/rt_open_read_properties.c
 Norme: ./src/rt_open_read_materials.c
 Norme: ./src/rt_open.c
 Norme: ./src/rt_open_read_textures.c
 Norme: ./src/rt_object.c
-Norme: ./src/rt_random_util.c
 Norme: ./src/rt_random.c
+Norme: ./src/rt_random_util.c
 Norme: ./src/rt_save.c
 Norme: ./src/rt_open_util.c
 Norme: ./src/rt_open_read_vectors.c
@@ -106,20 +93,17 @@ Norme: ./src/ui_init_mac.c
 Error (line 33, col 4): _mh_execute_header not unixcase
 Error (line 33, col 4): global named _mh_execute_header is not well prefixed
 Norme: ./src/ui_menu_edit.c
-Norme: ./src/rt_scene.c
 Norme: ./src/ui_control_numberbox_int.c
+Norme: ./src/rt_scene.c
 Norme: ./src/ui_menu_file_extra.c
 Norme: ./src/ui_menu_file.c
 Norme: ./src/ui_mouse_objectlist.c
-Warning: /Users/aduquesn/rt/src/ui_mouse_objectlist.c may not compile or is invalid for some reasons.
-Norme: ./src/ui_init.c
 Norme: ./src/ui_mouse_menu.c
+Norme: ./src/ui_init.c
 Norme: ./src/ui_mouse.c
-Norme: ./src/ui_mouse_objectlist_enums.c
 Norme: ./src/ui_render_canvas.c
 Norme: ./src/ui_prompt.c
-Error (line 48): bad indentation
-Error (line 48): C++ comment
+Norme: ./src/ui_mouse_objectlist_enums.c
 Norme: ./src/ui_render_util.c
 Norme: ./src/ui_render.c
 Norme: ./src/ui_scrollbar.c

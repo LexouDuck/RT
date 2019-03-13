@@ -32,7 +32,7 @@
 **	#define FT_IsPunctuation(c)		ft_ispunct(c)
 **	#define FT_IsPrintable(c)		ft_isprint(c)
 **	#define FT_IsASCII(c)			ft_isascii(c)
-**	
+**
 **	#define FT_ToUppercase(c)		ft_toupper(c)
 **	#define FT_ToLowercase(c)		ft_tolower(c)
 */

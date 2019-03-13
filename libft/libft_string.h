@@ -33,7 +33,7 @@
 **	#define FT_StringConcat(dest, src)				ft_strcat(dest, src)
 **	#define FT_StringConcat_N(dest, src, n)			ft_strncat(dest, src, n)
 **	#define FT_StringConcat_L(dest, src, size)		ft_strlcat(dest, src, size)
-**	
+**
 **	#define	FT_StringLength(str)					ft_strlen(str)
 **	#define	FT_StringCompare(str1, str2)			ft_strcmp(str1, str2)
 **	#define	FT_StringCompare_N(str1, str2, n)		ft_strncmp(str1, str2, n)
@@ -45,7 +45,7 @@
 **	#define	FT_StringCount_Charset(str, charset)	_
 **		ft_strcount_charset(str, charset)
 **	#define	FT_StringCount_String(str, query)		ft_strcount_str(str, query)
-**	
+**
 **	#define	FT_StringFind_Char(str, c)				ft_strchr(str, c)
 **	#define	FT_StringFind_String(str, query)		ft_strstr(str, query)
 **	#define	FT_StringFind_R_Char(str, c)			ft_strrchr(str, c)
@@ -60,14 +60,14 @@
 **		ft_strrep_charset(str, old, new)
 **	#define	FT_StringReplace_String(str, old, new)	_
 **		ft_strrep_string(str, old, new)
-**	
+**
 **	#define	FT_StringTrim(str, charset)				ft_strtrim(str, charset)
 **	#define	FT_StringTrim_L(str, charset)			ft_strtrim_l(str, charset)
 **	#define	FT_StringTrim_R(str, charset)			ft_strtrim_r(str, charset)
 **	#define	FT_StringPad(str, c, size)				ft_strpad(str, c, size)
 **	#define	FT_StringPad_L(str, c, size)			ft_strpad_l(str, c, size)
 **	#define	FT_StringPad_R(str, c, size)			ft_strpad_r(str, c, size)
-**	
+**
 **	#define	FT_StringReverse(str)					ft_strrev(str)
 **	#define	FT_StringJoin(str1, str2)				ft_strjoin(str1, str2)
 **	#define	FT_StringInsert(dest, src, index)		_

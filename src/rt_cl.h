@@ -67,14 +67,12 @@
 
 typedef struct	s_gpu
 {
-//	gpu info
 	cl_device_id	id;
 	cl_ulong		global_mem_size;
 	cl_uint			comp_unit_nb;
 	size_t			max_kernel_args_size;
 	size_t			max_witems_per_wgroup;
 	cl_uint			max_nd_range;
-	// should be replaced by value of max_nd_range
 	size_t			max_witems_per_dim[4];
 }				t_gpu;
 
@@ -97,7 +95,6 @@ typedef struct	s_cl
 	cl_kernel			kernels[RT_CL_KERNEL_AMOUNT];
 	t_gpu_buffers		gpu_buf;
 	float				render_progress;
-//	cl_int				status;
 }				t_cl;
 
 /*

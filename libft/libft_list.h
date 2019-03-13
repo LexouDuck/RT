@@ -30,11 +30,11 @@
 **	#define FT_ListRemove(alst, del)			ft_lstdelone(alst, del)
 **	#define FT_ListDelete(alst, del)			ft_lstdel(alst, del)
 **	#define FT_ListPop(alst, del)				ft_lstpop(alst, del)
-**	
+**
 **	#define FT_ListSize(lst)					ft_lstsize(lst)
 **	#define FT_ListGet(alst, index)				ft_lstget(alst, index)
 **	#define FT_ListFind(lst, query)				ft_lstfind(lst, query)
-**	
+**
 **	#define FT_ListSub(alst, index, n)			ft_lstsub(alst, index, n)
 **	#define FT_ListIterate(lst, f)				ft_lstiter(lst, f)
 **	#define FT_ListIterate_I(lst, f)			ft_lstiteri(lst, f)
@@ -64,9 +64,11 @@ typedef struct			s_list
 	struct s_list		*next;
 }						t_list;
 
-typedef void (*f_list_delete)(void *, size_t);
-typedef void (*f_list_iterate)(t_list *);
-typedef t_list *(*f_list_map)(t_list *);
+/*
+**	typedef void	(*f_list_delete)(void *, size_t);
+**	typedef void	(*f_list_iterate)(t_list *);
+**	typedef t_list*	(*f_list_map)(t_list *);
+*/
 
 /*
 ** ************************************************************************** *|
@@ -144,7 +146,7 @@ t_list	*ft_lstget(t_list *lst, t_u32 index);
 **	Returns the first encountered element of the given linked list 'lst'
 **	for which (lst.item == query), matching only the pointers, not the data.
 */
-t_list	*ft_lstfind(t_list *lst, void const* query);
+t_list	*ft_lstfind(t_list *lst, void const *query);
 
 /*
 ** ************************************************************************** *|

@@ -10,9 +10,37 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft_memory.h"
 #include "libft_color.h"
 
 #include "../rt.h"
+
+void		remove_selected_objects(void)
+{
+	t_u32	i;
+
+	i = 0;
+	while (i < rt.scene.object_amount)
+	{
+		if (rt.ui.objects.selected[i])
+		{
+			ft_memcpy(&rt.scene.objects[i], &rt.scene.objects[i + 1],
+				sizeof(t_object) * (rt.scene.object_amount - i));
+			ft_memcpy(&rt.ui.objects.selected[i], &rt.ui.objects.selected[i + 1],
+				sizeof(t_bool) * (rt.scene.object_amount - i));
+			ft_memcpy(&rt.ui.objects.expanded[i], &rt.ui.objects.expanded[i + 1],
+				sizeof(t_bool) * (rt.scene.object_amount - i));
+			rt.scene.object_amount -= 1;
+			ft_memclr(&rt.scene.objects[rt.scene.object_amount],
+				sizeof(t_object));
+			ft_memclr(&rt.ui.objects.selected[rt.scene.object_amount],
+				sizeof(t_bool));
+			ft_memclr(&rt.ui.objects.expanded[rt.scene.object_amount],
+				sizeof(t_bool));
+		}
+		++i;
+	}
+}
 
 void		init_scene(void)
 {

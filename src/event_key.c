@@ -99,15 +99,6 @@ static t_bool	event_check_keydown_special_textinput(SDL_Event *event)
 
 void			event_check_keydown(SDL_Event *event)
 {
-	if (event_check_keydown_windowevents(event))
-		return ;
-	if (rt.ui.current_textinput.type)
-	{
-		if (event_check_keydown_special_numberbox(event))
-			return ;
-		if (event_check_keydown_special_textinput(event))
-			return ;
-	}
 	if (event->key.keysym.sym == SDLK_LALT)
 		rt.input.keys |= KEY_ALT_L;
 	else if (event->key.keysym.sym == SDLK_RALT)
@@ -120,7 +111,15 @@ void			event_check_keydown(SDL_Event *event)
 		rt.input.keys |= KEY_SHIFT_L;
 	else if (event->key.keysym.sym == SDLK_RSHIFT)
 		rt.input.keys |= KEY_SHIFT_R;
-	return ;
+	if (event_check_keydown_windowevents(event))
+		return ;
+	if (rt.ui.current_textinput.type)
+	{
+		if (event_check_keydown_special_numberbox(event))
+			return ;
+		if (event_check_keydown_special_textinput(event))
+			return ;
+	}
 }
 
 void			event_check_keyup(SDL_Event *event)

@@ -30,6 +30,7 @@
 **	These pixels are 2-bits (can be 0-3), so as to go with a 4-color palette.
 */
 # define CHR_SIZE	4096
+
 /*
 **	2bpp = 16 bytes of memory per 8x8 tile
 */
@@ -42,6 +43,7 @@
 */
 # ifdef __APPLE__
 # define OS_ASSETS	0
+
 extern const t_u8 binary___inc_ui_chr_start[1];
 extern const t_u8 _binary___inc_ui_chr_start[1];
 extern const t_u8 _section$__TEXT__inc_ui_chr[CHR_SIZE];

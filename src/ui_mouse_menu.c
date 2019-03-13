@@ -82,8 +82,7 @@ static t_bool	ui_mouse_menu_addremove(void)
 	rect.x = UI_WIDTH_TILES - 4;
 	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
 	{
-		rt.scene.object_amount -= 1;
-		ft_memclr(&rt.scene.objects[rt.scene.object_amount], sizeof(t_object));
+		remove_selected_objects();
 		rt.must_render = TRUE;
 		return (TRUE);
 	}

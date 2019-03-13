@@ -45,10 +45,10 @@
 */
 typedef struct	s_sdl
 {
-	SDL_Window*		window;
-	SDL_Renderer*	window_renderer;
-	SDL_Texture*	window_texture;
-	SDL_Surface*	window_surface;
+	SDL_Window		*window;
+	SDL_Renderer	*window_renderer;
+	SDL_Texture		*window_texture;
+	SDL_Surface		*window_surface;
 	int				window_w;
 	int				window_h;
 	t_bool			fullscreen;
@@ -66,7 +66,7 @@ typedef struct	s_rt
 	t_config		config;
 	t_input			input;
 	t_scene			scene;
-	SDL_Surface*	canvas;
+	SDL_Surface		*canvas;
 	int				canvas_w;
 	int				canvas_h;
 	t_u32			canvas_pixel_amount;
@@ -107,30 +107,34 @@ int				init_window_display();
 void			rt_get_img_texture(cl_uint **img_texture);
 
 /*
-**	scene.c
+**	rt_scene.c
 */
-void			init_scene();
-void			update_scene();
+void			init_scene(void);
+void			update_scene(void);
+void			remove_selected_objects(void);
+/*
+**	rt_object.c
+*/
 void			init_object(t_object *object);
 void			update_object(t_object *object);
 
 /*
 **	ui_menu_file.c
 */
-void			ui_menu_file_open();
-void			ui_menu_file_import();
+void			ui_menu_file_open(void);
+void			ui_menu_file_import(void);
 /*
 **	ui_menu_edit.c
 */
-void			ui_menu_edit_undo();
-void			ui_menu_edit_redo();
-void			ui_menu_edit_cut();
-void			ui_menu_edit_copy();
-void			ui_menu_edit_paste();
+void			ui_menu_edit_undo(void);
+void			ui_menu_edit_redo(void);
+void			ui_menu_edit_cut(void);
+void			ui_menu_edit_copy(void);
+void			ui_menu_edit_paste(void);
 /*
 **	ui_menu_view.c
 */
-void			ui_menu_view_orthogonal();
+void			ui_menu_view_orthogonal(void);
 
 /*
 **	rt_get_str.c

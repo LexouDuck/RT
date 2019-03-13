@@ -42,12 +42,12 @@ static t_f64	ft_str_to_f64_expon(char const *s_mant, char const *s_exp)
 		else if (exponent < 1 - F64_EXP_BIAS)
 			return (0.);
 	}
-	if ((tmp = ft_strchr(s_mant, '.')) && (frac_digits = ft_strlen(++tmp)) > 0)
+	tmp = ft_strchr(s_mant, '.');
+	if (tmp && (frac_digits = ft_strlen(++tmp)) > 0)
 		exponent -= frac_digits;
 	if (ft_strlen(s_mant) > 18)
 		exponent += ft_strlen(s_mant) - 18;
-	result *= powf(10., exponent);
-	return (result);
+	return (result * powf(10., exponent));
 }
 
 static t_f64	ft_str_to_f64_hexfp(

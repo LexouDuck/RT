@@ -46,11 +46,11 @@ static void		ui_mouse_objectlist_expandedproperties(
 	while (i < OBJECT_PROPERTIES)
 	{
 		if (ui_mouse_control_numberbox_float(
-				&rt.ui.current_textinput, &ptr->x, 1, y + 1) ||
+				&g_rt.ui.current_textinput, &ptr->x, 1, y + 1) ||
 			ui_mouse_control_numberbox_float(
-				&rt.ui.current_textinput, &ptr->y, 10, y + 1) ||
+				&g_rt.ui.current_textinput, &ptr->y, 10, y + 1) ||
 			ui_mouse_control_numberbox_float(
-				&rt.ui.current_textinput, &ptr->z, 19, y + 1))
+				&g_rt.ui.current_textinput, &ptr->z, 19, y + 1))
 			return ;
 		y += OBJECT_PROPERTY_H;
 		++ptr;
@@ -61,26 +61,26 @@ static void		ui_mouse_objectlist_expandedproperties(
 
 static void		ui_mouse_objectlist_object(SDL_Rect rect, t_u32 i, t_s32 height)
 {
-	if (rt.scene.objects[i].type &&
-		rect.y + height >= rt.ui.objects.rect.y - TILE &&
-		rect.y < rt.ui.objects.rect.y + rt.ui.objects.rect.h)
+	if (g_rt.scene.objects[i].type &&
+		rect.y + height >= g_rt.ui.objects.rect.y - TILE &&
+		rect.y < g_rt.ui.objects.rect.y + g_rt.ui.objects.rect.h)
 	{
-		if (rt.ui.objects.expanded[i])
+		if (g_rt.ui.objects.expanded[i])
 			ui_mouse_objectlist_expandedproperties(
-				&rt.scene.objects[i], rect.y + 2);
+				&g_rt.scene.objects[i], rect.y + 2);
 		rect.x = 0;
 		rect.w = UI_WIDTH_TILES - 4;
-		if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+		if (SDL_PointInRect(&g_rt.input.mouse_tile, &rect))
 		{
-			if (!(rt.input.keys & KEY_CTRL || rt.input.keys & KEY_SHIFT))
-				ft_memclr(rt.ui.objects.selected,
+			if (!(g_rt.input.keys & KEY_CTRL || g_rt.input.keys & KEY_SHIFT))
+				ft_memclr(g_rt.ui.objects.selected,
 					sizeof(t_bool) * OBJECT_MAX_AMOUNT);
-			rt.ui.objects.selected[i] = TRUE;
+			g_rt.ui.objects.selected[i] = TRUE;
 		}
 		rect.x = UI_WIDTH_TILES - 4;
 		rect.w = 2;
-		if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
-			rt.ui.objects.expanded[i] = !rt.ui.objects.expanded[i];
+		if (SDL_PointInRect(&g_rt.input.mouse_tile, &rect))
+			g_rt.ui.objects.expanded[i] = !g_rt.ui.objects.expanded[i];
 	}
 }
 
@@ -91,14 +91,14 @@ void			ui_mouse_objectlist(void)
 	SDL_Rect	rect;
 	t_u32		i;
 
-	rect = rt.ui.objects.rect;
+	rect = g_rt.ui.objects.rect;
 	rect.h = 2;
 	i = 0;
-	while (i < rt.scene.object_amount)
+	while (i < g_rt.scene.object_amount)
 	{
 		tmp = rect.y;
-		rect.y -= rt.ui.objects.scrollbar.scroll / TILE;
-		add_height = (rt.ui.objects.expanded[i] ? OBJECT_PROPERTIES_H : 0);
+		rect.y -= g_rt.ui.objects.scrollbar.scroll / TILE;
+		add_height = (g_rt.ui.objects.expanded[i] ? OBJECT_PROPERTIES_H : 0);
 		ui_mouse_objectlist_object(rect, i, add_height);
 		rect.y = tmp;
 		rect.y += 2 + add_height;

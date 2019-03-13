@@ -45,7 +45,7 @@ void		ui_render_loading_bar(void)
 	float	percent;
 	char	*tmp;
 
-	percent = rt.ocl.render_progress * 100.;
+	percent = g_rt.ocl.render_progress * 100.;
 	tmp = ft_f32_to_str(percent, 3);
 	tmp[ft_strlen(tmp) - 2] = ' ';
 	tmp[ft_strlen(tmp) - 1] = '%';

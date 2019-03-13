@@ -22,17 +22,17 @@ static void	ui_init_menubar(void)
 {
 	int i;
 
-	rt.ui.menubar.selection = -1;
-	rt.ui.menubar.item_amount = MENUBAR_ITEMS;
-	rt.ui.menubar.item_labels[MENUBAR_ITEM_FILE] = MENUBAR_LABEL_FILE;
-	rt.ui.menubar.item_labels[MENUBAR_ITEM_EDIT] = MENUBAR_LABEL_EDIT;
+	g_rt.ui.menubar.selection = -1;
+	g_rt.ui.menubar.item_amount = MENUBAR_ITEMS;
+	g_rt.ui.menubar.item_labels[MENUBAR_ITEM_FILE] = MENUBAR_LABEL_FILE;
+	g_rt.ui.menubar.item_labels[MENUBAR_ITEM_EDIT] = MENUBAR_LABEL_EDIT;
 	i = 0;
 	while (i < MENUBAR_ITEMS)
 	{
-		rt.ui.menubar.item_hitbox[i].x = MENUBAR_ITEMS_W * i;
-		rt.ui.menubar.item_hitbox[i].y = 0;
-		rt.ui.menubar.item_hitbox[i].w = MENUBAR_ITEMS_W;
-		rt.ui.menubar.item_hitbox[i].h = MENUBAR_ITEMS_H;
+		g_rt.ui.menubar.item_hitbox[i].x = MENUBAR_ITEMS_W * i;
+		g_rt.ui.menubar.item_hitbox[i].y = 0;
+		g_rt.ui.menubar.item_hitbox[i].w = MENUBAR_ITEMS_W;
+		g_rt.ui.menubar.item_hitbox[i].h = MENUBAR_ITEMS_H;
 		++i;
 	}
 }
@@ -95,25 +95,25 @@ static void	ui_init_dropdown_edit(t_menu *dropdown)
 
 static void	ui_init_objectlist(void)
 {
-	rt.ui.objects.rect.x = 0;
-	rt.ui.objects.rect.y = 22;
-	rt.ui.objects.rect.w = UI_WIDTH_TILES - 2;
-	rt.ui.objects.rect.h = rt.sdl.window_h - rt.ui.objects.rect.y;
-	rt.ui.objects.scrollbar.clicked = scrollclick_none;
-	rt.ui.objects.scrollbar.button_up = (SDL_Rect)
-		{ UI_WIDTH - TILE * 2, TILE * rt.ui.objects.rect.y,
+	g_rt.ui.objects.rect.x = 0;
+	g_rt.ui.objects.rect.y = 22;
+	g_rt.ui.objects.rect.w = UI_WIDTH_TILES - 2;
+	g_rt.ui.objects.rect.h = g_rt.sdl.window_h - g_rt.ui.objects.rect.y;
+	g_rt.ui.objects.scrollbar.clicked = scrollclick_none;
+	g_rt.ui.objects.scrollbar.button_up = (SDL_Rect)
+		{ UI_WIDTH - TILE * 2, TILE * g_rt.ui.objects.rect.y,
 			TILE * 2, TILE * 2 };
-	rt.ui.objects.scrollbar.button_down = (SDL_Rect)
-		{ UI_WIDTH - TILE * 2, rt.sdl.window_h - TILE * 2,
+	g_rt.ui.objects.scrollbar.button_down = (SDL_Rect)
+		{ UI_WIDTH - TILE * 2, g_rt.sdl.window_h - TILE * 2,
 			TILE * 2, TILE * 2 };
-	rt.ui.objects.scrollbar.bar = (SDL_Rect)
-		{ UI_WIDTH - TILE * 2, TILE * (rt.ui.objects.rect.y + 2),
-			TILE * 2, rt.ui.objects.scrollbar.button_down.y -
-			(TILE * (rt.ui.objects.rect.y + 2)) };
-	rt.ui.objects.scrollbar.scroll = 0;
-	rt.ui.objects.scrollbar.scroll_max = 0;
-	rt.ui.objects.scrollbar.scroll_view =
-		(rt.sdl.window_h - rt.ui.objects.rect.y);
+	g_rt.ui.objects.scrollbar.bar = (SDL_Rect)
+		{ UI_WIDTH - TILE * 2, TILE * (g_rt.ui.objects.rect.y + 2),
+			TILE * 2, g_rt.ui.objects.scrollbar.button_down.y -
+			(TILE * (g_rt.ui.objects.rect.y + 2)) };
+	g_rt.ui.objects.scrollbar.scroll = 0;
+	g_rt.ui.objects.scrollbar.scroll_max = 0;
+	g_rt.ui.objects.scrollbar.scroll_view =
+		(g_rt.sdl.window_h - g_rt.ui.objects.rect.y);
 }
 
 int			ui_init(void)
@@ -124,17 +124,17 @@ int			ui_init(void)
 	if (OS_ASSETS == 0)
 		ui_init_assets();
 	else if (OS_ASSETS == 1)
-		rt.ui.chr = binary___inc_ui_chr_start;
+		g_rt.ui.chr = binary___inc_ui_chr_start;
 	else
-		rt.ui.chr = _binary___inc_ui_chr_start;
-	if (!(rt.ui.tileset = ui_set_tileset(rt.ui.chr, CHR_SIZE)))
+		g_rt.ui.chr = _binary___inc_ui_chr_start;
+	if (!(g_rt.ui.tileset = ui_set_tileset(g_rt.ui.chr, CHR_SIZE)))
 		return (ERROR);
-	if (!(ui_set_palette(rt.ui.tileset, palette)))
+	if (!(ui_set_palette(g_rt.ui.tileset, palette)))
 		return (ERROR);
-	ft_memcpy(&rt.ui.pal, palette, PALETTE * sizeof(t_u32));
+	ft_memcpy(&g_rt.ui.pal, palette, PALETTE * sizeof(t_u32));
 	ui_init_menubar();
-	ui_init_dropdown_file(&rt.ui.dropdowns[MENUBAR_ITEM_FILE]);
-	ui_init_dropdown_edit(&rt.ui.dropdowns[MENUBAR_ITEM_EDIT]);
+	ui_init_dropdown_file(&g_rt.ui.dropdowns[MENUBAR_ITEM_FILE]);
+	ui_init_dropdown_edit(&g_rt.ui.dropdowns[MENUBAR_ITEM_EDIT]);
 	ui_init_objectlist();
 	SDL_StopTextInput();
 	return (OK);

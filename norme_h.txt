@@ -1,7 +1,7 @@
 Norme: ./src/config.h
 Norme: ./src/debug.h
-Norme: ./src/event.h
 Norme: ./src/rt_random.h
+Norme: ./src/event.h
 Norme: ./src/rt_cl.h
 Norme: ./src/rt_scene.h
 Norme: ./src/ui.h
@@ -13,4 +13,3 @@ Error (line 57, col 18): global named binary___inc_ui_chr_start is not well pref
 Error (line 58, col 18): _binary___inc_ui_chr_start not unixcase
 Error (line 58, col 18): global named _binary___inc_ui_chr_start is not well prefixed
 Norme: ./rt.h
-Error (line 82, col 7): global named rt is not well prefixed

@@ -137,6 +137,7 @@ SRCS	= 	main.c							\
 			rt_scene.c						\
 			rt_object.c						\
 			camera.c						\
+			update_window.c					\
 			ui.c							\
 			ui_init.c						\
 			ui_init_mac.c					\

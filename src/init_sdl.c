@@ -31,22 +31,22 @@ int		init_window(void)
 {
 	t_u32	flags;
 
-	rt.sdl.window_w = ft_str_to_s32(config_get(CONFIG_INDEX_WINDOW_W));
-	rt.sdl.window_h = ft_str_to_s32(config_get(CONFIG_INDEX_WINDOW_H));
+	g_rt.sdl.window_w = ft_str_to_s32(config_get(CONFIG_INDEX_WINDOW_W));
+	g_rt.sdl.window_h = ft_str_to_s32(config_get(CONFIG_INDEX_WINDOW_H));
 	flags = (SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 	if (ft_str_to_bool(config_get(CONFIG_INDEX_FULLSCREEN)))
 		flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 	if (ft_str_to_bool(config_get(CONFIG_INDEX_MAXIMIZED)))
 		flags |= SDL_WINDOW_MAXIMIZED;
-	rt.sdl.window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED,
-		SDL_WINDOWPOS_UNDEFINED, rt.sdl.window_w, rt.sdl.window_h, flags);
-	if (rt.sdl.window == NULL)
+	g_rt.sdl.window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED,
+		SDL_WINDOWPOS_UNDEFINED, g_rt.sdl.window_w, g_rt.sdl.window_h, flags);
+	if (g_rt.sdl.window == NULL)
 	{
 		debug_output_error("Could not create SDL_Window: ", TRUE);
 		return (ERROR);
 	}
-	rt.sdl.window_renderer = SDL_CreateRenderer(rt.sdl.window, -1, 0);
-	if (rt.sdl.window_renderer == NULL)
+	g_rt.sdl.window_renderer = SDL_CreateRenderer(g_rt.sdl.window, -1, 0);
+	if (g_rt.sdl.window_renderer == NULL)
 	{
 		debug_output_error("Could not create SDL_Renderer: ", TRUE);
 		return (ERROR);
@@ -56,14 +56,14 @@ int		init_window(void)
 
 int		init_window_display_canvas(void)
 {
-	rt.canvas_w = (rt.sdl.window_w - UI_WIDTH);
-	rt.canvas_h = (rt.sdl.window_h);
-	rt.canvas_pixel_amount = (rt.canvas_w * rt.canvas_h);
-	rt.canvas = SDL_CreateRGBSurfaceWithFormat(
+	g_rt.canvas_w = (g_rt.sdl.window_w - UI_WIDTH);
+	g_rt.canvas_h = (g_rt.sdl.window_h);
+	g_rt.canvas_pixel_amount = (g_rt.canvas_w * g_rt.canvas_h);
+	g_rt.canvas = SDL_CreateRGBSurfaceWithFormat(
 		SDL_RLEACCEL,
-		rt.canvas_w, rt.canvas_h,
+		g_rt.canvas_w, g_rt.canvas_h,
 		8, SDL_PIXELFORMAT_ARGB8888);
-	if (rt.canvas == NULL)
+	if (g_rt.canvas == NULL)
 	{
 		debug_output_error("Could not create the render canvas: ", TRUE);
 		return (ERROR);
@@ -73,22 +73,22 @@ int		init_window_display_canvas(void)
 
 int		init_window_display(void)
 {
-	SDL_GetWindowSize(rt.sdl.window, &rt.sdl.window_w, &rt.sdl.window_h);
-	rt.sdl.window_texture = SDL_CreateTexture(rt.sdl.window_renderer,
+	SDL_GetWindowSize(g_rt.sdl.window, &g_rt.sdl.window_w, &g_rt.sdl.window_h);
+	g_rt.sdl.window_texture = SDL_CreateTexture(g_rt.sdl.window_renderer,
 		SDL_PIXELFORMAT_ARGB8888,
 		SDL_TEXTUREACCESS_STREAMING,
-		rt.sdl.window_w,
-		rt.sdl.window_h);
-	if (rt.sdl.window_texture == NULL)
+		g_rt.sdl.window_w,
+		g_rt.sdl.window_h);
+	if (g_rt.sdl.window_texture == NULL)
 	{
 		debug_output_error("Could not create window's SDL_Texture: ", TRUE);
 		return (ERROR);
 	}
-	rt.sdl.window_surface = SDL_CreateRGBSurfaceWithFormat(
+	g_rt.sdl.display = SDL_CreateRGBSurfaceWithFormat(
 		SDL_RLEACCEL,
-		rt.sdl.window_w, rt.sdl.window_h,
+		g_rt.sdl.window_w, g_rt.sdl.window_h,
 		8, SDL_PIXELFORMAT_ARGB8888);
-	if (rt.sdl.window_surface == NULL)
+	if (g_rt.sdl.display == NULL)
 	{
 		debug_output_error("Could not create window's SDL_Surface: ", TRUE);
 		return (ERROR);

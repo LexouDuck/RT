@@ -39,9 +39,9 @@ int		ui_init_assets(void)
 	size_t	size;
 
 	size = 0;
-	rt.ui.chr = getsectiondata(&_mh_execute_header,
+	g_rt.ui.chr = getsectiondata(&_mh_execute_header,
 		"__DATA", "__inc_ui_chr", &size);
-	if (rt.ui.chr == NULL)
+	if (g_rt.ui.chr == NULL)
 		return (debug_perror("Could not load UI assets: GetSectionData()"));
 	if (size != CHR_SIZE)
 	{

@@ -16,40 +16,42 @@
 void	ui_menu_file_open(void)
 {
 	debug_output("File->Open\n");
-	rt.ui.current_prompt.textbox = texttype_text;
-	rt.ui.current_prompt.text = ft_strdup("./");
-	rt.ui.current_prompt.name = DROPDOWN_LABEL_FILE_OPEN;
-	rt.ui.current_prompt.description = "Type in the file(s) to open.";
-	rt.ui.current_prompt.rect = PROMPT;
+	g_rt.ui.current_prompt.textbox = texttype_text;
+	g_rt.ui.current_prompt.text = ft_strdup("./");
+	g_rt.ui.current_prompt.name = DROPDOWN_LABEL_FILE_OPEN;
+	g_rt.ui.current_prompt.description =
+		"Type in the file(s) to open.";
+	g_rt.ui.current_prompt.rect = PROMPT;
 	return ;
 }
 
 void	ui_menu_file_import(void)
 {
 	debug_output("File->Import\n");
-	rt.ui.current_prompt.textbox = texttype_text;
-	rt.ui.current_prompt.text = ft_strdup("./");
-	rt.ui.current_prompt.name = DROPDOWN_LABEL_FILE_IMPORT;
-	rt.ui.current_prompt.description =
-	"Type in the file(s) to import to the scene.";
-	rt.ui.current_prompt.rect = PROMPT;
+	g_rt.ui.current_prompt.textbox = texttype_text;
+	g_rt.ui.current_prompt.text = ft_strdup("./");
+	g_rt.ui.current_prompt.name = DROPDOWN_LABEL_FILE_IMPORT;
+	g_rt.ui.current_prompt.description =
+		"Type in the file(s) to import to the scene.";
+	g_rt.ui.current_prompt.rect = PROMPT;
 	return ;
 }
 
 void	ui_menu_file_save(void)
 {
 	debug_output("File->Save\n");
-	if (rt.filepath)
+	if (g_rt.filepath)
 	{
-		rt_file_save(rt.filepath);
+		rt_file_save(g_rt.filepath);
 	}
 	else
 	{
-		rt.ui.current_prompt.textbox = texttype_text;
-		rt.ui.current_prompt.text = ft_strdup("./");
-		rt.ui.current_prompt.name = DROPDOWN_LABEL_FILE_SAVE;
-		rt.ui.current_prompt.description = "Type in the destination filepath.";
-		rt.ui.current_prompt.rect = PROMPT;
+		g_rt.ui.current_prompt.textbox = texttype_text;
+		g_rt.ui.current_prompt.text = ft_strdup("./");
+		g_rt.ui.current_prompt.name = DROPDOWN_LABEL_FILE_SAVE;
+		g_rt.ui.current_prompt.description =
+			"Type in the destination filepath.";
+		g_rt.ui.current_prompt.rect = PROMPT;
 	}
 	return ;
 }
@@ -57,10 +59,11 @@ void	ui_menu_file_save(void)
 void	ui_menu_file_saveas(void)
 {
 	debug_output("File->SaveAs\n");
-	rt.ui.current_prompt.textbox = texttype_text;
-	rt.ui.current_prompt.text = ft_strdup("./");
-	rt.ui.current_prompt.name = DROPDOWN_LABEL_FILE_SAVEAS;
-	rt.ui.current_prompt.description = "Type in the destination filepath.";
-	rt.ui.current_prompt.rect = PROMPT;
+	g_rt.ui.current_prompt.textbox = texttype_text;
+	g_rt.ui.current_prompt.text = ft_strdup("./");
+	g_rt.ui.current_prompt.name = DROPDOWN_LABEL_FILE_SAVEAS;
+	g_rt.ui.current_prompt.description =
+		"Type in the destination filepath.";
+	g_rt.ui.current_prompt.rect = PROMPT;
 	return ;
 }

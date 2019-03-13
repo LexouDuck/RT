@@ -23,11 +23,11 @@ void	ui_leave_control_textbox(t_textinput *textinput)
 {
 	char	**value;
 
-	if (textinput->value && rt.ui.current_textinput.value_changed)
+	if (textinput->value && g_rt.ui.current_textinput.value_changed)
 	{
 		value = (char **)textinput->value;
 		*value = ft_strdup(textinput->input);
-		rt.must_render = TRUE;
+		g_rt.must_render = TRUE;
 	}
 	if (textinput->input)
 	{
@@ -50,12 +50,12 @@ t_bool	ui_mouse_control_textbox(t_textinput *textinput,
 
 	rect.x = x * TILE;
 	rect.y = y * TILE;
-	if (SDL_PointInRect(&rt.input.mouse, &rect))
+	if (SDL_PointInRect(&g_rt.input.mouse, &rect))
 	{
 		textinput->type = texttype_text;
 		textinput->input = ft_strdup(*value);
 		textinput->value = (void *)value;
-		rt.ui.current_textinput.value_changed = FALSE;
+		g_rt.ui.current_textinput.value_changed = FALSE;
 		SDL_StartTextInput();
 		return (TRUE);
 	}
@@ -69,10 +69,10 @@ void	ui_render_control_textbox(int x, int y, char *value)
 
 	rect.x = x;
 	rect.y = y;
-	ui_render_rect(rect, (value == rt.ui.current_textinput.value));
-	if (value == rt.ui.current_textinput.value)
+	ui_render_rect(rect, (value == g_rt.ui.current_textinput.value));
+	if (value == g_rt.ui.current_textinput.value)
 	{
-		ui_render_text(rt.ui.current_textinput.input,
+		ui_render_text(g_rt.ui.current_textinput.input,
 			rect.x + 1, rect.y + 1, FALSE);
 	}
 	else if (value)

@@ -17,9 +17,9 @@ static void	event_check_window(SDL_Event *event)
 {
 	if (event->window.event == SDL_WINDOWEVENT_RESIZED)
 	{
-		if (!rt.sdl.fullscreen)
+		if (!g_rt.sdl.fullscreen)
 			event_window_resize(0, 0);
-		rt.must_render = TRUE;
+		g_rt.must_render = TRUE;
 	}
 	else if (event->window.event == SDL_WINDOWEVENT_ENTER)
 		event_window_mouse_enter();
@@ -31,16 +31,16 @@ static void	event_check_textinput(SDL_Event *event)
 {
 	char	*tmp;
 
-	if (!((rt.input.keys & KEY_CTRL) && (
+	if (!((g_rt.input.keys & KEY_CTRL) && (
 		(event->text.text[0] == 'c' || event->text.text[0] == 'C') ||
 		(event->text.text[0] == 'v' || event->text.text[0] == 'V'))))
 	{
-		tmp = rt.ui.current_textinput.input;
-		rt.ui.current_textinput.input =
+		tmp = g_rt.ui.current_textinput.input;
+		g_rt.ui.current_textinput.input =
 			ft_strjoin(tmp ? tmp : "", event->text.text);
 		if (tmp)
 			free(tmp);
-		rt.ui.current_textinput.value_changed = TRUE;
+		g_rt.ui.current_textinput.value_changed = TRUE;
 	}
 }
 
@@ -62,15 +62,15 @@ void		event_checkevents(void)
 {
 	SDL_Event	event;
 
-	rt.input.mouse_button =
-		SDL_GetMouseState(&rt.input.mouse.x, &rt.input.mouse.y);
-	rt.input.mouse_tile.x = (rt.input.mouse.x) / TILE;
-	rt.input.mouse_tile.y = (rt.input.mouse.y) / TILE;
+	g_rt.input.mouse_button =
+		SDL_GetMouseState(&g_rt.input.mouse.x, &g_rt.input.mouse.y);
+	g_rt.input.mouse_tile.x = (g_rt.input.mouse.x) / TILE;
+	g_rt.input.mouse_tile.y = (g_rt.input.mouse.y) / TILE;
 	while (SDL_PollEvent(&event))
 	{
 		if (event.type == SDL_QUIT)
 		{
-			rt.sdl.loop = FALSE;
+			g_rt.sdl.loop = FALSE;
 			return ;
 		}
 		else if (event.type == SDL_WINDOWEVENT)

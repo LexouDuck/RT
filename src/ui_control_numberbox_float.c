@@ -22,13 +22,13 @@ void	ui_leave_control_numberbox_float(t_textinput *textinput)
 {
 	cl_float	*value;
 
-	if (textinput->value && rt.ui.current_textinput.value_changed)
+	if (textinput->value && g_rt.ui.current_textinput.value_changed)
 	{
 		value = (cl_float *)textinput->value;
 		*value = textinput->input ? ft_str_to_f32(textinput->input) : 0;
 		if (isnan(*value))
 			*value = 0;
-		rt.must_render = TRUE;
+		g_rt.must_render = TRUE;
 	}
 	if (textinput->input)
 		free(textinput->input);
@@ -50,29 +50,29 @@ void	ui_keypress_control_numberbox_float(t_textinput *textinput, t_bool up)
 		*value += 1.0;
 	else
 		*value -= 1.0;
-	rt.must_render = TRUE;
+	g_rt.must_render = TRUE;
 	ui_leave_control_numberbox_float(textinput);
 	textinput->type = texttype_number_float;
 	textinput->input = ft_f32_to_str(*value, 4);
 	textinput->value = (void *)value;
-	rt.ui.current_textinput.value_changed = FALSE;
+	g_rt.ui.current_textinput.value_changed = FALSE;
 	SDL_StartTextInput();
 }
 
 t_bool	ui_mouse_control_numberbox_increment_float(SDL_Rect button
 		, cl_float *value)
 {
-	if (SDL_PointInRect(&rt.input.mouse, &button))
+	if (SDL_PointInRect(&g_rt.input.mouse, &button))
 	{
 		*value += 0.500;
-		rt.must_render = TRUE;
+		g_rt.must_render = TRUE;
 		return (TRUE);
 	}
 	button.y += 2 * TILE;
-	if (SDL_PointInRect(&rt.input.mouse, &button))
+	if (SDL_PointInRect(&g_rt.input.mouse, &button))
 	{
 		*value -= 0.500;
-		rt.must_render = TRUE;
+		g_rt.must_render = TRUE;
 		return (TRUE);
 	}
 	return (FALSE);
@@ -86,7 +86,7 @@ t_bool	ui_mouse_control_numberbox_float(t_textinput *textinput,
 
 	rect.x = x * TILE;
 	rect.y = y * TILE;
-	if (SDL_PointInRect(&rt.input.mouse, &rect))
+	if (SDL_PointInRect(&g_rt.input.mouse, &rect))
 	{
 		button.x = rect.x + rect.w - button.w;
 		button.y = rect.y;
@@ -95,7 +95,7 @@ t_bool	ui_mouse_control_numberbox_float(t_textinput *textinput,
 		textinput->type = texttype_number_float;
 		textinput->input = ft_f32_to_str(*value, 4);
 		textinput->value = (void *)value;
-		rt.ui.current_textinput.value_changed = FALSE;
+		g_rt.ui.current_textinput.value_changed = FALSE;
 		SDL_StartTextInput();
 		return (TRUE);
 	}
@@ -110,10 +110,10 @@ void	ui_render_control_numberbox_float(int x, int y, cl_float *value)
 
 	rect.x = x;
 	rect.y = y;
-	ui_render_rect(rect, (value == rt.ui.current_textinput.value));
-	if (value == rt.ui.current_textinput.value)
+	ui_render_rect(rect, (value == g_rt.ui.current_textinput.value));
+	if (value == g_rt.ui.current_textinput.value)
 	{
-		ui_render_text(rt.ui.current_textinput.input,
+		ui_render_text(g_rt.ui.current_textinput.input,
 			rect.x + 1, rect.y + 1, FALSE);
 	}
 	else if ((str = ft_f32_to_str(*value, 4)))

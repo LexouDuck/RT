@@ -19,22 +19,22 @@ int			opencl_init_gpu_memory(void)
 {
 	int		error;
 
-	rt.ocl.gpu_buf.scene = clCreateBuffer(rt.ocl.context,
+	g_rt.ocl.gpu_buf.scene = clCreateBuffer(g_rt.ocl.context,
 		CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR,
-		sizeof(t_scene), &rt.scene, &error);
+		sizeof(t_scene), &g_rt.scene, &error);
 	if (error < 0)
 		return (opencl_handle_error(error, "opencl_init_gpu_memory:"
 		" create read/write buffer failed for scene for "RT_CL_KERNEL_0));
-	rt.ocl.gpu_buf.img_texture = clCreateBuffer(rt.ocl.context,
+	g_rt.ocl.gpu_buf.img_texture = clCreateBuffer(g_rt.ocl.context,
 		CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,
-		sizeof(t_u32) * 100 * 100, rt.img_texture, &error);
+		sizeof(t_u32) * 100 * 100, g_rt.img_texture, &error);
 	if (error < 0)
 		return (opencl_handle_error(error, "opencl_init_gpu_memory:"
 		" create write buffer failed for texture for "RT_CL_KERNEL_1));
-	rt.ocl.gpu_buf.canvas_pixels = clCreateBuffer(rt.ocl.context,
+	g_rt.ocl.gpu_buf.canvas_pixels = clCreateBuffer(g_rt.ocl.context,
 		CL_MEM_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,
-		sizeof(t_u32) * rt.scene.work_dims.x * rt.scene.work_dims.y,
-		rt.canvas->pixels, &error);
+		sizeof(t_u32) * g_rt.scene.work_dims.x * g_rt.scene.work_dims.y,
+		g_rt.canvas->pixels, &error);
 	if (error < 0)
 		return (opencl_handle_error(error, "opencl_init_gpu_memory:"
 		" create write buffer failed for canvas for "RT_CL_KERNEL_2));
@@ -45,21 +45,21 @@ int			opencl_release_memory_buffers(void)
 {
 	cl_int	error;
 
-	if (rt.ocl.gpu_buf.canvas_pixels &&
-		(error = clReleaseMemObject(rt.ocl.gpu_buf.canvas_pixels)))
+	if (g_rt.ocl.gpu_buf.canvas_pixels &&
+		(error = clReleaseMemObject(g_rt.ocl.gpu_buf.canvas_pixels)))
 		return (opencl_handle_error(error, "opencl_release_memory_buffers:"
 		" release of canvas buffer failed."));
-	rt.ocl.gpu_buf.canvas_pixels = NULL;
-	if (rt.ocl.gpu_buf.scene &&
-		(error = clReleaseMemObject(rt.ocl.gpu_buf.scene)))
+	g_rt.ocl.gpu_buf.canvas_pixels = NULL;
+	if (g_rt.ocl.gpu_buf.scene &&
+		(error = clReleaseMemObject(g_rt.ocl.gpu_buf.scene)))
 		return (opencl_handle_error(error, "opencl_release_memory_buffers:"
 		" release of scene buffer failed."));
-	rt.ocl.gpu_buf.scene = NULL;
-	if (rt.ocl.gpu_buf.img_texture &&
-		(error = clReleaseMemObject(rt.ocl.gpu_buf.img_texture)))
+	g_rt.ocl.gpu_buf.scene = NULL;
+	if (g_rt.ocl.gpu_buf.img_texture &&
+		(error = clReleaseMemObject(g_rt.ocl.gpu_buf.img_texture)))
 		return (opencl_handle_error(error, "opencl_release_memory_buffers:"
 		" release of img texture buffer failed."));
-	rt.ocl.gpu_buf.img_texture = NULL;
+	g_rt.ocl.gpu_buf.img_texture = NULL;
 	return (OK);
 }
 
@@ -78,13 +78,13 @@ int			opencl_release_queue_context_program(void)
 {
 	cl_int	error;
 
-	if ((error = clReleaseCommandQueue(rt.ocl.cmd_queue)))
+	if ((error = clReleaseCommandQueue(g_rt.ocl.cmd_queue)))
 		return (opencl_handle_error(error, "opencl_release_queue_context_"
 		"program: queue release failed."));
-	if ((error = clReleaseContext(rt.ocl.context)))
+	if ((error = clReleaseContext(g_rt.ocl.context)))
 		return (opencl_handle_error(error, "opencl_release_queue_context_"
 		"program: context release failed."));
-	if ((error = clReleaseProgram(rt.ocl.program)))
+	if ((error = clReleaseProgram(g_rt.ocl.program)))
 		return (opencl_handle_error(error, "opencl_release_queue_context_"
 		"program: program release failed."));
 	return (OK);
@@ -95,13 +95,13 @@ int			opencl_freeall(void)
 	cl_int	error;
 	int		i;
 
-	if ((error = clFinish(rt.ocl.cmd_queue)))
+	if ((error = clFinish(g_rt.ocl.cmd_queue)))
 		return (opencl_handle_error(error, "opencl_freeall:"
 		" finish failed before release."));
 	i = -1;
 	while (++i < RT_CL_KERNEL_AMOUNT)
 	{
-		if ((error = clReleaseKernel(rt.ocl.kernels[i])))
+		if ((error = clReleaseKernel(g_rt.ocl.kernels[i])))
 		{
 			debug_output_value("error: kernel #", ft_s32_to_str(i), TRUE);
 			return (opencl_handle_error(error, "opencl_freeall:"

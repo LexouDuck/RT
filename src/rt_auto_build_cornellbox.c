@@ -34,7 +34,6 @@ static void		write_cornellbox4(int fd)
 	ft_write_line(fd, "scale:(31.00000, 1.00000, 31.00000)");
 	ft_write_line(fd, "bbox_vi:(-0.50000, -0.50000, -0.50000)");
 	ft_write_line(fd, "bbox_vf:(0.50000, 0.50000, 0.50000)\n");
-
 }
 
 static void		write_cornellbox3(int fd)
@@ -105,15 +104,12 @@ static void		write_cornellbox1(int fd)
 	ft_write_line(fd, "scale:(0.00000, 0.00000, 0.00000)");
 	ft_write_line(fd, "bbox_vi:(-1.00000, -1.00000, -1.00000)");
 	ft_write_line(fd, "bbox_vf:(1.00000, 1.00000, 1.00000)\n");
-	
 }
 
 void			rt_auto_build_cornellbox(int fd)
 {
-	
 	write_cornellbox1(fd);
 	write_cornellbox2(fd);
 	write_cornellbox3(fd);
 	write_cornellbox4(fd);
-	
 }

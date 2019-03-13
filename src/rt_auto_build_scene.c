@@ -67,7 +67,7 @@ int				rt_auto_build_scene(char *filename)
 		debug_output_value("open() -> ", strerror(errno), FALSE);
 		return (ERROR);
 	}
-	ft_srand(rt.sdl.current_frame);
+	ft_srand(g_rt.sdl.current_frame);
 	write_scene(fd);
 	if (close(fd) < 0)
 	{

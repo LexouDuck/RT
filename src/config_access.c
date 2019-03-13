@@ -14,24 +14,24 @@
 
 inline char		*config_get(int index)
 {
-	if (rt.config.names[index])
+	if (g_rt.config.names[index])
 	{
-		if (rt.config.values[index])
-			return (rt.config.values[index]);
+		if (g_rt.config.values[index])
+			return (g_rt.config.values[index]);
 		else
-			return (rt.config.defaults[index]);
+			return (g_rt.config.defaults[index]);
 	}
 	return (NULL);
 }
 
 inline void		config_set(int index, char *value)
 {
-	if (rt.config.names[index])
+	if (g_rt.config.names[index])
 	{
-		if (rt.config.values[index])
+		if (g_rt.config.values[index])
 		{
-			free(rt.config.values[index]);
+			free(g_rt.config.values[index]);
 		}
-		rt.config.values[index] = value;
+		g_rt.config.values[index] = value;
 	}
 }

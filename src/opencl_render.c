@@ -19,7 +19,7 @@
 ** code to print program as is stored in memory
 ** char str[40000];
 **
-** err = clGetProgramInfo(rt.ocl.program, CL_PROGRAM_SOURCE, 40000, str, NULL);
+** err = clGetProgramInfo(g_rt.ocl.program, CL_PROGRAM_SOURCE, 40000, str, NULL);
 ** 		if (err < 0)
 ** 		return (debug_perror(" read source failed for "RT_CL_PROGRAM_SOURCE));
 ** 		printf("%s", str);
@@ -42,32 +42,32 @@ int					render_enqueue_pairwise_kernels_inner(
 	t_work_array		work_dim_end;
 
 	work_offsets.z = 0;
-	while (work_offsets.z < rt.scene.work_dims.z)
+	while (work_offsets.z < g_rt.scene.work_dims.z)
 	{
-		work_dim_end = rt.scene.work_steps;
+		work_dim_end = g_rt.scene.work_steps;
 /*		work_dim_end = (t_work_array){
-		ft_min(rt.scene.work_steps.x, rt.scene.work_dims.x - work_offsets.x),
-		ft_min(rt.scene.work_steps.y, rt.scene.work_dims.y - work_offsets.y),
-		ft_min(rt.scene.work_steps.z, rt.scene.work_dims.z - work_offsets.z)};
-*/		if ((err = clEnqueueNDRangeKernel(rt.ocl.cmd_queue,
-					rt.ocl.kernels[1], 3, (size_t const *)&work_offsets,
+		ft_min(g_rt.scene.work_steps.x, g_rt.scene.work_dims.x - work_offsets.x),
+		ft_min(g_rt.scene.work_steps.y, g_rt.scene.work_dims.y - work_offsets.y),
+		ft_min(g_rt.scene.work_steps.z, g_rt.scene.work_dims.z - work_offsets.z)};
+*/		if ((err = clEnqueueNDRangeKernel(g_rt.ocl.cmd_queue,
+					g_rt.ocl.kernels[1], 3, (size_t const *)&work_offsets,
 					(size_t const *)&work_dim_end, NULL, 0, NULL, NULL)) < 0)
 			return (opencl_handle_error(err, "render_pairwise_kernels:"
 								" enqueue kernel failed for "RT_CL_KERNEL_1));
 /*
-	printf("canvas_w = %d, canvas_h = %d;\n", rt.canvas_w, rt.canvas_h);
-	printf("raysamp_size = %d;\n", rt.scene.mc_raysamp_size);
+	printf("canvas_w = %d, canvas_h = %d;\n", g_rt.canvas_w, g_rt.canvas_h);
+	printf("raysamp_size = %d;\n", g_rt.scene.mc_raysamp_size);
 	printf("work_dim_end = %zu, %zu, %zu;\n", work_dim_end.x, work_dim_end.y, work_dim_end.z);
-	printf("work_steps = %zu, %zu, %zu;\n", rt.scene.work_steps.x, rt.scene.work_steps.y, rt.scene.work_steps.z);
+	printf("work_steps = %zu, %zu, %zu;\n", g_rt.scene.work_steps.x, g_rt.scene.work_steps.y, g_rt.scene.work_steps.z);
 	printf("work_offsets = %zu, %zu, %zu;\n\n", work_offsets.x, work_offsets.y, work_offsets.z);
 */
-		work_offsets.z += rt.scene.work_steps.z;
+		work_offsets.z += g_rt.scene.work_steps.z;
 	}
-	if ((err = clFinish(rt.ocl.cmd_queue)) < 0)
+	if ((err = clFinish(g_rt.ocl.cmd_queue)) < 0)
 		return (opencl_handle_error(err, "render_pairwise_kernels:"
 							" clFinish failed for "RT_CL_KERNEL_1));
-	if ((err = clEnqueueNDRangeKernel(rt.ocl.cmd_queue,
-				rt.ocl.kernels[2], 2, (size_t const *)&work_offsets,
+	if ((err = clEnqueueNDRangeKernel(g_rt.ocl.cmd_queue,
+				g_rt.ocl.kernels[2], 2, (size_t const *)&work_offsets,
 				(size_t const *)&work_dim_end, NULL, 0, NULL, NULL)) < 0)
 		return (opencl_handle_error(err, "render_pairwise_kernels:"
 								" enqueue kernel failed for "RT_CL_KERNEL_2));
@@ -79,20 +79,20 @@ int					render_enqueue_pairwise_kernels(void)
 	t_work_array		work_offsets;
 
 	work_offsets.y = 0;
-	while (work_offsets.y < rt.scene.work_dims.y)
+	while (work_offsets.y < g_rt.scene.work_dims.y)
 	{
 		work_offsets.x = 0;
-		while (work_offsets.x < rt.scene.work_dims.x)
+		while (work_offsets.x < g_rt.scene.work_dims.x)
 		{
 			if (render_enqueue_pairwise_kernels_inner(work_offsets))
 				return (debug_perror("render_enqueue_pairwise_kernels:"
 									" render failed."));
-			work_offsets.x += rt.scene.work_steps.x;
+			work_offsets.x += g_rt.scene.work_steps.x;
 		}
-		work_offsets.y += rt.scene.work_steps.y;
-		rt.ocl.render_progress = (float)work_offsets.y / rt.scene.work_dims.y;
+		work_offsets.y += g_rt.scene.work_steps.y;
+		g_rt.ocl.render_progress = (float)work_offsets.y / g_rt.scene.work_dims.y;
 		debug_output_value("Progress: ",
-					ft_f32_to_str(rt.ocl.render_progress * 100.f, 3), TRUE);
+					ft_f32_to_str(g_rt.ocl.render_progress * 100.f, 3), TRUE);
 	}
 	return (OK);
 }
@@ -103,7 +103,7 @@ int					render(void)
 
 	if (render_launch_kernel0_build_scene())
 		return (debug_perror("render: failure in launch_kernel0"));
-	if ((error = clFinish(rt.ocl.cmd_queue)) < 0)
+	if ((error = clFinish(g_rt.ocl.cmd_queue)) < 0)
 		return (opencl_handle_error(error, "render:"
 							" clFinish failed for "RT_CL_KERNEL_0));
 	if (render_init_work_step_and_ray_tensor_buf())
@@ -116,7 +116,7 @@ int					render(void)
 		return (debug_perror("render: failure in args for "RT_CL_KERNEL_2));
 	if (render_enqueue_pairwise_kernels())
 		return (debug_perror("render: failure in core render kernel queue."));
-	if ((error = clFinish(rt.ocl.cmd_queue)) < 0)
+	if ((error = clFinish(g_rt.ocl.cmd_queue)) < 0)
 		return (opencl_handle_error(error, "render:"
 							" clFinish failed for render kernel queue."));
 	if (render_read_and_release_gpu_buffers())

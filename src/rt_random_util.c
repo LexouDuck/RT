@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rt_random.c                                        :+:      :+:    :+:   */
+/*   rt_random_util.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -22,14 +22,14 @@ inline static t_u32	ft_rand_bit_shuffle(t_u32 n)
 
 t_u32				ft_srand(t_u32 seed)
 {
-	rt.random_value = DEFAULT_SEED * seed;
-	return (rt.random_value);
+	g_rt.random_value = DEFAULT_SEED * seed;
+	return (g_rt.random_value);
 }
 
 t_u32				ft_rand(void)
 {
-	rt.random_value = CEIL_SQRT_MOD * ft_rand_bit_shuffle(rt.random_value);
-	rt.random_value += OFFSET;
-	rt.random_value &= MODULUS;
-	return (rt.random_value);
+	g_rt.random_value = CEIL_SQRT_MOD * ft_rand_bit_shuffle(g_rt.random_value);
+	g_rt.random_value += OFFSET;
+	g_rt.random_value &= MODULUS;
+	return (g_rt.random_value);
 }

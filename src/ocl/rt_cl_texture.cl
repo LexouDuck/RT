@@ -211,6 +211,7 @@ static t_texture	rt_cl_get_texture_properties
 	//TODO add conditional for 2d texturing vs 3d texturing
 	if (obj->pattern == image)
 	{
+		//TODO @Hugo, t'as trois fois / 255.f, remplace par multiplier par l'inverse avec native_recip()
 		i = round(texture.uvw_pos.y * 99.f) * 100 + round(texture.uvw_pos.x * 99.f);
 		texture.rgb = (float3)(((img_texture[i] >> 16) & 0xFF) / 255.f, ((img_texture[i] >> 8) & 0xFF) / 255.f, ((img_texture[i]) & 0xFF) / 255.f);
 	}

@@ -168,9 +168,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 						__constant	t_scene	*	scene,
 						__constant	uint *		img_texture,
 									uint2 *		random_seeds,
-									t_ray		ray,
-									int			sampid,
-									int			depth
+									t_ray		ray
 )
 {
 	__constant	t_object *	obj = &(scene->objects[ray.hit_obj_id]);
@@ -198,12 +196,6 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 	new_ray.t = scene->render_dist;
 	new_ray.complete = (obj->material == light);
 	new_ray.lum_acc = ray.lum_acc;
-
-#if 0
-	new_ray.lum_mask = ray.lum_mask * obj->rgb;
-	new_ray.lum_mask *= (float3)(1. - new_ray.complete) * (float3)(dot(normal, new_ray.dir));
-	new_ray.lum_acc = ray.lum_acc + (float3)(new_ray.complete) * new_ray.lum_mask;
-#endif
 	
 	if (new_ray.complete)
 	{
@@ -225,7 +217,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 								ray.refrac * obj->refrac;
 		bool	is_transmitted;
 
-		is_transmitted = rt_cl_get_transmit_or_reflect(&new_ray.dir, random_seeds, ray.dir, normal, obj->roughness, prev_refrac, new_refrac);
+		is_transmitted = rt_cl_get_transmit_or_reflect(&new_ray.dir, random_seeds, ray.dir, normal, prev_refrac, new_refrac, obj->roughness);
 		new_ray.lum_mask = (!is_inter_inside && is_transmitted) ?
 			ray.lum_mask * texture.rgb :
 			ray.lum_mask;
@@ -256,8 +248,8 @@ static t_ray			rt_cl_create_camray
 {
 	int const			x_id = get_global_id(0);
 	int const			y_id = get_global_id(1);
-	int const			width = scene->work_dim[0];
-	int const			height = scene->work_dim[1];
+	int const			width = scene->work_dims.x;
+	int const			height = scene->work_dims.y;
 	float16	const		cam_mat44 = scene->camera.c_to_w;
 	float const			fov_val = -width / (2 * tan(scene->camera.hrz_fov));
 	t_ray				camray;
@@ -329,90 +321,152 @@ static t_ray			rt_cl_create_camray
 	camray.refrac = 1.f;//TODO make "is in primitive" functions
 	return (camray);
 }
-
-//For some reason a statement with || doesn't EVER get read properly as a truth statement so I switched conditions around 
-static float3			rt_cl_get_pixel_color_from_mc_sampling
+ 
+static float3			rt_cl_get_ray_pixel_contribution
 (
 					__constant		t_scene	*	scene,
 					__constant		uint *		img_texture,
 									uint2 *		random_seeds
 )
 {
-	float3				pixel_rgb = (float3)(0.);
-	float const			inv_samp_size = native_recip((float)scene->mc_raysamp_size);
 	t_ray				ray_i;
 	t_intersection		inter;
 
-	for (uint i = 0; i < scene->mc_raysamp_size; ++i)
+	ray_i = rt_cl_create_camray(scene, random_seeds);
+	for (uint depth = 0; !ray_i.complete && depth < scene->max_ray_depth; ++depth)
 	{
-		ray_i = rt_cl_create_camray(scene, random_seeds);
-		for (uint depth = 0; !ray_i.complete && depth < scene->max_ray_depth; ++depth)
+		inter = rt_cl_trace_ray_to_scene(scene, &ray_i);
+		if (inter)
 		{
-			inter = rt_cl_trace_ray_to_scene(scene, &ray_i);
-			if (inter)
+			if (scene->render_mode == RENDERMODE_MCPT)
 			{
-				if (scene->render_mode == RENDERMODE_MCPT)
-				{
-					ray_i = rt_cl_accumulate_lum_and_bounce_ray(scene, img_texture, random_seeds, ray_i, i, depth);
-				}
-				else if (scene->render_mode == RENDERMODE_SOLIDTEXTURE)
-				{
-					ray_i = rt_cl_accumulate_lum_and_bounce_ray(scene, img_texture, random_seeds, ray_i, i, depth);
-					return (ray_i.lum_acc);
-				}
-				else
-				{
-					if (inter == INTER_INSIDE)
-						return (scene->objects[ray_i.hit_obj_id].rgb_b);
-					else
-						return (scene->objects[ray_i.hit_obj_id].rgb_a);
-				}
+				ray_i = rt_cl_accumulate_lum_and_bounce_ray(scene, img_texture, random_seeds, ray_i);
+			}
+			else if (scene->render_mode == RENDERMODE_SOLIDTEXTURE)
+			{
+				ray_i = rt_cl_accumulate_lum_and_bounce_ray(scene, img_texture, random_seeds, ray_i);
+				return (ray_i.lum_acc);
 			}
 			else
 			{
-				if (scene->render_mode == RENDERMODE_MCPT)
-				{
-					ray_i.complete = true;
-					ray_i.lum_acc += ray_i.lum_mask * scene->bg_rgb;
-				}
+				if (inter == INTER_INSIDE)
+					return (scene->objects[ray_i.hit_obj_id].rgb_b);
 				else
-				{
-					return (scene->bg_rgb);
-				}
+					return (scene->objects[ray_i.hit_obj_id].rgb_a);
 			}
 		}
-		pixel_rgb += ray_i.lum_acc;
+		else
+		{
+			if (scene->render_mode == RENDERMODE_MCPT)
+			{
+				ray_i.complete = true;
+				ray_i.lum_acc += ray_i.lum_mask * scene->bg_rgb;
+			}
+			else
+			{
+				return (scene->bg_rgb);
+			}
+		}
 	}
-	pixel_rgb *= (float3)(inv_samp_size); 
-	return (pixel_rgb);
+	return (ray_i.lum_acc);
 }
 
 
 __kernel void			rt_cl_render
 (
-					__global		uint *		result_imgbuf,
+					__global		float3 *	rays_pp_tensor,
 					__constant		t_scene	*	scene,
 					__constant		uint *		img_texture
 )
 {
-	int const			x_id = get_global_id(0); /* x-coordinate of the current pixel */
-	int const			y_id = get_global_id(1); /* y-coordinate of the current pixel */
-//	int const			sample_id = get_global_id(2); /* id of the current ray thread amongst the MC simulation for the current pixel*/
-	int const			work_item_id = y_id * scene->work_dim[0] + x_id;//get_global_size(0) + x_id;
+	size_t const			x_id = get_global_id(0); /* x-coordinate of the current pixel */
+	size_t const			y_id = get_global_id(1); /* y-coordinate of the current pixel */
+
+	if (x_id >= scene->work_dims.x || y_id >= scene->work_dims.y)
+	{
+		return ;
+	}
+
+	size_t const			block_x_id = x_id - get_global_offset(0); /* x-coordinate of the current pixel */
+	size_t const			block_y_id = y_id - get_global_offset(1); /* y-coordinate of the current pixel */
+	size_t const			ray_id = get_global_id(2); /* id of the current ray thread amongst the MC simulation for the current pixel*/
+	size_t const			block_width = get_global_size(0);
+	size_t const			block_height = get_global_size(1);
+	size_t const			work_item_id = block_height * block_width * ray_id
+										+					block_width * (block_y_id)
+										+								 (block_x_id);
 	uint2				random_seeds;
+	float3				ray_lum_acc;
 
-	random_seeds.x = x_id;// ^ scene->random_seed_time;
-	random_seeds.y = y_id;// ^ (27309 * scene->random_seed_time - 0x320420C57);
-
-/*if (work_item_id == 0)
-{
-	debug_print_scene(scene);
-	debug_print_camera(&(scene->camera));
-}*/
+/*	if (x_id == 50 && y_id == 100 && ray_id == 0)
+	{
+		printf("render blocx %zu blocy %zu\n", block_x_id, block_y_id);
+	}
+*/
+	random_seeds.x = (x_id ^ scene->random_seed_time) + ray_id;
+	random_seeds.y = y_id ^ (27309 * scene->random_seed_time - 0x320420C57 + ray_id);
 	rt_cl_rand(&random_seeds);
-	float3 vcolor3 = rt_cl_get_pixel_color_from_mc_sampling(scene, img_texture, &random_seeds);
+
+	ray_lum_acc = rt_cl_get_ray_pixel_contribution(scene, img_texture, &random_seeds);
+	rays_pp_tensor[work_item_id] = ray_lum_acc;
+}
+
+
+__kernel void			rt_cl_average
+(
+					__global		uint *				result_imgbuf,
+					__global		float3 *			rays_pp_tensor,
+					__constant		uint4 *				tensor_dims_arg
+)
+{
+	uint4 const			tensor_dims = *tensor_dims_arg;
+	size_t const		x_id = get_global_id(0); /* x-coordinate of the current pixel */
+	size_t const		y_id = get_global_id(1); /* y-coordinate of the current pixel */
+
+	if (x_id >= tensor_dims.w)
+	{
+		return ;
+	}
+
+	size_t const		block_x_id = x_id - get_global_offset(0); /* x-coordinate of the current pixel in current tensor block */
+	size_t const		block_y_id = y_id - get_global_offset(1); /* y-coordinate of the current pixel in current tensor block */
+	size_t const		work_item_id = tensor_dims.w * y_id 
+													+ x_id; /* tensor_dims.w is scene->work_dims.x */
+	size_t const		init = get_global_size(0) * block_y_id //tensor_dims.x * block_y_id
+											+ block_x_id;
+	size_t const		inc = tensor_dims.y * tensor_dims.x;
+	size_t const		tensor_size = inc * tensor_dims.z;
+	float const			inv_samp_size = native_recip((float)tensor_dims.z);
+	float3				vcolor3 = (float3)(0.f);
+	uint3				color3;
+	uint				color;
+
+
+//	int					ray_global_id;
+
+/*	if (x_id == 50 && y_id == 100)
+	{
+		printf("average blocx %zu blocy %zu\n", block_x_id, block_y_id);
+	}
+*/
+	#pragma unroll
+	for (uint i = init; i < tensor_size; i += inc)
+	{
+		vcolor3 += rays_pp_tensor[i];
+	}
+/*
+	#pragma unroll
+	for (int i = 0; i < tensor_dims.z; ++i)
+	{
+		ray_global_id = tensor_dims.y * tensor_dims.x * i
+					+					tensor_dims.x * y_id
+					+									x_id;
+		vcolor3 += rays_pp_tensor[ray_global_id];
+	}
+*/
+	vcolor3 *= (float3)(inv_samp_size);
 	vcolor3 = (float3)(255.f) * fmin(vcolor3, (float3)(1.f));
-	uint3 color3 = (uint3)(floor(vcolor3.x), floor(vcolor3.y), floor(vcolor3.z));
-	uint color = 0xFF000000 | (color3.x << 16) | (color3.y << 8) | (color3.z);
+	color3 = (uint3)(floor(vcolor3.x), floor(vcolor3.y), floor(vcolor3.z));
+	color = 0xFF000000 | (color3.x << 16) | (color3.y << 8) | (color3.z);
 	result_imgbuf[work_item_id] = color;
 }

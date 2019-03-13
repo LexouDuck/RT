@@ -40,7 +40,7 @@
 # define DEFAULT_OBJECT_ROUGHNESS	0.
 # define DEFAULT_OBJECT_OPACITY		1.
 
-# define EPS						0.0003
+# define EPS						0.001
 # define DEFAULT_RENDER_DIST		100000.
 # define DEFAULT_BG_COLOR			0xFF555555
 
@@ -48,11 +48,12 @@
 # define OBJECT_NAME_MAXLENGTH		24
 # define OBJECT_MAX_AMOUNT			32
 
-# define DEFAULT_RAYSAMP_SIZE		16
+# define DEFAULT_RAYSAMP_SIZE		4
 # define DEFAULT_MAX_RAY_DEPTH		4
 
-# define MAXIMUM_RAYSAMP_SIZE		1024
-# define MAXIMUM_MAX_RAY_DEPTH		128
+# define MAXIMUM_RAYSAMP_SIZE		0x400
+# define MAXIMUM_MAX_RAY_DEPTH		0x40
+# define MAXIMUM_RENDER_PRODUCT		0x4000
 
 # define RENDER_MODES				5
 # define DEFAULT_RENDER_MODE		4
@@ -194,12 +195,6 @@ typedef struct		s_bbox
 	cl_float3		vi;
 	cl_float3		vf;
 }					t_bbox;
-/*
-** typedef struct	s_bvh
-** {
-** 	cl_bst_node	*root;
-** }				t_bvh;
-*/
 
 /*
 ** PRIMITIVES
@@ -258,7 +253,7 @@ typedef	enum		e_pattern
 	horizontal_stripe,
 	vertical_stripe,
 	checkerboard,
-	image,
+	hue,
 	perlin,
 	marble,
 	wood,
@@ -275,7 +270,6 @@ typedef	enum		e_bump
 typedef struct		s_texture
 {
 	t_pattern		pattern;
-
 	cl_float		texel_value;
 	cl_float3		uvw_pos;
 	cl_float3		uvw_scale;
@@ -289,8 +283,8 @@ typedef struct		s_texture
 
 typedef	enum		e_projection
 {
-	cubic = 0,
-	spherical,
+	spherical = 0,
+	cubic,
 	cylindrical,
 }					t_projection;
 
@@ -362,6 +356,13 @@ typedef struct		s_object
 	t_bump			bump_type;
 }					t_object;
 
+typedef struct	s_work_array
+{
+	size_t			x;
+	size_t			y;
+	size_t			z;
+}				t_work_array;
+
 typedef struct		s_scene
 {
 	cl_uint			bg_color;
@@ -375,7 +376,8 @@ typedef struct		s_scene
 	cl_uint			mc_raysamp_size;
 	cl_uint			random_seed_time;
 	t_rendermode	render_mode;
-	size_t			work_dim[2];
+	t_work_array	work_dims;
+	t_work_array	work_steps;
 }					t_scene;
 
 #endif

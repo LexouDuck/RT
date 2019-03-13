@@ -142,8 +142,6 @@ static int		opencl_read_and_build_program(void)
 
 int				opencl_init(int platform_index)
 {
-	int		error;
-
 	if (opencl_get_platform_and_gpu(platform_index))
 		return (debug_perror("opencl_init:"
 		" could not find an appropriate GPU/platform."));
@@ -154,14 +152,9 @@ int				opencl_init(int platform_index)
 		return (debug_perror("opencl_init: could not build program."));
 	if (opencl_init_gpu_memory())
 		return (debug_perror("opencl_init:"
-		" could not initialize gpu memory buffers."));
-	rt.ocl.kernels[0] = clCreateKernel(rt.ocl.program, RT_CL_KERNEL_0, &error);
-	if (error < 0)
+							" could not initialize gpu memory buffers."));
+	if (opencl_init_kernels())
 		return (debug_perror("opencl_init:"
-		" could not init kernel "RT_CL_KERNEL_0));
-	rt.ocl.kernels[1] = clCreateKernel(rt.ocl.program, RT_CL_KERNEL_1, &error);
-	if (error < 0)
-		return (debug_perror("opencl_init:"
-		" could not init kernel "RT_CL_KERNEL_1));
+							" could not initialize kernels."));
 	return (OK);
 }

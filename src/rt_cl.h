@@ -61,9 +61,10 @@
 # define RT_CL_PROGRAM_OPTIONS			"-Werror"
 # define RT_CL_PROGRAM_SOURCE			"concat.cl"
 
-# define RT_CL_KERNEL_AMOUNT			2
+# define RT_CL_KERNEL_AMOUNT			3
 # define RT_CL_KERNEL_0					"rt_cl_build_scene"
 # define RT_CL_KERNEL_1					"rt_cl_render"
+# define RT_CL_KERNEL_2					"rt_cl_average"
 
 typedef struct	s_gpu
 {
@@ -73,7 +74,7 @@ typedef struct	s_gpu
 	size_t			max_kernel_args_size;
 	size_t			max_witems_per_wgroup;
 	cl_uint			max_nd_range;
-	size_t			max_witems_per_dim[4];
+	size_t			max_witems_per_dim[3];
 }				t_gpu;
 
 typedef	struct	s_gpu_buffers
@@ -81,6 +82,8 @@ typedef	struct	s_gpu_buffers
 	cl_mem			scene;
 	cl_mem			canvas_pixels;
 	cl_mem			img_texture;
+	cl_mem			ray_lum_tensor;
+	cl_mem			tensor_dims;
 }				t_gpu_buffers;
 
 typedef struct	s_cl
@@ -123,6 +126,21 @@ int				opencl_release_memory_buffers(void);
 int				opencl_refresh_gpu_memory_buffers(void);
 int				opencl_release_queue_context_program(void);
 int				opencl_freeall(void);
+
+/*
+** opencl_kernels.c
+*/
+int				opencl_init_kernels(void);
+int				render_launch_kernel0_build_scene(void);
+int				render_prepare_kernel1_rendermain(void);
+int				render_prepare_kernel2_averagerays(void);
+
+/*
+** opencl_render_mem.c
+*/
+int				render_init_work_step_and_ray_tensor_buf(void);
+int				render_init_tensor_dims_buf(void);
+int				render_read_and_release_gpu_buffers(void);
 
 /*
 ** opencl_get_error_str.c

@@ -19,26 +19,25 @@ int			opencl_init_gpu_memory(void)
 {
 	int		error;
 
-	error = CL_SUCCESS;
 	rt.ocl.gpu_buf.scene = clCreateBuffer(rt.ocl.context,
 		CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR,
 		sizeof(t_scene), &rt.scene, &error);
 	if (error < 0)
 		return (opencl_handle_error(error, "opencl_init_gpu_memory:"
-		" create read/write buffer failed for "RT_CL_KERNEL_0));
-	rt.ocl.gpu_buf.canvas_pixels = clCreateBuffer(rt.ocl.context,
-		CL_MEM_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,
-		sizeof(t_u32) * rt.scene.work_dim[0] * rt.scene.work_dim[1],
-		rt.canvas->pixels, &error);
-	if (error < 0)
-		return (opencl_handle_error(error, "opencl_init_gpu_memory:"
-		" create write buffer failed for "RT_CL_KERNEL_1));
+		" create read/write buffer failed for scene for "RT_CL_KERNEL_0));
 	rt.ocl.gpu_buf.img_texture = clCreateBuffer(rt.ocl.context,
-		CL_MEM_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,
+		CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,
 		sizeof(t_u32) * 100 * 100, rt.img_texture, &error);
 	if (error < 0)
 		return (opencl_handle_error(error, "opencl_init_gpu_memory:"
-		" create write buffer failed for "RT_CL_KERNEL_1));
+		" create write buffer failed for texture for "RT_CL_KERNEL_1));
+	rt.ocl.gpu_buf.canvas_pixels = clCreateBuffer(rt.ocl.context,
+		CL_MEM_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,
+		sizeof(t_u32) * rt.scene.work_dims.x * rt.scene.work_dims.y,
+		rt.canvas->pixels, &error);
+	if (error < 0)
+		return (opencl_handle_error(error, "opencl_init_gpu_memory:"
+		" create write buffer failed for canvas for "RT_CL_KERNEL_2));
 	return (OK);
 }
 

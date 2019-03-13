@@ -102,9 +102,9 @@ static bool		rt_cl_get_transmit_coslobe
 						uint2 *		random_seeds,
 						float3		incdir,
 						float3		normal,
-						float		roughness,
 						float		n1,
-						float		n2
+						float		n2,
+						float		roughness
 )
 {
 	float3		transmit;
@@ -123,9 +123,9 @@ static bool		rt_cl_get_transmit_or_reflect
 						uint2 *			random_seeds,
 						float3			incdir,
 						float3			normal,
-						float			roughness,
 						float			n1,
-						float			n2
+						float			n2,
+						float			roughness
 )
 {
 	float3		newdir;
@@ -140,7 +140,7 @@ static bool		rt_cl_get_transmit_or_reflect
 	schlick = schlick_r0 + (1.f - schlick_r0) * pown((float)(1.f - dot_neg_i_n), 5);
 	if (rt_cl_frand_0_to_1(random_seeds) > schlick)
 	{
-		is_transmitted = rt_cl_get_transmit_coslobe(&newdir, random_seeds, incdir, normal, roughness, n1, n2);
+		is_transmitted = rt_cl_get_transmit_coslobe(&newdir, random_seeds, incdir, normal, n1, n2, roughness);
 	}
 	else
 	{

@@ -16,15 +16,12 @@ static inline float		rt_cl_float3_ynull_dot
 							float3 v2
 )
 {
-	/*
-		v1.y = v2.y = 0;
-		return (dot(v1, v2));
-	*/
 	return (v1.x * v2.x + v1.z * v2.z);
 }
 
 static inline float		rt_cl_float3_yneg_dot
-(							float3 v1, 
+(
+							float3 v1, 
 							float3 v2
 )
 {
@@ -168,7 +165,7 @@ static float16			rt_cl_mat33in44_inv(float16 const mat33)
 	result.s2 = mat33.s1 * mat33.s6 - mat33.s2 * mat33.s5;
 	result.s6 = mat33.s2 * mat33.s4 - mat33.s0 * mat33.s6;
 	result.sA = mat33.s0 * mat33.s5 - mat33.s1 * mat33.s4;
-	result = (float16)(1.f / det) * (result); //TODO use native_recip ?
+	result = (float16)(native_recip((float)det)) * (result);
 	result.s37B = (float3)(0.f, 0.f, 0.f);
 	result.sCDEF = (float4)(0.f, 0.f, 0.f, 1.f);                                                                                                                      
 	return (result);

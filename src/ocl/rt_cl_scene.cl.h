@@ -12,7 +12,7 @@
 
 # define OBJECT_NAME_MAXLENGTH	24
 # define OBJECT_MAX_AMOUNT		32
-# define EPS					0.0003
+# define EPS					0.001
 
 /*
 ** # define HALF_PI		0x1.921fb54442d18p0
@@ -94,9 +94,7 @@ typedef struct		s_camera
 	float3			rgb_mask;
 	t_camera_model	model;
 	float16			c_to_w;
-//	float16			w_to_c;
 }					t_camera;
-
 
 /*
 ** RAYS
@@ -121,7 +119,6 @@ typedef struct		s_ray
 	bool			complete;
 	int				hit_obj_id;
 	float3			hitpos;
-//	cl_uint			depth;
 	float3			lum_mask;
 	float3			lum_acc;
 	float			refrac;
@@ -146,7 +143,6 @@ typedef struct		s_bbox
 ** All primitives are considered to be centered near the origin with default
 ** unit dimensions.
 */
-//INTERSECTIONS
 typedef enum		e_primitive
 {
 	none = 0,
@@ -177,7 +173,6 @@ typedef enum		e_material
 	diffuse,
 	transparent,
 	specular,
-// 	skybox ?
 }					t_material;
 
 typedef	enum		e_pattern
@@ -261,33 +256,39 @@ typedef	enum		e_projection
 **	where rgb contains values between 0. and 1.
 */
 
-typedef struct		s_object
+typedef struct	s_object
 {
-	t_primitive		type;
-	t_material		material;
-	char			name[OBJECT_NAME_MAXLENGTH];
-	uint			color_a;
-	uint			color_b;
-	float3			rgb_a;
-	float3			rgb_b;
-	float3			pos;
-	float3			rot;
-	float3			scale;
-	t_bbox			bbox_os;
-	t_bbox			bbox_ws;
-	float3			uvw_scale;
-	float3			uvw_offset;
-//	float3			specul;
-	float			refrac;//refraction index for snell-descartes
-	float			roughness;
-//	float			intensity;//intensity for lightsrc objects, 1. for other objects //or reflectivity ??
-	float16			o_to_w;
-	float16			w_to_o;
-	float16			n_to_w;
-	t_pattern		pattern;
-	t_projection	uvw_projection;
-	t_bump			bump_type;
-}					t_object;
+	t_primitive			type;
+	t_material			material;
+	char				name[OBJECT_NAME_MAXLENGTH];
+	uint				color_a;
+	uint				color_b;
+	float3				rgb_a;
+	float3				rgb_b;
+	float3				pos;
+	float3				rot;
+	float3				scale;
+	t_bbox				bbox_os;
+	t_bbox				bbox_ws;
+	float3				uvw_scale;
+	float3				uvw_offset;
+	float				refrac;//refraction index for snell-descartes
+	float				roughness;
+	float				opacity;
+	float16				o_to_w;
+	float16				w_to_o;
+	float16				n_to_w;
+	t_pattern			pattern;
+	t_projection		uvw_projection;
+	t_bump				bump_type;
+}				t_object;
+
+typedef struct	s_work_array
+{
+	size_t			x;
+	size_t			y;
+	size_t			z;
+}				t_work_array;
 
 typedef struct		s_scene
 {
@@ -302,5 +303,6 @@ typedef struct		s_scene
 	uint			mc_raysamp_size;
 	uint			random_seed_time;
 	t_rendermode	render_mode;
-	size_t			work_dim[2];
-}					t_scene;
+	t_work_array	work_dims;
+	t_work_array	work_steps;
+}				t_scene;

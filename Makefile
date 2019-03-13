@@ -18,7 +18,7 @@ CFLAGS_MAC	=
 LD	= _
 LD_WIN	= i686-w64-mingw32-ld -r -b binary
 LD_LIN	= ld -r -b binary
-LD_MAC	= ld -r -sectcreate __TEXT __inc_ui_chr
+LD_MAC	= ld -r -sectcreate __DATA __inc_ui_chr
 
 # Libraries
 LIBS		=	$(LIBFT) $(LIBSDL) $(OPENCL)
@@ -106,8 +106,10 @@ SRCS	= 	main.c							\
 			opencl_init.c					\
 			opencl_utils.c					\
 			opencl_memory.c					\
+			opencl_kernels.c				\
 			opencl_get_error_str.c			\
 			opencl_render.c					\
+			opencl_render_mem.c				\
 			debug.c							\
 			config.c						\
 			config_ini.c					\

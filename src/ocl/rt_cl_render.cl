@@ -165,6 +165,7 @@ static t_intersection		rt_cl_trace_ray_to_scene
 
 static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 (
+
 						__constant	t_scene	*	scene,
 						__constant	uint *		img_texture,
 									uint2 *		random_seeds,
@@ -180,14 +181,13 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 
 	hitpos = ray.hitpos;
 	normal = ray.inter_type * rt_cl_primitive_get_normal(hitpos, obj->type);
-	is_inter_inside = (ray.inter_type == INTER_INSIDE);
-	texture = rt_cl_get_texture_properties(scene, obj, img_texture, random_seeds, hitpos, normal);
+	is_inter_inside = (ray.inter_type == INTER_INSIDE);	
+//	texture = rt_cl_get_texture_properties(scene, obj, img_texture, random_seeds, hitpos, normal);
 	if (scene->render_mode == RENDERMODE_SOLIDTEXTURE)
 	{
 		ray.lum_acc += texture.rgb * ray.lum_mask;
 		return (ray);
 	}
-
 	normal = texture.bump_normal;
 
 	new_ray.refrac = ray.refrac;
@@ -195,6 +195,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 	new_ray.inter_type = INTER_NONE;
 	new_ray.t = scene->render_dist;
 	new_ray.complete = (obj->material == light);
+
 	new_ray.lum_acc = ray.lum_acc;
 	
 	if (new_ray.complete)
@@ -204,9 +205,10 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 		new_ray.dir = (float3)(0.f, 0.f, 0.f);
 		new_ray.lum_mask = ray.lum_mask;
 	}
+
 	else if (obj->material == diffuse)
 	{
-		new_ray.dir = rt_cl_rand_dir_coshemi(random_seeds, normal);
+//		new_ray.dir = rt_cl_rand_dir_coshemi(random_seeds, normal);
 		new_ray.lum_mask = ray.lum_mask * texture.rgb * (float3)(dot(normal, new_ray.dir));//cos sampling, defines contribution to ray.lum_acc
 	}
 	else if (obj->material == transparent)
@@ -217,10 +219,11 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 								ray.refrac * obj->refrac;
 		bool	is_transmitted;
 
-		is_transmitted = rt_cl_get_transmit_or_reflect(&new_ray.dir, random_seeds, ray.dir, normal, prev_refrac, new_refrac, obj->roughness);
+//		is_transmitted = rt_cl_get_transmit_or_reflect(&new_ray.dir, random_seeds, ray.dir, normal, prev_refrac, new_refrac, obj->roughness);
 		new_ray.lum_mask = (!is_inter_inside && is_transmitted) ?
 			ray.lum_mask * texture.rgb :
 			ray.lum_mask;
+
 		//nnew_ray.lum_mask = ray.lum_mask * texture.rgb; //TODO replace with this line and return texture.rgb = 1.1.1. for inter_outside and an average of samples for inter_inside
 
 		ray.refrac = is_transmitted ? new_refrac : prev_refrac;
@@ -233,10 +236,9 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 		new_ray.dir = rt_cl_get_reflect_coslobe(random_seeds, ray.dir, normal, obj->roughness);
 		new_ray.lum_mask = ray.lum_mask * texture.rgb * (float3)(dot(normal, new_ray.dir));//*dot(new_dir, reflect) ?
 	}
-
 	hitpos = mad(EPS, new_ray.dir, hitpos);//TODO @Hugo maybe textures should take care of this call actually ?
-	new_ray.pos = rt_cl_apply_homogeneous_matrix(obj->o_to_w, hitpos);
-	new_ray.dir = rt_cl_apply_linear_matrix(obj->o_to_w, new_ray.dir);
+//	new_ray.pos = rt_cl_apply_homogeneous_matrix(obj->o_to_w, hitpos);
+//	new_ray.dir = rt_cl_apply_linear_matrix(obj->o_to_w, new_ray.dir);
 	return (new_ray);
 }
 
@@ -416,27 +418,28 @@ __kernel void			rt_cl_average
 (
 					__global		uint *				result_imgbuf,
 					__global		float3 *			rays_pp_tensor,
-					__constant		uint4 *				tensor_dims_arg
+					__constant		uint8 *				tensor_dims_arg
 )
 {
-	uint4 const			tensor_dims = *tensor_dims_arg;
+	uint3 const			work_steps = tensor_dims_arg->s012; /* work_step.xyz */
+	uint3 const			work_dims = tensor_dims_arg->s456; /* work_dims.xyz, or equivalently (float3)(canvas_w, canvas_h, mc_raysamp_size) */
 	size_t const		x_id = get_global_id(0); /* x-coordinate of the current pixel */
 	size_t const		y_id = get_global_id(1); /* y-coordinate of the current pixel */
 
-	if (x_id >= tensor_dims.w)
+	if (x_id >= work_dims.x || y_id >= work_dims.y)
 	{
 		return ;
 	}
 
 	size_t const		block_x_id = x_id - get_global_offset(0); /* x-coordinate of the current pixel in current tensor block */
 	size_t const		block_y_id = y_id - get_global_offset(1); /* y-coordinate of the current pixel in current tensor block */
-	size_t const		work_item_id = tensor_dims.w * y_id 
-													+ x_id; /* tensor_dims.w is scene->work_dims.x */
-	size_t const		init = get_global_size(0) * block_y_id //tensor_dims.x * block_y_id
+	size_t const		work_item_id = work_dims.x * y_id
+													+ x_id;
+	size_t const		init = get_global_size(0) * block_y_id //work_steps.x * block_y_id
 											+ block_x_id;
-	size_t const		inc = tensor_dims.y * tensor_dims.x;
-	size_t const		tensor_size = inc * tensor_dims.z;
-	float const			inv_samp_size = native_recip((float)tensor_dims.z);
+	size_t const		inc = work_steps.y * work_steps.x;
+	size_t const		tensor_size = inc * work_dims.z; // we need the full ray dimension of the tensor for a quick average
+	float const			inv_samp_size = native_recip((float)work_dims.z);
 	float3				vcolor3 = (float3)(0.f);
 	uint3				color3;
 	uint				color;

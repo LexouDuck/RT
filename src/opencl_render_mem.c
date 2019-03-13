@@ -41,19 +41,21 @@ int					render_init_work_step_and_ray_tensor_buf(void)
 
 int					render_init_tensor_dims_buf(void)
 {
-	cl_uint4				tensor_dims;
+	cl_uint8				tensor_dims;
 	int						error;
 
-	tensor_dims = (cl_uint4){{rt.scene.work_steps.x, rt.scene.work_steps.y,
-							rt.scene.work_dims.z, rt.scene.work_dims.x}};
+	tensor_dims = (cl_uint8){{rt.scene.work_steps.x, rt.scene.work_steps.y, 
+								rt.scene.work_steps.z, 0,
+								rt.scene.work_dims.x, rt.scene.work_dims.y,
+								rt.scene.work_dims.z, 0}};
 	rt.ocl.gpu_buf.tensor_dims = clCreateBuffer(rt.ocl.context, CL_MEM_READ_ONLY
-		| CL_MEM_COPY_HOST_PTR, sizeof(cl_uint4), &tensor_dims, &error);
+		| CL_MEM_COPY_HOST_PTR, sizeof(cl_uint8), &tensor_dims, &error);
 	if (error < 0)
 		return (opencl_handle_error(error, "render_init_tensor_dims_buf:"
 			" create read/write buffer failed for scene for "RT_CL_KERNEL_2));
 	if ((error = clEnqueueWriteBuffer(rt.ocl.cmd_queue,
 				rt.ocl.gpu_buf.tensor_dims, CL_TRUE, 0,
-				sizeof(cl_uint3), &(tensor_dims), 0, NULL, NULL)) < 0)
+				sizeof(cl_uint8), &(tensor_dims), 0, NULL, NULL)) < 0)
 		return (opencl_handle_error(error, "render_init_tensor_dims_buf:"
 							" write to gpu failed for "RT_CL_KERNEL_2));
 	return (OK);

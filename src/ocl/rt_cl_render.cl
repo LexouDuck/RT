@@ -328,8 +328,7 @@ static t_ray			rt_cl_create_camray
 	camray.refrac = 1.f;//TODO make "is in primitive" functions
 	return (camray);
 }
-
-//For some reason a statement with || doesn't EVER get read properly as a truth statement so I switched conditions around 
+ 
 static float3			rt_cl_get_ray_pixel_contribution
 (
 					__constant		t_scene	*	scene,
@@ -382,7 +381,6 @@ static float3			rt_cl_get_ray_pixel_contribution
 
 __kernel void			rt_cl_render
 (
-//					__global		uint *		result_imgbuf,
 					__global		float3 *	rays_pp_tensor,
 					__constant		t_scene	*	scene,
 					__constant		uint *		img_texture
@@ -390,6 +388,12 @@ __kernel void			rt_cl_render
 {
 	size_t const			x_id = get_global_id(0); /* x-coordinate of the current pixel */
 	size_t const			y_id = get_global_id(1); /* y-coordinate of the current pixel */
+
+	if (x_id >= scene->work_dims.x || y_id >= scene->work_dims.y)
+	{
+		return ;
+	}
+
 	size_t const			block_x_id = x_id - get_global_offset(0); /* x-coordinate of the current pixel */
 	size_t const			block_y_id = y_id - get_global_offset(1); /* y-coordinate of the current pixel */
 	size_t const			ray_id = get_global_id(2); /* id of the current ray thread amongst the MC simulation for the current pixel*/
@@ -425,6 +429,12 @@ __kernel void			rt_cl_average
 	uint4 const			tensor_dims = *tensor_dims_arg;
 	size_t const		x_id = get_global_id(0); /* x-coordinate of the current pixel */
 	size_t const		y_id = get_global_id(1); /* y-coordinate of the current pixel */
+
+	if (x_id >= tensor_dims.w)
+	{
+		return ;
+	}
+
 	size_t const		block_x_id = x_id - get_global_offset(0); /* x-coordinate of the current pixel in current tensor block */
 	size_t const		block_y_id = y_id - get_global_offset(1); /* y-coordinate of the current pixel in current tensor block */
 	size_t const		work_item_id = tensor_dims.w * y_id 
@@ -437,6 +447,8 @@ __kernel void			rt_cl_average
 	float3				vcolor3 = (float3)(0.f);
 	uint3				color3;
 	uint				color;
+
+
 //	int					ray_global_id;
 
 /*	if (x_id == 50 && y_id == 100)

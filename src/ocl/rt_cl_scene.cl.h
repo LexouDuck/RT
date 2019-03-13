@@ -34,7 +34,8 @@ typedef enum		e_rendermode
 	RENDERMODE_BBOX_OS,
 	RENDERMODE_BBOX_WS,
 	RENDERMODE_SOLIDCOLOR,
-	RENDERMODE_SOLIDTEXTURE
+	RENDERMODE_SOLIDTEXTURE,
+	RENDERMODE_NORMALS,
 }					t_rendermode;
 
 /*
@@ -116,14 +117,13 @@ typedef struct		s_ray
 	float3			pos;
 	float3			dir;
 	float			t;
-	bool			complete;
 	int				hit_obj_id;
 	float3			hitpos;
 	float3			lum_mask;
 	float3			lum_acc;
 	float			refrac;
 	t_intersection	inter_type;
-	float2			uvw_coordinates;
+	bool			complete;
 }					t_ray;
 
 /*

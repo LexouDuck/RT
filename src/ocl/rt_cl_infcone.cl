@@ -37,20 +37,20 @@ static t_intersection		rt_cl_infcone_intersect
 	bool			ray_hrz_orient;
 
 	quadpoly.x = rt_cl_float3_yneg_dot(ray.dir, ray.dir);
-	quadpoly.y = 2. * rt_cl_float3_yneg_dot(ray.dir, ray.pos);
+	quadpoly.y = 2.f * rt_cl_float3_yneg_dot(ray.dir, ray.pos);
 	quadpoly.z = rt_cl_float3_yneg_dot(ray.pos, ray.pos);
 	if(!(rt_cl_get_realroots_quadpoly(&roots, quadpoly)))
 		return (INTER_NONE);
-	if (roots.x <= 0. && roots.y <= 0.)
+	if (roots.x <= 0.f && roots.y <= 0.f)
 		return (INTER_NONE);
 	ray_hrz_orient = (ray.dir.y * roots.x + ray.pos.y) *
-					(ray.dir.y * roots.y + ray.pos.y) >= 0.;
-	if (roots.x <= 0.)
+					(ray.dir.y * roots.y + ray.pos.y) >= 0.f;
+	if (roots.x <= 0.f)
 	{
 		*res = roots.y;
 		return (ray_hrz_orient ? INTER_INSIDE : INTER_OUTSIDE);
 	}
-	else if (roots.y <= 0.)
+	else if (roots.y <= 0.f)
 	{
 		*res = roots.x;
 		return (ray_hrz_orient ? INTER_INSIDE : INTER_OUTSIDE);

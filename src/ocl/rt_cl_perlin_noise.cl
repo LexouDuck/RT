@@ -4,7 +4,7 @@ static float		rt_cl_rawnoise
 )
 {
 	n = (n << 13) ^ n;
-	return (1.0 - ((n * (n * n * 15731 + 789221) + 1376312589) & 0x7fffffff) / 1073741824.0f);//9.3132257e-10
+	return (1.0f - ((n * (n * n * 15731 + 789221) + 1376312589) & 0x7fffffff) * 9.3132257e-10f);/// 1073741824.0f);
 }
 
 static float		rt_cl_noise_1d

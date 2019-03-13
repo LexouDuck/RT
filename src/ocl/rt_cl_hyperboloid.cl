@@ -36,19 +36,19 @@ static t_intersection		rt_cl_hyperboloid_intersect
 	bool			is_inside_hyperbola;
 
 	quadpoly.x = rt_cl_float3_yneg_dot(ray.dir, ray.dir);
-	quadpoly.y = 2. * rt_cl_float3_yneg_dot(ray.dir, ray.pos);
-	quadpoly.z = rt_cl_float3_yneg_dot(ray.pos, ray.pos) - 1.;
+	quadpoly.y = 2.f * rt_cl_float3_yneg_dot(ray.dir, ray.pos);
+	quadpoly.z = rt_cl_float3_yneg_dot(ray.pos, ray.pos) - 1.f;
 	if(!(rt_cl_get_realroots_quadpoly(&roots, quadpoly)))
 		return (INTER_NONE);
-	if (roots.x <= 0. && roots.y <= 0.)
+	if (roots.x <= 0.f && roots.y <= 0.f)
 		return (INTER_NONE);
-	is_inside_hyperbola = quadpoly.z <= 0.;
-	if (roots.x <= 0.)
+	is_inside_hyperbola = quadpoly.z <= 0.f;
+	if (roots.x <= 0.f)
 	{
 		*res = roots.y;
 		return (is_inside_hyperbola ? INTER_INSIDE : INTER_OUTSIDE);
 	}
-	else if (roots.y <= 0.)
+	else if (roots.y <= 0.f)
 	{
 		*res = roots.x;
 		return (is_inside_hyperbola ? INTER_INSIDE : INTER_OUTSIDE);

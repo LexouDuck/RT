@@ -15,7 +15,7 @@ static float16			rt_cl_build_cam_matrix
 				t_camera	camera
 )
 {
-	float16		cam_mat44 = (float16)(0.);
+	float16		cam_mat44 = (float16)(0.f);
 	float3		axis_x;
 	float3		axis_y;
 	float3		axis_z;
@@ -23,7 +23,7 @@ static float16			rt_cl_build_cam_matrix
 	float		cos_val;
 
 	sin_val = sincos(camera.tilt_angle, &cos_val);
-	axis_y = (float3)(sin_val, cos_val, 0.);
+	axis_y = (float3)(sin_val, cos_val, 0.f);
 	axis_z = normalize(camera.world_pos - camera.anchor);
 	axis_x = cross(axis_y, axis_z);
 	axis_x = normalize(axis_x);
@@ -34,7 +34,7 @@ static float16			rt_cl_build_cam_matrix
 	cam_mat44.s456 = axis_y;
 	cam_mat44.s89A = axis_z;
 	cam_mat44.sCDE = camera.world_pos;
-	cam_mat44.sF = 1.;
+	cam_mat44.sF = 1.f;
 	return (cam_mat44);
 }
 

@@ -27,21 +27,21 @@
 ** ************************************************************************** *|
 */
 
-# define DEFAULT_CAM_POS			((cl_float3){{ 0., 0., 0. }})
-# define DEFAULT_CAM_ANCHOR			((cl_float3){{ 0., 0., 0. }})
-# define DEFAULT_CAM_TILT			0.
-# define DEFAULT_CAM_FOV			0.4
-# define DEFAULT_CAM_APERTURE		0.4
-# define DEFAULT_CAM_FOCALDIST		0.02
-# define DEFAULT_CAM_RGB_MASK		((cl_float3){{ 1.6, 1.6, 1.6 }})
-# define DEFAULT_CAM_RGB_SHADE		((cl_float3){{ 0., 0., 0. }})
+# define DEFAULT_CAM_POS			((cl_float3){{ 0.f, 0.f, 0.f }})
+# define DEFAULT_CAM_ANCHOR			((cl_float3){{ 0.f, 0.f, 0.f }})
+# define DEFAULT_CAM_TILT			0.f
+# define DEFAULT_CAM_FOV			0.4f
+# define DEFAULT_CAM_APERTURE		0.4f
+# define DEFAULT_CAM_FOCALDIST		0.02f
+# define DEFAULT_CAM_RGB_MASK		((cl_float3){{ 1.4f, 1.4f, 1.4f }})
+# define DEFAULT_CAM_RGB_SHADE		((cl_float3){{ 0.f, 0.f, 0.f }})
 
-# define DEFAULT_OBJECT_REFRAC		1.
-# define DEFAULT_OBJECT_ROUGHNESS	0.
-# define DEFAULT_OBJECT_OPACITY		1.
+# define DEFAULT_OBJECT_REFRAC		1.f
+# define DEFAULT_OBJECT_ROUGHNESS	0.f
+# define DEFAULT_OBJECT_OPACITY		1.f
 
-# define EPS						0.001
-# define DEFAULT_RENDER_DIST		100000.
+# define EPS						0.001f
+# define DEFAULT_RENDER_DIST		100000.f
 # define DEFAULT_BG_COLOR			0xFF555555
 
 # define OBJECT_ARGS_AMOUNT			17
@@ -55,8 +55,8 @@
 # define MAXIMUM_MAX_RAY_DEPTH		0x40
 # define MAXIMUM_RENDER_PRODUCT		0x4000
 
-# define RENDER_MODES				5
-# define DEFAULT_RENDER_MODE		0
+# define RENDER_MODES				6
+# define DEFAULT_RENDER_MODE		1
 
 typedef enum	e_rendermode
 {
@@ -65,6 +65,7 @@ typedef enum	e_rendermode
 	RENDERMODE_BBOX_WS,
 	RENDERMODE_SOLIDCOLOR,
 	RENDERMODE_SOLIDTEXTURE,
+	RENDERMODE_NORMALS,
 }				t_rendermode;
 
 # define CAMERA_MODELS	5
@@ -176,14 +177,13 @@ typedef struct		s_ray
 	cl_float3		pos;
 	cl_float3		dir;
 	cl_float		t;
-	cl_bool			complete;
 	cl_int			hit_obj_id;
 	cl_float3		hitpos;
 	cl_float3		lum_mask;
 	cl_float3		lum_acc;
 	cl_float		refrac;
 	t_intersection	inter_type;
-	cl_float2		uvw_coordinates;
+	cl_bool			complete;
 }					t_ray;
 
 /*

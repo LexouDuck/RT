@@ -136,7 +136,7 @@ static bool		rt_cl_get_transmit_or_reflect
 
 	schlick_r0 = (n1 - n2) / (n1 + n2);
 	schlick_r0 = schlick_r0 * schlick_r0;
-	dot_neg_i_n = dot(-incdir, normal); //TODO dot(-incdir, normal); //?
+	dot_neg_i_n = dot(-incdir, normal);
 	schlick = schlick_r0 + (1.f - schlick_r0) * pown((float)(1.f - dot_neg_i_n), 5);
 	if (rt_cl_frand_0_to_1(random_seeds) > schlick)
 	{

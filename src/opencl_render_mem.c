@@ -26,8 +26,8 @@ int					render_init_work_step_and_ray_tensor_buf(void)
 	int						error;
 
 	*wksteps = *((t_work_array *)rt.ocl.gpu.max_witems_per_dim);
-	wksteps->x = ft_min(ft_min(32, wksteps->x), rt.scene.work_dims.x);
-	wksteps->y = ft_min(ft_min(32, wksteps->y), rt.scene.work_dims.y);
+	wksteps->x = ft_min(ft_min(64, wksteps->x), rt.scene.work_dims.x);
+	wksteps->y = ft_min(ft_min(128, wksteps->y), rt.scene.work_dims.y);
 	wksteps->z = ft_min(ft_min(128, wksteps->z), rt.scene.work_dims.z);
 	rt.ocl.gpu_buf.ray_lum_tensor = clCreateBuffer(rt.ocl.context,
 		CL_MEM_READ_WRITE, sizeof(cl_float3) * wksteps->x * wksteps->y *

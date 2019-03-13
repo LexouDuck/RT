@@ -31,12 +31,6 @@
 **		new_nb = (CEIL_SQRT_MOD  * old_nb + OFFSET) % MODULUS
 */
 
-# define DEFAULT_SEED	0x93E21FD5
-
-# define MODULUS		0x7FFFFFFF		
-# define CEIL_SQRT_MOD	46341
-# define OFFSET			2835
-
 static uint		rt_cl_rand
 (
 							uint2 *		rand_s

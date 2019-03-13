@@ -160,6 +160,8 @@ static t_intersection		rt_cl_trace_ray_to_scene
 		(scene->render_mode != RENDERMODE_BBOX_OS) &&
 		prim_inter)
 		*ray = result_ray_os;
+
+//if (get_global_id(0) == 320 && get_global_id(1) == 240)	printf("color in end of trace %f %f %f\n", ray->lum_acc.x, ray->lum_acc.y, ray->lum_acc.z);
 	return (prim_inter);
 }
 
@@ -169,76 +171,85 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 						__constant	t_scene	*	scene,
 						__constant	uint *		img_texture,
 									uint2 *		random_seeds,
-									t_ray		ray
+									t_ray *		ray
 )
 {
-	__constant	t_object *	obj = &(scene->objects[ray.hit_obj_id]);
+	__constant	t_object *	obj = &(scene->objects[ray->hit_obj_id]);
 				t_ray		new_ray;
 				float3		hitpos;
 				float3		normal;
 				t_texture	texture;
 				bool		is_inter_inside;
 
-	hitpos = ray.hitpos;
-	normal = ray.inter_type * rt_cl_primitive_get_normal(hitpos, obj->type);
-	is_inter_inside = (ray.inter_type == INTER_INSIDE);	
-//	texture = rt_cl_get_texture_properties(scene, obj, img_texture, random_seeds, hitpos, normal);
+	hitpos = ray->hitpos;
+	normal = ray->inter_type * rt_cl_primitive_get_normal(hitpos, obj->type);
+	is_inter_inside = (ray->inter_type == INTER_INSIDE);	
+
+	texture = rt_cl_get_texture_properties(scene, obj, img_texture, random_seeds, hitpos, normal);
+	texture.rgb = obj->rgb_a;
+
+//if (get_global_id(0) == 320 && get_global_id(1) == 240)	printf("color in lumacc %f %f %f\n", ray->lum_acc.x, ray->lum_acc.y, ray->lum_acc.z);
 	if (scene->render_mode == RENDERMODE_SOLIDTEXTURE)
 	{
-		ray.lum_acc += texture.rgb * ray.lum_mask;
-		return (ray);
+		new_ray.lum_acc = ray->lum_acc;//+= (float3)(0.f, 1.f, 0.f);//texture.rgb;// * ray.lum_mask;
+		return (new_ray);
+	}
+	if (scene->render_mode == RENDERMODE_NORMALS)
+	{
+		new_ray.lum_acc = fabs(hitpos);
+		return (new_ray);
 	}
 	normal = texture.bump_normal;
+//	printf("normal %f %f %f\n", normal.x, normal.y, normal.z);
 
-	new_ray.refrac = ray.refrac;
+	new_ray.refrac = ray->refrac;
 	new_ray.hit_obj_id = -1;
 	new_ray.inter_type = INTER_NONE;
 	new_ray.t = scene->render_dist;
 	new_ray.complete = (obj->material == light);
-
-	new_ray.lum_acc = ray.lum_acc;
+	new_ray.lum_acc = ray->lum_acc;
 	
 	if (new_ray.complete)
 	{
-		new_ray.lum_acc += ray.lum_mask * texture.rgb; //TODO test with "* dot(normal, -ray.dir)" weighing ?
-
-		new_ray.dir = (float3)(0.f, 0.f, 0.f);
-		new_ray.lum_mask = ray.lum_mask;
+		new_ray.lum_acc += ray->lum_mask * texture.rgb; //TODO test with "* dot(normal, -ray.dir)" weighing ?
+		return (new_ray);
 	}
 
 	else if (obj->material == diffuse)
 	{
-//		new_ray.dir = rt_cl_rand_dir_coshemi(random_seeds, normal);
-		new_ray.lum_mask = ray.lum_mask * texture.rgb * (float3)(dot(normal, new_ray.dir));//cos sampling, defines contribution to ray.lum_acc
+		new_ray.dir = rt_cl_rand_dir_coshemi(random_seeds, normal);
+		new_ray.lum_mask = ray->lum_mask * texture.rgb * (float3)(dot(normal, new_ray.dir));//cos sampling, defines contribution to ray.lum_acc
 	}
 	else if (obj->material == transparent)
 	{
-		float	prev_refrac = ray.refrac;
+		new_ray.lum_mask = ray->lum_mask;
+		float	prev_refrac = ray->refrac;
 		float	new_refrac	= (is_inter_inside) ?
-								ray.refrac / obj->refrac : //TODO replace with a stored obj->inv_refrac and init in build_scene ?
-								ray.refrac * obj->refrac;
+								ray->refrac / obj->refrac : //TODO replace with a stored obj->inv_refrac and init in build_scene ?
+								ray->refrac * obj->refrac;
 		bool	is_transmitted;
 
-//		is_transmitted = rt_cl_get_transmit_or_reflect(&new_ray.dir, random_seeds, ray.dir, normal, prev_refrac, new_refrac, obj->roughness);
+		is_transmitted = rt_cl_get_transmit_or_reflect(&new_ray.dir, random_seeds, ray->dir, normal, prev_refrac, new_refrac, obj->roughness);
 		new_ray.lum_mask = (!is_inter_inside && is_transmitted) ?
-			ray.lum_mask * texture.rgb :
-			ray.lum_mask;
+			ray->lum_mask * texture.rgb :
+			ray->lum_mask;
 
-		//nnew_ray.lum_mask = ray.lum_mask * texture.rgb; //TODO replace with this line and return texture.rgb = 1.1.1. for inter_outside and an average of samples for inter_inside
+		//new_ray.lum_mask = ray.lum_mask * texture.rgb; //TODO replace with this line and return texture.rgb = 1.1.1. for inter_outside and an average of samples for inter_inside
 
-		ray.refrac = is_transmitted ? new_refrac : prev_refrac;
+		new_ray.refrac = is_transmitted ? new_refrac : prev_refrac;
 		//Position correction for transmission
 		if (is_transmitted)
 			hitpos = mad(-2.f * EPS, normal, hitpos);//TODO @Hugo beware with textures for this call
 	}
 	else if (obj->material == specular)
 	{
-		new_ray.dir = rt_cl_get_reflect_coslobe(random_seeds, ray.dir, normal, obj->roughness);
-		new_ray.lum_mask = ray.lum_mask * texture.rgb * (float3)(dot(normal, new_ray.dir));//*dot(new_dir, reflect) ?
+		new_ray.dir = rt_cl_get_reflect_coslobe(random_seeds, ray->dir, normal, obj->roughness);
+		new_ray.lum_mask = ray->lum_mask * texture.rgb * (float3)(dot(normal, new_ray.dir));//*dot(new_dir, reflect) ?
 	}
-	hitpos = mad(EPS, new_ray.dir, hitpos);//TODO @Hugo maybe textures should take care of this call actually ?
-//	new_ray.pos = rt_cl_apply_homogeneous_matrix(obj->o_to_w, hitpos);
-//	new_ray.dir = rt_cl_apply_linear_matrix(obj->o_to_w, new_ray.dir);
+	hitpos = (float3)(EPS) * normal + hitpos;//TODO @Hugo maybe textures should take care of this call actually ?
+	new_ray.pos = rt_cl_apply_homogeneous_matrix(obj->o_to_w, hitpos);
+	new_ray.dir = rt_cl_apply_linear_matrix(obj->o_to_w, new_ray.dir);
+
 	return (new_ray);
 }
 
@@ -253,18 +264,23 @@ static t_ray			rt_cl_create_camray
 	int const			width = scene->work_dims.x;
 	int const			height = scene->work_dims.y;
 	float16	const		cam_mat44 = scene->camera.c_to_w;
-	float const			fov_val = -width / (2 * tan(scene->camera.hrz_fov));
+	float const			fov_val = -width / (2.f * tan(scene->camera.hrz_fov));
 	t_ray				camray;
 	float2				seeds;
 	float2				box_muller_sample;
 	float3				aperture;
 
-	camray.lum_acc = scene->camera.rgb_shade;
-	camray.lum_mask = scene->camera.rgb_mask;
+
 	camray.t = scene->render_dist;
-	camray.complete = false;
 	camray.hit_obj_id = -1;
+	camray.hitpos = (float3)(0.f);
+	camray.lum_mask = scene->camera.rgb_mask;
+	camray.lum_acc = scene->camera.rgb_shade;
+	camray.refrac = 1.f;//TODO make "is in primitive" functions
 	camray.inter_type = INTER_NONE;
+	camray.complete = false;
+
+
 	if (scene->camera.model == CAMERA_MODEL_PINHOLE)
 	{
 		camray.pos = (float3)(0.f, 0.f, 0.f);
@@ -288,8 +304,8 @@ static t_ray			rt_cl_create_camray
 	{
 		seeds = (float2)(rt_cl_frand_0_to_1(random_seeds) / 2,
 						rt_cl_frand_0_to_1(random_seeds) / 2);
-		box_muller_sample = (float2)(sqrt(-2 * log((float)(seeds.x))) * cos((float)(TAU * seeds.y)),
-									sqrt(-2 * log((float)(seeds.x))) * sin((float)(TAU * seeds.y)));
+		box_muller_sample = (float2)(sqrt(-2.f * log((float)(seeds.x))) * cos((float)(TAU * seeds.y)),
+									sqrt(-2.f * log((float)(seeds.x))) * sin((float)(TAU * seeds.y)));
 		camray.dir = (float3)(x_id - width / 2 + box_muller_sample.x, y_id - height / 2 + box_muller_sample.y, fov_val);
 		camray.dir = normalize(camray.dir);
 		aperture.x = rt_cl_frand_0_to_1(random_seeds) * scene->camera.aperture;
@@ -320,7 +336,6 @@ static t_ray			rt_cl_create_camray
 	camray.dir = rt_cl_apply_linear_matrix(cam_mat44, camray.dir);
 	camray.dir = normalize(camray.dir);
 
-	camray.refrac = 1.f;//TODO make "is in primitive" functions
 	return (camray);
 }
  
@@ -332,6 +347,7 @@ static float3			rt_cl_get_ray_pixel_contribution
 )
 {
 	t_ray				ray_i;
+	t_ray				tmp;
 	t_intersection		inter;
 
 	ray_i = rt_cl_create_camray(scene, random_seeds);
@@ -340,14 +356,16 @@ static float3			rt_cl_get_ray_pixel_contribution
 		inter = rt_cl_trace_ray_to_scene(scene, &ray_i);
 		if (inter)
 		{
+//if (get_global_id(0) == 320 && get_global_id(1) == 240)	printf("color in main %f %f %f depth %u\n", ray_i.lum_acc.x, ray_i.lum_acc.y, ray_i.lum_acc.z, depth);
 			if (scene->render_mode == RENDERMODE_MCPT)
 			{
-				ray_i = rt_cl_accumulate_lum_and_bounce_ray(scene, img_texture, random_seeds, ray_i);
+				tmp = rt_cl_accumulate_lum_and_bounce_ray(scene, img_texture, random_seeds, &ray_i);
+				ray_i = tmp;
 			}
-			else if (scene->render_mode == RENDERMODE_SOLIDTEXTURE)
+			else if ((scene->render_mode == RENDERMODE_SOLIDTEXTURE) || (scene->render_mode == RENDERMODE_NORMALS))
 			{
-				ray_i = rt_cl_accumulate_lum_and_bounce_ray(scene, img_texture, random_seeds, ray_i);
-				return (ray_i.lum_acc);
+				tmp = rt_cl_accumulate_lum_and_bounce_ray(scene, img_texture, random_seeds, &ray_i);
+				return (tmp.lum_acc);
 			}
 			else
 			{
@@ -383,15 +401,15 @@ __kernel void			rt_cl_render
 {
 	size_t const			x_id = get_global_id(0); /* x-coordinate of the current pixel */
 	size_t const			y_id = get_global_id(1); /* y-coordinate of the current pixel */
+	size_t const			block_x_id = x_id - get_global_offset(0); /* x-coordinate of the current pixel */
+	size_t const			block_y_id = y_id - get_global_offset(1); /* y-coordinate of the current pixel */
+	size_t const			ray_id = get_global_id(2); /* id of the current ray thread amongst the MC simulation for the current pixel*/
 
-	if (x_id >= scene->work_dims.x || y_id >= scene->work_dims.y)
+	if (x_id >= scene->work_dims.x || y_id >= scene->work_dims.y || ray_id >= scene->work_dims.z)
 	{
 		return ;
 	}
 
-	size_t const			block_x_id = x_id - get_global_offset(0); /* x-coordinate of the current pixel */
-	size_t const			block_y_id = y_id - get_global_offset(1); /* y-coordinate of the current pixel */
-	size_t const			ray_id = get_global_id(2); /* id of the current ray thread amongst the MC simulation for the current pixel*/
 	size_t const			block_width = get_global_size(0);
 	size_t const			block_height = get_global_size(1);
 	size_t const			work_item_id = block_height * block_width * ray_id
@@ -447,11 +465,6 @@ __kernel void			rt_cl_average
 
 //	int					ray_global_id;
 
-/*	if (x_id == 50 && y_id == 100)
-	{
-		printf("average blocx %zu blocy %zu\n", block_x_id, block_y_id);
-	}
-*/
 	#pragma unroll
 	for (uint i = init; i < tensor_size; i += inc)
 	{

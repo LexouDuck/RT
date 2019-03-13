@@ -186,21 +186,19 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 	is_inter_inside = (ray->inter_type == INTER_INSIDE);	
 
 	texture = rt_cl_get_texture_properties(scene, obj, img_texture, random_seeds, hitpos, normal);
-	texture.rgb = obj->rgb_a;
 
 //if (get_global_id(0) == 320 && get_global_id(1) == 240)	printf("color in lumacc %f %f %f\n", ray->lum_acc.x, ray->lum_acc.y, ray->lum_acc.z);
 	if (scene->render_mode == RENDERMODE_SOLIDTEXTURE)
 	{
-		new_ray.lum_acc = ray->lum_acc;//+= (float3)(0.f, 1.f, 0.f);//texture.rgb;// * ray.lum_mask;
-		return (new_ray);
-	}
-	if (scene->render_mode == RENDERMODE_NORMALS)
-	{
-		new_ray.lum_acc = fabs(hitpos);
+		new_ray.lum_acc = texture.rgb * ray->lum_mask;
 		return (new_ray);
 	}
 	normal = texture.bump_normal;
-//	printf("normal %f %f %f\n", normal.x, normal.y, normal.z);
+	if (scene->render_mode == RENDERMODE_NORMALS)
+	{
+		new_ray.lum_acc = fabs(normal);
+		return (new_ray);
+	}
 
 	new_ray.refrac = ray->refrac;
 	new_ray.hit_obj_id = -1;

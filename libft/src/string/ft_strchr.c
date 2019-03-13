@@ -27,6 +27,7 @@ char	*ft_strchr(char const *str, char c)
 	}
 	return (NULL);
 }
+
 /*
 **	if (str == NULL)
 **		return (NULL);
@@ -50,6 +51,7 @@ char	*ft_strrchr(char const *str, char c)
 	}
 	return (NULL);
 }
+
 /*
 **	if (str == NULL)
 **		return (NULL);
@@ -70,6 +72,7 @@ char	*ft_strnchr(char const *str, char c, size_t n)
 	}
 	return (NULL);
 }
+
 /*
 **	if (str == NULL)
 **		return (NULL);

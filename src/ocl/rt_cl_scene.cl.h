@@ -12,7 +12,7 @@
 
 # define OBJECT_NAME_MAXLENGTH	24
 # define OBJECT_MAX_AMOUNT		32
-# define EPS					0.00003
+# define EPS					0.001
 
 /*
 ** # define HALF_PI		0x1.921fb54442d18p0
@@ -62,41 +62,39 @@ typedef enum		e_camera_model
 	CAMERA_MODEL_ORTHOGRAPHIC
 }					t_camera_model;
 
-typedef enum	e_cameramode
+typedef enum		e_cameramode
 {
 	CAMERA_MODE_NONE = 0,
 	CAMERA_MODE_ROTATE,
 	CAMERA_MODE_TILT,
 	CAMERA_MODE_PAN,
-}				t_cameramode;
+}					t_cameramode;
 
 /*
 ** c_to_w.s012 is axis_x, .s456 is axis_y, .s89A is axis_z and .sCDE is world_pos
 */
 
-typedef struct	s_camera
+typedef struct		s_camera
 {
-	t_cameramode		mode;
-	float3				world_pos;
-	float3				anchor;
-	float3				relative_pos;
-	float				zoom;
-	float				lat;
-	float				lon;
-	float				tilt_angle;
-	float3				tilt_vector;
-	float				range_min;
-	float				range_max;
-	float				hrz_fov;
-	float				aperture;
-	float				focal_dist;
-	float3				rgb_shade;
-	float3				rgb_mask;
-	t_camera_model		model;
-	float16				c_to_w;
-//	float16				w_to_c;
-}				t_camera;
-
+	t_cameramode	mode;
+	float3			world_pos;
+	float3			anchor;
+	float3			relative_pos;
+	float			zoom;
+	float			lat;
+	float			lon;
+	float			tilt_angle;
+	float3			tilt_vector;
+	float			range_min;
+	float			range_max;
+	float			hrz_fov;
+	float			aperture;
+	float			focal_dist;
+	float3			rgb_shade;
+	float3			rgb_mask;
+	t_camera_model	model;
+	float16			c_to_w;
+}					t_camera;
 
 /*
 ** RAYS
@@ -113,7 +111,7 @@ typedef enum		e_intersection
 	INTER_NONE = 0
 }					t_intersection;
 
-typedef struct	s_ray
+typedef struct		s_ray
 {
 	float3			pos;
 	float3			dir;
@@ -121,24 +119,23 @@ typedef struct	s_ray
 	bool			complete;
 	int				hit_obj_id;
 	float3			hitpos;
-//	cl_uint			depth;
 	float3			lum_mask;
 	float3			lum_acc;
 	float			refrac;
 	t_intersection	inter_type;
 	float2			uvw_coordinates;
-}				t_ray;
+}					t_ray;
 
 /*
 ** BVH: bounded volume hierarchies
 ** BBox: bounding box
 */
 
-typedef struct	s_bbox
+typedef struct		s_bbox
 {
 	float3	vi;
 	float3	vf;
-}				t_bbox;
+}					t_bbox;
 
 /*
 ** PRIMITIVES
@@ -146,8 +143,7 @@ typedef struct	s_bbox
 ** All primitives are considered to be centered near the origin with default
 ** unit dimensions.
 */
-//INTERSECTIONS
-typedef enum	e_primitive
+typedef enum		e_primitive
 {
 	none = 0,
 	sphere,
@@ -164,23 +160,22 @@ typedef enum	e_primitive
 	infcone,
 	saddle,
 	obj_mesh,
-}				t_primitive;
+}					t_primitive;
 
 /*
 ** Categories for the optical properties of materials for each geometric
 ** primtive (ie, how they interact with or produce light). Normals play
 ** a major role here.
 */
-typedef enum	e_material
+typedef enum		e_material
 {
 	light = 0,
 	diffuse,
 	transparent,
 	specular,
-// 	skybox ?
-}				t_material;
+}					t_material;
 
-typedef	enum	e_pattern
+typedef	enum		e_pattern
 {
 	solid = 0,
 	horizontal_wave,
@@ -193,25 +188,32 @@ typedef	enum	e_pattern
 	perlin,
 	marble,
 	wood,
-}				t_pattern;
+}					t_pattern;
 
-typedef	enum		e_uvw_projection
+typedef	enum		e_bump
+{
+	flat = 0,
+	bump,
+}					t_bump;
+
+typedef struct		s_texture
+{
+	t_pattern		pattern;
+	float			texel_value;
+	float3			uvw_pos;
+	float3			uvw_scale;
+	float3			uvw_offset;
+	t_bump			bump_type;
+	float3			bump_normal;
+	float3			rgb;
+}					t_texture;
+
+typedef	enum		e_projection
 {
 	spherical = 0,
 	cubic,
 	cylindrical,
-}					t_uvw_projection;
-
-typedef struct	s_texture
-{
-	t_pattern	pattern;
-	float		texel_value;
-	float3		uvw_pos;
-	float3		uvw_scale;
-	float3		uvw_offset;
-	float3		bump_normal;
-	float3		rgb;
-}				t_texture;
+}					t_projection;
 
 /*
 ** This struct is used to translate, rotate and scale our object into position
@@ -268,16 +270,17 @@ typedef struct	s_object
 	float3				scale;
 	t_bbox				bbox_os;
 	t_bbox				bbox_ws;
+	float3				uvw_scale;
+	float3				uvw_offset;
 	float				refrac;//refraction index for snell-descartes
 	float				roughness;
+	float				opacity;
 	float16				o_to_w;
 	float16				w_to_o;
 	float16				n_to_w;
 	t_pattern			pattern;
-	float3				*rgb_texture;
-	float3				uvw_scale;
-	float3				uvw_offset;
-	t_uvw_projection	uvw_projection;
+	t_projection		uvw_projection;
+	t_bump				bump_type;
 }				t_object;
 
 typedef struct	s_work_array
@@ -287,7 +290,7 @@ typedef struct	s_work_array
 	size_t			z;
 }				t_work_array;
 
-typedef struct	s_scene
+typedef struct		s_scene
 {
 	uint			bg_color;
 	float3			bg_rgb;

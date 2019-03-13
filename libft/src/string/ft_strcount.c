@@ -27,6 +27,7 @@ size_t	ft_strcount_char(char const *str, char c)
 	}
 	return (result);
 }
+
 /*
 **	if (str == NULL)
 **		return (0);
@@ -57,6 +58,7 @@ size_t	ft_strcount_str(char const *str, char const *query)
 	}
 	return (result);
 }
+
 /*
 **	if (str == NULL || query == NULL)
 **		return (0);

@@ -59,7 +59,27 @@ void	ui_keypress_control_numberbox_float(t_textinput *textinput, t_bool up)
 	SDL_StartTextInput();
 }
 
-t_bool	ui_mouse_control_numberbox_float(t_textinput *textinput, cl_float *value, int x, int y)
+t_bool	ui_mouse_control_numberbox_increment_float(SDL_Rect button
+		, cl_float *value)
+{
+	if (SDL_PointInRect(&rt.input.mouse, &button))
+	{
+		*value += 0.500;
+		rt.must_render = TRUE;
+		return (TRUE);
+	}
+	button.y += 2 * TILE;
+	if (SDL_PointInRect(&rt.input.mouse, &button))
+	{
+		*value -= 0.500;
+		rt.must_render = TRUE;
+		return (TRUE);
+	}
+	return (FALSE);
+}
+
+t_bool	ui_mouse_control_numberbox_float(t_textinput *textinput,
+	cl_float *value, int x, int y)
 {
 	static SDL_Rect	rect = { 0, 0, 9 * TILE, 3 * TILE };
 	static SDL_Rect	button = { 0, 0, 2 * TILE, 1 * TILE };
@@ -70,24 +90,13 @@ t_bool	ui_mouse_control_numberbox_float(t_textinput *textinput, cl_float *value,
 	{
 		button.x = rect.x + rect.w - button.w;
 		button.y = rect.y;
-		if (SDL_PointInRect(&rt.input.mouse, &button))
-		{
-			*value += 0.500;
-			rt.must_render = TRUE;
-		}
-		else if ((button.y += 2 * TILE) && SDL_PointInRect(&rt.input.mouse, &button))
-		{
-			*value -= 0.500;
-			rt.must_render = TRUE;
-		}
-		else
-		{
-			textinput->type = texttype_number_float;
-			textinput->input = ft_f32_to_str(*value, 4);
-			textinput->value = (void *)value;
-			rt.ui.current_textinput.value_changed = FALSE;
-			SDL_StartTextInput();
-		}
+		if (ui_mouse_control_numberbox_increment_float(button, value))
+			return (TRUE);
+		textinput->type = texttype_number_float;
+		textinput->input = ft_f32_to_str(*value, 4);
+		textinput->value = (void *)value;
+		rt.ui.current_textinput.value_changed = FALSE;
+		SDL_StartTextInput();
 		return (TRUE);
 	}
 	return (FALSE);
@@ -104,7 +113,8 @@ void	ui_render_control_numberbox_float(int x, int y, cl_float *value)
 	ui_render_rect(rect, (value == rt.ui.current_textinput.value));
 	if (value == rt.ui.current_textinput.value)
 	{
-		ui_render_text(rt.ui.current_textinput.input, rect.x + 1, rect.y + 1, FALSE);
+		ui_render_text(rt.ui.current_textinput.input,
+			rect.x + 1, rect.y + 1, FALSE);
 	}
 	else if ((str = ft_f32_to_str(*value, 4)))
 	{

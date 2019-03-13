@@ -51,14 +51,14 @@
 # define DROPDOWN_FILE_SAVE			2
 # define DROPDOWN_FILE_SAVEAS		3
 # define DROPDOWN_FILE_RANDOM		4
-# define DROPDOWN_FILE_EXPORTBMP	5
+# define DROPDOWN_FILE_SAVEBMP		5
 # define DROPDOWN_ITEMS_FILE		6
 # define DROPDOWN_LABEL_FILE_OPEN		"Open file..."
 # define DROPDOWN_LABEL_FILE_IMPORT		"Import file..."
 # define DROPDOWN_LABEL_FILE_SAVE		"Save"
 # define DROPDOWN_LABEL_FILE_SAVEAS		"Save as..."
 # define DROPDOWN_LABEL_FILE_RANDOM		"Generate file..."
-# define DROPDOWN_LABEL_FILE_EXPORTBMP	"Export BMP image..."
+# define DROPDOWN_LABEL_FILE_SAVEBMP	"Export BMP image..."
 
 # define DROPDOWN_EDIT_UNDO		0
 # define DROPDOWN_EDIT_REDO		1
@@ -73,8 +73,8 @@
 # define DROPDOWN_LABEL_EDIT_PASTE	"Paste"
 
 # define OBJECT_PROPERTY_H		4
-# define OBJECT_PROPERTIES		10
-# define OBJECT_PROPERTIES_H	OBJECT_PROPERTY_H * (OBJECT_PROPERTIES + 2)
+# define OBJECT_PROPERTIES		12
+# define OBJECT_PROPERTIES_H	OBJECT_PROPERTY_H * (OBJECT_PROPERTIES + 3)
 
 typedef struct	s_menu
 {
@@ -96,17 +96,20 @@ typedef enum	e_scrolling
 	scrollclick_bar
 }				t_scrolling;
 
+/*
+**	The struct which holds all current scrollbar info
+**	- scroll		the current pixel y value
+**	- scroll_max	the amount of vertical pixels for the entire list
+**	- scroll_view	the amount of vertical pixels visible in the window
+*/
 typedef struct	s_scrollbar
 {
 	t_scrolling	clicked;
 	SDL_Rect	button_up;
 	SDL_Rect	button_down;
 	SDL_Rect	bar;
-// the current pixel y value
 	t_s32		scroll;
-// the amount of pixels to fit the entire list (with expanded objects and all)
 	t_s32		scroll_max;
-// the amount of pixels visible in the window, vertically
 	t_s32		scroll_view;
 }				t_scrollbar;
 
@@ -184,6 +187,7 @@ typedef struct	s_ui
 **	ui.c
 */
 int				ui_init();
+int				ui_init_assets();
 SDL_Palette		*ui_set_palette(SDL_Surface *surface, t_u32 const *palette);
 SDL_Surface		*ui_set_tileset(t_u8 const *chr, size_t length);
 
@@ -229,6 +233,16 @@ void			ui_mouse_scrollbar(void);
 void			ui_mouse_prompt(void);
 
 void			ui_scrollbar_setscroll(t_scrollbar *scrollbar, t_s32 scroll);
+t_bool			ui_mouse_objectlist_expandedproperties_primitive(
+				t_primitive *primitive, t_s32 y);
+t_bool			ui_mouse_objectlist_expandedproperties_material(
+				t_material *material, t_s32 y);
+t_bool			ui_mouse_objectlist_expandedproperties_pattern(
+				t_pattern *pattern, t_s32 y);
+t_bool			ui_mouse_objectlist_expandedproperties_projection(
+				t_projection *projection, t_s32 y);
+t_bool			ui_mouse_objectlist_expandedproperties_bump(
+				t_bump *bump_type, t_s32 y);
 
 /*
 **	ui_render_util.c
@@ -246,30 +260,30 @@ void			ui_render_rect(SDL_Rect rect, t_bool filled);
 */
 void			ui_leave_control_numberbox_int(t_textinput *textinput);
 t_bool			ui_mouse_control_numberbox_int(t_textinput *textinput,
-	cl_uint *value, int x, int y);
+				cl_uint *value, int x, int y);
 void			ui_render_control_numberbox_int(
-	int x, int y, cl_uint *value);
+				int x, int y, cl_uint *value);
 void			ui_keypress_control_numberbox_int(t_textinput *textinput,
-	t_bool up);
+				t_bool up);
 /*
 **	ui_control_numberbox_float.c
 */
 void			ui_leave_control_numberbox_float(t_textinput *textinput);
 t_bool			ui_mouse_control_numberbox_float(t_textinput *textinput,
-	cl_float *value, int x, int y);
+				cl_float *value, int x, int y);
 void			ui_render_control_numberbox_float(
-	int x, int y, cl_float *value);
+				int x, int y, cl_float *value);
 void			ui_keypress_control_numberbox_float(t_textinput *textinput,
-	t_bool up);
+				t_bool up);
 
 /*
 **	ui_control_textbox.c
 */
 void			ui_leave_control_textbox(t_textinput *textinput);
 t_bool			ui_mouse_control_textbox(t_textinput *textinput,
-	char **value, int x, int y);
+				char **value, int x, int y);
 void			ui_render_control_textbox(
-	int x, int y, char *value);
+				int x, int y, char *value);
 void			ui_keypress_control_textbox(t_textinput *textinput);
 
 #endif

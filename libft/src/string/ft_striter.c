@@ -23,6 +23,7 @@ void	ft_striter(char *str, void (*f)(char *))
 		++i;
 	}
 }
+
 /*
 **	if (str == NULL || f == NULL)
 **		return ;
@@ -39,6 +40,7 @@ void	ft_striteri(char *str, void (*f)(size_t, char *))
 		++i;
 	}
 }
+
 /*
 **	if (str == NULL || f == NULL)
 **		return ;

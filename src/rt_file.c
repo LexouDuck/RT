@@ -42,7 +42,6 @@ int		rt_file_open(char *filepath)
 			return (ERROR);
 		}
 		debug_output_value("Successfully opened file: ", filepath, FALSE);
-		rt_output_readfile();
 		free(parser.file);
 	}
 	return (OK);
@@ -65,7 +64,6 @@ int		rt_file_import(char *filepath)
 			return (ERROR);
 		}
 		debug_output_value("Successfully imported file: ", filepath, FALSE);
-		rt_output_readfile();
 		free(parser.file);
 	}
 	return (OK);

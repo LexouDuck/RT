@@ -40,9 +40,11 @@ void	ui_leave_control_textbox(t_textinput *textinput)
 		textinput->value = NULL;
 		SDL_StopTextInput();
 	}
+	return ;
 }
 
-t_bool	ui_mouse_control_textbox(t_textinput *textinput, char **value, int x, int y)
+t_bool	ui_mouse_control_textbox(t_textinput *textinput,
+	char **value, int x, int y)
 {
 	static SDL_Rect	rect = { 0, 0, 26 * TILE, 3 * TILE };
 
@@ -70,7 +72,8 @@ void	ui_render_control_textbox(int x, int y, char *value)
 	ui_render_rect(rect, (value == rt.ui.current_textinput.value));
 	if (value == rt.ui.current_textinput.value)
 	{
-		ui_render_text(rt.ui.current_textinput.input, rect.x + 1, rect.y + 1, FALSE);
+		ui_render_text(rt.ui.current_textinput.input,
+			rect.x + 1, rect.y + 1, FALSE);
 	}
 	else if (value)
 	{
@@ -78,10 +81,12 @@ void	ui_render_control_textbox(int x, int y, char *value)
 			value[str_max_length] = '\0';
 		ui_render_text(value, rect.x + 1, rect.y + 1, FALSE);
 	}
+	return ;
 }
 
-void			ui_keypress_control_textbox(t_textinput *textinput)
+void	ui_keypress_control_textbox(t_textinput *textinput)
 {
 	if (!textinput)
 		return ;
+	return ;
 }

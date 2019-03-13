@@ -36,6 +36,7 @@ void	**ft_lst_to_array(t_list **alst)
 	result[i] = NULL;
 	return (result);
 }
+
 /*
 **	if (alst == NULL)
 **		return (NULL);
@@ -69,6 +70,7 @@ t_tuple	*ft_lst_to_tuple(t_list **alst, t_tuple *result)
 	ft_memclr(result + (i * result->item_size), result->item_size);
 	return (result);
 }
+
 /*
 **	if (alst == NULL || *alst == NULL)
 **		return (NULL);

@@ -22,6 +22,7 @@ void	ft_lstadd(t_list **alst, t_list *elem)
 	elem->next = *alst;
 	*alst = elem;
 }
+
 /*
 **	if (alst == NULL || new == NULL)
 **		return ;
@@ -43,6 +44,7 @@ void	ft_lstappend(t_list **alst, t_list *elem)
 	}
 	lst->next = elem;
 }
+
 /*
 **	if (alst == NULL || elem == NULL)
 **		return ;
@@ -74,6 +76,7 @@ void	ft_lstinsert(t_list **alst, t_list *elem, t_u32 index)
 	lst->next = elem;
 	elem->next = tmp;
 }
+
 /*
 **	if (alst == NULL || elem == NULL)
 **		return ;

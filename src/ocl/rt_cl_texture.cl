@@ -201,18 +201,17 @@ static t_texture	rt_cl_get_texture_properties
 {
 	t_texture	texture;
 	bool		is_2d_proj;
-	bool		is_bump;
 	int			i;
 
-	is_bump = true;
 	is_2d_proj = false;
-	texture.uvw_offset = (float3)(0.f, 0.f, 0.f);
-	texture.uvw_scale = (float3)(1.f, 1.f, 1.f);
+	texture.uvw_offset = obj->uvw_offset;
+	texture.uvw_scale = obj->uvw_scale;
 	texture.uvw_pos = rt_cl_convert_os_to_uvw(obj, hitpos);
 	texture.uvw_pos = fmod((float3)(texture.uvw_pos + texture.uvw_offset), 1.f);
 	//TODO add conditional for 2d texturing vs 3d texturing
 	if (obj->pattern == image)
 	{
+		//TODO @Hugo, t'as trois fois / 255.f, remplace par multiplier par l'inverse avec native_recip()
 		i = round(texture.uvw_pos.y * 99.f) * 100 + round(texture.uvw_pos.x * 99.f);
 		texture.rgb = (float3)(((img_texture[i] >> 16) & 0xFF) / 255.f, ((img_texture[i] >> 8) & 0xFF) / 255.f, ((img_texture[i]) & 0xFF) / 255.f);
 	}
@@ -221,9 +220,9 @@ static t_texture	rt_cl_get_texture_properties
 		texture.texel_value = rt_cl_get_texel_value(obj, texture.uvw_pos, texture.uvw_scale);
 		texture.rgb = obj->rgb_a * texture.texel_value + obj->rgb_b * (1 - texture.texel_value);
 	}
-	if (is_bump && is_2d_proj)
+	if (obj->bump_type == bump && is_2d_proj)
 		texture.uvw_pos.z = texture.texel_value;
-	else if (is_bump)
+	else if (obj->bump_type == bump)
 		texture.bump_normal = rt_cl_get_bump_normal(obj, texture.uvw_pos, texture.uvw_scale, normal, is_2d_proj);
 	else
 		texture.bump_normal = normal;

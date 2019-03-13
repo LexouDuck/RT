@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ui_menu_file.c                                     :+:      :+:    :+:   */
+/*   ui_menu_file_extra.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -13,53 +13,23 @@
 #include "../rt.h"
 #include "debug.h"
 
-void	ui_menu_file_open(void)
+void	ui_menu_file_generate(void)
 {
-	debug_output("File->Open\n");
+	debug_output("File->Generate\n");
 	rt.ui.current_prompt.textbox = texttype_text;
 	rt.ui.current_prompt.text = ft_strdup("./");
-	rt.ui.current_prompt.name = DROPDOWN_LABEL_FILE_OPEN;
-	rt.ui.current_prompt.description = "Type in the file(s) to open.";
+	rt.ui.current_prompt.name = DROPDOWN_LABEL_FILE_RANDOM;
+	rt.ui.current_prompt.description = "Type in the destination filepath.";
 	rt.ui.current_prompt.rect = PROMPT;
 	return ;
 }
 
-void	ui_menu_file_import(void)
+void	ui_menu_file_exportbmp(void)
 {
-	debug_output("File->Import\n");
+	debug_output("File->ExportBMP\n");
 	rt.ui.current_prompt.textbox = texttype_text;
 	rt.ui.current_prompt.text = ft_strdup("./");
-	rt.ui.current_prompt.name = DROPDOWN_LABEL_FILE_IMPORT;
-	rt.ui.current_prompt.description =
-	"Type in the file(s) to import to the scene.";
-	rt.ui.current_prompt.rect = PROMPT;
-	return ;
-}
-
-void	ui_menu_file_save(void)
-{
-	debug_output("File->Save\n");
-	if (rt.filepath)
-	{
-		rt_file_save(rt.filepath);
-	}
-	else
-	{
-		rt.ui.current_prompt.textbox = texttype_text;
-		rt.ui.current_prompt.text = ft_strdup("./");
-		rt.ui.current_prompt.name = DROPDOWN_LABEL_FILE_SAVE;
-		rt.ui.current_prompt.description = "Type in the destination filepath.";
-		rt.ui.current_prompt.rect = PROMPT;
-	}
-	return ;
-}
-
-void	ui_menu_file_saveas(void)
-{
-	debug_output("File->SaveAs\n");
-	rt.ui.current_prompt.textbox = texttype_text;
-	rt.ui.current_prompt.text = ft_strdup("./");
-	rt.ui.current_prompt.name = DROPDOWN_LABEL_FILE_SAVEAS;
+	rt.ui.current_prompt.name = DROPDOWN_LABEL_FILE_SAVEBMP;
 	rt.ui.current_prompt.description = "Type in the destination filepath.";
 	rt.ui.current_prompt.rect = PROMPT;
 	return ;

@@ -21,22 +21,22 @@
 ** ************************************************************************** *|
 */
 
-#define FT_MemoryAlloc(size)				ft_memalloc(size)
-#define FT_MemorySet(ptr, byte, n)			ft_memset(ptr, byte, n)
-#define FT_MemoryClear(ptr, n)				ft_memclr(ptr, n)
-#define FT_MemoryDelete(ptr)				ft_memdel(ptr)
-#define FT_MemoryCopy(dest, src, n)			ft_memcpy(dest, src, n)
-#define FT_MemoryCopy_C(dest, src, byte, n)	ft_memccpy(dest, src, byte, n)
-#define FT_MemoryMove(dest, src, n)			ft_memmove(dest, src, n)
-#define FT_MemoryDuplicate(ptr, n)			ft_memdup(ptr, n)
-
-#define FT_MemoryFind(ptr, byte, n)			ft_memchr(ptr, byte, n)
-#define FT_MemoryCompare(ptr1, ptr2, n)		ft_memcmp(ptr1, ptr2, n)
-#define FT_MemorySwap(ptr1, ptr2, size)		ft_swap(ptr1, ptr2, size)
-
-#define FT_GetBits(value, bit, length)		ft_getbits(value, bit, length)
-
-
+/*
+**	#define FT_MemoryAlloc(size)				ft_memalloc(size)
+**	#define FT_MemorySet(ptr, byte, n)			ft_memset(ptr, byte, n)
+**	#define FT_MemoryClear(ptr, n)				ft_memclr(ptr, n)
+**	#define FT_MemoryDelete(ptr)				ft_memdel(ptr)
+**	#define FT_MemoryCopy(dest, src, n)			ft_memcpy(dest, src, n)
+**	#define FT_MemoryCopy_C(dest, src, byte, n)	ft_memccpy(dest, src, byte, n)
+**	#define FT_MemoryMove(dest, src, n)			ft_memmove(dest, src, n)
+**	#define FT_MemoryDuplicate(ptr, n)			ft_memdup(ptr, n)
+**
+**	#define FT_MemoryFind(ptr, byte, n)			ft_memchr(ptr, byte, n)
+**	#define FT_MemoryCompare(ptr1, ptr2, n)		ft_memcmp(ptr1, ptr2, n)
+**	#define FT_MemorySwap(ptr1, ptr2, size)		ft_swap(ptr1, ptr2, size)
+**
+**	#define FT_GetBits(value, bit, length)		ft_getbits(value, bit, length)
+*/
 
 /*
 ** ************************************************************************** *|
@@ -125,6 +125,5 @@ int		ft_swap(void *ptr1, void *ptr2, size_t size);
 **	bits to the right by 'bit' bits (so as to center the value back to 0).
 */
 t_u64	ft_getbits(t_u64 value, t_u8 bit, t_u8 length);
-
 
 #endif

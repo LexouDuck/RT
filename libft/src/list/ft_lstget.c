@@ -30,7 +30,7 @@ t_list	*ft_lstget(t_list *lst, t_u32 index)
 	return (lst);
 }
 
-t_list	*ft_lstfind(t_list *lst, void const* query)
+t_list	*ft_lstfind(t_list *lst, void const *query)
 {
 	while (lst)
 	{

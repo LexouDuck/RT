@@ -32,7 +32,8 @@ inline t_u8		ft_color_argb16_get_b(t_u16 color)
 	return ((t_u8)(0x1F & color));
 }
 
-t_u16	*ft_color_argb16bit_get_nearest(t_u16 target, t_u16* colors, size_t n)
+t_u16			*ft_color_argb16bit_get_nearest(
+	t_u16 target, t_u16 *colors, size_t n)
 {
 	t_s8	r;
 	t_s8	g;

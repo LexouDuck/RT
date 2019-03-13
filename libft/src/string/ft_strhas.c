@@ -31,6 +31,7 @@ t_bool		ft_strhas(char const *str, char const *charset)
 	}
 	return (FALSE);
 }
+
 /*
 **	if (str == NULL || charset == NULL)
 **		return (FALSE);
@@ -62,6 +63,7 @@ t_bool		ft_strhasonly(char const *str, char const *charset)
 	}
 	return (TRUE);
 }
+
 /*
 **	if (str == NULL || charset == NULL)
 **		return (FALSE);

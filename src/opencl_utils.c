@@ -6,7 +6,7 @@
 /*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
-/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
+/*   Updated: 2019/03/11 14:14:24 by hbruvry          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,15 +133,15 @@ int				opencl_log_compiler(void)
 	file_buf = NULL;
 	if ((error = clGetProgramBuildInfo(rt.ocl.program, rt.ocl.gpu.id,
 							CL_PROGRAM_BUILD_LOG, 0, NULL, &file_len)) < 0)
-		return (opencl_handle_error(error,
-				"opencl_log_compiler: compiler log file length query failed."));
+		return (opencl_handle_error(error, "opencl_log_compiler:"
+		" compiler log file length query failed."));
 	if (!(file_buf = (char *)malloc(file_len + 1)))
 		return (debug_perror("opencl_log_compiler: malloc failed."));
 	file_buf[file_len] = '\0';
 	if ((error = clGetProgramBuildInfo(rt.ocl.program, rt.ocl.gpu.id,
 					CL_PROGRAM_BUILD_LOG, file_len + 1, file_buf, NULL)) < 0)
-		return (opencl_handle_error(error,
-				"opencl_log_compiler: compiler log retrieve failed."));
+		return (opencl_handle_error(error, "opencl_log_compiler:"
+		" compiler log retrieve failed."));
 	debug_output("OpenCL compiler log -->\n");
 	debug_output(file_buf);
 	debug_output("\n");

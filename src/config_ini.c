@@ -24,18 +24,18 @@ static char	*ini_error(char expected, char *description, char instead)
 	size_t	length;
 	size_t	i;
 
-	length = FT_StringLength(description);
-	if (!(result = FT_MemoryAlloc((64 + length) * sizeof(char))))
+	length = ft_strlen(description);
+	if (!(result = ft_memalloc((64 + length) * sizeof(char))))
 		return (NULL);
 	i = 0;
-	FT_StringCopy(result, "Expected \'");
+	ft_strcpy(result, "Expected \'");
 	i += 10;
 	result[i++] = expected;
-	FT_StringCopy(result + i, "\' (");
+	ft_strcpy(result + i, "\' (");
 	i += 3;
-	FT_StringCopy(result + i, description);
+	ft_strcpy(result + i, description);
 	i += length;
-	FT_StringCopy(result + i, "), but instead found: \'");
+	ft_strcpy(result + i, "), but instead found: \'");
 	i += 21;
 	result[i++] = instead;
 	return (result);
@@ -46,7 +46,7 @@ static void	ini_parse_whitespace(t_iniparser *p)
 	char	*file;
 
 	file = p->file;
-	while (file[p->index] && FT_IsSpace(file[p->index]))
+	while (file[p->index] && ft_isspace(file[p->index]))
 	{
 		if (file[p->index] == '\n')
 			++(p->line);
@@ -72,18 +72,18 @@ static char	*ini_apply_setting(t_iniparser *p)
 	i = -1;
 	index = -1;
 	while (++i < CONFIG_AMOUNT)
-		if (rt.config.names[i] && FT_StringEquals(p->name, rt.config.names[i]))
+		if (rt.config.names[i] && ft_strequ(p->name, rt.config.names[i]))
 			index = i;
 	if (index == -1)
 	{
 		debug_output_value("Error while reading INI file, at line ",
-			FT_Size_To_String(p->line), TRUE);
+			ft_size_to_str(p->line), TRUE);
 		debug_output_value("Unable to resolve label name:", p->name, FALSE);
 		return (NULL);
 	}
 	if (*(p->value + p->value_length))
 		*(p->value + p->value_length) = '\0';
-	if (!(rt.config.values[index] = FT_StringDuplicate(p->value)))
+	if (!(rt.config.values[index] = ft_strdup(p->value)))
 		return ("Could not create config value string");
 	return (NULL);
 }
@@ -94,7 +94,7 @@ static char	*ini_read_setting(t_iniparser *p)
 
 	file = p->file;
 	p->name = (p->file + p->index);
-	while (file[p->index] && !(FT_IsSpace(file[p->index]) ||
+	while (file[p->index] && !(ft_isspace(file[p->index]) ||
 		file[p->index] == '=' ||
 		file[p->index] == '#' ||
 		file[p->index] == ';'))
@@ -109,7 +109,7 @@ static char	*ini_read_setting(t_iniparser *p)
 	if (!file[p->index])
 		return ("Unexpected end of file encountered before value.");
 	p->value = (file + p->index);
-	while (file[p->index] && !FT_IsSpace(file[p->index]))
+	while (file[p->index] && !ft_isspace(file[p->index]))
 		++(p->index);
 	p->value_length = (file + p->index) - p->value;
 	++(p->index);
@@ -122,7 +122,7 @@ void		ini_read_file(int fd)
 	char		*error;
 
 	parser.file = NULL;
-	if ((FT_Read_File(fd, &parser.file)))
+	if ((ft_readfile(fd, &parser.file)))
 	{
 		debug_output_error("Couldn't read INI file.", FALSE);
 		return ;
@@ -135,7 +135,7 @@ void		ini_read_file(int fd)
 		if ((error = ini_read_setting(&parser)))
 		{
 			debug_output_value("Error while reading INI file, at line ",
-				FT_Size_To_String(parser.line), TRUE);
+				ft_size_to_str(parser.line), TRUE);
 			debug_output_error(error, FALSE);
 			free(error);
 		}

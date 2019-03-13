@@ -1,112 +1,216 @@
 BG #888888
 
-SPHERE     
-material:LIGHT      
+SPHERE
+material:LIGHT
+pattern:SOLID
+projection:CUBIC
+bump:FLAT
 color:(1.00000, 1.00000, 1.00000)
+color2:(0.00000, 0.00000, 0.00000)
 pos:(3.00000, 20.00000, 3.00000)
 rot:(0.00000, 0.00000, 0.00000)
 scale:(0.00000, 0.00000, 0.00000)
+bbox_vi:(-1.00002, -1.00002, -1.00002)
+bbox_vf:(1.00002, 1.00002, 1.00002)
+uvw_scale:(1.00000, 1.00000, 1.00000)
+uvw_offset:(0.00000, 0.00000, 0.00000)
 
-SPHERE     
-material:LIGHT      
+SPHERE
+material:LIGHT
+pattern:SOLID
+projection:CUBIC
+bump:FLAT
 color:(1.00000, 1.00000, 1.00000)
+color2:(0.00000, 0.00000, 0.00000)
 pos:(3.00000, -10.00000, 3.00000)
 rot:(0.00000, 0.00000, 0.00000)
 scale:(0.00000, 0.00000, 0.00000)
+bbox_vi:(-1.00002, -1.00002, -1.00002)
+bbox_vf:(1.00002, 1.00002, 1.00002)
+uvw_scale:(1.00000, 1.00000, 1.00000)
+uvw_offset:(0.00000, 0.00000, 0.00000)
 
-CUBE       
+CUBE
+"Brick Side Left"
 material:TRANSPARENT
+pattern:SOLID
+projection:CUBIC
+bump:FLAT
 color:(1.00000, 0.00000, 0.00000)
+color2:(0.00000, 0.00000, 0.00000)
 pos:(-9.00000, 0.00000, 0.00000)
 rot:(0.00000, 0.00000, 0.00000)
-scale:(1.00000, 6.00000, 10.00000)
-"Brick Side Left"
-refrac:1.25
+scale:(1.00000, 6.00000, 9.99899)
+bbox_vi:(-1.00002, -1.00002, -1.00002)
+bbox_vf:(1.00002, 1.00002, 1.00002)
+uvw_scale:(1.00000, 1.00000, 1.00000)
+uvw_offset:(0.00000, 0.00000, 0.00000)
+refrac:1.25000
 
-CUBE       
+CUBE
+"Brick Side Right"
 material:TRANSPARENT
+pattern:SOLID
+projection:CUBIC
+bump:FLAT
 color:(1.00000, 0.00000, 0.00000)
+color2:(0.00000, 0.00000, 0.00000)
 pos:(9.00000, 0.00000, 0.00000)
 rot:(0.00000, 0.00000, 0.00000)
-scale:(1.00000, 6.00000, 10.00000)
-"Brick Side Right"
-refrac:1.25
+scale:(1.00000, 6.00000, 9.99899)
+bbox_vi:(-1.00002, -1.00002, -1.00002)
+bbox_vf:(1.00002, 1.00002, 1.00002)
+uvw_scale:(1.00000, 1.00000, 1.00000)
+uvw_offset:(0.00000, 0.00000, 0.00000)
+refrac:1.25000
 
-CUBE       
+CUBE
+"Brick Side Near"
 material:TRANSPARENT
+pattern:SOLID
+projection:CUBIC
+bump:FLAT
 color:(1.00000, 0.00000, 0.00000)
+color2:(0.00000, 0.00000, 0.00000)
 pos:(0.00000, 0.00000, -9.00000)
 rot:(0.00000, 0.00000, 0.00000)
-scale:(10.00000, 6.00000, 1.00000)
-"Brick Side Near"
-refrac:1.25
+scale:(9.99899, 6.00000, 1.00000)
+bbox_vi:(-1.00002, -1.00002, -1.00002)
+bbox_vf:(1.00002, 1.00002, 1.00002)
+uvw_scale:(1.00000, 1.00000, 1.00000)
+uvw_offset:(0.00000, 0.00000, 0.00000)
+refrac:1.25000
 
-CUBE       
+CUBE
+"Brick Side Far"
 material:TRANSPARENT
+pattern:SOLID
+projection:CUBIC
+bump:FLAT
 color:(1.00000, 0.00000, 0.00000)
+color2:(0.00000, 0.00000, 0.00000)
 pos:(0.00000, 0.00000, 9.00000)
 rot:(0.00000, 0.00000, 0.00000)
-scale:(10.00000, 6.00000, 1.00000)
-"Brick Side Far"
-refrac:1.25
+scale:(9.99899, 6.00000, 1.00000)
+bbox_vi:(-1.00002, -1.00002, -1.00002)
+bbox_vf:(1.00002, 1.00002, 1.00002)
+uvw_scale:(1.00000, 1.00000, 1.00000)
+uvw_offset:(0.00000, 0.00000, 0.00000)
+refrac:1.25000
 
-CUBE       
+CUBE
+"Brick Top"
 material:TRANSPARENT
+pattern:SOLID
+projection:CUBIC
+bump:FLAT
 color:(1.00000, 0.00000, 0.00000)
+color2:(0.00000, 0.00000, 0.00000)
 pos:(0.00000, 6.00000, 0.00000)
 rot:(0.00000, 0.00000, 0.00000)
-scale:(10.00000, 1.00000, 10.00000)
-"Brick Top"
-refrac:1.25
+scale:(9.99899, 1.00000, 9.99899)
+bbox_vi:(-1.00002, -1.00002, -1.00002)
+bbox_vf:(1.00002, 1.00002, 1.00002)
+uvw_scale:(1.00000, 1.00000, 1.00000)
+uvw_offset:(0.00000, 0.00000, 0.00000)
+refrac:1.25000
 
-CYLINDER   
+CYLINDER
+"Brick Stud TL"
 material:TRANSPARENT
+pattern:SOLID
+projection:CUBIC
+bump:FLAT
 color:(1.00000, 0.00000, 0.00000)
+color2:(0.00000, 0.00000, 0.00000)
 pos:(5.00000, 8.00000, 5.00000)
 rot:(0.00000, 0.00000, 0.00000)
-scale:(3.00000, 2.00000, 3.00000)
-"Brick Stud TL"
-refrac:1.25
+scale:(3.00000, 1.00000, 3.00000)
+bbox_vi:(-1.00002, -1.00002, -1.00002)
+bbox_vf:(1.00002, 1.00002, 1.00002)
+uvw_scale:(1.00000, 1.00000, 1.00000)
+uvw_offset:(0.00000, 0.00000, 0.00000)
+refrac:1.25000
 
-CYLINDER   
+CYLINDER
+"Brick Stud TR"
 material:TRANSPARENT
+pattern:SOLID
+projection:CUBIC
+bump:FLAT
 color:(1.00000, 0.00000, 0.00000)
+color2:(0.00000, 0.00000, 0.00000)
 pos:(5.00000, 8.00000, -5.00000)
 rot:(0.00000, 0.00000, 0.00000)
-scale:(3.00000, 2.00000, 3.00000)
-"Brick Stud TR"
-refrac:1.25
+scale:(3.00000, 1.00000, 3.00000)
+bbox_vi:(-1.00002, -1.00002, -1.00002)
+bbox_vf:(1.00002, 1.00002, 1.00002)
+uvw_scale:(1.00000, 1.00000, 1.00000)
+uvw_offset:(0.00000, 0.00000, 0.00000)
+refrac:1.25000
 
-CYLINDER   
+CYLINDER
+"Brick Stud BL"
 material:TRANSPARENT
+pattern:SOLID
+projection:CUBIC
+bump:FLAT
 color:(1.00000, 0.00000, 0.00000)
+color2:(0.00000, 0.00000, 0.00000)
 pos:(-5.00000, 8.00000, 5.00000)
 rot:(0.00000, 0.00000, 0.00000)
-scale:(3.00000, 2.00000, 3.00000)
-"Brick Stud BL"
-refrac:1.25
+scale:(3.00000, 1.00000, 3.00000)
+bbox_vi:(-1.00002, -1.00002, -1.00002)
+bbox_vf:(1.00002, 1.00002, 1.00002)
+uvw_scale:(1.00000, 1.00000, 1.00000)
+uvw_offset:(0.00000, 0.00000, 0.00000)
+refrac:1.25000
 
-CYLINDER   
+CYLINDER
+"Brick Stud BR"
 material:TRANSPARENT
+pattern:SOLID
+projection:CUBIC
+bump:FLAT
 color:(1.00000, 0.00000, 0.00000)
+color2:(0.00000, 0.00000, 0.00000)
 pos:(-5.00000, 8.00000, -5.00000)
 rot:(0.00000, 0.00000, 0.00000)
-scale:(3.00000, 2.00000, 3.00000)
-"Brick Stud BR"
-refrac:1.25
+scale:(3.00000, 1.00000, 3.00000)
+bbox_vi:(-1.00002, -1.00002, -1.00002)
+bbox_vf:(1.00002, 1.00002, 1.00002)
+uvw_scale:(1.00000, 1.00000, 1.00000)
+uvw_offset:(0.00000, 0.00000, 0.00000)
+refrac:1.25000
 
-CYLINDER   
-material:TRANSPARENT
-color:(1.00000, 0.00000, 0.00000)
-pos:(0.00000, 1.00000, 0.00000)
-rot:(0.00000, 0.00000, 0.00000)
-scale:(4.06999, 6.0000, 4.06999)
+CYLINDER
 "Bottom Pillar"
-refrac:1.25
+material:TRANSPARENT
+pattern:SOLID
+projection:CUBIC
+bump:FLAT
+color:(1.00000, 0.00000, 0.00000)
+color2:(0.00000, 0.00000, 0.00000)
+pos:(0.00000, 0.00000, 0.00000)
+rot:(0.00000, 0.00000, 0.00000)
+scale:(4.06997, 6.00000, 4.06997)
+bbox_vi:(-1.00002, -1.00002, -1.00002)
+bbox_vf:(1.00002, 1.00002, 1.00002)
+uvw_scale:(1.00000, 1.00000, 1.00000)
+uvw_offset:(0.00000, 0.00000, 0.00000)
+refrac:1.25000
 
-PLANE      
-material:DIFFUSE    
+PLANE
+material:DIFFUSE
+pattern:SOLID
+projection:CUBIC
+bump:FLAT
 color:(1.00000, 1.00000, 1.00000)
+color2:(0.00000, 0.00000, 0.00000)
 pos:(3.00000, -10.00000, 3.00000)
 rot:(0.00000, 0.50000, 0.00000)
 scale:(1.00000, 1.00000, 1.00000)
+bbox_vi:(-100000.00000, -0.003, -100000.00000)
+bbox_vf:(100000.00000, 0.003, 100000.00000)
+uvw_scale:(1.00000, 1.00000, 1.00000)
+uvw_offset:(0.00000, 0.00000, 0.00000)

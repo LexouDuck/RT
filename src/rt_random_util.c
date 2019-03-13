@@ -1,38 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   convert/ft_size_to_str.c                           :+:      :+:    :+:   */
+/*   rt_random.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duquesne <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
 /*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../libft_convert.h"
+#include "rt_random.h"
 
-char	*ft_size_to_str(size_t number)
+#include "../rt.h"
+#include "debug.h"
+
+inline static t_u32	ft_rand_bit_shuffle(t_u32 n)
 {
-	char	*result;
-	t_u8	digits[MAXDIGIT_64BIT];
-	t_u8	i;
-	size_t	n;
+	return ((n << 12) ^ (n >> 20));
+}
 
-	n = number;
-	i = 0;
-	while (n > 0)
-	{
-		digits[i++] = n % 10;
-		n /= 10;
-	}
-	if (i == 0)
-		digits[i++] = 0;
-	if (!(result = (char *)malloc(i + 1)))
-		return (NULL);
-	n = 0;
-	while (i--)
-		result[n++] = '0' + digits[i];
-	result[n] = '\0';
-	return (result);
+t_u32				ft_srand(int mode, t_u32 value)
+{
+	static t_u32	new_nb = DEFAULT_SEED;
+
+	if (mode == 1)
+		new_nb *= rt.sdl.current_frame;
+	if (mode == 2)
+		new_nb = value;
+	return (new_nb);
+}
+
+t_u32				ft_rand(void)
+{
+	t_float		new_nb;
+
+	new_nb = (CEIL_SQRT_MOD * ft_rand_bit_shuffle(new_nb) + OFFSET) & MODULUS;
+	ft_srand(2, new_nb);
+	return (new_nb);
 }

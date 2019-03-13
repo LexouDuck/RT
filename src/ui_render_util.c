@@ -18,7 +18,8 @@
 **	Displays a rectangle of the given tile on the given tile region onscreen
 */
 
-void		ui_render_fill(t_u8 tile_index, SDL_Rect dest_region, t_bool transparent)
+void		ui_render_fill(t_u8 tile_index,
+	SDL_Rect dest_region, t_bool transparent)
 {
 	static SDL_Rect	dest = {0, 0, TILE, TILE};
 	static SDL_Rect	tile = {0, 0, TILE, TILE};

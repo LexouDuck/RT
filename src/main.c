@@ -24,10 +24,9 @@
 ** Fill the window pixel buffer with black
 ** Display the UI
 ** Do the 3d render if needed
-** and update the window display
 */
 
-static void		update_window(void)
+static void		update_window_display(void)
 {
 	SDL_Rect	dest;
 
@@ -54,11 +53,17 @@ static void		update_window(void)
 	ui_render_caminfo(&rt.scene.camera);
 	//TODO SNIF
 	ui_render_loading_bar();
+}
+
+static void		update_window(void)
+{
+	update_window_display();
 	if (SDL_UpdateTexture(rt.sdl.window_texture, NULL,
 		rt.sdl.window_surface->pixels, rt.sdl.window_surface->pitch))
 		debug_output_error("Error during window update: ", TRUE);
-	//	if (SDL_RenderClear(rt.sdl.window_renderer))
-	//		debug_output_error("Error during render screen clear: ", TRUE);
+	//TODO clean that if unnecessary
+	//if (SDL_RenderClear(rt.sdl.window_renderer))
+	//			debug_output_error("Error during render screen clear: ", TRUE);
 	if (SDL_RenderCopy(rt.sdl.window_renderer, rt.sdl.window_texture, NULL, NULL))
 		debug_output_error("Error during render copy: ", TRUE);
 	SDL_RenderPresent(rt.sdl.window_renderer);

@@ -36,7 +36,8 @@ void		ui_render_caminfo(t_camera *camera)
 	ui_render_canvas_text(6, "Zoom: ", ft_f32_to_str(camera->zoom, 3));
 	ui_render_canvas_text(7, "Tilt: ", ft_f32_to_str(camera->tilt_angle, 3));
 	ui_render_canvas_text(9, "Anchor", cl_float3_to_str(&camera->anchor, 3));
-	ui_render_canvas_text(10, "CamPos", cl_float3_to_str(&camera->relative_pos, 3));
+	ui_render_canvas_text(10, "CamPos",
+		cl_float3_to_str(&camera->relative_pos, 3));
 }
 
 void		ui_render_loading_bar(void)

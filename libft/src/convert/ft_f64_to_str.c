@@ -78,7 +78,8 @@ static char		*ft_f64_to_str_expon(t_f64 number, t_u8 precision,
 	size_t	i;
 	t_bool	sign;
 
-	number = (sign = (number < 0)) ? -number : number;
+	sign = (number < 0);
+	number = (sign ? -number : number);
 	if (!(*result_exp = ft_s16_to_str(ft_f64_to_str_getexponent(&number))) ||
 		!(*result_mant = ft_f64_to_str_decim(number, precision)) ||
 		!(result = (char *)malloc(

@@ -168,8 +168,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 						__constant	t_scene	*	scene,
 						__constant	uint *		img_texture,
 									uint2 *		random_seeds,
-									t_ray		ray,
-									int			depth
+									t_ray		ray
 )
 {
 	__constant	t_object *	obj = &(scene->objects[ray.hit_obj_id]);
@@ -185,7 +184,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 	texture = rt_cl_get_texture_properties(scene, obj, img_texture, random_seeds, hitpos, normal);
 	if (scene->render_mode == RENDERMODE_SOLIDTEXTURE)
 	{
-		ray.lum_acc = texture.rgb;
+		ray.lum_acc += texture.rgb * ray.lum_mask;
 		return (ray);
 	}
 
@@ -197,12 +196,6 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 	new_ray.t = scene->render_dist;
 	new_ray.complete = (obj->material == light);
 	new_ray.lum_acc = ray.lum_acc;
-
-#if 0
-	new_ray.lum_mask = ray.lum_mask * obj->rgb;
-	new_ray.lum_mask *= (float3)(1. - new_ray.complete) * (float3)(dot(normal, new_ray.dir));
-	new_ray.lum_acc = ray.lum_acc + (float3)(new_ray.complete) * new_ray.lum_mask;
-#endif
 	
 	if (new_ray.complete)
 	{
@@ -347,11 +340,11 @@ static float3			rt_cl_get_ray_pixel_contribution
 		{
 			if (scene->render_mode == RENDERMODE_MCPT)
 			{
-				ray_i = rt_cl_accumulate_lum_and_bounce_ray(scene, img_texture, random_seeds, ray_i, depth);
+				ray_i = rt_cl_accumulate_lum_and_bounce_ray(scene, img_texture, random_seeds, ray_i);
 			}
 			else if (scene->render_mode == RENDERMODE_SOLIDTEXTURE)
 			{
-				ray_i = rt_cl_accumulate_lum_and_bounce_ray(scene, img_texture, random_seeds, ray_i, depth);
+				ray_i = rt_cl_accumulate_lum_and_bounce_ray(scene, img_texture, random_seeds, ray_i);
 				return (ray_i.lum_acc);
 			}
 			else

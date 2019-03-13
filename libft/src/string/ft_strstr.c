@@ -40,6 +40,7 @@ char	*ft_strstr(char const *str, char const *query)
 	}
 	return (NULL);
 }
+
 /*
 **	if (str == NULL || query == NULL)
 **		return (NULL);
@@ -72,6 +73,7 @@ char	*ft_strrstr(char const *str, char const *query)
 	}
 	return (NULL);
 }
+
 /*
 **	if (str == NULL || query == NULL)
 **		return (NULL);
@@ -101,6 +103,7 @@ char	*ft_strnstr(char const *str, char const *query, size_t n)
 	}
 	return (NULL);
 }
+
 /*
 **	if (str == NULL || query == NULL)
 **		return (NULL);

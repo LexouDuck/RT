@@ -25,6 +25,16 @@
 ** 		printf("%s", str);
 */
 
+/*
+** The formula for calculating global id is:
+**		(gx , gy) = (wx * Sx + sx + Fx, wy * Sy + sy + Fy)
+**
+** w{x,y} = work-group id{0, 1}
+** S{x,y} = work-group size{0, 1}
+** s{x,y} = local id{0, 1}
+** F{x,y} = global ID offset{0, 1}
+*/
+
 int					render_enqueue_pairwise_kernels_inner(
 												t_work_array work_offsets)
 {
@@ -44,6 +54,13 @@ int					render_enqueue_pairwise_kernels_inner(
 					(size_t const *)&work_dim_end, NULL, 0, NULL, NULL)) < 0)
 			return (opencl_handle_error(err, "render_pairwise_kernels:"
 								" enqueue kernel failed for "RT_CL_KERNEL_1));
+/*
+	printf("canvas_w = %d, canvas_h = %d;\n", rt.canvas_w, rt.canvas_h);
+	printf("raysamp_size = %d;\n", rt.scene.mc_raysamp_size);
+	printf("work_dim_end = %zu, %zu, %zu;\n", work_dim_end.x, work_dim_end.y, work_dim_end.z);
+	printf("work_steps = %zu, %zu, %zu;\n", rt.scene.work_steps.x, rt.scene.work_steps.y, rt.scene.work_steps.z);
+	printf("work_offsets = %zu, %zu, %zu;\n\n", work_offsets.x, work_offsets.y, work_offsets.z);
+*/
 		work_offsets.z += rt.scene.work_steps.z;
 	}
 	if ((err = clFinish(rt.ocl.cmd_queue)) < 0)

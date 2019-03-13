@@ -25,6 +25,7 @@ char	*ft_strcpy(char *dest, char const *src)
 	dest[i] = '\0';
 	return (dest);
 }
+
 /*
 **	if (dest == NULL)
 **		return (NULL);
@@ -53,6 +54,7 @@ char	*ft_strncpy(char *dest, char const *src, size_t n)
 	}
 	return (dest);
 }
+
 /*
 **	if (dest == NULL)
 **		return (NULL);
@@ -76,6 +78,7 @@ size_t	ft_strlcpy(char *dest, char const *src, size_t size)
 		++i;
 	return (i);
 }
+
 /*
 **	if (dest == NULL || src == NULL)
 **		return (0);

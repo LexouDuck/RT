@@ -17,14 +17,40 @@
 #include "debug.h"
 #include "event.h"
 
-static void ui_render_menu(void)
+static void	ui_render_menu_camera(t_s32 y)
+{
+	ui_render_text("Camera Type:", 2, y, FALSE);
+	ui_render_text("\x12", 14, y, TRUE);
+	ui_render_text("\x13", 27, y, TRUE);
+	ui_render_text(rt_get_str_cameramodel(rt.scene.camera.model), 15, y, FALSE);
+	y += 1;
+	ui_render_text("FOV   Aperture   FocalDist", 1, y, FALSE);
+	y += 1;
+	ui_render_control_numberbox_float(1, y, &rt.scene.camera.hrz_fov);
+	ui_render_control_numberbox_float(10, y, &rt.scene.camera.aperture);
+	ui_render_control_numberbox_float(19, y, &rt.scene.camera.focal_dist);
+	y += 3;
+	ui_render_text("Camera Light ColorMask:", 2, y, FALSE);
+	y += 1;
+	ui_render_control_numberbox_float(1, y, &rt.scene.camera.rgb_mask.x);
+	ui_render_control_numberbox_float(10, y, &rt.scene.camera.rgb_mask.y);
+	ui_render_control_numberbox_float(19, y, &rt.scene.camera.rgb_mask.z);
+	y += 3;
+	ui_render_text("Camera Shade Filter:", 2, y, FALSE);
+	y += 1;
+	ui_render_control_numberbox_float(1, y, &rt.scene.camera.rgb_shade.x);
+	ui_render_control_numberbox_float(10, y, &rt.scene.camera.rgb_shade.y);
+	ui_render_control_numberbox_float(19, y, &rt.scene.camera.rgb_shade.z);
+}
+
+static void	ui_render_menu(void)
 {
 	t_s32		y;
 
 	y = MENUBAR_ITEMS_H;
 	ui_render_text("Platform   Rays    Depth", 1, y, FALSE);
 	y += 1;
-	ui_render_control_numberbox_int( 1, y, &rt.ocl.gpu_platform_index);
+	ui_render_control_numberbox_int(1, y, &rt.ocl.gpu_platform_index);
 	ui_render_control_numberbox_int(10, y, &rt.scene.mc_raysamp_size);
 	ui_render_control_numberbox_int(19, y, &rt.scene.max_ray_depth);
 	y += 3;
@@ -33,16 +59,7 @@ static void ui_render_menu(void)
 	ui_render_text("\x13", 27, y, TRUE);
 	ui_render_text(rt_get_str_rendermode(rt.scene.render_mode), 15, y, FALSE);
 	y += 2;
-	ui_render_text("Camera Type:", 2, y, FALSE);
-	ui_render_text("\x12", 14, y, TRUE);
-	ui_render_text("\x13", 27, y, TRUE);
-	ui_render_text(rt_get_str_cameramodel(rt.scene.camera.model), 15, y, FALSE);
-	y += 1;
-	ui_render_text("FOV   Aperture   FocalDist", 1, y, FALSE);
-	y += 1;
-	ui_render_control_numberbox_float( 1, y, &rt.scene.camera.hrz_fov);
-	ui_render_control_numberbox_float(10, y, &rt.scene.camera.aperture);
-	ui_render_control_numberbox_float(19, y, &rt.scene.camera.focal_dist);
+	ui_render_menu_camera(y);
 }
 
 void		ui_render_menubar(void)
@@ -54,7 +71,7 @@ void		ui_render_menubar(void)
 	rect.x = 0;
 	rect.y = 0;
 	rect.w = UI_WIDTH_TILES;
-	rect.h = 14;
+	rect.h = rt.ui.objects.rect.y;
 	ui_render_fill(0, rect, FALSE);
 	ui_render_icon(27,
 		TILE * (UI_WIDTH_TILES - 8),

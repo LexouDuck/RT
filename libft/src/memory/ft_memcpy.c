@@ -28,6 +28,7 @@ void	*ft_memcpy(void *dest, void const *src, size_t n)
 	}
 	return (dest);
 }
+
 /*
 **	if (dest == NULL)
 **		return (NULL);
@@ -54,6 +55,7 @@ void	*ft_memccpy(void *dest, void const *src, t_u8 byte, size_t n)
 	}
 	return (NULL);
 }
+
 /*
 **	if (dest == NULL || src == NULL)
 **		return (NULL);

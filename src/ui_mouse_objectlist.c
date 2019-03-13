@@ -15,102 +15,6 @@
 #include "../rt.h"
 #include "debug.h"
 
-static t_bool	ui_mouse_objectlist_expandedproperties_primitive(
-	t_primitive *primitive, t_s32 y)
-{
-	static SDL_Rect	rect = { 0, 0, 1, 1 };
-
-	rect.x = 12;
-	rect.y = y + 0;
-	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
-	{
-		*primitive = (int)(*primitive == 1) ? PRIMITIVES - 1 : (*primitive - 1);
-		rt.must_render = TRUE;
-		return (TRUE);
-	}
-	rect.x = 24;
-	rect.y = y + 0;
-	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
-	{
-		*primitive = (int)(*primitive == PRIMITIVES - 1) ? 1 : (*primitive + 1);
-		rt.must_render = TRUE;
-		return (TRUE);
-	}
-	return (FALSE);
-}
-
-static t_bool	ui_mouse_objectlist_expandedproperties_material(
-	t_material *material, t_s32 y)
-{
-	static SDL_Rect	rect = { 0, 0, 1, 1 };
-
-	rect.x = 12;
-	rect.y = y + 2;
-	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
-	{
-		*material = (int)(*material == 0) ? MATERIALS - 1 : (*material - 1);
-		rt.must_render = TRUE;
-		return (TRUE);
-	}
-	rect.x = 24;
-	rect.y = y + 2;
-	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
-	{
-		*material = (int)(*material == MATERIALS - 1) ? 0 : (*material + 1);
-		rt.must_render = TRUE;
-		return (TRUE);
-	}
-	return (FALSE);
-}
-
-static t_bool	ui_mouse_objectlist_expandedproperties_pattern(
-	t_pattern *pattern, t_s32 y)
-{
-	static SDL_Rect	rect = { 0, 0, 1, 1 };
-
-	rect.x = 12;
-	rect.y = y + 4;
-	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
-	{
-		*pattern = (int)(*pattern == 0) ? TEXTURE_PATTERNS - 1 : (*pattern - 1);
-		rt.must_render = TRUE;
-		return (TRUE);
-	}
-	rect.x = 24;
-	rect.y = y + 4;
-	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
-	{
-		*pattern = (int)(*pattern == TEXTURE_PATTERNS - 1) ? 0 : (*pattern + 1);
-		rt.must_render = TRUE;
-		return (TRUE);
-	}
-	return (FALSE);
-}
-
-static t_bool	ui_mouse_objectlist_expandedproperties_projection(
-	t_uvw_projection *projection, t_s32 y)
-{
-	static SDL_Rect	rect = { 0, 0, 1, 1 };
-
-	rect.x = 12;
-	rect.y = y + 6;
-	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
-	{
-		*projection = (int)(*projection == 0) ? TEXTURE_PROJECTIONS - 1 : (*projection - 1);
-		rt.must_render = TRUE;
-		return (TRUE);
-	}
-	rect.x = 24;
-	rect.y = y + 6;
-	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
-	{
-		*projection = (int)(*projection == TEXTURE_PROJECTIONS - 1) ? 0 : (*projection + 1);
-		rt.must_render = TRUE;
-		return (TRUE);
-	}
-	return (FALSE);
-}
-
 static void	ui_mouse_objectlist_expandedproperties(t_object *object, t_s32 y)
 {
 	cl_float3		*ptr;
@@ -119,9 +23,10 @@ static void	ui_mouse_objectlist_expandedproperties(t_object *object, t_s32 y)
 	if (ui_mouse_objectlist_expandedproperties_primitive(&object->type, y) ||
 		ui_mouse_objectlist_expandedproperties_material(&object->material, y) ||
 		ui_mouse_objectlist_expandedproperties_pattern(&object->pattern, y) ||
-		ui_mouse_objectlist_expandedproperties_projection(&object->uvw_projection, y))
+		ui_mouse_objectlist_expandedproperties_projection(&object->uvw_projection, y) ||
+		ui_mouse_objectlist_expandedproperties_bump(&object->bump_type, y))
 		return ;
-	y += 8;
+	y += 10;
 	ptr = &object->rgb_a;
 	i = 0;
 	while (i < OBJECT_PROPERTIES)
@@ -137,6 +42,29 @@ static void	ui_mouse_objectlist_expandedproperties(t_object *object, t_s32 y)
 	update_object(object);
 }
 
+static void	ui_mouse_objectlist_object(SDL_Rect rect, t_u32 i, t_s32 height)
+{
+	if (rt.scene.objects[i].type &&
+		rect.y + height >= rt.ui.objects.rect.y - TILE &&
+		rect.y < rt.ui.objects.rect.y + rt.ui.objects.rect.h)
+	{
+		if (rt.ui.objects.expanded[i])
+			ui_mouse_objectlist_expandedproperties(&rt.scene.objects[i], rect.y + 2);
+		rect.x = 0;
+		rect.w = UI_WIDTH_TILES - 4;
+		if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+		{
+			if (!(rt.input.keys & KEY_CTRL))
+				ft_memclr(rt.ui.objects.selected, OBJECT_MAX_AMOUNT * sizeof(t_bool));
+			rt.ui.objects.selected[i] = TRUE;
+		}
+		rect.x = UI_WIDTH_TILES - 4;
+		rect.w = 2;
+		if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+			rt.ui.objects.expanded[i] = !rt.ui.objects.expanded[i];
+	}
+}
+
 void		ui_mouse_objectlist(void)
 {
 	t_s32		tmp;
@@ -146,32 +74,15 @@ void		ui_mouse_objectlist(void)
 
 	rect = rt.ui.objects.rect;
 	rect.h = 2;
-	i = -1;
-	while (++i < rt.scene.object_amount)
+	i = 0;
+	while (i < rt.scene.object_amount)
 	{
 		tmp = rect.y;
 		rect.y -= rt.ui.objects.scrollbar.scroll / TILE;
 		add_height = (rt.ui.objects.expanded[i] ? OBJECT_PROPERTIES_H : 0);
-		if (rt.scene.objects[i].type &&
-			rect.y + add_height >= rt.ui.objects.rect.y - TILE &&
-			rect.y < rt.ui.objects.rect.y + rt.ui.objects.rect.h)
-		{
-			if (rt.ui.objects.expanded[i])
-				ui_mouse_objectlist_expandedproperties(&rt.scene.objects[i], rect.y + 2);
-			rect.x = 0;
-			rect.w = UI_WIDTH_TILES - 4;
-			if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
-			{
-				if (!(rt.input.keys & KEY_CTRL))
-					ft_memclr(rt.ui.objects.selected, OBJECT_MAX_AMOUNT * sizeof(t_bool));
-				rt.ui.objects.selected[i] = TRUE;
-			}
-			rect.x = UI_WIDTH_TILES - 4;
-			rect.w = 2;
-			if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
-				rt.ui.objects.expanded[i] = !rt.ui.objects.expanded[i];
-		}
+		ui_mouse_objectlist_object(rect, i, add_height);
 		rect.y = tmp;
 		rect.y += 2 + add_height;
+		++i;
 	}
 }

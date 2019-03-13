@@ -7,7 +7,7 @@ CC_LIN	= gcc
 CC_MAC	= gcc
 
 # Compiler flags
-CFLAGS	=	-Wall -Wextra $(CFLAGS_PLATFORM) -O2 -MMD -g
+CFLAGS	=	-Wall -Wextra -Werror $(CFLAGS_PLATFORM) -MMD -g
 
 CFLAGS_PLATFORM = _
 CFLAGS_WIN	= -mwindows -I./ -L./
@@ -124,20 +124,28 @@ SRCS	= 	main.c							\
 			rt_file.c						\
 			rt_open.c						\
 			rt_open_util.c					\
-			rt_open_read.c					\
-			rt_save.c 						\
+			rt_open_read_materials.c		\
+			rt_open_read_properties.c		\
+			rt_open_read_textures.c			\
+			rt_open_read_vectors.c			\
+			rt_save.c						\
 			rt_scene.c						\
+			rt_object.c						\
 			camera.c						\
 			ui.c							\
 			ui_init.c						\
+			ui_init_mac.c					\
 			ui_menu_file.c					\
+			ui_menu_file_extra.c			\
 			ui_menu_edit.c					\
 			ui_render.c						\
 			ui_render_util.c				\
 			ui_render_util_rect.c			\
 			ui_render_canvas.c				\
 			ui_mouse.c						\
+			ui_mouse_menu.c					\
 			ui_mouse_objectlist.c			\
+			ui_mouse_objectlist_enums.c		\
 			ui_render_objectlist.c			\
 			ui_control_numberbox_float.c	\
 			ui_control_numberbox_int.c		\

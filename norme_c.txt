@@ -1,463 +1,82 @@
+Norme: ./src/config_access.c
+Norme: ./src/config.c
 Norme: ./src/cl_float3_util.c
 Norme: ./src/camera.c
-Norme: ./src/config_access.c
+Norme: ./src/event.c
 Norme: ./src/config_ini.c
-Norme: ./src/config.c
 Norme: ./src/debug.c
-Error (line 44): declarations must be followed by one empty line in debug_output
-Error (line 48): preprocessor block must be followed by one empty line
-Error (line 50): preprocessor block must be followed by one empty line
-Error (line 69): declarations must be followed by one empty line in debug_output_value
-Error (line 73): preprocessor block must be followed by one empty line
-Error (line 76): preprocessor block must be followed by one empty line
-Error (line 98): function debug_output_error has 35 lines
-Error (line 98): declarations must be followed by one empty line in debug_output_error
-Error (line 102): preprocessor block must be followed by one empty line
-Error (line 112): preprocessor block must be followed by one empty line
-Error (line 137): declarations must be followed by one empty line in debug_perror
-Error (line 141): preprocessor block must be followed by one empty line
-Error (line 144): preprocessor block must be followed by one empty line
 Norme: ./src/event_window.c
 Norme: ./src/init_sdl.c
 Norme: ./src/event_key.c
-Norme: ./src/event_mouse.c
 Norme: ./src/main.c
-Error (line 23): function update_window has 39 lines
-Error (line 27): C++ comment
-Error (line 31): C++ comment
-Error (line 43): C++ comment
-Error (line 44): C++ comment
-Error (line 49): line has 89 characters
-Error (line 50): line has 83 characters
-Error (line 52): C++ comment
-Error (line 55): C++ comment
-Error (line 55, col 1): no newline after block
-Error (line 58): C++ comment
-Error (line 59): C++ comment
-Error (line 60): line has 83 characters
-Error (line 108): missing void in function main_check_args
-Error (line 132): wrong number of spaces in preprocessor indentation
-Norme: ./src/opencl_memory.c
-Error (line 28): bad indentation
-Error (line 35): bad indentation
-Error (line 46): bad indentation
-Error (line 51): bad indentation
-Error (line 58): Empty line
-Error (line 61): bad indentation
-Error (line 64): bad indentation
-Error (line 75): bad indentation
-Error (line 78): bad indentation
-Error (line 81): bad indentation
-Error (line 92): bad indentation
-Norme: ./src/opencl_init.c
-Error (line 28): bad indentation
-Error (line 42): bad indentation
-Error (line 53): Empty line
-Error (line 55): bad indentation
-Error (line 63): bad indentation
-Error (line 79): bad indentation
-Error (line 84): bad indentation
-Error (line 124): bad indentation
-Error (line 150): bad indentation
-Error (line 153): bad indentation
-Error (line 158): bad indentation
-Error (line 162): bad indentation
-Error (line 166): bad indentation
-Norme: ./src/opencl_utils.c
-Error (line 138): bad indentation
-Error (line 141): bad indentation
-Error (line 146): bad indentation
-Norme: ./src/opencl_render.c
-Error: global scope bad aligned
-Error (line 37): bad indentation
-Error (line 41): bad indentation
-Error (line 45): bad indentation
-Error (line 65, col 4): bad spacing
-Error (line 67): C++ comment
-Error (line 74): spaces at the end of line
-Error (line 74, col 1): no newline after block
-Error (line 78): bad indentation
-Error (line 99): bad indentation
-Error (line 103): bad indentation
-Error (line 116): bad indentation
-Error (line 129): bad indentation
-Error (line 134): bad indentation
-Norme: ./src/rt_auto_build_map.c
-Error: global scope bad aligned
-Error: 9 functions in the file
-Error: 42 header not at top of the file
-Error: file must end with a single empty line
-Error (line 2): wrong number of spaces in preprocessor indentation
-Error (line 3): wrong number of spaces in preprocessor indentation
-Error (line 4): wrong number of spaces in preprocessor indentation
-Error (line 5): wrong number of spaces in preprocessor indentation
-Error (line 6): wrong number of spaces in preprocessor indentation
-Error (line 7): wrong number of spaces in preprocessor indentation
-Error (line 8): wrong number of spaces in preprocessor indentation
-Error (line 10): wrong number of spaces in preprocessor indentation
-Error (line 11): wrong number of spaces in preprocessor indentation
-Error (line 12): wrong number of spaces in preprocessor indentation
-Error (line 13): wrong number of spaces in preprocessor indentation
-Error (line 14): wrong number of spaces in preprocessor indentation
-Error (line 15): wrong number of spaces in preprocessor indentation
-Error (line 17): wrong number of spaces in preprocessor indentation
-Error (line 18): wrong number of spaces in preprocessor indentation
-Error (line 19): wrong number of spaces in preprocessor indentation
-Error (line 21): declaration of Struct forbidden in .c
-Error (line 21): must have only tabulations between struct and s_float3.
-Error (line 21, col 14): bad spacing
-Error (line 23, col 8): bad spacing
-Error (line 24, col 8): bad spacing
-Error (line 25, col 8): bad spacing
-Error (line 26): spaces at the end of line
-Error (line 26, col 16): bad character after ;
-Error (line 28): multiple empty lines
-Error (line 29): bad spacing before t_float3_to_str
-Error (line 29): bad spacing after t_float3_to_str
-Error (line 30): spaces at the end of line
-Error (line 30, col 0): space after (
-Error (line 31): spaces at the end of line
-Error (line 62): multiple empty lines
-Error (line 63): multiple empty lines
-Error (line 64): multiple empty lines
-Error (line 65): multiple empty lines
-Error (line 66): multiple empty lines
-Error (line 67): comment not well formatted
-Error (line 73): multiple empty lines
-Error (line 74): multiple empty lines
-Error (line 75): declaration of Enum forbidden in .c
-Error (line 77, col 11): bad spacing
-Error (line 77, col 13): missing space around =
-Error (line 88): multiple empty lines
-Error (line 89): multiple empty lines
-Error (line 90): function set_alea_nb has 26 lines
-Error (line 90): bad spacing before set_alea_nb
-Error (line 90): bad spacing after set_alea_nb
-Error (line 92): Bad spacing for argument type
-Error (line 107, col 20): bad spacing
-Error (line 123): multiple empty lines
-Error (line 130): Bad spacing for argument fd
-Error (line 133, col 5): bad spacing
-Error (line 139, col 19): bad character after ,
-Error (line 151, col 9): bad spacing
-Error (line 156): Empty line
-Error (line 164): bad spacing after write_float3
-Error (line 166): Bad spacing for argument fd
-Error (line 166): spaces at the end of line
-Error (line 166, col 12): bad spacing
-Error (line 167): Bad spacing for argument label
-Error (line 185): multiple empty lines
-Error (line 186): function build_fix_object has 85 lines
-Error (line 186): bad spacing before build_fix_object
-Error (line 186): bad spacing after build_fix_object
-Error (line 191, col 18): bad spacing
-Error (line 192, col 17): bad character after ,
-Error (line 193, col 17): bad character after ,
-Error (line 194, col 17): bad character after ,
-Error (line 195, col 17): bad character after ,
-Error (line 196, col 17): bad character after ,
-Error (line 197, col 17): bad character after ,
-Error (line 198, col 17): bad character after ,
-Error (line 199, col 17): bad character after ,
-Error (line 200): bad indentation
-Error (line 200): spaces at the end of line
-Error (line 201, col 18): bad spacing
-Error (line 202, col 17): bad character after ,
-Error (line 203, col 17): bad character after ,
-Error (line 204, col 17): bad character after ,
-Error (line 205, col 17): bad character after ,
-Error (line 206, col 17): bad character after ,
-Error (line 207, col 17): bad character after ,
-Error (line 208, col 17): bad character after ,
-Error (line 209, col 17): bad character after ,
-Error (line 210): Empty line
-Error (line 211, col 18): bad spacing
-Error (line 212, col 17): bad character after ,
-Error (line 213, col 17): bad character after ,
-Error (line 214, col 17): bad character after ,
-Error (line 215, col 17): bad character after ,
-Error (line 216, col 17): bad character after ,
-Error (line 217, col 17): bad character after ,
-Error (line 218, col 17): bad character after ,
-Error (line 219, col 17): bad character after ,
-Error (line 220, col 17): bad character after ,
-Error (line 221): Empty line
-Error (line 222, col 18): bad spacing
-Error (line 223, col 17): bad character after ,
-Error (line 224, col 17): bad character after ,
-Error (line 225, col 17): bad character after ,
-Error (line 226, col 17): bad character after ,
-Error (line 227, col 17): bad character after ,
-Error (line 228, col 17): bad character after ,
-Error (line 229, col 17): bad character after ,
-Error (line 230, col 17): bad character after ,
-Error (line 231, col 17): bad character after ,
-Error (line 232): Empty line
-Error (line 233, col 18): bad spacing
-Error (line 234, col 17): bad character after ,
-Error (line 235, col 17): bad character after ,
-Error (line 236, col 17): bad character after ,
-Error (line 237, col 17): bad character after ,
-Error (line 238, col 17): bad character after ,
-Error (line 239, col 17): bad character after ,
-Error (line 240, col 17): bad character after ,
-Error (line 241, col 17): bad character after ,
-Error (line 242, col 17): bad character after ,
-Error (line 243): Empty line
-Error (line 244, col 18): bad spacing
-Error (line 245, col 17): bad character after ,
-Error (line 246, col 17): bad character after ,
-Error (line 247, col 17): bad character after ,
-Error (line 248, col 17): bad character after ,
-Error (line 249, col 17): bad character after ,
-Error (line 250, col 17): bad character after ,
-Error (line 251, col 17): bad character after ,
-Error (line 252, col 17): bad character after ,
-Error (line 253, col 17): bad character after ,
-Error (line 254): Empty line
-Error (line 255, col 18): bad spacing
-Error (line 256, col 17): bad character after ,
-Error (line 257, col 17): bad character after ,
-Error (line 258, col 17): bad character after ,
-Error (line 259, col 17): bad character after ,
-Error (line 260, col 17): bad character after ,
-Error (line 261, col 17): bad character after ,
-Error (line 262, col 17): bad character after ,
-Error (line 263, col 17): bad character after ,
-Error (line 264, col 17): bad character after ,
-Error (line 265): Empty line
-Error (line 266, col 17): bad character after ,
-Error (line 267, col 17): bad character after ,
-Error (line 268, col 17): bad character after ,
-Error (line 269, col 17): bad character after ,
-Error (line 270, col 17): bad character after ,
-Error (line 271, col 17): bad character after ,
-Error (line 272, col 17): bad character after ,
-Error (line 273, col 17): bad character after ,
-Error (line 274, col 17): bad character after ,
-Error (line 275, col 17): bad character after ,
-Error (line 278): multiple empty lines
-Error (line 279): function write_scene has 31 lines
-Error (line 279): bad spacing before write_scene
-Error (line 285, col 5): bad spacing
-Error (line 291): Empty line
-Error (line 293): missing newline after while
-Error (line 293): spaces at the end of line
-Error (line 296): bad indentation
-Error (line 296): spaces at the end of line
-Error (line 318): spaces at the end of line
-Error (line 321): declarations in auto_build_map must be at the top of the function
-Error (line 321): bad spacing after auto_build_map
-Error (line 347): multiple empty lines
-Error (line 348): bad spacing before main
-Error (line 350, col 4): bad spacing
-Error (line 352): spaces at the end of line
-Error (line 364, col 0): no newline after block
-Norme: ./src/rt_file.c
-Norme: ./src/rt_get_str_object.c
-Norme: ./src/rt_get_str_scene.c
-Norme: ./src/event.c
-Norme: ./src/opencl_get_error_str.c
-Norme: ./src/rt_open_util.c
-Norme: ./src/rt_create_texture.c
-Error: 42 header must be followed by one empty line
-Error: file must end with a single empty line
-Error (line 1): line has 82 characters
-Error (line 2): line has 82 characters
-Error (line 3): line has 82 characters
-Error (line 4): line has 82 characters
-Error (line 5): line has 82 characters
-Error (line 6): line has 82 characters
-Error (line 7): line has 82 characters
-Error (line 8): line has 82 characters
-Error (line 9): line has 82 characters
-Error (line 10): line has 82 characters
-Error (line 11): line has 82 characters
-Error (line 16): preprocessor block must be followed by one empty line
-Error (line 20): preprocessor block must be followed by one empty line
-Error (line 22): comment not well formatted
-Error (line 34): function rt_create_rgb_texture has 51 lines
-Error (line 34): bad spacing before rt_create_rgb_texture
-Error (line 34, col 0): rt_create_rgb_texture has 9 variables
-Error (line 48): line has 82 characters
-Error (line 80): bad indentation
-Error (line 80): C++ comment
-Error (line 80): line has 99 characters
-Error (line 87, col 0): no newline after block
-Norme: ./src/rt_open.c
-Error (line 26): C++ comment
-Error (line 27): bad spacing before rt_output_readfile
-Error (line 42): line has 88 characters
-Error (line 47): line has 82 characters
-Error (line 48): line has 82 characters
-Error (line 49): line has 84 characters
-Error (line 50): line has 91 characters
-Error (line 51): line has 91 characters
-Error (line 56): function rt_read_object has 29 lines
-Error (line 70): line has 89 characters
-Error (line 89): function rt_read_command has 44 lines
-Norme: ./src/rt_random.c
-Error: global scope bad aligned
-Error: 8 functions in the file
-Error: 42 header not at top of the file
-Error: file must end with a single empty line
-Error (line 2): multiple empty lines
-Error (line 46): bad spacing before ft_rand_a_to_b
-Error (line 62): bad spacing before ft_frand_a_to_b
-Error (line 68, col 0): no newline after block
-Norme: ./src/rt_save.c
-Error (line 21): Bad spacing for argument fd
-Error (line 37): spaces at the end of line
-Error (line 51, col 20): bad character after ,
-Error (line 56, col 20): bad character after ,
-Error (line 61, col 20): bad character after ,
-Error (line 70): Space before function name
-Error (line 70, col 11): bad spacing
-Error (line 75): spaces at the end of line
-Error (line 75, col 1): no newline after block
-Error (line 87): declarations in rt_save are bad aligned
-Error (line 89, col 7): bad spacing
-Error (line 90, col 9): space after pointer
-Error (line 90, col 10): bad spacing
-Norme: ./src/ui.c
-Error (line 53): line has 90 characters
-Error (line 57): function ui_set_tileset has 45 lines
-Error (line 57, col 0): ui_set_tileset has 8 variables
-Error (line 79): line has 95 characters
-Error (line 85): line has 82 characters
-Error (line 87): line has 82 characters
-Error (line 96): line has 128 characters
-Norme: ./src/rt_scene.c
-Error (line 52): C++ comment
-Error (line 53): function rt_object_init_bbox has 43 lines
-Error (line 53): bad spacing before rt_object_init_bbox
-Error (line 58): line has 84 characters
-Norme: ./src/ui_control_numberbox_int.c
-Error: global scope bad aligned
-Error (line 86): function ui_mouse_control_numberbox_int has 30 lines
-Error (line 86): line has 93 characters
-Error (line 102): line has 86 characters
-Error (line 131): line has 86 characters
-Norme: ./src/ui_control_textbox.c
-Error: global scope bad aligned
-Error (line 45): line has 85 characters
-Error (line 73): line has 86 characters
-Norme: ./src/ui_menu_edit.c
-Norme: ./src/ui_init.c
-Error (line 40): function ui_init_dropdown_file has 27 lines
-Error (line 53): line has 84 characters
-Error (line 108): line has 82 characters
-Error (line 112): line has 155 characters
-Error (line 115): line has 84 characters
-Error (line 118): function ui_init has 30 lines
-Error (line 118): declarations in ui_init must be at the top of the function
-Error (line 118): declarations must be followed by one empty line in ui_init
-Error (line 127): preprocessor block must be followed by one empty line
-Error (line 128, col 11): size is instanciated during declaration
-Error (line 134): preprocessor block must be followed by one empty line
-Error (line 136): preprocessor block must be followed by one empty line
-Error (line 138): preprocessor block must be followed by one empty line
-Norme: ./src/ui_mouse.c
-Error: global scope bad aligned
-Error (line 75, col 60): bad spacing
-Error (line 90): function ui_mouse_menubar has 37 lines
-Norme: ./src/ui_mouse_objectlist.c
-Warning: /Users/aduquesn/Documents/08-rt/src/ui_mouse_objectlist.c may not compile or is invalid for some reasons.
-Norme: ./src/ui_prompt.c
-Error (line 32): function ui_mouse_prompt has 32 lines
-Error (line 44): line has 93 characters
-Error (line 45): line has 85 characters
-Error (line 47): line has 87 characters
-Error (line 49): line has 85 characters
-Error (line 51): line has 87 characters
-Error (line 53): line has 87 characters
-Error (line 54, col 3): no newline after block
-Error (line 54, col 4): no newline before block
-Error (line 55): line has 90 characters
-Error (line 57): line has 90 characters
-Error (line 62): line has 98 characters
-Norme: ./src/rt_open_read.c
-Error: 8 functions in the file
-Error: file must end with a single empty line
-Error (line 18): function rt_read_arg_name has 28 lines
-Error (line 47): line has 84 characters
-Error (line 50): line has 84 characters
-Error (line 55): line has 88 characters
-Error (line 59): line has 92 characters
-Error (line 66): line has 95 characters
-Error (line 75): line has 97 characters
-Error (line 78): line has 82 characters
-Error (line 102): line has 85 characters
-Error (line 108): line has 88 characters
-Error (line 112): line has 92 characters
-Error (line 128): function rt_read_arg_color has 41 lines
-Error (line 128): line has 84 characters
-Error (line 173): line has 88 characters
-Error (line 180): line has 88 characters
-Error (line 184): line has 97 characters
-Error (line 202): bad spacing after rt_read_arg_pattern
-Error (line 202): line has 86 characters
-Error (line 209): line has 88 characters
-Error (line 213): line has 104 characters
-Error (line 231): multiple empty lines
-Error (line 232): bad spacing before rt_read_arg_projection
-Error (line 232): line has 96 characters
-Error (line 239): line has 88 characters
-Error (line 243): line has 107 characters
-Error (line 259, col 0): no newline after block
-Norme: ./src/ui_render.c
-Error (line 20): Space before function name
-Error (line 27, col 32): space after (
-Error (line 43, col 34): space after (
-Norme: ./src/ui_control_numberbox_float.c
-Error (line 62): function ui_mouse_control_numberbox_float has 30 lines
-Error (line 62): line has 96 characters
-Error (line 78): line has 86 characters
-Error (line 107): line has 86 characters
-Norme: ./src/ui_menu_file.c
 Error: 6 functions in the file
-Error (line 32): line has 86 characters
+Error (line 45): bad indentation
+Error (line 45): C++ comment
+Error (line 51): line has 89 characters
+Error (line 52): line has 83 characters
+Error (line 54): C++ comment
+Error (line 64): bad indentation
+Error (line 64): C++ comment
+Error (line 65): bad indentation
+Error (line 65): C++ comment
+Error (line 66): bad indentation
+Error (line 66): C++ comment
+Error (line 67): line has 83 characters
+Error (line 140): wrong number of spaces in preprocessor indentation
+Error (line 143): function main has 26 lines
+Norme: ./src/event_mouse.c
+Norme: ./src/opencl_memory.c
+Norme: ./src/opencl_get_error_str.c
+Norme: ./src/opencl_init.c
+Norme: ./src/opencl_render.c
+Error (line 68): C++ comment
+Norme: ./src/opencl_utils.c
+Norme: ./src/rt_file.c
+Norme: ./src/rt_get_img_texture.c
+Norme: ./src/rt_get_str_scene.c
+Norme: ./src/rt_get_str_object.c
+Norme: ./src/rt_open.c
+Norme: ./src/rt_open_read_materials.c
+Norme: ./src/rt_open_read_textures.c
+Norme: ./src/rt_open_read_properties.c
+Norme: ./src/rt_open_util.c
+Norme: ./src/rt_random.c
+Norme: ./src/rt_random_util.c
+Norme: ./src/rt_auto_build_map.c
+Error: 9 functions in the file
+Error (line 32): declaration of Struct forbidden in .c
+Error (line 72): declaration of Enum forbidden in .c
+Error (line 84): function set_alea_nb has 26 lines
+Error (line 165): function build_fix_object has 78 lines
+Error (line 247): function write_scene has 29 lines
+Norme: ./src/rt_scene.c
+Norme: ./src/ui.c
+Norme: ./src/rt_object.c
+Norme: ./src/ui_control_numberbox_float.c
+Norme: ./src/rt_open_read_vectors.c
+Norme: ./src/ui_control_textbox.c
+Norme: ./src/ui_init_mac.c
+Error (line 33, col 4): _mh_execute_header not unixcase
+Error (line 33, col 4): global named _mh_execute_header is not well prefixed
+Norme: ./src/ui_menu_edit.c
+Norme: ./src/rt_save.c
+Norme: ./src/ui_menu_file_extra.c
+Norme: ./src/ui_init.c
+Norme: ./src/ui_mouse.c
+Norme: ./src/ui_mouse_objectlist.c
+Warning: /Users/hbruvry/Desktop/RTV2/src/ui_mouse_objectlist.c may not compile or is invalid for some reasons.
+Norme: ./src/ui_control_numberbox_int.c
+Error (line 86): function ui_mouse_control_numberbox_int has 30 lines
+Norme: ./src/ui_menu_file.c
+Norme: ./src/ui_prompt.c
+Error (line 48): bad indentation
+Error (line 48): C++ comment
+Norme: ./src/ui_mouse_menu.c
 Norme: ./src/ui_render_canvas.c
-Error (line 39): line has 85 characters
+Norme: ./src/ui_render.c
+Norme: ./src/ui_mouse_objectlist_enums.c
 Norme: ./src/ui_render_util.c
-Error (line 21): line has 86 characters
+Norme: ./tmp_srcs/solve_cubic.c
 Norme: ./src/ui_scrollbar.c
-Error (line 30): line has 87 characters
-Error (line 31): line has 87 characters
-Error (line 62): function ui_render_scrollbar has 51 lines
-Error (line 90): line has 84 characters
 Norme: ./src/ui_render_util_rect.c
-Error (line 19, col 17): rect_UL not unixcase
-Error (line 20, col 17): rect_UR not unixcase
-Error (line 21, col 17): rect_DL not unixcase
-Error (line 22, col 17): rect_DR not unixcase
-Error (line 48, col 17): rect_U not unixcase
-Error (line 49, col 17): rect_D not unixcase
-Error (line 60): line has 83 characters
-Error (line 69): line has 83 characters
-Error (line 77, col 17): rect_R not unixcase
-Error (line 78, col 17): rect_L not unixcase
-Error (line 89): line has 83 characters
-Error (line 98): line has 83 characters
-Error (line 126): line has 85 characters
 Norme: ./src/ui_render_objectlist.c
-Error (line 33): line has 119 characters
-Error (line 34): line has 118 characters
-Error (line 35): line has 118 characters
-Error (line 37): line has 127 characters
-Error (line 38): line has 126 characters
-Error (line 39): line has 126 characters
-Error (line 47): function ui_render_expandedproperties has 79 lines
-Error (line 64): line has 85 characters
-Error (line 98, col 34): space after (
-Error (line 102, col 34): space after (
-Error (line 106, col 34): space after (
-Error (line 110, col 34): space after (
-Error (line 114, col 34): space after (
-Error (line 117): C++ comment
-Error (line 118): comment not well formatted
-Error (line 118): comment not well placed
-Error (line 128, col 0): no empty line before block
-Error (line 130): function ui_render_objectlist has 37 lines
-Error (line 152): line has 82 characters
-Error (line 167): line has 82 characters

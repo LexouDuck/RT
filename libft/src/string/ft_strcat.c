@@ -29,6 +29,7 @@ char	*ft_strcat(char *dest, char const *src)
 	dest[length + i] = '\0';
 	return (dest);
 }
+
 /*
 **	if (dest == NULL)
 **		return (NULL);
@@ -58,6 +59,7 @@ char	*ft_strncat(char *dest, char const *src, size_t n)
 	dest[length + i] = '\0';
 	return (dest);
 }
+
 /*
 **	if (dest == NULL)
 **		return (NULL);
@@ -91,6 +93,7 @@ size_t	ft_strlcat(char *dest, char const *src, size_t size)
 	}
 	return (dst_len + src_len);
 }
+
 /*
 **	if (dest == NULL)
 **		return (0);

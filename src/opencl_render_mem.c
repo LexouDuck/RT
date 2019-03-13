@@ -10,12 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "libft_memory.h"
 #include "libft_convert.h"
 
 #include "../rt.h"
 #include "debug.h"
-//#include "rt_scene.h"
 
 static inline t_u32	ft_min(t_u32 a, t_u32 b)
 {

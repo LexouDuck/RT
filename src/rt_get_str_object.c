@@ -67,7 +67,7 @@ inline char		*rt_get_str_pattern(t_pattern pattern)
 	return (patterns[pattern]);
 }
 
-inline char		*rt_get_str_projection(t_uvw_projection projection)
+inline char		*rt_get_str_projection(t_projection projection)
 {
 	static char	*projections[TEXTURE_PROJECTIONS] = {
 		"SPHERICAL",
@@ -76,4 +76,14 @@ inline char		*rt_get_str_projection(t_uvw_projection projection)
 	};
 
 	return (projections[projection]);
+}
+
+inline char		*rt_get_str_bump(t_bump bump_type)
+{
+	static char	*bump_types[BUMP_TYPES] = {
+		"FLAT",
+		"BUMP",
+	};
+
+	return (bump_types[bump_type]);
 }

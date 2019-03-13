@@ -1,36 +1,42 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rt_cl_sphere.cl                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
+/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-# include <time.h>
-# include <sys/stat.h>
-# include <stdbool.h>
-# include <fcntl.h>
-# include <errno.h>
-# include <string.h>
-# include <stdio.h>
+#include <time.h>
+#include <sys/stat.h>
+#include <stdbool.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <string.h>
+#include <stdio.h>
 
-# include "libft.h"
-# include "libft_io.h"
-# include "libft_list.h"
-# include "libft_convert.h"
-# include "libft_string.h"
-# include "libft_memory.h"
+#include "libft.h"
+#include "libft_io.h"
+#include "libft_list.h"
+#include "libft_convert.h"
+#include "libft_string.h"
+#include "libft_memory.h"
 
-# include "../rt.h"
-# include "debug.h"
-# include "rt_scene.h"
+#include "../rt.h"
+#include "debug.h"
+#include "rt_scene.h"
 
-typedef struct 				s_float3
+typedef struct	s_float3
 {
-	t_float 	x;
-	t_float 	y;
-	t_float 	z;
-}							t_float3;					
+	t_float		x;
+	t_float		y;
+	t_float		z;
+}				t_float3;
 
-
-char						*t_float3_to_str
-(							
-							t_float3 *vector, 
-							int i
-)
+char			*t_float3_to_str(t_float3 *vector, int i)
 {
 	t_tuple	x;
 	t_tuple	y;
@@ -59,22 +65,13 @@ char						*t_float3_to_str
 	return (result);
 }
 
-
-
-
-
-
 /*
-**
-**  ATTENTION A SUPPRIMER AU DESSUS
-**
+** ATTENTION A SUPPRIMER AU DESSUS
 */
 
-
-
-typedef enum						e_random_type
+typedef enum	e_random_type
 {
-	TYPE_FLOAT 	= 0,
+	TYPE_FLOAT = 0,
 	TYPE_PRIMITIVE,
 	TYPE_MATERIAL,
 	TYPE_COLOR,
@@ -82,15 +79,9 @@ typedef enum						e_random_type
 	TYPE_POS_X,
 	TYPE_POS_Y,
 	TYPE_POS_Z,
+}				t_random_type;
 
-}									t_random_type;
-
-
-
-int									set_alea_nb
-(
-									t_random_type	type
-)
+int				set_alea_nb(t_random_type type)
 {
 	int result;
 
@@ -104,7 +95,7 @@ int									set_alea_nb
 		result = (rand() % 1000);
 	else if (type == TYPE_POS_X)
 	{
-		result = (rand() %  20001) - 10000;
+		result = (rand() % 20001) - 10000;
 		printf("resuslt_x = : %d\n", result);
 	}
 	else if (type == TYPE_POS_Y)
@@ -120,23 +111,19 @@ int									set_alea_nb
 	return (result);
 }
 
-
 /*
-** this function select aleatory object's type
+** This function select aleatory object's type
 */
 
-void								write_enums
-(
-									int		fd
-)
+void			write_enums(int fd)
 {
-	char 	*primitives;
+	char	*primitives;
 
 	primitives = rt_get_str_primitive(
 		(t_primitive)set_alea_nb(TYPE_PRIMITIVE));
 	FT_Write_String(fd, primitives);
 	FT_Write_Char(fd, '\n');
-	FT_Write_String(fd,"material:");
+	FT_Write_String(fd, "material:");
 	FT_Write_String(fd, rt_get_str_material(
 		(t_material)set_alea_nb(TYPE_MATERIAL)));
 	FT_Write_Char(fd, '\n');
@@ -146,28 +133,21 @@ void								write_enums
 ** This function chose aleatory value to the object's vector
 */
 
-t_float3							set_float3_nb(t_random_type type)
+t_float3		set_float3_nb(t_random_type type)
 {
-	t_float3 	nb;
+	t_float3	nb;
 
 	nb.x = set_alea_nb(type) / 1000.0;
 	nb.y = set_alea_nb(type) / 1000.0;
 	nb.z = set_alea_nb(type) / 1000.0;
-
 	return (nb);
 }
 
 /*
-** this is the principal corp of the file, this function print all item
+** This is the principal corp of the file, this function print all item
 */
 
-void								write_float3
-(
-									int 	fd, 
-									char	*label,
-									t_random_type type
-
-)
+void			write_float3(int fd, char *label, t_random_type type)
 {
 	char			*tmp;
 	t_float3		vector;
@@ -182,118 +162,101 @@ void								write_float3
 	FT_Write_Char(fd, '\n');
 }
 
-
-void								build_fix_object
-(
-									int fd
-)
+void			build_fix_object(int fd)
 {
-	FT_Write_Line(fd, 	"SPHERE");
-	FT_Write_Line(fd,	"material:LIGHT");
-	FT_Write_Line(fd,	"color:(1.00000, 1.00000, 1.00000)");
-	FT_Write_Line(fd,	"color2:(0.00000, 0.00000, 0.00000)");
-	FT_Write_Line(fd,	"pos:(9.00000, 5.00000, 10.00000)");
-	FT_Write_Line(fd,	"rot:(0.00000, 0.00000, 0.00000)");
-	FT_Write_Line(fd,	"scale:(0.00000, 0.00000, 0.00000)");
-	FT_Write_Line(fd,	"bbox_vi:(-1.00000, -1.00000, -1.00000)");
-	FT_Write_Line(fd,	"bbox_vf:(1.00000, 1.00000, 1.00000)\n");
-		
-	FT_Write_Line(fd, 	"SPHERE");
-	FT_Write_Line(fd,	"material:LIGHT");
-	FT_Write_Line(fd,	"color:(1.00000, 1.00000, 1.00000)");
-	FT_Write_Line(fd,	"color2:(0.00000, 0.00000, 0.00000)");
-	FT_Write_Line(fd,	"pos:(-9.00000, 5.00000, 10.00000)");
-	FT_Write_Line(fd,	"rot:(0.00000, 0.00000, 0.00000)");
-	FT_Write_Line(fd,	"scale:(0.00000, 0.00000, 0.00000)");
-	FT_Write_Line(fd,	"bbox_vi:(-1.00000, -1.00000, -1.00000)");
-	FT_Write_Line(fd,	"bbox_vf:(1.00000, 1.00000, 1.00000)\n");
-
-	FT_Write_Line(fd, 	"CUBE");
-	FT_Write_Line(fd,	"material:DIFFUSE");
-	FT_Write_Line(fd,	"\"floor\"");
-	FT_Write_Line(fd,	"color:(1.00000, 1.00000, 1.00000)");
-	FT_Write_Line(fd,	"color2:(0.00000, 0.00000, 0.00000)");
-	FT_Write_Line(fd,	"pos:(0.00000, -7.00000, 0.00000)");
-	FT_Write_Line(fd,	"rot:(0.00000, 0.00000, 0.00000)");
-	FT_Write_Line(fd,	"scale:(20.00000, 1.00000, 20.00000)");
-	FT_Write_Line(fd,	"bbox_vi:(-1.00000, -1.00000, -1.00000)");
-	FT_Write_Line(fd,	"bbox_vf:(1.00000, 1.00000, 1.00000)\n");
-
-	FT_Write_Line(fd, 	"CUBE");
-	FT_Write_Line(fd,	"material:DIFFUSE");
-	FT_Write_Line(fd,	"\"ceiling\"");
-	FT_Write_Line(fd,	"color:(0.26666, 0.26666, 0.26666)");
-	FT_Write_Line(fd,	"color2:(0.00000, 0.00000, 0.00000)");
-	FT_Write_Line(fd,	"pos:(0.00000, 17.00000, 0.00000)");
-	FT_Write_Line(fd,	"rot:(0.00000, 0.00000, 0.00000)");
-	FT_Write_Line(fd,	"scale:(20.00000, 2.00000, 20.00000)");
-	FT_Write_Line(fd,	"bbox_vi:(-1.00000, -1.00000, -1.00000)");
-	FT_Write_Line(fd,	"bbox_vf:(1.00000, 1.00000, 1.00000)\n");
-
-	FT_Write_Line(fd, 	"CUBE");
-	FT_Write_Line(fd,	"material:DIFFUSE");
-	FT_Write_Line(fd,	"\"walls Blue\"");
-	FT_Write_Line(fd,	"color:(0.01000, 0.01000, 1.00000)");
-	FT_Write_Line(fd,	"color2:(0.00000, 0.00000, 0.00000)");
-	FT_Write_Line(fd,	"pos:(0.00000, 4.45000, -19.50000)");
-	FT_Write_Line(fd,	"rot:(0.00000, 0.00000, 0.00000)");
-	FT_Write_Line(fd,	"scale:(19.00000, 11.0000, 0.50000)");
-	FT_Write_Line(fd,	"bbox_vi:(-1.00000, -1.00000, -1.00000)");
-	FT_Write_Line(fd,	"bbox_vf:(1.00000, 1.00000, 1.00000)\n");
-
-	FT_Write_Line(fd, 	"CUBE");
-	FT_Write_Line(fd,	"material:DIFFUSE");
-	FT_Write_Line(fd,	"\"Walls Red\"");
-	FT_Write_Line(fd,	"color:(1.00000, 0.01000, 0.01000)");
-	FT_Write_Line(fd,	"color2:(0.00000, 0.00000, 0.00000)");
-	FT_Write_Line(fd,	"pos:(-19.70000, 4.50000, 0.00000)");
-	FT_Write_Line(fd,	"rot:(0.00000, 0.00000, 0.00000)");
-	FT_Write_Line(fd,	"scale:(0.30000, 10.50000, 20.00000)");
-	FT_Write_Line(fd,	"bbox_vi:(-1.00000, -1.00000, -1.00000)");
-	FT_Write_Line(fd,	"bbox_vf:(1.00000, 1.00000, 1.00000)\n");
-
-	FT_Write_Line(fd, 	"CUBE");
-	FT_Write_Line(fd,	"material:DIFFUSE");
-	FT_Write_Line(fd,	"\"Walls Green\"");
-	FT_Write_Line(fd,	"color:(0.01000, 1.00000, 0.01000)");
-	FT_Write_Line(fd,	"color2:(0.00000, 3.50000, 0.00000)");
-	FT_Write_Line(fd,	"pos:(19.70000, 4.45000, 0.00000)");
-	FT_Write_Line(fd,	"rot:(0.00000, 0.00000, 0.00000)");
-	FT_Write_Line(fd,	"scale:(0.30000, 10.50000, 20.00000)");
-	FT_Write_Line(fd,	"bbox_vi:(-1.00000, -1.00000, -1.00000)");
-	FT_Write_Line(fd,	"bbox_vf:(1.00000, 1.00000, 1.00000)\n");
-
-	FT_Write_Line(fd,	"RECTANGLE");
-	FT_Write_Line(fd,	"material:LIGHT");
-	FT_Write_Line(fd,	"\"light of the top\"");
-	FT_Write_Line(fd,	"color:(1.00000, 1.00000, 1.00000)");
-	FT_Write_Line(fd,	"color2:(0.00000, 0.00000, 0.00000)");
-	FT_Write_Line(fd,	"pos:(0.00000, 14.90000, 0.00000)");
-	FT_Write_Line(fd,	"rot:(0.00000, 0.00000, 0.00000)");
-	FT_Write_Line(fd,	"scale:(31.00000, 1.00000, 31.00000)");
-	FT_Write_Line(fd,	"bbox_vi:(-0.50000, -0.50000, -0.50000)");
-	FT_Write_Line(fd,	"bbox_vf:(0.50000, 0.50000, 0.50000)\n");
+	FT_Write_Line(fd, "SPHERE");
+	FT_Write_Line(fd, "material:LIGHT");
+	FT_Write_Line(fd, "color:(1.00000, 1.00000, 1.00000)");
+	FT_Write_Line(fd, "color2:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd, "pos:(9.00000, 5.00000, 10.00000)");
+	FT_Write_Line(fd, "rot:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd, "scale:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd, "bbox_vi:(-1.00000, -1.00000, -1.00000)");
+	FT_Write_Line(fd, "bbox_vf:(1.00000, 1.00000, 1.00000)\n");
+	FT_Write_Line(fd, "SPHERE");
+	FT_Write_Line(fd, "material:LIGHT");
+	FT_Write_Line(fd, "color:(1.00000, 1.00000, 1.00000)");
+	FT_Write_Line(fd, "color2:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd, "pos:(-9.00000, 5.00000, 10.00000)");
+	FT_Write_Line(fd, "rot:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd, "scale:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd, "bbox_vi:(-1.00000, -1.00000, -1.00000)");
+	FT_Write_Line(fd, "bbox_vf:(1.00000, 1.00000, 1.00000)\n");
+	FT_Write_Line(fd, "CUBE");
+	FT_Write_Line(fd, "material:DIFFUSE");
+	FT_Write_Line(fd, "\"floor\"");
+	FT_Write_Line(fd, "color:(1.00000, 1.00000, 1.00000)");
+	FT_Write_Line(fd, "color2:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd, "pos:(0.00000, -7.00000, 0.00000)");
+	FT_Write_Line(fd, "rot:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd, "scale:(20.00000, 1.00000, 20.00000)");
+	FT_Write_Line(fd, "bbox_vi:(-1.00000, -1.00000, -1.00000)");
+	FT_Write_Line(fd, "bbox_vf:(1.00000, 1.00000, 1.00000)\n");
+	FT_Write_Line(fd, "CUBE");
+	FT_Write_Line(fd, "material:DIFFUSE");
+	FT_Write_Line(fd, "\"ceiling\"");
+	FT_Write_Line(fd, "color:(0.26666, 0.26666, 0.26666)");
+	FT_Write_Line(fd, "color2:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd, "pos:(0.00000, 17.00000, 0.00000)");
+	FT_Write_Line(fd, "rot:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd, "scale:(20.00000, 2.00000, 20.00000)");
+	FT_Write_Line(fd, "bbox_vi:(-1.00000, -1.00000, -1.00000)");
+	FT_Write_Line(fd, "bbox_vf:(1.00000, 1.00000, 1.00000)\n");
+	FT_Write_Line(fd, "CUBE");
+	FT_Write_Line(fd, "material:DIFFUSE");
+	FT_Write_Line(fd, "\"walls Blue\"");
+	FT_Write_Line(fd, "color:(0.01000, 0.01000, 1.00000)");
+	FT_Write_Line(fd, "color2:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd, "pos:(0.00000, 4.45000, -19.50000)");
+	FT_Write_Line(fd, "rot:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd, "scale:(19.00000, 11.0000, 0.50000)");
+	FT_Write_Line(fd, "bbox_vi:(-1.00000, -1.00000, -1.00000)");
+	FT_Write_Line(fd, "bbox_vf:(1.00000, 1.00000, 1.00000)\n");
+	FT_Write_Line(fd, "CUBE");
+	FT_Write_Line(fd, "material:DIFFUSE");
+	FT_Write_Line(fd, "\"Walls Red\"");
+	FT_Write_Line(fd, "color:(1.00000, 0.01000, 0.01000)");
+	FT_Write_Line(fd, "color2:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd, "pos:(-19.70000, 4.50000, 0.00000)");
+	FT_Write_Line(fd, "rot:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd, "scale:(0.30000, 10.50000, 20.00000)");
+	FT_Write_Line(fd, "bbox_vi:(-1.00000, -1.00000, -1.00000)");
+	FT_Write_Line(fd, "bbox_vf:(1.00000, 1.00000, 1.00000)\n");
+	FT_Write_Line(fd, "CUBE");
+	FT_Write_Line(fd, "material:DIFFUSE");
+	FT_Write_Line(fd, "\"Walls Green\"");
+	FT_Write_Line(fd, "color:(0.01000, 1.00000, 0.01000)");
+	FT_Write_Line(fd, "color2:(0.00000, 3.50000, 0.00000)");
+	FT_Write_Line(fd, "pos:(19.70000, 4.45000, 0.00000)");
+	FT_Write_Line(fd, "rot:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd, "scale:(0.30000, 10.50000, 20.00000)");
+	FT_Write_Line(fd, "bbox_vi:(-1.00000, -1.00000, -1.00000)");
+	FT_Write_Line(fd, "bbox_vf:(1.00000, 1.00000, 1.00000)\n");
+	FT_Write_Line(fd, "RECTANGLE");
+	FT_Write_Line(fd, "material:LIGHT");
+	FT_Write_Line(fd, "\"light of the top\"");
+	FT_Write_Line(fd, "color:(1.00000, 1.00000, 1.00000)");
+	FT_Write_Line(fd, "color2:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd, "pos:(0.00000, 14.90000, 0.00000)");
+	FT_Write_Line(fd, "rot:(0.00000, 0.00000, 0.00000)");
+	FT_Write_Line(fd, "scale:(31.00000, 1.00000, 31.00000)");
+	FT_Write_Line(fd, "bbox_vi:(-0.50000, -0.50000, -0.50000)");
+	FT_Write_Line(fd, "bbox_vf:(0.50000, 0.50000, 0.50000)\n");
 }
 
-
-void								write_scene
-(
-									int fd
-)
+void			write_scene(int fd)
 {
-	int				i;
-	char 			*vec;
+	int		i;
+	char	*vec;
 
+	i = -1;
 	FT_Write_String(fd, "BG #");
 	FT_Write_Line(fd, "808080");
 	FT_Write_Char(fd, '\n');
 	build_fix_object(fd);
-
-	i = -1;
-	while (++i < 7) 
+	while (++i < 7)
 	{
 		write_enums(fd);
-	
 		write_float3(fd, "color:", TYPE_COLOR);
 		write_float3(fd, "color2:", TYPE_COLOR);
 		FT_Write_String(fd, "pos:(");
@@ -315,16 +278,12 @@ void								write_scene
 }
 
 /*
-** This function creat a file 
+** This function create a file
 */
 
-int									auto_build_map
-(
-									char *filename
-)
+int				auto_build_map(char *filename)
 {
-
-	int			fd;
+	int	fd;
 
 	fd = open(filename, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd < 0)
@@ -344,12 +303,10 @@ int									auto_build_map
 	return (filename ? OK : ERROR);
 }
 
-
-int		main(int argc, char **argv)
+int				main(int argc, char **argv)
 {
-	int 		i;
+	int i;
 
-	
 	if (argc == 2)
 	{
 		if (auto_build_map(argv[1]) == ERROR)

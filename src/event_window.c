@@ -22,15 +22,15 @@ void	event_window_resize(t_s32 window_w, t_s32 window_h)
 	t_bool		maximized;
 
 	maximized = (SDL_GetWindowFlags(rt.sdl.window) & SDL_WINDOW_MAXIMIZED);
-	config_set(CONFIG_INDEX_MAXIMIZED, FT_Bool_To_String(maximized, FALSE));
+	config_set(CONFIG_INDEX_MAXIMIZED, ft_bool_to_str(maximized, FALSE));
 	if (!maximized)
 	{
 		if (window_w == 0 || window_h == 0)
 			SDL_GetWindowSize(rt.sdl.window, &window_w, &window_h);
 		else
 			SDL_SetWindowSize(rt.sdl.window, window_w, window_h);
-		config_set(CONFIG_INDEX_WINDOW_W, FT_S32_To_String(window_w));
-		config_set(CONFIG_INDEX_WINDOW_H, FT_S32_To_String(window_h));
+		config_set(CONFIG_INDEX_WINDOW_W, ft_s32_to_str(window_w));
+		config_set(CONFIG_INDEX_WINDOW_H, ft_s32_to_str(window_h));
 		SDL_DestroyTexture(rt.sdl.window_texture);
 		SDL_FreeSurface(rt.sdl.window_surface);
 		init_window_display();
@@ -49,7 +49,7 @@ void	event_window_resize(t_s32 window_w, t_s32 window_h)
 void	event_window_fullscreen(t_bool fullscreen)
 {
 	rt.sdl.fullscreen = fullscreen;
-	config_set(CONFIG_INDEX_FULLSCREEN, FT_Bool_To_String(fullscreen, FALSE));
+	config_set(CONFIG_INDEX_FULLSCREEN, ft_bool_to_str(fullscreen, FALSE));
 	if (fullscreen)
 	{
 		if (SDL_SetWindowFullscreen(rt.sdl.window,

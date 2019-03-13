@@ -1,34 +1,19 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rt_random.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: duquesne <marvin@42.com>                   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2006/06/06 06:06:06 by duquesne          #+#    #+#             */
+/*   Updated: 2006/06/06 06:06:06 by duquesne         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "rt_random.h"
 
 #include "../rt.h"
 #include "debug.h"
-
-inline static t_u32	ft_rand_bit_shuffle(t_u32 n)
-{
-	return ((n << 12) ^ (n >> 20));
-}
-
-t_u32				ft_srand(int mode, t_u32 value)
-{
-	static t_u32	new_nb = DEFAULT_SEED;
-
-	if (mode == 1)
-		new_nb *= rt.sdl.current_frame;
-	if (mode == 2)
-		new_nb = value;
-	return (new_nb);
-}
-
-t_u32				ft_rand(void)
-{
-	t_float		new_nb;
-
-	new_nb = (CEIL_SQRT_MOD * ft_rand_bit_shuffle(new_nb) + OFFSET) & MODULUS;
-	ft_srand(2, new_nb);
-	return (new_nb);
-}
 
 inline t_u32		ft_rand_0_to_pow2n(t_u32 n)
 {
@@ -43,7 +28,8 @@ inline t_u32		ft_rand_0_to_n(t_u32 n)
 /*
 ** XOR swap.
 */
-inline int		ft_rand_a_to_b(int a, int b)
+
+inline int			ft_rand_a_to_b(int a, int b)
 {
 	if (a < b)
 		return (ft_rand_0_to_n(b - a) + a);
@@ -59,6 +45,7 @@ inline t_float		ft_frand_0_to_1(void)
 /*
 ** XOR swap.
 */
+
 inline t_float		ft_frand_a_to_b(t_float a, t_float b)
 {
 	if (a < b)

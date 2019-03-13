@@ -1,5 +1,12 @@
 Norme: ./src/config.h
 Norme: ./src/debug.h
+Norme: ./src/rt_auto_build_map.h
+Error: not protected against double inclusion
+Error: 42 header not well formatted
+Error: file must end with a single empty line
+Error (line 51): multiple empty lines
+Error (line 52): multiple empty lines
+Error (line 64, col 29): bad character after ;
 Norme: ./src/rt_random.h
 Norme: ./src/event.h
 Norme: ./src/rt_cl.h

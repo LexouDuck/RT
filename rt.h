@@ -73,6 +73,7 @@ typedef struct	s_rt
 	t_bool			must_render;
 	char			*filepath;
 	t_ui			ui;
+	t_u32			random_value;
 	t_u32			*img_texture;
 }				t_rt;
 /*

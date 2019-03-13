@@ -14,6 +14,7 @@
 
 #include "../rt.h"
 #include "debug.h"
+#include "rt_random.h"
 
 static void	ui_cancel_prompt(void)
 {
@@ -44,9 +45,7 @@ static void	ui_accept_prompt(void)
 	else if (ft_strequ(rt.ui.current_prompt.name, DROPDOWN_LABEL_FILE_SAVEAS))
 		rt_file_save(rt.ui.current_prompt.text);
 	else if (ft_strequ(rt.ui.current_prompt.name, DROPDOWN_LABEL_FILE_RANDOM))
-	{
-		//TODO put something here
-	}
+		rt_auto_build_scene(rt.ui.current_prompt.text);
 	else if (ft_strequ(rt.ui.current_prompt.name, DROPDOWN_LABEL_FILE_SAVEBMP))
 		if (SDL_SaveBMP(rt.canvas, rt.ui.current_prompt.text))
 			debug_output_error(

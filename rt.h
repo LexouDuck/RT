@@ -112,6 +112,9 @@ void			rt_get_img_texture(cl_uint **img_texture);
 void			init_scene(void);
 void			update_scene(void);
 void			remove_selected_objects(void);
+void			int_to_valid_pow_of_2(
+				cl_uint *value, t_u32 max, t_u32 paired_value);
+void			ui_update_control_numberbox_int(cl_uint *value);
 /*
 **	rt_object.c
 */

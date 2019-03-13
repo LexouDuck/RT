@@ -13,7 +13,6 @@
 #include "../rt.h"
 #include "debug.h"
 
-
 void			ui_mouse_menubar(void)
 {
 	t_bool		collided;

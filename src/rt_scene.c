@@ -26,9 +26,11 @@ void		remove_selected_objects(void)
 		{
 			ft_memcpy(&rt.scene.objects[i], &rt.scene.objects[i + 1],
 				sizeof(t_object) * (rt.scene.object_amount - i));
-			ft_memcpy(&rt.ui.objects.selected[i], &rt.ui.objects.selected[i + 1],
+			ft_memcpy(&rt.ui.objects.selected[i],
+				&rt.ui.objects.selected[i + 1],
 				sizeof(t_bool) * (rt.scene.object_amount - i));
-			ft_memcpy(&rt.ui.objects.expanded[i], &rt.ui.objects.expanded[i + 1],
+			ft_memcpy(&rt.ui.objects.expanded[i],
+				&rt.ui.objects.expanded[i + 1],
 				sizeof(t_bool) * (rt.scene.object_amount - i));
 			rt.scene.object_amount -= 1;
 			ft_memclr(&rt.scene.objects[rt.scene.object_amount],
@@ -73,4 +75,44 @@ void		update_scene(void)
 		rt.scene.bg_rgb.x * 255.,
 		rt.scene.bg_rgb.y * 255.,
 		rt.scene.bg_rgb.z * 255.);
+}
+
+void		int_to_valid_pow_of_2(cl_uint *value, t_u32 max, t_u32 paired_value)
+{
+	t_float		lg2_f;
+	t_u32		lg2_ui;
+
+	if (*value > max)
+		*value = max;
+	else if (*value < 1)
+		*value = 1;
+	lg2_f = log2(*value);
+	lg2_ui = round(lg2_f);
+	*value = 0x1 << lg2_ui;
+	if (rt.scene.mc_raysamp_size * rt.scene.max_ray_depth >=
+										MAXIMUM_RENDER_PRODUCT)
+		*value = MAXIMUM_RENDER_PRODUCT / paired_value;
+}
+
+void		ui_update_control_numberbox_int(cl_uint *value)
+{
+	if (value == &rt.ocl.gpu_platform_index)
+	{
+		if (*value >= rt.ocl.platform_amount)
+			*value = rt.ocl.platform_amount - 1;
+		opencl_freeall();
+		opencl_init(rt.ocl.gpu_platform_index);
+	}
+	else if (value == &rt.scene.mc_raysamp_size)
+	{
+		int_to_valid_pow_of_2(value,
+				MAXIMUM_RAYSAMP_SIZE, rt.scene.max_ray_depth);
+		rt.scene.work_dims.z = *value;
+	}
+	else if (value == &rt.scene.max_ray_depth)
+	{
+		int_to_valid_pow_of_2(value,
+				MAXIMUM_MAX_RAY_DEPTH, rt.scene.mc_raysamp_size);
+	}
+	rt.must_render = TRUE;
 }

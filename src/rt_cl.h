@@ -130,9 +130,17 @@ int				opencl_freeall(void);
 /*
 ** opencl_kernels.c
 */
-//int				opencl_enqueue_piecewise_2d_kernel(cl_kernel krnl);
-//int				opencl_enqueue_piecewise_3d_kernel(cl_kernel krnl);
 int				opencl_init_kernels(void);
+int				render_launch_kernel0_build_scene(void);
+int				render_prepare_kernel1_rendermain(void);
+int				render_prepare_kernel2_averagerays(void);
+
+/*
+** opencl_render_mem.c
+*/
+int				render_init_work_step_and_ray_tensor_buf(void);
+int				render_init_tensor_dims_buf(void);
+int				render_read_and_release_gpu_buffers(void);
 
 /*
 ** opencl_get_error_str.c

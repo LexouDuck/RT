@@ -109,6 +109,7 @@ SRCS	= 	main.c							\
 			opencl_kernels.c				\
 			opencl_get_error_str.c			\
 			opencl_render.c					\
+			opencl_render_mem.c				\
 			debug.c							\
 			config.c						\
 			config_ini.c					\

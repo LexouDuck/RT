@@ -39,6 +39,7 @@ t_list		*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
 	}
 	return (result);
 }
+
 /*
 **	if (lst == NULL || f == NULL)
 **		return ;
@@ -66,6 +67,7 @@ t_list		*ft_lstmapi(t_list *lst, t_list *(*f)(t_list *elem, t_u32 index))
 	}
 	return (result);
 }
+
 /*
 **	if (lst == NULL || f == NULL)
 **		return ;

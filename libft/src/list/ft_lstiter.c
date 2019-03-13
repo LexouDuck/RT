@@ -20,6 +20,7 @@ void	ft_lstiter(t_list *lst, void (*f)(t_list *elem))
 		lst = lst->next;
 	}
 }
+
 /*
 **	if (lst == NULL || f == NULL)
 **		return ;
@@ -37,6 +38,7 @@ void	ft_lstiteri(t_list *lst, void (*f)(t_list *elem, t_u32 index))
 		++i;
 	}
 }
+
 /*
 **	if (lst == NULL || f == NULL)
 **		return ;

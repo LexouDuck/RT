@@ -26,6 +26,7 @@ void	ft_memset(void *ptr, t_u8 byte, size_t n)
 		++i;
 	}
 }
+
 /*
 **	if (ptr == NULL)
 **		return (NULL);
@@ -44,6 +45,7 @@ void	ft_memclr(void *ptr, size_t n)
 		++i;
 	}
 }
+
 /*
 **	if (ptr == NULL)
 **		return (NULL);

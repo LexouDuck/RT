@@ -70,15 +70,15 @@ static t_f64	ft_str_to_f64_hexfp(
 		return (0. * result);
 	}
 	mant = ft_hex_to_u64(tmp);
-	result *= mant;
-	result *= F64_INIT_VAL * powf(2., (ft_strlen(tmp) - 1) * 4);
+	result *= mant * F64_INIT_VAL * powf(2., (ft_strlen(tmp) - 1) * 4);
 	if ((exponent = ft_str_to_s16(s_exp)) > F64_EXP_BIAS)
 		return ((sign ? -1. : 1.) / 0.);
 	else if (exponent < 1 - F64_EXP_BIAS)
 		return (0.);
 	ft_memcpy(&mant, &result, sizeof(result));
 	mant &= F64_SIGNED_MANTISSA_MASK;
-	mant |= ((t_u64)(exponent + F64_EXP_BIAS) << F64_MANTISSA_BITS) & F64_EXP_MASK;
+	mant |= F64_EXP_MASK &
+		((t_u64)(exponent + F64_EXP_BIAS) << F64_MANTISSA_BITS);
 	ft_memcpy(&result, &mant, sizeof(result));
 	free(tmp);
 	return (result);

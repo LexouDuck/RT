@@ -12,7 +12,7 @@
 
 #include "../../libft_string.h"
 
-char		*ft_strpad(char const *str, char c, size_t size)
+char	*ft_strpad(char const *str, char c, size_t size)
 {
 	char	*result;
 	size_t	offset;
@@ -67,6 +67,7 @@ char	*ft_strpad_l(char const *str, char c, size_t size)
 	result[size] = '\0';
 	return (result);
 }
+
 /*
 **	if (str == NULL)
 **		return (NULL);
@@ -93,6 +94,7 @@ char	*ft_strpad_r(char const *str, char c, size_t size)
 	result[size] = '\0';
 	return (result);
 }
+
 /*
 **	if (str == NULL)
 **		return (NULL);

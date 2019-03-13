@@ -26,7 +26,7 @@ static t_bool	charset_contains(char const *charset, char c)
 	return (FALSE);
 }
 
-char	*ft_strtrim(char const *str, char const *charset)
+char			*ft_strtrim(char const *str, char const *charset)
 {
 	size_t	offset;
 	size_t	length;
@@ -45,12 +45,13 @@ char	*ft_strtrim(char const *str, char const *charset)
 	length -= offset - 1;
 	return (ft_strsub(str, offset, length));
 }
+
 /*
 **	if (str == NULL)
 **		return (NULL);
 */
 
-char		*ft_strtrim_l(char const *str, char const *charset)
+char			*ft_strtrim_l(char const *str, char const *charset)
 {
 	size_t	i;
 	size_t	length;
@@ -67,12 +68,13 @@ char		*ft_strtrim_l(char const *str, char const *charset)
 	length -= i;
 	return (ft_strsub(str, i, length));
 }
+
 /*
 **	if (str == NULL || charset == NULL)
 **		return (NULL);
 */
 
-char		*ft_strtrim_r(char const *str, char const *charset)
+char			*ft_strtrim_r(char const *str, char const *charset)
 {
 	size_t	i;
 	size_t	length;
@@ -86,6 +88,7 @@ char		*ft_strtrim_r(char const *str, char const *charset)
 	}
 	return (ft_strsub(str, 0, i));
 }
+
 /*
 **	if (str == NULL || charset == NULL)
 **		return (NULL);

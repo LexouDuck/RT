@@ -21,6 +21,7 @@ void	ft_lstdelone(t_list **alst, void (*del)(void *, size_t))
 		*alst = NULL;
 	}
 }
+
 /*
 **	if (alst == NULL || del == NULL)
 **		return ;
@@ -41,12 +42,13 @@ void	ft_lstdel(t_list **alst, void (*del)(void *, size_t))
 	}
 	*alst = NULL;
 }
+
 /*
 **	if (alst == NULL || del == NULL)
 **		return ;
 */
 
-void		ft_lstpop(t_list **alst, void (*del)(void *, size_t))
+void	ft_lstpop(t_list **alst, void (*del)(void *, size_t))
 {
 	t_list	*lst;
 	t_list	*lst_prev;
@@ -67,6 +69,7 @@ void		ft_lstpop(t_list **alst, void (*del)(void *, size_t))
 		lst = lst->next;
 	}
 }
+
 /*
 **	if (alst == NULL || del == NULL)
 **		return ;

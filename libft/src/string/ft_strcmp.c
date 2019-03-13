@@ -25,6 +25,7 @@ int	ft_strcmp(char const *str1, char const *str2)
 	}
 	return ((int)((t_u8)str1[i] - (t_u8)str2[i]));
 }
+
 /*
 **	if (str1 == str2)
 **		return (0);
@@ -53,6 +54,7 @@ int	ft_strncmp(char const *str1, char const *str2, size_t n)
 	}
 	return ((int)((t_u8)str1[i] - (t_u8)str2[i]));
 }
+
 /*
 **	if (str1 == str2 || n == 0)
 **		return (0);

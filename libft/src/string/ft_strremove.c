@@ -28,19 +28,18 @@ char	*ft_strremove(char const *str, char const *query)
 	if (!(result = (char *)malloc(length + 1)))
 		return (NULL);
 	matches = (size_t)(ft_strstr(str, query) - str);
-	i = (size_t)-1;
-	while (++i < length)
+	i = 0;
+	while (i < length)
 	{
-		if (i == matches)
-		{
-			str += length_query;
+		if (i == matches && (str += length_query))
 			matches = (size_t)(ft_strstr(str, query) - str);
-		}
 		result[i] = *(str++);
+		++i;
 	}
 	result[i] = '\0';
 	return (result);
 }
+
 /*
 **	if (str == NULL)
 **		return (NULL);

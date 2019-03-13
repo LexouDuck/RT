@@ -81,7 +81,7 @@
 **	_FLOAT_32_ means a 32-bit IEE 754 standard precision float
 **	_FLOAT_64_ means a 64-bit "double" precision float
 */
-# define _FLOAT_64_
+# define _FLOAT_32_
 
 /*
 ** ************************************************************************** *|
@@ -94,18 +94,18 @@
 **	convention, to better reflect the amount of bits used by each type.
 **	(and also to avoid having to type 'unsigned' all the time)
 */
-typedef uint8_t		t_u8;
-typedef uint16_t	t_u16;
-typedef uint32_t	t_u32;
-typedef	uint64_t	t_u64;
+typedef uint8_t			t_u8;
+typedef uint16_t		t_u16;
+typedef uint32_t		t_u32;
+typedef	uint64_t		t_u64;
 
-typedef int8_t		t_s8;
-typedef int16_t		t_s16;
-typedef int32_t		t_s32;
-typedef	int64_t		t_s64;
+typedef int8_t			t_s8;
+typedef int16_t			t_s16;
+typedef int32_t			t_s32;
+typedef	int64_t			t_s64;
 
-typedef float		t_f32;
-typedef double		t_f64;
+typedef float			t_f32;
+typedef double			t_f64;
 
 /*
 ** So long as only the t_float type is used throughout the code, changing the
@@ -113,12 +113,16 @@ typedef double		t_f64;
 ** vice-versa, which is useful for portability and/or optimization depending
 ** on the use case.
 */
-# ifdef _FLOAT_32_
 typedef t_f32			t_float;
-# endif
-# ifdef _FLOAT_64_
-typedef t_f64			t_float;
-# endif
+/*
+**	TODO -> put this functioning code back after 42 validation
+**	# ifdef _FLOAT_32_
+**	typedef t_f32			t_float;
+**	# endif
+**	# ifdef _FLOAT_64_
+**	typedef t_f64			t_float;
+**	# endif
+*/
 
 /*
 **	Define a boolean pseudo-type that is potentially faster than just 'int'.

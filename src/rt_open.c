@@ -38,7 +38,7 @@ static char	*rt_read_object(t_rtparser *p, t_primitive shape)
 		++i;
 	}
 	update_object(&object);
-	rt.scene.objects[p->current_object] = object;
+	g_rt.scene.objects[p->current_object] = object;
 	++(p->current_object);
 	return (NULL);
 }
@@ -61,7 +61,7 @@ static char	*rt_read_command(t_rtparser *p, char *label)
 			: "Import error: Maximum object amount limit has been reached.");
 	else if (ft_strequ(label, "BG"))
 	{
-		error = rt_read_arg_color(p, &rt.scene.bg_rgb, "color");
+		error = rt_read_arg_color(p, &g_rt.scene.bg_rgb, "color");
 		update_scene();
 		return (error);
 	}
@@ -76,7 +76,7 @@ char		*rt_read_file(t_rtparser *p)
 
 	p->line = 1;
 	p->index = 0;
-	p->current_object = rt.scene.object_amount;
+	p->current_object = g_rt.scene.object_amount;
 	while (p->file[p->index])
 	{
 		rt_read_whitespace(p);
@@ -91,10 +91,10 @@ char		*rt_read_file(t_rtparser *p)
 		if ((error = rt_read_command(p, label)))
 			return (error);
 	}
-	rt.scene.bg_rgb.x = ft_color_argb32_get_r(rt.scene.bg_color) / 255.;
-	rt.scene.bg_rgb.y = ft_color_argb32_get_g(rt.scene.bg_color) / 255.;
-	rt.scene.bg_rgb.z = ft_color_argb32_get_b(rt.scene.bg_color) / 255.;
-	rt.scene.object_amount = p->current_object;
+	g_rt.scene.bg_rgb.x = ft_color_argb32_get_r(g_rt.scene.bg_color) / 255.;
+	g_rt.scene.bg_rgb.y = ft_color_argb32_get_g(g_rt.scene.bg_color) / 255.;
+	g_rt.scene.bg_rgb.z = ft_color_argb32_get_b(g_rt.scene.bg_color) / 255.;
+	g_rt.scene.object_amount = p->current_object;
 	return (NULL);
 }
 

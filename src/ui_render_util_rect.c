@@ -28,18 +28,18 @@ static void	ui_render_rect_corners(SDL_Rect *rect, t_bool filled)
 	rect_dr.x = TILE * (0xB + (filled ? 4 : 0));
 	dest.x = TILE * (rect->x);
 	dest.y = TILE * (rect->y);
-	if (SDL_BlitSurface(rt.ui.tileset, &rect_ul, rt.sdl.window_surface, &dest))
+	if (SDL_BlitSurface(g_rt.ui.tileset, &rect_ul, g_rt.sdl.display, &dest))
 		debug_output_error("Error during render_rect() -> UL corner: ", TRUE);
 	dest.y = TILE * (rect->y + rect->h - 1);
-	if (SDL_BlitSurface(rt.ui.tileset, &rect_dl, rt.sdl.window_surface, &dest))
+	if (SDL_BlitSurface(g_rt.ui.tileset, &rect_dl, g_rt.sdl.display, &dest))
 		debug_output_error("Error during render_rect() -> DL corner: ", TRUE);
 	dest.x = TILE * (rect->x + rect->w - 1);
 	dest.y = TILE * (rect->y);
-	if (SDL_BlitSurface(rt.ui.tileset, &rect_ur, rt.sdl.window_surface, &dest))
+	if (SDL_BlitSurface(g_rt.ui.tileset, &rect_ur, g_rt.sdl.display, &dest))
 		debug_output_error("Error during render_rect() -> UR corner: ", TRUE);
 	dest.x = TILE * (rect->x + rect->w - 1);
 	dest.y = TILE * (rect->y + rect->h - 1);
-	if (SDL_BlitSurface(rt.ui.tileset, &rect_dr, rt.sdl.window_surface, &dest))
+	if (SDL_BlitSurface(g_rt.ui.tileset, &rect_dr, g_rt.sdl.display, &dest))
 		debug_output_error("Error during render_rect() -> DR corner: ", TRUE);
 }
 
@@ -57,8 +57,8 @@ static void	ui_render_rect_edges_h(SDL_Rect *rect, t_bool filled)
 	{
 		dest.x = TILE * (rect->x + i);
 		dest.y = TILE * (rect->y);
-		if (SDL_BlitSurface(rt.ui.tileset, &rect_u,
-			rt.sdl.window_surface, &dest))
+		if (SDL_BlitSurface(g_rt.ui.tileset, &rect_u,
+			g_rt.sdl.display, &dest))
 			debug_output_error("Error during render_rect() -> U edge: ", TRUE);
 	}
 	i = 0;
@@ -66,8 +66,8 @@ static void	ui_render_rect_edges_h(SDL_Rect *rect, t_bool filled)
 	{
 		dest.x = TILE * (rect->x + i);
 		dest.y = TILE * (rect->y + rect->h - 1);
-		if (SDL_BlitSurface(rt.ui.tileset, &rect_d,
-			rt.sdl.window_surface, &dest))
+		if (SDL_BlitSurface(g_rt.ui.tileset, &rect_d,
+			g_rt.sdl.display, &dest))
 			debug_output_error("Error during render_rect() -> D edge: ", TRUE);
 	}
 }
@@ -86,8 +86,8 @@ static void	ui_render_rect_edges_v(SDL_Rect *rect, t_bool filled)
 	{
 		dest.x = TILE * (rect->x);
 		dest.y = TILE * (rect->y + i);
-		if (SDL_BlitSurface(rt.ui.tileset, &rect_l,
-			rt.sdl.window_surface, &dest))
+		if (SDL_BlitSurface(g_rt.ui.tileset, &rect_l,
+			g_rt.sdl.display, &dest))
 			debug_output_error("Error during render_rect() -> L edge: ", TRUE);
 	}
 	i = 0;
@@ -95,8 +95,8 @@ static void	ui_render_rect_edges_v(SDL_Rect *rect, t_bool filled)
 	{
 		dest.x = TILE * (rect->x + rect->w - 1);
 		dest.y = TILE * (rect->y + i);
-		if (SDL_BlitSurface(rt.ui.tileset, &rect_r,
-			rt.sdl.window_surface, &dest))
+		if (SDL_BlitSurface(g_rt.ui.tileset, &rect_r,
+			g_rt.sdl.display, &dest))
 			debug_output_error("Error during render_rect() -> R edge: ", TRUE);
 	}
 }
@@ -124,8 +124,8 @@ void		ui_render_rect(SDL_Rect rect, t_bool filled)
 		{
 			dest.x = TILE * (rect.x + i.x);
 			dest.y = TILE * (rect.y + i.y);
-			if (SDL_BlitSurface(rt.ui.tileset, &tile,
-				rt.sdl.window_surface, &dest))
+			if (SDL_BlitSurface(g_rt.ui.tileset, &tile,
+				g_rt.sdl.display, &dest))
 				debug_output_error(
 					"Error during ui_render_rect() -> center: ", TRUE);
 		}

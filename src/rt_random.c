@@ -10,10 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rt_random.h"
-
 #include "../rt.h"
 #include "debug.h"
+#include "rt_random.h"
 
 inline t_u32		ft_rand_0_to_pow2n(t_u32 n)
 {

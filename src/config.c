@@ -14,8 +14,10 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <string.h>
+
 #include "libft_memory.h"
 #include "libft_io.h"
+
 #include "../rt.h"
 #include "debug.h"
 
@@ -26,14 +28,14 @@ static void	config_make_ini(int fd)
 	i = 0;
 	while (i < CONFIG_AMOUNT)
 	{
-		if (rt.config.names[i])
+		if (g_rt.config.names[i])
 		{
-			ft_write_str(fd, rt.config.names[i]);
+			ft_write_str(fd, g_rt.config.names[i]);
 			ft_write_char(fd, '=');
-			if (rt.config.values[i])
-				ft_write_line(fd, rt.config.values[i]);
+			if (g_rt.config.values[i])
+				ft_write_line(fd, g_rt.config.values[i]);
 			else
-				ft_write_line(fd, rt.config.defaults[i]);
+				ft_write_line(fd, g_rt.config.defaults[i]);
 		}
 		++i;
 	}
@@ -41,17 +43,17 @@ static void	config_make_ini(int fd)
 
 static void	config_init_settings(void)
 {
-	ft_memclr(rt.config.names, CONFIG_AMOUNT * sizeof(char *));
-	rt.config.names[CONFIG_INDEX_FULLSCREEN] = CONFIG_LABEL_FULLSCREEN;
-	rt.config.names[CONFIG_INDEX_MAXIMIZED] = CONFIG_LABEL_MAXIMIZED;
-	rt.config.names[CONFIG_INDEX_WINDOW_W] = CONFIG_LABEL_WINDOW_W;
-	rt.config.names[CONFIG_INDEX_WINDOW_H] = CONFIG_LABEL_WINDOW_H;
-	ft_memclr(rt.config.values, CONFIG_AMOUNT * sizeof(char *));
-	ft_memclr(rt.config.defaults, CONFIG_AMOUNT * sizeof(char *));
-	rt.config.defaults[CONFIG_INDEX_FULLSCREEN] = CONFIG_VALUE_FULLSCREEN;
-	rt.config.defaults[CONFIG_INDEX_MAXIMIZED] = CONFIG_VALUE_MAXIMIZED;
-	rt.config.defaults[CONFIG_INDEX_WINDOW_W] = CONFIG_VALUE_WINDOW_W;
-	rt.config.defaults[CONFIG_INDEX_WINDOW_H] = CONFIG_VALUE_WINDOW_H;
+	ft_memclr(g_rt.config.names, CONFIG_AMOUNT * sizeof(char *));
+	g_rt.config.names[CONFIG_INDEX_FULLSCREEN] = CONFIG_LABEL_FULLSCREEN;
+	g_rt.config.names[CONFIG_INDEX_MAXIMIZED] = CONFIG_LABEL_MAXIMIZED;
+	g_rt.config.names[CONFIG_INDEX_WINDOW_W] = CONFIG_LABEL_WINDOW_W;
+	g_rt.config.names[CONFIG_INDEX_WINDOW_H] = CONFIG_LABEL_WINDOW_H;
+	ft_memclr(g_rt.config.values, CONFIG_AMOUNT * sizeof(char *));
+	ft_memclr(g_rt.config.defaults, CONFIG_AMOUNT * sizeof(char *));
+	g_rt.config.defaults[CONFIG_INDEX_FULLSCREEN] = CONFIG_VALUE_FULLSCREEN;
+	g_rt.config.defaults[CONFIG_INDEX_MAXIMIZED] = CONFIG_VALUE_MAXIMIZED;
+	g_rt.config.defaults[CONFIG_INDEX_WINDOW_W] = CONFIG_VALUE_WINDOW_W;
+	g_rt.config.defaults[CONFIG_INDEX_WINDOW_H] = CONFIG_VALUE_WINDOW_H;
 }
 
 int			config_init(void)
@@ -109,10 +111,10 @@ void		config_free(void)
 	i = 0;
 	while (i < CONFIG_AMOUNT)
 	{
-		if (rt.config.values[i])
+		if (g_rt.config.values[i])
 		{
-			free(rt.config.values[i]);
-			rt.config.values[i] = NULL;
+			free(g_rt.config.values[i]);
+			g_rt.config.values[i] = NULL;
 		}
 		++i;
 	}

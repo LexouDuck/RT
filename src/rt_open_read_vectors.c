@@ -13,6 +13,7 @@
 #include "libft_char.h"
 #include "libft_color.h"
 #include "libft_convert.h"
+
 #include "../rt.h"
 
 void		rt_get_arg_number(t_rtparser *p, cl_float *result)

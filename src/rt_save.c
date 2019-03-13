@@ -79,7 +79,7 @@ static void		write_bg_color(int fd)
 {
 	char *tmp;
 
-	if ((tmp = ft_u32_to_hex(rt.scene.bg_color)))
+	if ((tmp = ft_u32_to_hex(g_rt.scene.bg_color)))
 	{
 		ft_write_str(fd, "BG #");
 		ft_write_line(fd, tmp);
@@ -100,9 +100,9 @@ void			rt_save(int fd)
 
 	write_bg_color(fd);
 	i = -1;
-	while (++i < (t_s32)rt.scene.object_amount)
+	while (++i < (t_s32)g_rt.scene.object_amount)
 	{
-		object = &rt.scene.objects[i];
+		object = &g_rt.scene.objects[i];
 		write_enums(fd, object);
 		write_float3(fd, &object->rgb_a, "color:");
 		write_float3(fd, &object->rgb_b, "color2:");

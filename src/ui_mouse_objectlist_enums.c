@@ -19,20 +19,20 @@ t_bool	ui_mouse_objectlist_expandedproperties_primitive(
 
 	rect.x = 12;
 	rect.y = y + 0;
-	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+	if (SDL_PointInRect(&g_rt.input.mouse_tile, &rect))
 	{
 		*primitive = (int)(*primitive == 1) ?
 			PRIMITIVES - 1 : (*primitive - 1);
-		rt.must_render = TRUE;
+		g_rt.must_render = TRUE;
 		return (TRUE);
 	}
 	rect.x = 24;
 	rect.y = y + 0;
-	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+	if (SDL_PointInRect(&g_rt.input.mouse_tile, &rect))
 	{
 		*primitive = (int)(*primitive == PRIMITIVES - 1) ?
 			1 : (*primitive + 1);
-		rt.must_render = TRUE;
+		g_rt.must_render = TRUE;
 		return (TRUE);
 	}
 	return (FALSE);
@@ -45,20 +45,20 @@ t_bool	ui_mouse_objectlist_expandedproperties_material(
 
 	rect.x = 12;
 	rect.y = y + 2;
-	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+	if (SDL_PointInRect(&g_rt.input.mouse_tile, &rect))
 	{
 		*material = (int)(*material == 0) ?
 			MATERIALS - 1 : (*material - 1);
-		rt.must_render = TRUE;
+		g_rt.must_render = TRUE;
 		return (TRUE);
 	}
 	rect.x = 24;
 	rect.y = y + 2;
-	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+	if (SDL_PointInRect(&g_rt.input.mouse_tile, &rect))
 	{
 		*material = (int)(*material == MATERIALS - 1) ?
 			0 : (*material + 1);
-		rt.must_render = TRUE;
+		g_rt.must_render = TRUE;
 		return (TRUE);
 	}
 	return (FALSE);
@@ -71,20 +71,20 @@ t_bool	ui_mouse_objectlist_expandedproperties_pattern(
 
 	rect.x = 12;
 	rect.y = y + 4;
-	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+	if (SDL_PointInRect(&g_rt.input.mouse_tile, &rect))
 	{
 		*pattern = (int)(*pattern == 0) ?
 			TEXTURE_PATTERNS - 1 : (*pattern - 1);
-		rt.must_render = TRUE;
+		g_rt.must_render = TRUE;
 		return (TRUE);
 	}
 	rect.x = 24;
 	rect.y = y + 4;
-	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+	if (SDL_PointInRect(&g_rt.input.mouse_tile, &rect))
 	{
 		*pattern = (int)(*pattern == TEXTURE_PATTERNS - 1) ?
 			0 : (*pattern + 1);
-		rt.must_render = TRUE;
+		g_rt.must_render = TRUE;
 		return (TRUE);
 	}
 	return (FALSE);
@@ -97,20 +97,20 @@ t_bool	ui_mouse_objectlist_expandedproperties_projection(
 
 	rect.x = 12;
 	rect.y = y + 6;
-	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+	if (SDL_PointInRect(&g_rt.input.mouse_tile, &rect))
 	{
 		*projection = (int)(*projection == 0) ?
 			TEXTURE_PROJECTIONS - 1 : (*projection - 1);
-		rt.must_render = TRUE;
+		g_rt.must_render = TRUE;
 		return (TRUE);
 	}
 	rect.x = 24;
 	rect.y = y + 6;
-	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+	if (SDL_PointInRect(&g_rt.input.mouse_tile, &rect))
 	{
 		*projection = (int)(*projection == TEXTURE_PROJECTIONS - 1) ?
 			0 : (*projection + 1);
-		rt.must_render = TRUE;
+		g_rt.must_render = TRUE;
 		return (TRUE);
 	}
 	return (FALSE);
@@ -123,20 +123,20 @@ t_bool	ui_mouse_objectlist_expandedproperties_bump(
 
 	rect.x = 12;
 	rect.y = y + 8;
-	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+	if (SDL_PointInRect(&g_rt.input.mouse_tile, &rect))
 	{
 		*bump_type = (int)(*bump_type == 0) ?
 			BUMP_TYPES - 1 : (*bump_type - 1);
-		rt.must_render = TRUE;
+		g_rt.must_render = TRUE;
 		return (TRUE);
 	}
 	rect.x = 24;
 	rect.y = y + 8;
-	if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+	if (SDL_PointInRect(&g_rt.input.mouse_tile, &rect))
 	{
 		*bump_type = (int)(*bump_type == BUMP_TYPES - 1) ?
 			0 : (*bump_type + 1);
-		rt.must_render = TRUE;
+		g_rt.must_render = TRUE;
 		return (TRUE);
 	}
 	return (FALSE);

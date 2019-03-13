@@ -129,9 +129,15 @@ SRCS	= 	main.c							\
 			rt_open_read_textures.c			\
 			rt_open_read_vectors.c			\
 			rt_save.c						\
+			rt_auto_build_scene.c			\
+			rt_auto_build_scene_util.c		\
+			rt_auto_build_cornellbox.c		\
+			rt_random.c						\
+			rt_random_util.c				\
 			rt_scene.c						\
 			rt_object.c						\
 			camera.c						\
+			update_window.c					\
 			ui.c							\
 			ui_init.c						\
 			ui_init_mac.c					\

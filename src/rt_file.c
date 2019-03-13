@@ -25,13 +25,13 @@ int		rt_file_open(char *filepath)
 	t_rtparser	parser;
 	char		*error;
 
-	rt.filepath = filepath;
+	g_rt.filepath = filepath;
 	if (rt_open_file(filepath, &parser))
 		return (ERROR);
 	if (parser.file)
 	{
-		ft_memclr(rt.scene.objects, sizeof(t_object) * OBJECT_MAX_AMOUNT);
-		rt.scene.object_amount = 0;
+		ft_memclr(g_rt.scene.objects, sizeof(t_object) * OBJECT_MAX_AMOUNT);
+		g_rt.scene.object_amount = 0;
 		if ((error = rt_read_file(&parser)))
 		{
 			debug_output_value("Error: while reading rt file -> at line ",

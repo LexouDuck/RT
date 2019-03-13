@@ -18,57 +18,15 @@
 #include "../rt.h"
 #include "debug.h"
 
-static void	ui_control_numberbox_int_to_valid_pow_of_2(cl_uint *value,
-														t_u32 max,
-														t_u32 paired_value)
-{
-	t_float		lg2_f;
-	t_u32		lg2_ui;
-
-	if (*value > max)
-		*value = max;
-	else if (*value < 1)
-		*value = 1;
-	lg2_f = log2(*value);
-	lg2_ui = round(lg2_f);
-	*value = 0x1 << lg2_ui;
-	if (rt.scene.mc_raysamp_size * rt.scene.max_ray_depth >=
-										MAXIMUM_RENDER_PRODUCT)
-		*value = MAXIMUM_RENDER_PRODUCT / paired_value;
-}
-
-static void	ui_change_control_numberbox_int(cl_uint *value)
-{
-	if (value == &rt.ocl.gpu_platform_index)
-	{
-		if (*value >= rt.ocl.platform_amount)
-			*value = rt.ocl.platform_amount - 1;
-		opencl_freeall();
-		opencl_init(rt.ocl.gpu_platform_index);
-	}
-	else if (value == &rt.scene.mc_raysamp_size)
-	{
-		ui_control_numberbox_int_to_valid_pow_of_2(value,
-				MAXIMUM_RAYSAMP_SIZE, rt.scene.max_ray_depth);
-		rt.scene.work_dims.z = *value;
-	}
-	else if (value == &rt.scene.max_ray_depth)
-	{
-		ui_control_numberbox_int_to_valid_pow_of_2(value,
-				MAXIMUM_MAX_RAY_DEPTH, rt.scene.mc_raysamp_size);
-	}
-	rt.must_render = TRUE;
-}
-
 void		ui_leave_control_numberbox_int(t_textinput *textinput)
 {
 	cl_uint	*value;
 
-	if (textinput->value && rt.ui.current_textinput.value_changed)
+	if (textinput->value && g_rt.ui.current_textinput.value_changed)
 	{
 		value = (cl_uint *)textinput->value;
 		*value = textinput->input ? ft_str_to_s32(textinput->input) : 0;
-		ui_change_control_numberbox_int(value);
+		ui_update_control_numberbox_int(value);
 	}
 	if (textinput->input)
 		free(textinput->input);
@@ -90,13 +48,34 @@ void		ui_keypress_control_numberbox_int(t_textinput *textinput, t_bool up)
 		*value += 1;
 	else
 		*value -= 1;
-	rt.must_render = TRUE;
+	g_rt.must_render = TRUE;
 	ui_leave_control_numberbox_int(textinput);
 	textinput->type = texttype_number_int;
 	textinput->input = ft_s32_to_str(*value);
 	textinput->value = (void *)value;
-	rt.ui.current_textinput.value_changed = FALSE;
+	g_rt.ui.current_textinput.value_changed = FALSE;
 	SDL_StartTextInput();
+}
+
+t_bool		ui_mouse_control_numberbox_increment_int(
+	SDL_Rect button, cl_uint *value)
+{
+	if (SDL_PointInRect(&g_rt.input.mouse, &button))
+	{
+		*value = (value == &g_rt.ocl.gpu_platform_index) ?
+				(*value + 1) : (*value * 2);
+		ui_update_control_numberbox_int(value);
+		return (TRUE);
+	}
+	button.y += 2 * TILE;
+	if (SDL_PointInRect(&g_rt.input.mouse, &button))
+	{
+		*value = (value == &g_rt.ocl.gpu_platform_index) ?
+				(*value - 1) : (*value / 2);
+		ui_update_control_numberbox_int(value);
+		return (TRUE);
+	}
+	return (FALSE);
 }
 
 t_bool		ui_mouse_control_numberbox_int(t_textinput *textinput,
@@ -107,29 +86,16 @@ t_bool		ui_mouse_control_numberbox_int(t_textinput *textinput,
 
 	rect.x = x * TILE;
 	rect.y = y * TILE;
-	if (SDL_PointInRect(&rt.input.mouse, &rect))
+	if (SDL_PointInRect(&g_rt.input.mouse, &rect))
 	{
 		button.x = rect.x + rect.w - button.w;
 		button.y = rect.y;
-		if (SDL_PointInRect(&rt.input.mouse, &button))
-		{
-			*value = (value == &rt.ocl.gpu_platform_index) ?
-					(*value + 1) : (*value * 2);
-			ui_change_control_numberbox_int(value);
+		if (ui_mouse_control_numberbox_increment_int(button, value))
 			return (TRUE);
-		}
-		button.y += 2 * TILE;
-		if (SDL_PointInRect(&rt.input.mouse, &button))
-		{
-			*value = (value == &rt.ocl.gpu_platform_index) ?
-					(*value - 1) : (*value / 2);
-			ui_change_control_numberbox_int(value);
-			return (TRUE);
-		}
 		textinput->type = texttype_number_int;
 		textinput->input = ft_s32_to_str(*value);
 		textinput->value = (void *)value;
-		rt.ui.current_textinput.value_changed = FALSE;
+		g_rt.ui.current_textinput.value_changed = FALSE;
 		SDL_StartTextInput();
 		return (TRUE);
 	}
@@ -144,10 +110,10 @@ void		ui_render_control_numberbox_int(int x, int y, cl_uint *value)
 
 	rect.x = x;
 	rect.y = y;
-	ui_render_rect(rect, (value == rt.ui.current_textinput.value));
-	if (value == rt.ui.current_textinput.value)
+	ui_render_rect(rect, (value == g_rt.ui.current_textinput.value));
+	if (value == g_rt.ui.current_textinput.value)
 	{
-		ui_render_text(rt.ui.current_textinput.input,
+		ui_render_text(g_rt.ui.current_textinput.input,
 			rect.x + 1, rect.y + 1, FALSE);
 	}
 	else if ((str = ft_s32_to_str(*value)))

@@ -42,10 +42,10 @@ void		ui_render_icon_object(t_object *object, t_s32 y)
 	palette[3] = (ft_color_argb32_get_b(palette[3]) >= 0xFF - light) ?
 		(palette[3] | 0x0000FF) : (palette[3] + (light << 0));
 	palette[2] = object->color_a;
-	if (object->type == none || !ui_set_palette(rt.ui.tileset, palette))
+	if (object->type == none || !ui_set_palette(g_rt.ui.tileset, palette))
 		return ;
 	ui_render_icon((int)object->type - 1, 1, y * TILE, TRUE);
-	ui_set_palette(rt.ui.tileset, rt.ui.pal);
+	ui_set_palette(g_rt.ui.tileset, g_rt.ui.pal);
 }
 
 static void	ui_render_expandedproperty(t_bool is_string,
@@ -104,19 +104,19 @@ static void	ui_render_objectlist_object(SDL_Rect rect, t_u32 i, t_s32 height)
 {
 	t_bool		hover;
 
-	if (rt.scene.objects[i].type &&
-		rect.y + height >= rt.ui.objects.rect.y - TILE &&
-		rect.y < rt.ui.objects.rect.y + rt.ui.objects.rect.h)
+	if (g_rt.scene.objects[i].type &&
+		rect.y + height >= g_rt.ui.objects.rect.y - TILE &&
+		rect.y < g_rt.ui.objects.rect.y + g_rt.ui.objects.rect.h)
 	{
-		hover = SDL_PointInRect(&rt.input.mouse_tile, &rect);
-		if (hover || rt.ui.objects.selected[i])
-			ui_render_fill((rt.ui.objects.selected[i] ? 2 : 1), rect, FALSE);
-		ui_render_icon_object(&rt.scene.objects[i], rect.y);
-		ui_render_text(rt.scene.objects[i].name, 4, rect.y + 1, TRUE);
-		ui_render_icon((rt.ui.objects.expanded[i] ? 26 : 27),
+		hover = SDL_PointInRect(&g_rt.input.mouse_tile, &rect);
+		if (hover || g_rt.ui.objects.selected[i])
+			ui_render_fill((g_rt.ui.objects.selected[i] ? 2 : 1), rect, FALSE);
+		ui_render_icon_object(&g_rt.scene.objects[i], rect.y);
+		ui_render_text(g_rt.scene.objects[i].name, 4, rect.y + 1, TRUE);
+		ui_render_icon((g_rt.ui.objects.expanded[i] ? 26 : 27),
 			TILE * (UI_WIDTH_TILES - 4), TILE * rect.y, TRUE);
-		if (rt.ui.objects.expanded[i])
-			ui_render_expandedproperties(&rt.scene.objects[i], rect.y);
+		if (g_rt.ui.objects.expanded[i])
+			ui_render_expandedproperties(&g_rt.scene.objects[i], rect.y);
 	}
 }
 
@@ -127,23 +127,23 @@ void		ui_render_objectlist(void)
 	SDL_Rect	rect;
 	t_u32		i;
 
-	rect = rt.ui.objects.rect;
+	rect = g_rt.ui.objects.rect;
 	rect.h = 2;
 	i = 0;
-	while (i < rt.scene.object_amount)
+	while (i < g_rt.scene.object_amount)
 	{
 		tmp = rect.y;
-		rect.y -= rt.ui.objects.scrollbar.scroll / TILE;
-		add_height = (rt.ui.objects.expanded[i] ? OBJECT_PROPERTIES_H : 0);
+		rect.y -= g_rt.ui.objects.scrollbar.scroll / TILE;
+		add_height = (g_rt.ui.objects.expanded[i] ? OBJECT_PROPERTIES_H : 0);
 		ui_render_objectlist_object(rect, i, add_height);
 		rect.y = tmp;
 		rect.y += 2 + add_height;
 		++i;
 	}
-	rt.ui.objects.scrollbar.scroll_max = TILE * rect.y;
-	if (rt.ui.objects.scrollbar.scroll > rt.ui.objects.scrollbar.scroll_max)
-		rt.ui.objects.scrollbar.scroll = rt.ui.objects.scrollbar.scroll_max;
-	if (rt.ui.objects.scrollbar.scroll_max >
-		rt.ui.objects.scrollbar.scroll_view)
-		ui_render_scrollbar(&rt.ui.objects.scrollbar);
+	g_rt.ui.objects.scrollbar.scroll_max = TILE * rect.y;
+	if (g_rt.ui.objects.scrollbar.scroll > g_rt.ui.objects.scrollbar.scroll_max)
+		g_rt.ui.objects.scrollbar.scroll = g_rt.ui.objects.scrollbar.scroll_max;
+	if (g_rt.ui.objects.scrollbar.scroll_max >
+		g_rt.ui.objects.scrollbar.scroll_view)
+		ui_render_scrollbar(&g_rt.ui.objects.scrollbar);
 }

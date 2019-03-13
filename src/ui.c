@@ -12,6 +12,7 @@
 
 #include "libft_color.h"
 #include "libft_memory.h"
+
 #include "../rt.h"
 #include "../assets.h"
 #include "debug.h"

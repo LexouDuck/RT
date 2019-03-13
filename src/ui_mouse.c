@@ -13,7 +13,6 @@
 #include "../rt.h"
 #include "debug.h"
 
-
 void			ui_mouse_menubar(void)
 {
 	t_bool		collided;
@@ -24,15 +23,15 @@ void			ui_mouse_menubar(void)
 	i = -1;
 	while (++i < MENUBAR_ITEMS)
 	{
-		rect = rt.ui.menubar.item_hitbox[i];
-		if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+		rect = g_rt.ui.menubar.item_hitbox[i];
+		if (SDL_PointInRect(&g_rt.input.mouse_tile, &rect))
 		{
-			rt.ui.menubar.selection = i;
+			g_rt.ui.menubar.selection = i;
 			collided = TRUE;
 		}
 	}
 	if (!collided)
-		rt.ui.menubar.selection = -1;
+		g_rt.ui.menubar.selection = -1;
 	return ;
 }
 
@@ -42,14 +41,14 @@ void			ui_mouse_dropdown(t_menu *dropdown)
 	SDL_Rect	rect;
 	t_s8		i;
 
-	if (dropdown && rt.ui.menubar.selection != -1)
+	if (dropdown && g_rt.ui.menubar.selection != -1)
 	{
 		collided = FALSE;
 		i = -1;
 		while (++i < dropdown->item_amount)
 		{
 			rect = dropdown->item_hitbox[i];
-			if (SDL_PointInRect(&rt.input.mouse_tile, &rect))
+			if (SDL_PointInRect(&g_rt.input.mouse_tile, &rect))
 			{
 				if (dropdown->item_action[i])
 					dropdown->item_action[i]();

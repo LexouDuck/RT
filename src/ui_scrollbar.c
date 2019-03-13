@@ -41,23 +41,23 @@ void		ui_mouse_scrollbar(void)
 	t_s32		scrollbar_bot;
 	t_f32		ratio;
 
-	scrollbar = &rt.ui.objects.scrollbar;
-	if (SDL_PointInRect(&rt.input.mouse, &scrollbar->bar))
+	scrollbar = &g_rt.ui.objects.scrollbar;
+	if (SDL_PointInRect(&g_rt.input.mouse, &scrollbar->bar))
 	{
 		ratio = ((t_f32)scrollbar->bar.h / (t_f32)scrollbar->scroll_max);
 		scrollbar_top = scrollbar->bar.y + (int)(scrollbar->scroll * ratio);
 		scrollbar_bot = scrollbar_top + (int)(scrollbar->scroll_view * ratio);
-		if (rt.input.mouse.y >= scrollbar_top &&
-			rt.input.mouse.y <= scrollbar_bot)
+		if (g_rt.input.mouse.y >= scrollbar_top &&
+			g_rt.input.mouse.y <= scrollbar_bot)
 			scrollbar->clicked = scrollclick_bar;
-		else if (rt.input.mouse.y < scrollbar_top)
+		else if (g_rt.input.mouse.y < scrollbar_top)
 			scrollbar->clicked = scrollclick_bar_above;
-		else if (rt.input.mouse.y > scrollbar_bot)
+		else if (g_rt.input.mouse.y > scrollbar_bot)
 			scrollbar->clicked = scrollclick_bar_below;
 	}
-	else if (SDL_PointInRect(&rt.input.mouse, &scrollbar->button_up))
+	else if (SDL_PointInRect(&g_rt.input.mouse, &scrollbar->button_up))
 		scrollbar->clicked = scrollclick_button_up;
-	else if (SDL_PointInRect(&rt.input.mouse, &scrollbar->button_down))
+	else if (SDL_PointInRect(&g_rt.input.mouse, &scrollbar->button_down))
 		scrollbar->clicked = scrollclick_button_down;
 }
 
@@ -82,7 +82,7 @@ static void	ui_render_scrollbar_bar(t_scrollbar *scrollbar,
 	int				i;
 
 	dest.y += (int)(scrollbar->scroll * ratio);
-	if (SDL_BlitSurface(rt.ui.tileset, &tile, rt.sdl.window_surface, &dest))
+	if (SDL_BlitSurface(g_rt.ui.tileset, &tile, g_rt.sdl.display, &dest))
 		debug_output_error("Error during ui_render_scrollbar(): ", TRUE);
 	dest.y += TILE;
 	tile.y = TILE * 13;
@@ -90,17 +90,17 @@ static void	ui_render_scrollbar_bar(t_scrollbar *scrollbar,
 	i = -1;
 	while (++i < height)
 	{
-		if (SDL_BlitSurface(rt.ui.tileset, &tile, rt.sdl.window_surface, &dest))
+		if (SDL_BlitSurface(g_rt.ui.tileset, &tile, g_rt.sdl.display, &dest))
 			debug_output_error("Error during ui_render_scrollbar(): ", TRUE);
 		dest.y += TILE;
 	}
 	tile.y = TILE * 15;
-	if (SDL_BlitSurface(rt.ui.tileset, &tile, rt.sdl.window_surface, &dest))
+	if (SDL_BlitSurface(g_rt.ui.tileset, &tile, g_rt.sdl.display, &dest))
 		debug_output_error("Error during ui_render_scrollbar(): ", TRUE);
 	height = (scrollbar->scroll_view * ratio) / 2 - TILE / 2;
 	dest.y = scrollbar->bar.y + (int)(scrollbar->scroll * ratio) + height;
 	tile.y = TILE * 14;
-	if (SDL_BlitSurface(rt.ui.tileset, &tile, rt.sdl.window_surface, &dest))
+	if (SDL_BlitSurface(g_rt.ui.tileset, &tile, g_rt.sdl.display, &dest))
 		debug_output_error("Error during ui_render_scrollbar(): ", TRUE);
 }
 
@@ -112,7 +112,7 @@ void		ui_render_scrollbar(t_scrollbar *scrollbar)
 
 	ui_render_scrollbar_buttons(scrollbar);
 	tile.x = TILE *
-		(rt.ui.objects.scrollbar.clicked == scrollclick_bar ? 14 : 12);
+		(g_rt.ui.objects.scrollbar.clicked == scrollclick_bar ? 14 : 12);
 	tile.y = TILE * 12;
 	dest.x = scrollbar->bar.x;
 	dest.y = scrollbar->bar.y;

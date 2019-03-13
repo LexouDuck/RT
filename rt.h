@@ -48,7 +48,7 @@ typedef struct	s_sdl
 	SDL_Window		*window;
 	SDL_Renderer	*window_renderer;
 	SDL_Texture		*window_texture;
-	SDL_Surface		*window_surface;
+	SDL_Surface		*display;
 	int				window_w;
 	int				window_h;
 	t_bool			fullscreen;
@@ -73,12 +73,13 @@ typedef struct	s_rt
 	t_bool			must_render;
 	char			*filepath;
 	t_ui			ui;
+	t_u32			random_value;
 	t_u32			*img_texture;
 }				t_rt;
 /*
 **	This is our global variable which stores everything.
 */
-t_rt			rt;
+t_rt			g_rt;
 
 /*
 ** ************************************************************************** *|
@@ -97,9 +98,9 @@ typedef struct	s_rtparser
 /*
 **	init.c
 */
-int				init_sdl();
-int				init_window();
-int				init_window_display();
+int				init_sdl(void);
+int				init_window(void);
+int				init_window_display(void);
 
 /*
 **	init_image_texture.c
@@ -112,6 +113,9 @@ void			rt_get_img_texture(cl_uint **img_texture);
 void			init_scene(void);
 void			update_scene(void);
 void			remove_selected_objects(void);
+void			int_to_valid_pow_of_2(
+				cl_uint *value, t_u32 max, t_u32 paired_value);
+void			ui_update_control_numberbox_int(cl_uint *value);
 /*
 **	rt_object.c
 */
@@ -158,6 +162,7 @@ int				rt_file_save(char *filepath);
 **	rt_save.c
 */
 void			rt_save(int	fd);
+
 /*
 **	rt_open.c
 **	rt_open_util.c
@@ -186,14 +191,10 @@ char			*rt_read_arg_bump(t_rtparser *p, t_bump *result,
 				char const *label);
 
 /*
-** ************************************************************************** *|
-**                                 Rendering                                  *|
-** ************************************************************************** *|
-*/
-
-/*
 **	render.c
+**	update_window.c
 */
-int				render();
+int				render(void);
+void			update_window(void);
 
 #endif

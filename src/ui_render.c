@@ -22,25 +22,26 @@ static void	ui_render_menu_camera(t_s32 y)
 	ui_render_text("Camera Type:", 2, y, FALSE);
 	ui_render_text("\x12", 14, y, TRUE);
 	ui_render_text("\x13", 27, y, TRUE);
-	ui_render_text(rt_get_str_cameramodel(rt.scene.camera.model), 15, y, FALSE);
+	ui_render_text(rt_get_str_cameramodel(g_rt.scene.camera.model),
+		15, y, FALSE);
 	y += 1;
 	ui_render_text("FOV   Aperture   FocalDist", 1, y, FALSE);
 	y += 1;
-	ui_render_control_numberbox_float(1, y, &rt.scene.camera.hrz_fov);
-	ui_render_control_numberbox_float(10, y, &rt.scene.camera.aperture);
-	ui_render_control_numberbox_float(19, y, &rt.scene.camera.focal_dist);
+	ui_render_control_numberbox_float(1, y, &g_rt.scene.camera.hrz_fov);
+	ui_render_control_numberbox_float(10, y, &g_rt.scene.camera.aperture);
+	ui_render_control_numberbox_float(19, y, &g_rt.scene.camera.focal_dist);
 	y += 3;
 	ui_render_text("Camera Light ColorMask:", 2, y, FALSE);
 	y += 1;
-	ui_render_control_numberbox_float(1, y, &rt.scene.camera.rgb_mask.x);
-	ui_render_control_numberbox_float(10, y, &rt.scene.camera.rgb_mask.y);
-	ui_render_control_numberbox_float(19, y, &rt.scene.camera.rgb_mask.z);
+	ui_render_control_numberbox_float(1, y, &g_rt.scene.camera.rgb_mask.x);
+	ui_render_control_numberbox_float(10, y, &g_rt.scene.camera.rgb_mask.y);
+	ui_render_control_numberbox_float(19, y, &g_rt.scene.camera.rgb_mask.z);
 	y += 3;
 	ui_render_text("Camera Shade Filter:", 2, y, FALSE);
 	y += 1;
-	ui_render_control_numberbox_float(1, y, &rt.scene.camera.rgb_shade.x);
-	ui_render_control_numberbox_float(10, y, &rt.scene.camera.rgb_shade.y);
-	ui_render_control_numberbox_float(19, y, &rt.scene.camera.rgb_shade.z);
+	ui_render_control_numberbox_float(1, y, &g_rt.scene.camera.rgb_shade.x);
+	ui_render_control_numberbox_float(10, y, &g_rt.scene.camera.rgb_shade.y);
+	ui_render_control_numberbox_float(19, y, &g_rt.scene.camera.rgb_shade.z);
 }
 
 static void	ui_render_menu(void)
@@ -50,14 +51,14 @@ static void	ui_render_menu(void)
 	y = MENUBAR_ITEMS_H;
 	ui_render_text("Platform   Rays    Depth", 1, y, FALSE);
 	y += 1;
-	ui_render_control_numberbox_int(1, y, &rt.ocl.gpu_platform_index);
-	ui_render_control_numberbox_int(10, y, &rt.scene.mc_raysamp_size);
-	ui_render_control_numberbox_int(19, y, &rt.scene.max_ray_depth);
+	ui_render_control_numberbox_int(1, y, &g_rt.ocl.gpu_platform_index);
+	ui_render_control_numberbox_int(10, y, &g_rt.scene.mc_raysamp_size);
+	ui_render_control_numberbox_int(19, y, &g_rt.scene.max_ray_depth);
 	y += 3;
 	ui_render_text("Render Mode:", 2, y, FALSE);
 	ui_render_text("\x12", 14, y, TRUE);
 	ui_render_text("\x13", 27, y, TRUE);
-	ui_render_text(rt_get_str_rendermode(rt.scene.render_mode), 15, y, FALSE);
+	ui_render_text(rt_get_str_rendermode(g_rt.scene.render_mode), 15, y, FALSE);
 	y += 2;
 	ui_render_menu_camera(y);
 }
@@ -71,7 +72,7 @@ void		ui_render_menubar(void)
 	rect.x = 0;
 	rect.y = 0;
 	rect.w = UI_WIDTH_TILES;
-	rect.h = rt.ui.objects.rect.y;
+	rect.h = g_rt.ui.objects.rect.y;
 	ui_render_fill(0, rect, FALSE);
 	ui_render_icon(27,
 		TILE * (UI_WIDTH_TILES - 8),
@@ -82,11 +83,11 @@ void		ui_render_menubar(void)
 	i = -1;
 	while (++i < MENUBAR_ITEMS)
 	{
-		rect = rt.ui.menubar.item_hitbox[i];
-		hover = SDL_PointInRect(&rt.input.mouse_tile, &rect);
+		rect = g_rt.ui.menubar.item_hitbox[i];
+		hover = SDL_PointInRect(&g_rt.input.mouse_tile, &rect);
 		ui_render_rect(rect, hover);
-		ui_render_text(rt.ui.menubar.item_labels[i],
-			rt.ui.menubar.item_hitbox[i].x + 2, 1, TRUE);
+		ui_render_text(g_rt.ui.menubar.item_labels[i],
+			g_rt.ui.menubar.item_hitbox[i].x + 2, 1, TRUE);
 	}
 	ui_render_menu();
 }
@@ -101,7 +102,7 @@ void		ui_render_dropdown(t_menu *dropdown)
 	while (++i < dropdown->item_amount)
 	{
 		rect = dropdown->item_hitbox[i];
-		hover = SDL_PointInRect(&rt.input.mouse_tile, &rect);
+		hover = SDL_PointInRect(&g_rt.input.mouse_tile, &rect);
 		ui_render_rect(rect, hover);
 		ui_render_text(dropdown->item_labels[i],
 			2, 3 + 2 * i, TRUE);
@@ -113,17 +114,17 @@ void		ui_render_prompt(void)
 	SDL_Rect prompt;
 	SDL_Rect button;
 
-	prompt = rt.ui.current_prompt.rect;
+	prompt = g_rt.ui.current_prompt.rect;
 	ui_render_rect(prompt, FALSE);
-	ui_render_text(rt.ui.current_prompt.name,
+	ui_render_text(g_rt.ui.current_prompt.name,
 		prompt.x + 2, prompt.y + 0, TRUE);
-	ui_render_text(rt.ui.current_prompt.description,
+	ui_render_text(g_rt.ui.current_prompt.description,
 		prompt.x + 2, prompt.y + 2, FALSE);
-	ui_render_control_textbox(2, 8, rt.ui.current_textinput.value);
+	ui_render_control_textbox(2, 8, g_rt.ui.current_textinput.value);
 	button = PROMPT_BUTTON_OK;
-	ui_render_rect(button, SDL_PointInRect(&rt.input.mouse_tile, &button));
+	ui_render_rect(button, SDL_PointInRect(&g_rt.input.mouse_tile, &button));
 	ui_render_text("OK", button.x + 3, button.y + 1, TRUE);
 	button = PROMPT_BUTTON_CANCEL;
-	ui_render_rect(button, SDL_PointInRect(&rt.input.mouse_tile, &button));
+	ui_render_rect(button, SDL_PointInRect(&g_rt.input.mouse_tile, &button));
 	ui_render_text("CANCEL", button.x + 1, button.y + 1, TRUE);
 }

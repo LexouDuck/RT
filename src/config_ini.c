@@ -10,11 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft_io.h"
 #include "libft_memory.h"
 #include "libft_char.h"
 #include "libft_string.h"
 #include "libft_convert.h"
-#include "libft_io.h"
+
 #include "../rt.h"
 #include "debug.h"
 
@@ -72,7 +73,7 @@ static char	*ini_apply_setting(t_iniparser *p)
 	i = -1;
 	index = -1;
 	while (++i < CONFIG_AMOUNT)
-		if (rt.config.names[i] && ft_strequ(p->name, rt.config.names[i]))
+		if (g_rt.config.names[i] && ft_strequ(p->name, g_rt.config.names[i]))
 			index = i;
 	if (index == -1)
 	{
@@ -83,7 +84,7 @@ static char	*ini_apply_setting(t_iniparser *p)
 	}
 	if (*(p->value + p->value_length))
 		*(p->value + p->value_length) = '\0';
-	if (!(rt.config.values[index] = ft_strdup(p->value)))
+	if (!(g_rt.config.values[index] = ft_strdup(p->value)))
 		return ("Could not create config value string");
 	return (NULL);
 }

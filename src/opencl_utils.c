@@ -74,27 +74,27 @@ static void		opencl_print_device_info(char *gpu_name,
 										char *gpu_ocl_version)
 {
 	debug_output_value("Platform index: ",
-		ft_u32_to_str(rt.ocl.gpu_platform_index), TRUE);
+		ft_u32_to_str(g_rt.ocl.gpu_platform_index), TRUE);
 	debug_output_value("Platform name: ", platform_name, FALSE);
 	debug_output_value("Device name: ", gpu_name, FALSE);
 	debug_output_value("Version n° ", gpu_ocl_version, FALSE);
 	debug_output_value("- global mem size: 0x",
-		ft_u64_to_hex(rt.ocl.gpu.global_mem_size), TRUE);
+		ft_u64_to_hex(g_rt.ocl.gpu.global_mem_size), TRUE);
 	debug_output_value("- compute units: 0x",
-		ft_u32_to_hex(rt.ocl.gpu.comp_unit_nb), TRUE);
+		ft_u32_to_hex(g_rt.ocl.gpu.comp_unit_nb), TRUE);
 	debug_output_value("- max kernel args size: 0x",
-		ft_u64_to_hex(rt.ocl.gpu.max_kernel_args_size), TRUE);
+		ft_u64_to_hex(g_rt.ocl.gpu.max_kernel_args_size), TRUE);
 	debug_output_value("- max work items per group: 0x",
-		ft_u64_to_hex(rt.ocl.gpu.max_witems_per_wgroup), TRUE);
+		ft_u64_to_hex(g_rt.ocl.gpu.max_witems_per_wgroup), TRUE);
 	debug_output_value("- max nD range: 0x",
-		ft_u32_to_hex(rt.ocl.gpu.max_nd_range), TRUE);
+		ft_u32_to_hex(g_rt.ocl.gpu.max_nd_range), TRUE);
 	debug_output("- max work items per dim:\n");
 	debug_output_value("\t- x: 0x",
-		ft_u64_to_hex(rt.ocl.gpu.max_witems_per_dim[0]), TRUE);
+		ft_u64_to_hex(g_rt.ocl.gpu.max_witems_per_dim[0]), TRUE);
 	debug_output_value("\t- y: 0x",
-		ft_u64_to_hex(rt.ocl.gpu.max_witems_per_dim[1]), TRUE);
+		ft_u64_to_hex(g_rt.ocl.gpu.max_witems_per_dim[1]), TRUE);
 	debug_output_value("\t- z: 0x",
-		ft_u64_to_hex(rt.ocl.gpu.max_witems_per_dim[2]), TRUE);
+		ft_u64_to_hex(g_rt.ocl.gpu.max_witems_per_dim[2]), TRUE);
 }
 
 int				opencl_set_device_info(void)
@@ -103,23 +103,24 @@ int				opencl_set_device_info(void)
 	char	platform_name[256];
 	char	gpu_cl_version[16];
 
-	clGetPlatformInfo(rt.ocl.platforms[rt.ocl.gpu_platform_index],
+	clGetPlatformInfo(g_rt.ocl.platforms[g_rt.ocl.gpu_platform_index],
 					CL_PLATFORM_NAME, 256, platform_name, NULL);
-	clGetDeviceInfo(rt.ocl.gpu.id, CL_DEVICE_GLOBAL_MEM_SIZE,
-					sizeof(cl_ulong), &(rt.ocl.gpu.global_mem_size), NULL);
-	clGetDeviceInfo(rt.ocl.gpu.id, CL_DEVICE_MAX_COMPUTE_UNITS,
-					sizeof(cl_ulong), &(rt.ocl.gpu.comp_unit_nb), NULL);
-	clGetDeviceInfo(rt.ocl.gpu.id, CL_DEVICE_NAME, 256, gpu_name, NULL);
-	clGetDeviceInfo(rt.ocl.gpu.id, CL_DEVICE_VERSION, 16, gpu_cl_version, NULL);
-	clGetDeviceInfo(rt.ocl.gpu.id, CL_DEVICE_MAX_PARAMETER_SIZE,
-					sizeof(size_t), &(rt.ocl.gpu.max_kernel_args_size), NULL);
-	clGetDeviceInfo(rt.ocl.gpu.id, CL_DEVICE_MAX_WORK_GROUP_SIZE,
-					sizeof(size_t), &rt.ocl.gpu.max_witems_per_wgroup, NULL);
-	clGetDeviceInfo(rt.ocl.gpu.id, CL_DEVICE_MAX_WORK_ITEM_DIMENSIONS,
-					sizeof(cl_uint), &(rt.ocl.gpu.max_nd_range), NULL);
-	clGetDeviceInfo(rt.ocl.gpu.id, CL_DEVICE_MAX_WORK_ITEM_SIZES,
-					sizeof(size_t) * rt.ocl.gpu.max_nd_range,
-					&(rt.ocl.gpu.max_witems_per_dim), NULL);
+	clGetDeviceInfo(g_rt.ocl.gpu.id, CL_DEVICE_GLOBAL_MEM_SIZE,
+					sizeof(cl_ulong), &(g_rt.ocl.gpu.global_mem_size), NULL);
+	clGetDeviceInfo(g_rt.ocl.gpu.id, CL_DEVICE_MAX_COMPUTE_UNITS,
+					sizeof(cl_ulong), &(g_rt.ocl.gpu.comp_unit_nb), NULL);
+	clGetDeviceInfo(g_rt.ocl.gpu.id, CL_DEVICE_NAME, 256, gpu_name, NULL);
+	clGetDeviceInfo(g_rt.ocl.gpu.id, CL_DEVICE_VERSION, 16, gpu_cl_version,
+		NULL);
+	clGetDeviceInfo(g_rt.ocl.gpu.id, CL_DEVICE_MAX_PARAMETER_SIZE,
+					sizeof(size_t), &(g_rt.ocl.gpu.max_kernel_args_size), NULL);
+	clGetDeviceInfo(g_rt.ocl.gpu.id, CL_DEVICE_MAX_WORK_GROUP_SIZE,
+					sizeof(size_t), &g_rt.ocl.gpu.max_witems_per_wgroup, NULL);
+	clGetDeviceInfo(g_rt.ocl.gpu.id, CL_DEVICE_MAX_WORK_ITEM_DIMENSIONS,
+					sizeof(cl_uint), &(g_rt.ocl.gpu.max_nd_range), NULL);
+	clGetDeviceInfo(g_rt.ocl.gpu.id, CL_DEVICE_MAX_WORK_ITEM_SIZES,
+					sizeof(size_t) * g_rt.ocl.gpu.max_nd_range,
+					&(g_rt.ocl.gpu.max_witems_per_dim), NULL);
 	opencl_print_device_info(gpu_name, platform_name, gpu_cl_version);
 	return (OK);
 }
@@ -131,14 +132,14 @@ int				opencl_log_compiler(void)
 	cl_int	error;
 
 	file_buf = NULL;
-	if ((error = clGetProgramBuildInfo(rt.ocl.program, rt.ocl.gpu.id,
+	if ((error = clGetProgramBuildInfo(g_rt.ocl.program, g_rt.ocl.gpu.id,
 							CL_PROGRAM_BUILD_LOG, 0, NULL, &file_len)) < 0)
 		return (opencl_handle_error(error, "opencl_log_compiler:"
 		" compiler log file length query failed."));
 	if (!(file_buf = (char *)malloc(file_len + 1)))
 		return (debug_perror("opencl_log_compiler: malloc failed."));
 	file_buf[file_len] = '\0';
-	if ((error = clGetProgramBuildInfo(rt.ocl.program, rt.ocl.gpu.id,
+	if ((error = clGetProgramBuildInfo(g_rt.ocl.program, g_rt.ocl.gpu.id,
 					CL_PROGRAM_BUILD_LOG, file_len + 1, file_buf, NULL)) < 0)
 		return (opencl_handle_error(error, "opencl_log_compiler:"
 		" compiler log retrieve failed."));

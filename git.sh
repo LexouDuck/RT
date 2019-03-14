@@ -17,4 +17,6 @@ git add SDL2.framework/
 
 git add inc/ui.chr
 
+git add img_texture.bmp
+
 git add tests/*.rt

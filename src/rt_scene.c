@@ -42,7 +42,8 @@ void		remove_selected_objects(void)
 			ft_memclr(&g_rt.ui.objects.expanded[g_rt.scene.object_amount],
 				sizeof(t_bool));
 		}
-		++i;
+		else
+			++i;
 	}
 }
 

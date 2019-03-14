@@ -56,7 +56,7 @@
 # define MAXIMUM_RENDER_PRODUCT		0x4000
 
 # define RENDER_MODES				6
-# define DEFAULT_RENDER_MODE		1
+# define DEFAULT_RENDER_MODE		4
 
 typedef enum		e_rendermode
 {

@@ -123,7 +123,7 @@ void		ini_read_file(int fd)
 	char		*error;
 
 	parser.file = NULL;
-	if ((ft_readfile(fd, &parser.file)))
+	if ((ft_readfile(fd, &parser.file, 0xFFFF)))
 	{
 		debug_output_error("Couldn't read INI file.", FALSE);
 		return ;

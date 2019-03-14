@@ -11,8 +11,8 @@ static float3		rt_cl_convert_os_to_uvw
 		return (
 					(float3)
 					(
-						atan2((float)hitpos.z, (float)hitpos.x) * INV_TAU + 0.5,
-						- asin((float)hitpos.y) * INV_PI + 0.5,
+						atan2((float)hitpos.z, (float)hitpos.x) * INV_TAU + 0.5f,
+						- asin((float)hitpos.y) * INV_PI + 0.5f,
 						sqrt(dot(hitpos, hitpos))
 					)
 				);
@@ -31,7 +31,7 @@ static float3		rt_cl_convert_os_to_uvw
 		return (
 					(float3)
 					(
-						atan2((float)hitpos.z, (float)hitpos.x) * INV_TAU + 0.5,
+						atan2((float)hitpos.z, (float)hitpos.x) * INV_TAU + 0.5f,
 						(hitpos.y + 1.f) * 0.5f,
 						sqrt(rt_cl_float3_ynull_dot(hitpos, hitpos))
 					)
@@ -104,21 +104,21 @@ static float		rt_cl_get_texel_value
 	if (obj->pattern == solid)
 		texel_value = 1.f;
 	else if (obj->pattern == horizontal_wave)
-		rt_cl_get_pattern_horizontal_waves(obj, uvw_pos, uvw_scale, &texel_value);
+		rt_cl_get_pattern_horizontal_waves(uvw_pos, uvw_scale, &texel_value);
 	else if (obj->pattern == vertical_wave)
-		rt_cl_get_pattern_vertical_waves(obj, uvw_pos, uvw_scale, &texel_value);
+		rt_cl_get_pattern_vertical_waves(uvw_pos, uvw_scale, &texel_value);
 	else if (obj->pattern == double_wave)
-		rt_cl_get_pattern_double_waves(obj, uvw_pos, uvw_scale, &texel_value);
+		rt_cl_get_pattern_double_waves(uvw_pos, uvw_scale, &texel_value);
 	else if (obj->pattern == horizontal_stripe)
-		rt_cl_get_pattern_horizontal_stripes(obj, uvw_pos, uvw_scale, &texel_value);
+		rt_cl_get_pattern_horizontal_stripes(uvw_pos, uvw_scale, &texel_value);
 	else if (obj->pattern == vertical_stripe)
-		rt_cl_get_pattern_vertical_stripes(obj, uvw_pos, uvw_scale, &texel_value);
+		rt_cl_get_pattern_vertical_stripes(uvw_pos, uvw_scale, &texel_value);
 	else if (obj->pattern == checkerboard)
-		rt_cl_get_pattern_checkerboard(obj, uvw_pos, uvw_scale, &texel_value);
+		rt_cl_get_pattern_checkerboard(uvw_pos, uvw_scale, &texel_value);
 	else if (obj->pattern == perlin)
-		rt_cl_get_pattern_perlin(obj, uvw_pos, uvw_scale, &texel_value);
+		rt_cl_get_pattern_perlin(uvw_pos, uvw_scale, &texel_value);
 	else if (obj->pattern == wood)
-		rt_cl_get_pattern_wood(obj, uvw_pos, uvw_scale, &texel_value);
+		rt_cl_get_pattern_wood(uvw_pos, uvw_scale, &texel_value);
 	return (texel_value);
 }
 
@@ -211,14 +211,13 @@ static t_texture	rt_cl_get_texture_properties
 	//TODO add conditional for 2d texturing vs 3d texturing
 	if (obj->pattern == image)
 	{
-		//TODO @Hugo, t'as trois fois / 255.f, remplace par multiplier par l'inverse avec native_recip()
 		i = round(texture.uvw_pos.y * 99.f) * 100 + round(texture.uvw_pos.x * 99.f);
-		texture.rgb = (float3)(((img_texture[i] >> 16) & 0xFF) / 255.f, ((img_texture[i] >> 8) & 0xFF) / 255.f, ((img_texture[i]) & 0xFF) / 255.f);
+		texture.rgb = (float3)(((img_texture[i] >> 16) & 0xFF) * 0.0039215f, ((img_texture[i] >> 8) & 0xFF) * 0.0039215f, ((img_texture[i]) & 0xFF) / 255.f);
 	}
 	else
 	{
 		texture.texel_value = rt_cl_get_texel_value(obj, texture.uvw_pos, texture.uvw_scale);
-		texture.rgb = obj->rgb_a * texture.texel_value + obj->rgb_b * (1 - texture.texel_value);
+		texture.rgb = obj->rgb_a * texture.texel_value + obj->rgb_b * (1.f - texture.texel_value);
 	}
 	if (obj->bump_type == bump && is_2d_proj)
 		texture.uvw_pos.z = texture.texel_value;

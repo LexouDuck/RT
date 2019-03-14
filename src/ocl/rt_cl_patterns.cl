@@ -1,6 +1,5 @@
 static void			rt_cl_get_pattern_horizontal_waves
 (
-					__constant	t_object *	obj,
 								float3		uvw_pos,
 								float3		uvw_scale,
 								float		*texel_value
@@ -12,7 +11,6 @@ static void			rt_cl_get_pattern_horizontal_waves
 
 static void			rt_cl_get_pattern_vertical_waves
 (
-					__constant	t_object *	obj,
 								float3		uvw_pos,
 								float3		uvw_scale,
 								float		*texel_value
@@ -24,7 +22,6 @@ static void			rt_cl_get_pattern_vertical_waves
 
 static void			rt_cl_get_pattern_double_waves
 (
-					__constant	t_object *	obj,
 								float3		uvw_pos,
 								float3		uvw_scale,
 								float		*texel_value
@@ -37,7 +34,6 @@ static void			rt_cl_get_pattern_double_waves
 
 static void			rt_cl_get_pattern_horizontal_stripes
 (
-					__constant	t_object *	obj,
 								float3		uvw_pos,
 								float3		uvw_scale,
 								float		*texel_value
@@ -52,7 +48,6 @@ static void			rt_cl_get_pattern_horizontal_stripes
 
 static void			rt_cl_get_pattern_vertical_stripes
 (
-					__constant	t_object *	obj,
 								float3		uvw_pos,
 								float3		uvw_scale,
 								float		*texel_value
@@ -67,7 +62,6 @@ static void			rt_cl_get_pattern_vertical_stripes
 
 static void			rt_cl_get_pattern_checkerboard
 (
-					__constant	t_object *	obj,
 								float3		uvw_pos,
 								float3		uvw_scale,
 								float		*texel_value
@@ -93,7 +87,6 @@ static void			rt_cl_get_pattern_checkerboard
 
 static void			rt_cl_get_pattern_perlin
 (
-					__constant	t_object *	obj,
 								float3		uvw_pos,
 								float3		uvw_scale,
 								float		*texel_value
@@ -105,12 +98,11 @@ static void			rt_cl_get_pattern_perlin
 
 static void			rt_cl_get_pattern_wood
 (
-					__constant	t_object *	obj,
 								float3		uvw_pos,
 								float3		uvw_scale,
 								float		*texel_value
 )
 {
-	*texel_value = sin((float)(uvw_pos.x * uvw_scale.x + rt_cl_perlin_noise_3d(uvw_pos * uvw_scale * 4.f, 0.4f, 6, 42) * 100) * PI * 0.02f) * 0.75f;
+	*texel_value = sin((float)(uvw_pos.x * uvw_scale.x + rt_cl_perlin_noise_3d(uvw_pos * uvw_scale * 4.f, 0.4f, 6, 42) * 100.f) * PI * 0.02f) * 0.75f;
 	return ;
 }

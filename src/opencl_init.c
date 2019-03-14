@@ -32,7 +32,8 @@ static int		opencl_initialize_platforms(void)
 	g_rt.ocl.gpu_platform_index = -1;
 	while (!has_gpu && ++g_rt.ocl.gpu_platform_index < g_rt.ocl.platform_amount)
 	{
-		if ((error = clGetDeviceIDs(g_rt.ocl.platforms[g_rt.ocl.gpu_platform_index],
+		if ((error =
+			clGetDeviceIDs(g_rt.ocl.platforms[g_rt.ocl.gpu_platform_index],
 			CL_DEVICE_TYPE_GPU, 1, &(g_rt.ocl.gpu.id), NULL)) == CL_SUCCESS)
 			has_gpu = TRUE;
 		else
@@ -58,7 +59,8 @@ static int		opencl_get_platform_and_gpu(int platform_index)
 	else
 	{
 		g_rt.ocl.gpu_platform_index = platform_index;
-		if ((error = clGetDeviceIDs(g_rt.ocl.platforms[g_rt.ocl.gpu_platform_index],
+		if ((error =
+			clGetDeviceIDs(g_rt.ocl.platforms[g_rt.ocl.gpu_platform_index],
 			CL_DEVICE_TYPE_GPU, 1, &(g_rt.ocl.gpu.id), NULL)) < 0)
 			return (opencl_handle_error(error, "opencl_get_platform_and_gpu:"
 			" error getting selected platform's GPU."));
@@ -154,9 +156,9 @@ int				opencl_init(int platform_index)
 		return (debug_perror("opencl_init: could not build program."));
 	if (opencl_init_gpu_memory())
 		return (debug_perror("opencl_init:"
-			" could not initialize gpu memory buffers."));
+		" could not initialize gpu memory buffers."));
 	if (opencl_init_kernels())
 		return (debug_perror("opencl_init:"
-			" could not initialize kernels."));
+		" could not initialize kernels."));
 	return (OK);
 }

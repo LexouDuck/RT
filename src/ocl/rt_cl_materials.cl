@@ -46,8 +46,8 @@ static float3	rt_cl_get_reflect_coslobe
 	float3		reflect;
 
 	reflect = rt_cl_get_reflect(incdir, normal);
-//	if (roughness >= EPS)
-//		reflect = rt_cl_get_dir_in_coslobe_from_axis(random_seeds, reflect, roughness);
+	if (roughness > 0.f)
+		reflect = rt_cl_get_dir_in_coslobe_from_axis(random_seeds, reflect, roughness);
 	return (reflect);
 }
 
@@ -111,8 +111,8 @@ static bool		rt_cl_get_transmit_coslobe
 	bool		is_transmitted;
 
 	is_transmitted = rt_cl_get_transmit(&transmit, incdir, normal, n1, n2);
-//	if (roughness >= EPS)
-//		transmit = rt_cl_get_dir_in_coslobe_from_axis(random_seeds, transmit, roughness);
+	if (roughness > 0.f)
+		transmit = rt_cl_get_dir_in_coslobe_from_axis(random_seeds, transmit, roughness);
 	*res = transmit;
 	return (is_transmitted);
 }

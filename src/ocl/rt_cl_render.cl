@@ -196,7 +196,8 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 	normal = texture.bump_normal;
 	if (scene->render_mode == RENDERMODE_NORMALS)
 	{
-		new_ray.lum_acc = fabs(normal);
+		normal = rt_cl_apply_linear_matrix(obj->n_to_w, normal);
+		new_ray.lum_acc = fabs(normalize(normal));
 		return (new_ray);
 	}
 
@@ -204,7 +205,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 	new_ray.hit_obj_id = -1;
 	new_ray.inter_type = INTER_NONE;
 	new_ray.t = scene->render_dist;
-	new_ray.complete = (obj->material == light);
+	new_ray.complete = (obj->material == light);//TODO add a cutoff for minimal contributions ?
 	new_ray.lum_acc = ray->lum_acc;
 	
 	if (new_ray.complete)
@@ -228,13 +229,12 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 		bool	is_transmitted;
 
 		is_transmitted = rt_cl_get_transmit_or_reflect(&new_ray.dir, random_seeds, ray->dir, normal, prev_refrac, new_refrac, obj->roughness);
-		new_ray.lum_mask = (!is_inter_inside && is_transmitted) ?
+		//new_ray.lum_mask = ray.lum_mask * texture.rgb; //TODO replace with this line and return texture.rgb = 1.1.1. for inter_outside and an average of samples for inter_inside
+		new_ray.refrac = is_transmitted ? new_refrac : prev_refrac;
+		new_ray.lum_mask = (!is_inter_inside && is_transmitted) || (is_inter_inside && !is_transmitted) ?
 			ray->lum_mask * texture.rgb :
 			ray->lum_mask;
 
-		//new_ray.lum_mask = ray.lum_mask * texture.rgb; //TODO replace with this line and return texture.rgb = 1.1.1. for inter_outside and an average of samples for inter_inside
-
-		new_ray.refrac = is_transmitted ? new_refrac : prev_refrac;
 		//Position correction for transmission
 		if (is_transmitted)
 			hitpos = mad(-2.f * EPS, normal, hitpos);//TODO @Hugo beware with textures for this call
@@ -421,8 +421,8 @@ __kernel void			rt_cl_render
 		printf("render blocx %zu blocy %zu\n", block_x_id, block_y_id);
 	}
 */
-	random_seeds.x = (x_id ^ scene->random_seed_time) + ray_id;
-	random_seeds.y = y_id ^ (27309 * scene->random_seed_time - 0x320420C57 + ray_id);
+	random_seeds.x = x_id ^ ray_id + y_id;// + ray_id;// ^ scene->random_seed_time) + ray_id;
+	random_seeds.y = y_id ^ ray_id + x_id * ray_id;// + scene->random_seed_time;// ^ (27309 * scene->random_seed_time - 0x320420C57 + ray_id);
 	rt_cl_rand(&random_seeds);
 
 	ray_lum_acc = rt_cl_get_ray_pixel_contribution(scene, img_texture, &random_seeds);

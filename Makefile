@@ -163,7 +163,7 @@ SRCS	= 	main.c							\
 SRCDIR_CL	= $(SRCDIR)ocl/
 
 # List of OpenCL source code files. ORDER MATTERS: FILES ARE CONCATENATED THEN READ.
-SRCS_CL	=	rt_cl_scene.cl.h		\
+SRCS_CL	=	rt_cl_scene.h.cl		\
 			rt_cl_linear_algebra.cl	\
 			rt_cl_random.cl			\
 			rt_cl_materials.cl		\

@@ -43,24 +43,24 @@
 */
 # ifdef __APPLE__
 #  define OS_ASSETS	0
-
-extern const t_u8 binary___inc_ui_chr_start[1];
-extern const t_u8 _binary___inc_ui_chr_start[1];
-
+/*
+**	extern const t_u8 binary___inc_ui_chr_start[1];
+**	extern const t_u8 _binary___inc_ui_chr_start[1];
+*/
 # else
 #  ifdef __WIN32__
 #   define OS_ASSETS	1
 #  else
 #   define OS_ASSETS	2
 #  endif
-
-extern const t_u8 binary___inc_ui_chr_start[CHR_SIZE];
-extern const t_u8 _binary___inc_ui_chr_start[CHR_SIZE];
-void	*getsectiondata(void *ptr,
-	char const *section,
-	char const *segment,
-	size_t *size);
-
+/*
+**	extern const t_u8 binary___inc_ui_chr_start[CHR_SIZE];
+**	extern const t_u8 _binary___inc_ui_chr_start[CHR_SIZE];
+**	void	*getsectiondata(void *ptr,
+**		char const *section,
+**		char const *segment,
+**		size_t *size);
+*/
 # endif
 
 #endif

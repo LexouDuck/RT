@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <math.h>
+
 #include "libft_memory.h"
 #include "libft_color.h"
 

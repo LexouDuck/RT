@@ -28,7 +28,7 @@ static int	ft_readfile_error(int result, char **file)
 		return (OK);
 }
 
-int		ft_readfile(int const fd, char **file, size_t max)
+int			ft_readfile(int const fd, char **file, size_t max)
 {
 	int		result;
 	char	buffer[BUFF_SIZE + 1];
@@ -56,7 +56,7 @@ int		ft_readfile(int const fd, char **file, size_t max)
 ** TODO actually code this
 */
 
-int		ft_readlines(int const fd, char ***strls)
+int			ft_readlines(int const fd, char ***strls)
 {
 	return (fd || strls);
 }

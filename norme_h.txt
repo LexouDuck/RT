@@ -1,9 +1,9 @@
-Norme: ./src/debug.h
 Norme: ./src/config.h
-Norme: ./src/rt_random.h
+Norme: ./src/debug.h
 Norme: ./src/event.h
-Norme: ./src/rt_cl.h
+Norme: ./src/rt_random.h
 Norme: ./src/rt_scene.h
+Norme: ./src/rt_cl.h
 Norme: ./src/ui.h
 Norme: ./assets.h
 Norme: ./rt.h

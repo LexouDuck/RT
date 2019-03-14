@@ -22,7 +22,7 @@ LD_MAC	= ld -r -sectcreate __DATA __inc_ui_chr
 
 # Libraries
 LIBS		=	$(LIBFT) $(LIBSDL) $(OPENCL)
-INCLUDE_DIRS =  -I$(LFTDIR) -I$(SDLHDRS)
+INCLUDE_DIRS =  -I$(LFTDIR) $(SDLHDRS)
 
 LIBFT		=	-L$(LFTDIR) -lft
 LIBSDL		= _
@@ -36,7 +36,7 @@ OBJDIR	=	./obj/
 INCDIR	=	./inc/
 LFTDIR	=	./libft/
 SDLDIR	=	./
-SDLHDRS	=	./SDL2-2.0.9/include/
+SDLHDRS	=	-I./SDL2-2.0.9/include/ -I./SDL2.framework/Headers/
 
 # Set platform-specific variables
 ifeq ($(OS),Windows_NT)
@@ -229,7 +229,7 @@ ASSET_FILES	=	$(addprefix $(INCDIR),$(INCS))
 assets.o : $(ASSET_FILES)
 	@printf "Compiling assets: "$@" -> "
 	@if [ $(OSFLAG) = "MAC" ]; then \
-		touch empty.c && gcc -c empty.c -o $@; \
+		gcc -c empty.c -o $@; \
 		$(LD) $(ASSET_FILES) $@ -o $@; \
 	else \
 		$(LD) $(ASSET_FILES) -o $@; \

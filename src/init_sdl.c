@@ -15,7 +15,7 @@
 #include "config.h"
 #include "debug.h"
 
-int		init_sdl(void)
+int			init_sdl(void)
 {
 	if (SDL_Init(
 		SDL_INIT_TIMER |
@@ -27,12 +27,25 @@ int		init_sdl(void)
 	return (OK);
 }
 
-int		init_window(void)
+static void	init_window_checksize(int *window_w, int *window_h)
+{
+	if (*window_w < UI_WIDTH + 32)
+		*window_w = UI_WIDTH + 32;
+	if (*window_w > 3840)
+		*window_w = 3840;
+	if (*window_h < 32)
+		*window_h = 32;
+	if (*window_h > 2160)
+		*window_h = 2160;
+}
+
+int			init_window(void)
 {
 	t_u32	flags;
 
 	g_rt.sdl.window_w = ft_str_to_s32(config_get(CONFIG_INDEX_WINDOW_W));
 	g_rt.sdl.window_h = ft_str_to_s32(config_get(CONFIG_INDEX_WINDOW_H));
+	init_window_checksize(&g_rt.sdl.window_w, &g_rt.sdl.window_h);
 	flags = (SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 	if (ft_str_to_bool(config_get(CONFIG_INDEX_FULLSCREEN)))
 		flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
@@ -54,7 +67,7 @@ int		init_window(void)
 	return (OK);
 }
 
-int		init_window_display_canvas(void)
+int			init_window_display_canvas(void)
 {
 	g_rt.canvas_w = (g_rt.sdl.window_w - UI_WIDTH);
 	g_rt.canvas_h = (g_rt.sdl.window_h);
@@ -71,9 +84,11 @@ int		init_window_display_canvas(void)
 	return (OK);
 }
 
-int		init_window_display(void)
+int			init_window_display(void)
 {
 	SDL_GetWindowSize(g_rt.sdl.window, &g_rt.sdl.window_w, &g_rt.sdl.window_h);
+	init_window_checksize(&g_rt.sdl.window_w, &g_rt.sdl.window_h);
+	SDL_SetWindowSize(g_rt.sdl.window, g_rt.sdl.window_w, g_rt.sdl.window_h);
 	g_rt.sdl.window_texture = SDL_CreateTexture(g_rt.sdl.window_renderer,
 		SDL_PIXELFORMAT_ARGB8888,
 		SDL_TEXTUREACCESS_STREAMING,

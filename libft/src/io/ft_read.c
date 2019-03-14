@@ -13,16 +13,34 @@
 #include "../../libft_io.h"
 #include "../../libft_string.h"
 
-int		ft_readfile(int const fd, char **file)
+static int	ft_readfile_error(int result, char **file)
+{
+	if (result < 0)
+	{
+		if (*file)
+		{
+			free(*file);
+			*file = NULL;
+		}
+		return (ERROR);
+	}
+	else
+		return (OK);
+}
+
+int			ft_readfile(int const fd, char **file, size_t max)
 {
 	int		result;
 	char	buffer[BUFF_SIZE + 1];
 	char	*temp;
+	size_t	length;
 
 	if (!(*file = ft_strnew(1)))
 		return (ERROR);
 	buffer[BUFF_SIZE] = '\0';
-	while ((result = read(fd, buffer, BUFF_SIZE)) > 0)
+	length = 0;
+	while ((result = read(fd, buffer, BUFF_SIZE)) > 0 &&
+		(length += result) < max)
 	{
 		temp = *file;
 		if (result < BUFF_SIZE)
@@ -31,20 +49,14 @@ int		ft_readfile(int const fd, char **file)
 			return (ERROR);
 		free(temp);
 	}
-	if (result < 0)
-	{
-		if (*file)
-			free(*file);
-		return (ERROR);
-	}
-	return (OK);
+	return (ft_readfile_error(result, file));
 }
 
 /*
 ** TODO actually code this
 */
 
-int		ft_readlines(int const fd, char ***strls)
+int			ft_readlines(int const fd, char ***strls)
 {
 	return (fd || strls);
 }

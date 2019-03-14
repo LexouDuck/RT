@@ -83,7 +83,7 @@
 **	Reads the contents of the file descriptor 'fd', and puts it into 'file'.
 **	Returns 0 if the stream was read successfully, 1 if there was an error.
 */
-int		ft_readfile(int const fd, char **file);
+int		ft_readfile(int const fd, char **file, size_t max);
 
 /*
 **	Reads the contents of the file descriptor 'fd' line per line.

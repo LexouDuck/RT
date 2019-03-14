@@ -116,7 +116,7 @@ static int		opencl_read_and_build_program(void)
 
 	if ((fd = open(RT_CL_PROGRAM_SOURCE, O_RDONLY)) == -1)
 		return (debug_perror("opencl_read_and_build_program: open failed."));
-	if (ft_readfile(fd, &file_buf))
+	if (ft_readfile(fd, &file_buf, (size_t)-1))
 		return (debug_perror("opencl_read_and_build_program: read failed."));
 	file_len = ft_strlen(file_buf);
 	g_rt.ocl.program = clCreateProgramWithSource(g_rt.ocl.context, 1,

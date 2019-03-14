@@ -121,12 +121,7 @@ int			ui_init(void)
 	static const t_u32	palette[PALETTE] = {
 		0x000000, 0x0058F8, 0x3CBCFC, 0xFCFCFC };
 
-	if (OS_ASSETS == 0)
-		ui_init_assets();
-	else if (OS_ASSETS == 1)
-		g_rt.ui.chr = binary___inc_ui_chr_start;
-	else
-		g_rt.ui.chr = _binary___inc_ui_chr_start;
+	ui_init_assets();
 	if (!(g_rt.ui.tileset = ui_set_tileset(g_rt.ui.chr, CHR_SIZE)))
 		return (ERROR);
 	if (!(ui_set_palette(g_rt.ui.tileset, palette)))

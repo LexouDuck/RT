@@ -109,7 +109,7 @@ int			rt_open_file(char *filepath, t_rtparser *p)
 		debug_output_value("open() -> ", strerror(errno), FALSE);
 		return (ERROR);
 	}
-	if (ft_readfile(fd, &p->file))
+	if (ft_readfile(fd, &p->file, 0xFFFF))
 	{
 		debug_output_value("Error: Could not read RT file: ", filepath, FALSE);
 		return (ERROR);

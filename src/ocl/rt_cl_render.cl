@@ -185,7 +185,7 @@ static t_ray			rt_cl_accumulate_lum_and_bounce_ray
 	normal = ray->inter_type * rt_cl_primitive_get_normal(hitpos, obj->type);
 	is_inter_inside = (ray->inter_type == INTER_INSIDE);	
 
-	texture = rt_cl_get_texture_properties(scene, obj, img_texture, random_seeds, hitpos, normal);
+	texture = rt_cl_get_texture_properties(scene, obj, img_texture, random_seeds, (hitpos - normal * (float3)(EPS)), normal);
 
 //if (get_global_id(0) == 320 && get_global_id(1) == 240)	printf("color in lumacc %f %f %f\n", ray->lum_acc.x, ray->lum_acc.y, ray->lum_acc.z);
 	if (scene->render_mode == RENDERMODE_SOLIDTEXTURE)

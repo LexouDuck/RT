@@ -1,0 +1,74 @@
+BG #808080
+
+SPHERE
+material:TRANSPARENT
+pattern:WOOD
+projection:CYLINDRICAL
+bump:BUMP
+color:(0.65089, 0.85882, 0.83921)
+color2:(0.65080, 0.85880, 0.83919)
+pos:(0.00000, 0.00000, 0.00000)
+rot:(0.00000, -1.57079, 0.00000)
+scale:(5.00000, 5.00000, 5.00000)
+bbox_vi:(-1.00100, -1.00100, -1.00100)
+bbox_vf:(1.00100, 1.00100, 1.00100)
+uvw_scale:(2.50000, 2.50000, 5.00000)
+uvw_offset:(0.00000, 0.00000, 0.00000)
+refrac:5.00000
+roughness:0.00000
+opacity:1.00000
+
+SPHERE
+material:SPECULAR
+pattern:SOLID
+projection:SPHERICAL
+bump:FLAT
+color:(1.00000, 1.00000, 1.00000)
+color2:(0.00000, 0.00000, 0.00000)
+pos:(0.00000, 0.00000, 0.00000)
+rot:(0.00000, 0.00000, 0.00000)
+scale:(2.50000, 2.50000, 2.50000)
+bbox_vi:(-1.00100, -1.00100, -1.00100)
+bbox_vf:(1.00100, 1.00100, 1.00100)
+uvw_scale:(1.00000, 1.00000, 1.00000)
+uvw_offset:(0.00000, 0.00000, 0.00000)
+refrac:1.40000
+roughness:0.00000
+opacity:1.00000
+
+CYLINDER
+material:DIFFUSE
+pattern:SOLID
+projection:SPHERICAL
+bump:FLAT
+color:(1.00000, 1.00000, 1.00000)
+color2:(0.00000, 0.00000, 0.00000)
+pos:(0.00000, -7.50000, 0.00000)
+rot:(0.00000, 0.00000, 0.00000)
+scale:(25.00000, 1.00000, 25.00000)
+bbox_vi:(-1.00100, -1.00100, -1.00100)
+bbox_vf:(1.00100, 1.00100, 1.00100)
+uvw_scale:(1.00000, 1.00000, 1.00000)
+uvw_offset:(0.00000, 0.00000, 0.00000)
+refrac:1.00000
+roughness:0.00000
+opacity:1.00000
+
+SPHERE
+material:LIGHT
+pattern:SOLID
+projection:SPHERICAL
+bump:FLAT
+color:(1.00000, 1.00000, 1.00000)
+color2:(0.00000, 0.00000, 0.00000)
+pos:(0.00000, 10.00000, 0.00000)
+rot:(0.00000, 0.00000, 0.00000)
+scale:(10.00000, 1.00000, 10.00000)
+bbox_vi:(-1.00100, -1.00100, -1.00100)
+bbox_vf:(1.00100, 1.00100, 1.00100)
+uvw_scale:(1.00000, 1.00000, 1.00000)
+uvw_offset:(0.00000, 0.00000, 0.00000)
+refrac:1.00000
+roughness:0.00000
+opacity:1.00000
+

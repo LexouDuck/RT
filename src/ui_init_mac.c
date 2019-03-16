@@ -23,17 +23,17 @@
 
 #else
 
-/*
-**void	*getsectiondata(void *ptr, char const *section,
-**						char const *segment, size_t *size)
-**{
-**	if (ptr && section && segment && size)
-**		return (NULL);
-**	return (NULL);
-**}
-**
-**int _mh_execute_header;
-*/
+
+void	*getsectiondata(void *ptr, char const *section,
+						char const *segment, size_t *size)
+{
+	if (ptr && section && segment && size)
+		return (NULL);
+	return (NULL);
+}
+
+int _mh_execute_header;
+
 
 #endif
 
@@ -55,11 +55,9 @@ int		ui_init_assets(void)
 			return (ERROR);
 		}
 	}
+	else if (OS_ASSETS == 1)
+		g_rt.ui.chr = binary___inc_ui_chr_start;
+	else
+		g_rt.ui.chr = _binary___inc_ui_chr_start;
 	return (OK);
 }
-/*
-**	else if (OS_ASSETS == 1)
-**		g_rt.ui.chr = binary___inc_ui_chr_start;
-**	else
-**		g_rt.ui.chr = _binary___inc_ui_chr_start;
-*/

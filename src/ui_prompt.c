@@ -64,9 +64,15 @@ void		ui_mouse_prompt(void)
 	if (SDL_PointInRect(&g_rt.input.mouse_tile, &g_rt.ui.current_prompt.rect))
 	{
 		if (SDL_PointInRect(&g_rt.input.mouse_tile, &button_cancel))
-			ui_cancel_prompt();
+		{
+			if (g_rt.ui.current_textinput.value_changed)
+				ui_cancel_prompt();
+		}
 		else if (SDL_PointInRect(&g_rt.input.mouse_tile, &button_ok))
-			ui_accept_prompt();
+		{
+			if (g_rt.ui.current_textinput.value_changed)
+				ui_accept_prompt();
+		}
 		else
 			ui_mouse_control_textbox(&g_rt.ui.current_textinput,
 				&g_rt.ui.current_prompt.text, 2, 8);

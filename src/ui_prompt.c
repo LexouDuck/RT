@@ -56,6 +56,18 @@ static void	ui_accept_prompt(void)
 	return ;
 }
 
+static void	ui_free_prompt(void)
+{
+	char	*value;
+
+	value = (char *)g_rt.ui.current_textinput.value;
+	if (value)
+	{
+		free(value);
+		value = NULL;
+	}
+}
+
 void		ui_mouse_prompt(void)
 {
 	static SDL_Rect	button_ok = PROMPT_BUTTON_OK;
@@ -65,13 +77,15 @@ void		ui_mouse_prompt(void)
 	{
 		if (SDL_PointInRect(&g_rt.input.mouse_tile, &button_cancel))
 		{
+			ui_cancel_prompt();
 			if (g_rt.ui.current_textinput.value_changed)
-				ui_cancel_prompt();
+				ui_free_prompt();
 		}
 		else if (SDL_PointInRect(&g_rt.input.mouse_tile, &button_ok))
 		{
+			ui_accept_prompt();
 			if (g_rt.ui.current_textinput.value_changed)
-				ui_accept_prompt();
+				ui_free_prompt();
 		}
 		else
 			ui_mouse_control_textbox(&g_rt.ui.current_textinput,

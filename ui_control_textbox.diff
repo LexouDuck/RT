@@ -1,0 +1,7 @@
+28a29,30
+> 		if (*value)
+> 			free(*value);
+55c57
+< 		textinput->input = *value;
+---
+> 		textinput->input = ft_strdup(*value);

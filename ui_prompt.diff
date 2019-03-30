@@ -1,0 +1,37 @@
+18a19,30
+> static void	ui_free_prompt(void)
+> {
+> 	char	**value;
+> 
+> 	value = (char **)&g_rt.ui.current_prompt.text;
+> 	if (*value)
+> 	{
+> 		free(*value);
+> 		*value = NULL;
+> 	}
+> }
+> 
+31c43
+< 	return ;
+---
+> 	ui_free_prompt();
+56,68d67
+< 	return ;
+< }
+< 
+< static void	ui_prompt_free(void)
+< {
+< 	char	**value;
+< 
+< 	value = (char **)g_rt.ui.current_textinput.value;
+< 	if (*value)
+< 	{
+< 		free(*value);
+< 		*value = NULL;
+< 	}
+81d79
+< 			ui_prompt_free();
+86d83
+< 			ui_prompt_free();
+94d90
+< 	return ;

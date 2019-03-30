@@ -16,6 +16,18 @@
 #include "debug.h"
 #include "rt_random.h"
 
+static void	ui_free_prompt(void)
+{
+	char	**value;
+
+	value = (char **)&g_rt.ui.current_prompt.text;
+	if (*value)
+	{
+		free(*value);
+		*value = NULL;
+	}
+}
+
 static void	ui_cancel_prompt(void)
 {
 	if (g_rt.ui.current_textinput.type)
@@ -28,7 +40,7 @@ static void	ui_cancel_prompt(void)
 	g_rt.ui.objects.scrollbar.scroll_max = 0;
 	ft_memclr(&g_rt.ui.objects.selected, sizeof(t_bool) * OBJECT_MAX_AMOUNT);
 	ft_memclr(&g_rt.ui.objects.expanded, sizeof(t_bool) * OBJECT_MAX_AMOUNT);
-	return ;
+	ui_free_prompt();
 }
 
 static void	ui_accept_prompt(void)
@@ -53,19 +65,6 @@ static void	ui_accept_prompt(void)
 				"Could not save BMP image of the render: ", TRUE);
 	ui_cancel_prompt();
 	g_rt.must_render = TRUE;
-	return ;
-}
-
-static void	ui_free_prompt(void)
-{
-	char	*value;
-
-	value = (char *)g_rt.ui.current_textinput.value;
-	if (value)
-	{
-		free(value);
-		value = NULL;
-	}
 }
 
 void		ui_mouse_prompt(void)
@@ -78,14 +77,10 @@ void		ui_mouse_prompt(void)
 		if (SDL_PointInRect(&g_rt.input.mouse_tile, &button_cancel))
 		{
 			ui_cancel_prompt();
-			if (g_rt.ui.current_textinput.value_changed)
-				ui_free_prompt();
 		}
 		else if (SDL_PointInRect(&g_rt.input.mouse_tile, &button_ok))
 		{
 			ui_accept_prompt();
-			if (g_rt.ui.current_textinput.value_changed)
-				ui_free_prompt();
 		}
 		else
 			ui_mouse_control_textbox(&g_rt.ui.current_textinput,
@@ -93,5 +88,4 @@ void		ui_mouse_prompt(void)
 	}
 	else
 		ui_cancel_prompt();
-	return ;
 }

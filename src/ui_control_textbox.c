@@ -26,6 +26,8 @@ void	ui_leave_control_textbox(t_textinput *textinput)
 	if (textinput->value && g_rt.ui.current_textinput.value_changed)
 	{
 		value = (char **)textinput->value;
+		if (*value)
+			free(*value);
 		*value = ft_strdup(textinput->input);
 		g_rt.must_render = TRUE;
 	}
@@ -37,7 +39,6 @@ void	ui_leave_control_textbox(t_textinput *textinput)
 	if (textinput->type)
 	{
 		textinput->type = texttype_none;
-		textinput->value = NULL;
 		SDL_StopTextInput();
 	}
 	return ;

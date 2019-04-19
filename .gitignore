@@ -6,6 +6,7 @@ correc.*
 *.c-e
 *.h-e
 *.cl-e
+*.mp4
 
 # Program
 libft/test

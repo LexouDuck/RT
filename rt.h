@@ -79,7 +79,7 @@ typedef struct	s_rt
 /*
 **	This is our global variable which stores everything.
 */
-t_rt			g_rt;
+extern t_rt			g_rt;
 
 /*
 ** ************************************************************************** *|

@@ -40,6 +40,7 @@ static const char	*opencl_get_error_string5(cl_int error)
 		return ("CL_INVALID_LINKER_OPTIONS");
 	else if (error == -68)
 		return ("CL_INVALID_DEVICE_PARTITION_COUNT");
+	printf("Error nb %d\n", error);
 	return ("Unknown OpenCL error, or error below -1000 (extension error)");
 }
 

@@ -20,6 +20,9 @@
 #include "ui.h"
 #include "rt_scene.h"
 
+
+t_rt			g_rt;
+
 static void		main_exit(void)
 {
 	if (g_rt.ui.current_textinput.input)

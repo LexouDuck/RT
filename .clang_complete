@@ -1,0 +1,14 @@
+-Ilocal_folder
+-I/usr/include/
+-I./CL/
+-I./src/
+-I./src/*/
+-I./libft/
+-I./SDL2-2.0.9/include/
+-Wall
+-Wextra
+-Winline
+-Wpedantic
+-Wno-missing-braces
+-std=c99
+-D _BSD_SOURCE

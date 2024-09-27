@@ -1,7 +1,7 @@
 NAME	=	RT
 
 # Compiler
-CC	= _
+CC	= $(CC_$(OSFLAG))
 CC_WIN	= i686-w64-mingw32-gcc
 CC_LIN	= gcc
 CC_MAC	= gcc
@@ -9,13 +9,13 @@ CC_MAC	= gcc
 # Compiler flags
 CFLAGS	=	-Wall -Wextra -Werror $(CFLAGS_PLATFORM) -MMD -g
 
-CFLAGS_PLATFORM = _
+CFLAGS_PLATFORM = $(CFLAGS_$(OSFLAG))
 CFLAGS_WIN	= -mwindows -I./ -L./
 CFLAGS_LIN	= -Wno-unused-result #-fsanitize=address -ldl
 CFLAGS_MAC	= 
 
 # Linker (for embedding binary files inside the program)
-LD	= _
+LD	= $(LD_$(OSFLAG))
 LD_WIN	= i686-w64-mingw32-ld -r -b binary
 LD_LIN	= ld -r -b binary
 LD_MAC	= ld -r -sectcreate __DATA __inc_ui_chr
@@ -25,7 +25,7 @@ LIBS		=	$(LIBFT) $(LIBSDL) $(OPENCL)
 INCLUDE_DIRS =  -I$(LFTDIR) $(SDLHDRS)
 
 LIBFT		=	-L$(LFTDIR) -lft
-LIBSDL		= _
+LIBSDL		= $(LIBSDL_$(OSFLAG))
 LIBSDL_WIN	= -L$(SDLDIR) -lSDL2
 LIBSDL_LIN	= -L$(SDLDIR) -lSDL2 -lm
 LIBSDL_MAC	= -L./SDL2.framework/Versions/Current -F. -framework SDL2
@@ -40,20 +40,12 @@ SDLHDRS	=	-I./SDL2-2.0.9/include/ -I./SDL2.framework/Headers/
 
 # Set platform-specific variables
 ifeq ($(OS),Windows_NT)
-	OSFLAG := "WIN"
-	CC := $(CC_WIN)
-	LD := $(LD_WIN)
-	LIBSDL := $(LIBSDL_WIN)
-	CFLAGS_PLATFORM := $(CFLAGS_WIN)
+	OSFLAG := WIN
 	LIBS += -L./ -lOpenCL
 else
 	UNAME_S := $(shell uname -s)
 	ifeq ($(UNAME_S),Linux)
-		OSFLAG := "LIN"
-		CC := $(CC_LIN)
-		LD := $(LD_LIN)
-		LIBSDL := $(LIBSDL_LIN)
-		CFLAGS_PLATFORM := $(CFLAGS_LIN)
+		OSFLAG := LIN
 		LIBS += -lOpenCL
 		#ifeq ($(PROC_TYPE),)
 		#	CFLAGS += -m32
@@ -76,11 +68,7 @@ else
 		endif
 	endif
 	ifeq ($(UNAME_S),Darwin)
-		OSFLAG := "MAC"
-		CC := $(CC_MAC)
-		LD := $(LD_MAC)
-		LIBSDL := $(LIBSDL_MAC)
-		CFLAGS_PLATFORM := $(CFLAGS_MAC)
+		OSFLAG := MAC
 		CFLAGS += -DMAC
 		OPENCL := -framework OpenCL
 	endif

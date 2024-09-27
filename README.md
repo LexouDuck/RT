@@ -16,11 +16,8 @@ Run `make`.
   - Linux:
 
     - If you get a compilation error of the kind `#include <CL/cl.h> not found`, check that `opencl-c-headers` are installed on your machine.
-
     - If you get a linking error of the kind `cannot find -lSDL2: No such file or directory`, check that `libsdl2-dev` is installed on your machine
-
     - If you get a linking error of the kind `cannot find -lOpenCL: No such file or directory`, check that  `ocl-icd-opencl-dev` is installed on your machine.
-
     - If you get a an "OpenCL error -1001", you probably have an NVIDIA graphics card, and there's probably an issue with how your GPU drivers are configured. Follow the guide [here](https://askubuntu.com/questions/1270341/nvidia-driver-390-broken-dependencies-install-preventing-uninstall-or-new-instal), but download the driver that's actually recommended for your platform (as of writing this, it was `nvidia-driver-550-server-open` for mine).
 
   - Mac OS: [TODO]

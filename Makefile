@@ -28,15 +28,15 @@ LIBFT		=	-L$(LFTDIR) -lft
 LIBSDL		= $(LIBSDL_$(OSFLAG))
 LIBSDL_WIN	= -L$(SDLDIR) -lSDL2
 LIBSDL_LIN	= -L$(SDLDIR) -lSDL2 -lm
-LIBSDL_MAC	= -L./SDL2.framework/Versions/Current -F. -framework SDL2
+LIBSDL_MAC	= -L$(SDLDIR)/SDL2.framework/Versions/Current -F. -framework SDL2
 
 # Directories that this Makefile will use
 SRCDIR	=	./src/
 OBJDIR	=	./obj/
 INCDIR	=	./inc/
-LFTDIR	=	./libft/
-SDLDIR	=	./
-SDLHDRS	=	-I./SDL2-2.0.9/include/ -I./SDL2.framework/Headers/
+LFTDIR	=	./lib/libft/
+SDLDIR	=	./lib/
+SDLHDRS	=	-I./lib/SDL2-2.0.9/include/ -I./lib/SDL2.framework/Headers/
 
 # Set platform-specific variables
 ifeq ($(OS),Windows_NT)

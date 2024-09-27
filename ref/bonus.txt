@@ -1,0 +1,26 @@
+RT:
+-Temps-réel
+-OpenCL (et peut-etre scale2x ou hq2x si besoin)
+-Camera controllable a la fois fleches et les 3 clicks
+-Reflection (mirroir)
+-Refraction (transparence)
+-Skybox
+
+Lights:
+-impact de reflets et refracts sur les ombres portées
+-Reflet fresnel (speculaire sur les surfaces vitrées)
+-Point light
+-Amibent light
+-Directional light
+-Black hole (ray curving)
+
+Shapes:
+-Cube
+-Sphere
+-Cylinder (finite)
+-Cone (finite)
+-Triangle
+-Mobius twist
+-Torus knot
+-3D Epitrochoid/Hypocycloid
+-Fractals

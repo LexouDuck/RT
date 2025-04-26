@@ -77,7 +77,7 @@ static void		opencl_print_device_info(char *gpu_name,
 		ft_u32_to_str(g_rt.ocl.gpu_platform_index), TRUE);
 	debug_output_value("Platform name: ", platform_name, FALSE);
 	debug_output_value("Device name: ", gpu_name, FALSE);
-	debug_output_value("Version n° ", gpu_ocl_version, FALSE);
+	debug_output_value("Version no. ", gpu_ocl_version, FALSE);
 	debug_output_value("- global mem size: 0x",
 		ft_u64_to_hex(g_rt.ocl.gpu.global_mem_size), TRUE);
 	debug_output_value("- compute units: 0x",

@@ -61,7 +61,7 @@ static t_intersection		rt_cl_disk_intersect
 }
 
 /*
-** The square primitive is [-1., 1.]_x × [-1., 1.]_z
+** The square primitive is [-1., 1.]_x * [-1., 1.]_z
 */
 static t_intersection		rt_cl_rectangle_intersect
 (

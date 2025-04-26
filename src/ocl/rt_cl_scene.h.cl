@@ -10,9 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#define CAN_USE_PRINTF	0
+
+//#pragma OPENCL EXTENSION cl_khr_fp64      : enable
+//#pragma OPENCL EXTENSION cl_amd_printf    : enable
+//#pragma OPENCL EXTENSION cl_intel_printf  : enable
+
 # define OBJECT_NAME_MAXLENGTH	24
 # define OBJECT_MAX_AMOUNT		32
-# define EPS					0.001
+# define EPS					0.001f
 
 /*
 ** # define HALF_PI		0x1.921fb54442d18p0

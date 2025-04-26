@@ -80,11 +80,11 @@ static float3				rt_cl_cube_get_normal
 {
 	if (fabs((float)(hitpos.x - 1.f)) <= EPS)
 		return ((float3)(1.f, 0.f, 0.f));
-	else if (fabs((float)(hitpos.x + 1.)) <= EPS)
+	else if (fabs((float)(hitpos.x + 1.f)) <= EPS)
 		return ((float3)(-1.f, 0.f, 0.f));
 	else if (fabs((float)(hitpos.y - 1.f)) <= EPS)
 		return ((float3)(0.f, 1.f, 0.f));
-	else if (fabs((float)(hitpos.y + 1.)) <= EPS)
+	else if (fabs((float)(hitpos.y + 1.f)) <= EPS)
 		return ((float3)(0.f, -1.f, 0.f));
 	else if (fabs((float)(hitpos.z - 1.f)) <= EPS)
 		return ((float3)(0.f, 0.f, 1.f));

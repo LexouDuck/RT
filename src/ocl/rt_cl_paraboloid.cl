@@ -62,7 +62,7 @@ static t_intersection		rt_cl_paraboloid_intersect
 ** manifold and can thus be described through its calculus form.
 **
 ** Our scalar function for our hypersurface is f(x, y, z) = x^2 - y + z^2
-** Its jacobian matrix is thus the 1×3 matrix [ 2x, -1, 2z ]
+** Its jacobian matrix is thus the 1x3 matrix [ 2x, -1, 2z ]
 */
 static float3			rt_cl_paraboloid_get_normal
 (
@@ -128,7 +128,7 @@ static t_intersection			rt_cl_saddle_intersect
 ** manifold and can thus be described through its calculus form.
 **
 ** Our scalar function for our hypersurface is f(x, y, z) = x^2 - y - z^2
-** Its jacobian matrix is thus the 1×3 matrix [ 2x, -1, -2z ]
+** Its jacobian matrix is thus the 1x3 matrix [ 2x, -1, -2z ]
 */
 static float3			rt_cl_saddle_get_normal
 (
